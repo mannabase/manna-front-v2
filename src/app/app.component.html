@@ -1,0 +1,24 @@
+<div class="root flex flex-column h-full min-h-full min-w-full flex-grow">
+  <p-toolbar class="flex-none">
+    <div class="p-toolbar-group-start flex flex-row gap-2">
+      <button pButton icon="pi pi-bars" class="p-button-outlined" (click)="display = true"></button>
+      <span class="text-lg">Manna Toolbar</span>
+    </div>
+  </p-toolbar>
+
+  <div class="body flex-grow-1 w-full h-full p-2">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>
+
+<p-sidebar [(visible)]="display">
+  <ng-template pTemplate="header">
+    <h2 style="font-weight:normal">Menu</h2>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="flex flex-column w-full">
+      <p-menu [model]="items" class="w-full side-bar-menu"></p-menu>
+    </div>
+  </ng-template>
+</p-sidebar>
