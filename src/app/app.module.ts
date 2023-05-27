@@ -10,6 +10,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { ImageModule } from 'primeng/image';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -22,6 +23,7 @@ import { HomeComponent } from './home/home.component';
     SidebarModule,
     MenuModule,
     ToastModule,
+    ImageModule
   ],
   providers: [],
   bootstrap: [AppComponent],
