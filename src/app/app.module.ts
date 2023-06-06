@@ -14,6 +14,7 @@ import { ImageModule } from 'primeng/image';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularSvgIconModule,SvgLoader } from 'angular-svg-icon';
 import { InfoBoxComponent } from './info-box/info-box.component';
+import { IntroCardComponent } from './intro-card/intro-card.component';
 // export function svgLoaderFactory(http: HttpClient, transferState: TransferState, platformId: any): SvgServerLoader | SvgBrowserLoader {
 //   if (isPlatformServer(platformId)) {
 //     return new SvgServerLoader('../browser/assets', transferState);
@@ -23,7 +24,7 @@ import { InfoBoxComponent } from './info-box/info-box.component';
 // }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent,InfoBoxComponent],
+  declarations: [AppComponent, HomeComponent,InfoBoxComponent, IntroCardComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

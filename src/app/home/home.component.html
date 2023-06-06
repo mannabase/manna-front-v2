@@ -13,77 +13,57 @@
                     <p class="text-daily-manna text-7xl my-0" >and join the future of money</p>
                    </div>
                 <div>
-                  <p class="text-daily-manna text-xl" >Get 1 manna a day and use it for what you love.</p>
+                  <p class="text-daily-manna text-600 text-lg" >Get 1 manna a day and use it for what you love.</p>
                  </div>
-                 <div>
-                    <p-button class="px-0 py-0 button-get-started" styleClass="p-button-rounded p-button-outlined">
-                        <p class="button-get-started-text my-0 text-xl">Get Started
+                 <div class="button-get-started">
+                    <div class="shadow-2 border-round-3xl border-3 bg-cover "
+                        style="background-image: url('../../assets/images/get\ stared\ background.png');">
+                        <p-button class="px-0 py-0 button-get-started "
+                             styleClass="p-button-link"
+                             >
+                        <p class="my-0 text-xl font-bold text-white">Get Started
                         </p>
                       </p-button>
+                    </div>
                  </div>
                  <div class="button-learn-more">
-                  <p-button  label="Learn more" styleClass="p-button-text" >
+                  <p-button  label="Learn more" styleClass="p-button-text text-white" >
                     </p-button>
                         <ng-template pTemplate="dropdownicon">
                             <i class="fa-light fa-chevron-down"></i>
                         </ng-template>
                  </div>
         </div>
-         <div class="grid justify-content-center px-4 py-5 md:px-6 lg:px-8 gap-4">
-                <div class="surface-card flex align-content-between flex-wrap shadow-2 p-3 border-round-3xl border-3 border-pink-300 col-12 md:col-6 lg:col-3 ">
-                        <div class="flex justify-content-between mb-3">
-                            <div>
-                                <span class="text-900 font-medium text-xl">Get Verified</span>
-                                <div class=" block text-500 font-medium pt-2">All manna user are verified while presrving user privacy.Making a network of uniqe, real accounts</div>
-                            </div>
-                            <div class="flex align-items-center justify-content-center bg-orange-100 border-round" style="width:2.5rem;height:2.5rem">
-                                <!-- <svg-icon src="../../assets/images/Manna logo copy 7.svg" [ngStyle]="{ 'width.px':90 }"></svg-icon> -->
-                            </div>
-                        </div>
-                        <div class="flex align-items-end py-1">
-                            <p-button  label="Get Verified" styleClass="p-button-text p-0" >
-                              </p-button>
-                            <i class="pi pi-arrow-right"></i>
-                           </div>
-                </div>
-                <div class="surface-card flex align-content-between flex-wrap shadow-2 p-3 border-round-3xl border-3 border-pink-300 col-12 md:col-6 lg:col-3 ">
-                        <div class="flex align-self-start justify-content-between mb-3">
-                            <div>
-                                <span class="text-900 font-medium text-xl">Earn</span>
-                                <div class=" block text-500 font-medium pt-2">
-                                    Get manna everyday.  Everyone in the world  can join and earn daily manna.
-                                </div>
-                            </div>
-                            <div class="flex align-items-center justify-content-center bg-orange-100 border-round" style="width:2.5rem;height:2.5rem">
-                                <!-- <svg-icon src="../../assets/images/Manna logo copy 7.svg" [ngStyle]="{ 'width.px':90 }"></svg-icon> -->
-                            </div>
-                        </div>
-                        <div class="flex align-self-end py-1">
-                            <p-button  label="Earn Now" styleClass="p-button-text p-0" >
-                              </p-button>
-                            <i class="pi pi-arrow-right"></i>
-                        </div>
-                </div>
-                <div class="surface-card flex align-content-between flex-wrap shadow-2 p-3 border-round-3xl border-3 border-pink-300 col-12 md:col-6 lg:col-3 ">
-                        <div class="flex justify-content-between mb-3">
-                            <div>
-                                <span class="text-900 font-medium text-xl">Spend</span>
-                                <div class=" block text-500 font-medium pt-2">
-                                    Use manna for what you  love. Trade it in the  marketplace, giv it to those in need, or stake for rewards. 
-                                </div>
-                            </div>
-                            <div class="flex align-items-center justify-content-center bg-orange-100 border-round" style="width:2.5rem;height:2.5rem">
-                                <!-- <svg-icon src="../../assets/images/Manna logo copy 7.svg" [ngStyle]="{ 'width.px':90 }"></svg-icon> -->
-                            </div>
-                        </div>
-                        <div class="py-1">
-                            <p-button  label="Start Spending" styleClass="p-button-text p-0" >
-                              </p-button>
-                            <i class="pi pi-arrow-right"></i>
-                           </div>
-                </div>
+         <div class="grid justify-content-center px-4 py-5 md:px-6 lg:px-10 column-gap-4">
+            <div class=" col-12 md:col-6 lg:col-3 ">
+                <app-intro-card
+                    title="Get Verified"
+                    icon="../../assets/images/verified.png"
+                    body="All manna user are verified while presrving user privacy.Making a network of uniqe, real accounts"
+                    link="Get Verified"
+                >
+                </app-intro-card>
+            </div>
+            <div class="col-12 md:col-6 lg:col-3 ">
+                <app-intro-card
+                    title="Earn"
+                    icon="../../assets/images/earn manna logoes.png"
+                    body="Get manna everyday.  Everyone in the world  can join and earn daily manna.Get manna everyday."
+                    link="Earn Now"
+                >
+                </app-intro-card>
+            </div>
+            <div class="col-12 md:col-6 lg:col-3 ">
+                <app-intro-card
+                    title="Spend"
+                    icon="../../assets/images/spend.png"
+                    body="Use manna for what you  love. Trade it in the  marketplace, giv it to those in need, or stake for rewards."
+                    link="Start Spending"
+                >
+                </app-intro-card>
+            </div>
         </div>
-        <div class="grid flex justify-content-center px-4 py-5 md:px-6 lg:px-8">
+        <div class="grid  justify-content-center px-4 py-5 md:px-6 lg:px-10">
                     <div class="col-12 md:col-6 lg:col-5 ">
                         <div class=" p-3">
                             <div class="flex justify-content-between mb-3">
@@ -105,11 +85,11 @@
                         </div>
                     </div>
                     <div 
-                    class="flex align-items-stretch col-12 md:col-6 lg:col-4">
+                    class="flex align-items-stretch col-12 md:col-6 lg:col-5">
                         <img src="../../assets/images/manna-people.png" class="col-12">
                     </div>
         </div>
-        <div class="grid justify-content-center px-4 py-5 md:px-6 lg:px-8 gap-4">
+        <div class="grid justify-content-center px-4 py-5 md:px-6 lg:px-10 gap-4">
                     <div 
                     class="grid shadow-2  border-round-3xl bg-cover col-12 md:col-6 lg:col-5"
                      style="background-image: url('../../assets/images/governed\ background.png');">
@@ -121,7 +101,7 @@
                      </div>
                                 
                                 <div class="grid align-self-end">
-                                    <div class="col-7 align-self-end">
+                                    <div class="col-8 align-self-end">
                                         <p-button class="px-0 py-0" styleClass="p-button-rounded p-button-outlined" ngClass="">
                                             <p class="button-get-started-text my-0 ">Get Started 
                                                 <i class="pi pi-arrow-up-right"></i>
@@ -133,26 +113,34 @@
                                     </div>
                                 </div>
                     </div>
-                    <div class="col-12 md:col-6 lg:col-4">
-                        <app-info-box 
-                            title="Governed Forum"
-                            body="Participate in discussion and proposals for future update and decisions with tha Manna cummunity">
-                        </app-info-box>
-                        <app-info-box class="my-5"
-                            title="Verified Unique People"
-                            body="Partipicate directly or delegate to active members in the community.All verified Manna users have a voice. ">
-                        </app-info-box>
-                        <app-info-box 
-                            title="Governance DAO"
-                            body="Vote on important proposals and view vote history on past proposals.">
-                        </app-info-box>
+                    <div class="grid col-12 md:col-6 lg:col-5 row-gap-2">
+                        <div>
+                            <app-info-box 
+                                title="Governed Forum"
+                                body="Participate in discussion and proposals for future update and decisions with tha Manna cummunity">
+                            </app-info-box>
+                        </div>
+                        <div>
+                            <app-info-box
+                                title="Verified Unique People"
+                                body="Partipicate directly or delegate to active members in the community.All verified Manna users have a voice. ">
+                            </app-info-box>
+                        </div>
+                        <div>
+                            <app-info-box 
+                                title="Governance DAO"
+                                body="Vote on important proposals and view vote history on past proposals.">
+                            </app-info-box>
+                        </div>
                     </div>
         </div> 
-        <div class="grid justify-content-start px-4 py-5 md:px-6 lg:px-4 offset-sm1">
+        <!-- <div class="grid justify-content-center px-4 py-5 md:px-6 lg:px-8">
             <h2 >DEVELOPERS</h2>
-        </div>  
-        <div class="grid justify-content-center px-4 py-5 md:px-6 lg:px-8 gap-4">
+        </div>   -->
+        <div class="grid justify-content-center px-4 py-5 md:px-6 lg:px-10 gap-4">
+            <h2 class="col-10 my-0 py-0">DEVELOPERS</h2>
             <div class="grid col-12 md:col-6 lg:col-7 ">
+                
                 <div class="shadow-2 p-3 border-3 border-round-3xl bg-cover pt-5" 
                 style="background-image: url('../../assets/images/developer\ main\ background.png');">
                                 <div class=" block text-4xl font-medium col-10 mt-5">Help build the Manna ecosystem</div>
@@ -184,13 +172,11 @@
                     class="col shadow-2 p-3 border-round-3xl border-3 bg-cover " 
                     style="background-image: url('../../assets/images/developer\ background.png');">
                         <div class="mb-3">
-                                            <div>
-                                                <p-button class="px-0 py-0" styleClass="p-button-link" ngClass="">
+                            <p-button class="px-0 py-0" styleClass="p-button-link" ngClass="">
                                                     <p class="button-get-started-text my-0 px-0">Governed Foum
                                                         <i class="pi pi-arrow-right"></i>
                                                     </p>
-                                                  </p-button>
-                                            </div>
+                            </p-button>
                         </div>
                     </div>
                 </div>
@@ -199,7 +185,7 @@
                     <div class="surface-card shadow-2 border-round-3xl border-3 bg-cover"
                                  style="background-image: url('../../assets/images/manna\ grant\ background.png');">
                                     <div>
-                                        <div class="">
+                                        <div class=" -mt-3">
                                             <img src="../../assets/images/multi manna for funding.png" width="100%">
                                         </div>
                                         <div class="p-3">
