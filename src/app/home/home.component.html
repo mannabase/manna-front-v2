@@ -24,11 +24,9 @@
                  <div class="button-learn-more">
                   <p-button  label="Learn more" styleClass="p-button-text" >
                     </p-button>
-                    <p-dropdown>
                         <ng-template pTemplate="dropdownicon">
                             <i class="fa-light fa-chevron-down"></i>
                         </ng-template>
-                    </p-dropdown>
                  </div>
         </div>
          <div class="grid justify-content-center px-4 py-5 md:px-6 lg:px-8 gap-4">
@@ -136,50 +134,18 @@
                                 </div>
                     </div>
                     <div class="col-12 md:col-6 lg:col-4">
-                        <div class="surface-card shadow-2 p-3 border-round-3xl border-3 border-pink-300 mb-3">
-                            <div>
-                                            <p-button class="px-0 py-0" styleClass="p-button-link" ngClass="">
-                                                <p class="button-get-started-text my-0 px-0">Governed Foum
-                                                    <i class="pi pi-arrow-up-right"></i>
-                                                </p>
-                                              </p-button>
-                            </div>
-                            <div class="text-lg font-light col-10">
-                                                Patricipate in dicussions and proposals for future update and decisions with tha Manna cummunity
-                            </div>
-                        </div>
-                        <div class="my-1">
-                                <div class="surface-card shadow-2 p-3 border-round-3xl border-3 border-pink-300">
-                                    <div class="mb-3">
-                                        <div>
-                                            <p-button class="px-0 py-0" styleClass="p-button-link" ngClass="">
-                                                <p class="button-get-started-text my-0 px-0">Governed Foum
-                                                    <i class="pi pi-arrow-up-right"></i>
-                                                </p>
-                                              </p-button>
-                                        </div>
-                                            <div class="text-lg font-light col-10">
-                                                Patricipate in dicussions and proposals for future update and decisions with tha Manna cummunity
-                                            </div>
-                                    </div>
-                                </div>
-                        </div>
-                        <div class="">
-                                <div class="surface-card shadow-2 p-3 border-round-3xl border-3 border-pink-300">
-                                    <div class="mb-3">
-                                        <div>
-                                            <p-button class="px-0 py-0" styleClass="p-button-link" ngClass="">
-                                                <p class="button-get-started-text my-0 px-0">Governed Foum
-                                                    <i class="pi pi-arrow-up-right"></i>
-                                                </p>
-                                              </p-button>
-                                        </div>
-                                            <div class="text-lg font-light col-10">
-                                                Patricipate in dicussions and proposals for future update and decisions with tha Manna cummunity
-                                            </div>
-                                    </div>
-                                </div>
-                        </div>
+                        <app-info-box 
+                            title="Governed Forum"
+                            body="Participate in discussion and proposals for future update and decisions with tha Manna cummunity">
+                        </app-info-box>
+                        <app-info-box class="my-5"
+                            title="Verified Unique People"
+                            body="Partipicate directly or delegate to active members in the community.All verified Manna users have a voice. ">
+                        </app-info-box>
+                        <app-info-box 
+                            title="Governance DAO"
+                            body="Vote on important proposals and view vote history on past proposals.">
+                        </app-info-box>
                     </div>
         </div> 
         <div class="grid justify-content-start px-4 py-5 md:px-6 lg:px-4 offset-sm1">
