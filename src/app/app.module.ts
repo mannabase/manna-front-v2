@@ -13,9 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { ImageModule } from 'primeng/image';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularSvgIconModule,SvgLoader } from 'angular-svg-icon';
-import {CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
-
+import { InfoBoxComponent } from './info-box/info-box.component';
 // export function svgLoaderFactory(http: HttpClient, transferState: TransferState, platformId: any): SvgServerLoader | SvgBrowserLoader {
 //   if (isPlatformServer(platformId)) {
 //     return new SvgServerLoader('../browser/assets', transferState);
@@ -25,8 +23,7 @@ import {CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 // }
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  declarations: [AppComponent, HomeComponent,InfoBoxComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
