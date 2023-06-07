@@ -1,10 +1,7 @@
 <div class="root flex flex-column h-full min-h-full min-w-full flex-grow">
-  <p-toolbar class="flex-none">
-    <div class="p-toolbar-group-start flex flex-row gap-2">
-      <button pButton icon="pi pi-bars" class="p-button-rounded p-button-text" (click)="display = true"></button>
-      <span class="text-lg">Manna Toolbar</span>
-    </div>
-  </p-toolbar>
+  <div class="header lex-grow-1 w-full h-full p-2">
+    <app-header></app-header>
+  </div>
 
   <div class="body flex-grow-1 w-full h-full p-2">
     <router-outlet></router-outlet>

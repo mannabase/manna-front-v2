@@ -15,16 +15,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularSvgIconModule,SvgLoader } from 'angular-svg-icon';
 import { InfoBoxComponent } from './info-box/info-box.component';
 import { IntroCardComponent } from './intro-card/intro-card.component';
-// export function svgLoaderFactory(http: HttpClient, transferState: TransferState, platformId: any): SvgServerLoader | SvgBrowserLoader {
-//   if (isPlatformServer(platformId)) {
-//     return new SvgServerLoader('../browser/assets', transferState);
-//   } else {
-//     return new SvgBrowserLoader(http, transferState);
-//   }
-// }
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent,InfoBoxComponent, IntroCardComponent],
+  declarations: [AppComponent, HomeComponent,InfoBoxComponent, IntroCardComponent, HeaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -36,14 +30,7 @@ import { IntroCardComponent } from './intro-card/intro-card.component';
     ToastModule,
     ImageModule,
     HttpClientModule,
-    AngularSvgIconModule,
-    // AngularSvgIconModule.forRoot({
-    //   loader: {
-    //     provide: SvgLoader,
-    //     useFactory: svgLoaderFactory,
-    //     deps: [ HttpClient, TransferState, PLATFORM_ID ],
-    //   },
-    // }),
+    AngularSvgIconModule
   ],
   providers: [],
   bootstrap: [AppComponent],
