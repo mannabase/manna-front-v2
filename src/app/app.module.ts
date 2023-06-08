@@ -16,9 +16,18 @@ import { AngularSvgIconModule,SvgLoader } from 'angular-svg-icon';
 import { InfoBoxComponent } from './info-box/info-box.component';
 import { IntroCardComponent } from './intro-card/intro-card.component';
 import { HeaderComponent } from './header/header.component';
+import { MarketplaceComponent } from './marketplace/marketplace.component';
+import { AboutComponent } from './about/about.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { BlogComponent } from './blog/blog.component';
+import {MenubarModule} from "primeng/menubar";
+import {CardModule} from "primeng/card";
+import {InputTextModule} from "primeng/inputtext";
+import {RadioButtonModule} from "primeng/radiobutton";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent,InfoBoxComponent, IntroCardComponent, HeaderComponent],
+  declarations: [AppComponent, HomeComponent,InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent, AboutComponent, DashboardComponent, BlogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -30,7 +39,12 @@ import { HeaderComponent } from './header/header.component';
     ToastModule,
     ImageModule,
     HttpClientModule,
-    AngularSvgIconModule
+    AngularSvgIconModule,
+    MenubarModule,
+    CardModule,
+    InputTextModule,
+    RadioButtonModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

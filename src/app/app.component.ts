@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MenuItem, PrimeIcons, PrimeNGConfig } from 'primeng/api';
+import {Component, OnInit} from '@angular/core';
+import {PrimeNGConfig} from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -9,20 +8,13 @@ import { MenuItem, PrimeIcons, PrimeNGConfig } from 'primeng/api';
 })
 export class AppComponent implements OnInit {
   title = 'manna-front-v2';
-  display: boolean = false;
-  items: MenuItem[];
 
   constructor(
-    private primengConfig: PrimeNGConfig,
-    private readonly router: Router
+    private primengConfig: PrimeNGConfig
   ) {
-    this.items = [
-      { label: 'Home', icon: PrimeIcons.HOME, routerLink: ['/home'] },
-    ];
   }
 
   ngOnInit() {
     this.primengConfig.ripple = true;
-    this.router.navigate(['/home']);
   }
 }

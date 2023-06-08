@@ -1,7 +1,15 @@
-.header{
-    background: #383838;
+.header {
+  background: #383838;
 }
 
-.button-header{
-    color: aliceblue;
+.button-header {
+  color: aliceblue;
+}
+
+.side-bar-menu {
+  ::ng-deep .p-menu {
+    width: 100%;
+    background: none;
+    border: none;
+  }
 }

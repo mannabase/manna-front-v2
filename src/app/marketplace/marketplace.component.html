@@ -1,0 +1,54 @@
+<div class="card flex justify-content-center fluid">
+  <div class="col-3 h-screen" style="background-color: black;">
+    <h3 class="my-3">Filter</h3>
+    <hr>
+    <div class="flex">
+      <div class="col-8">
+        <p>CATEGORIES</p>
+        <div class="card flex justify-content-center flex-column gap-3">
+          <div *ngFor="let category of categories" class="field-checkbox">
+            <p-radioButton [inputId]="category.name" name="category" [value]="category" [(ngModel)]="selectedCategory">
+            </p-radioButton>
+            <label [for]="category.name" class="ml-2">{{ category.name }}</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <p>v</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-9 p-0">
+    <div class="card ">
+      <p-menubar [model]="items" class="fluid">
+        <ng-template pTemplate="end">
+          <div class="flex justify-content-between">
+            <input type="text" pInputText placeholder="Search" class="w-full">
+            <button class="pi pi-search"></button>
+          </div>
+        </ng-template>
+      </p-menubar>
+      <div>
+        <div *ngFor="let card of cards" class="card flex justify-content-center border-round-3xl col-3">
+          <p-card header="Advanced Card" subheader="Card Subheader">
+            <ng-template pTemplate="header">
+              <img alt="Card" [src]="card.image">
+            </ng-template>
+            <p>
+              {{card.name}}
+            </p>
+            <ng-template pTemplate="footer">
+              <div>
+                <p>price</p>
+                <p>{{card.price}}</p>
+              </div>
+              <p-button label="buy" icon="pi pi-times" styleClass="p-button-secondary"
+                        [style]="{ 'margin-left': '.5em' }"></p-button>
+            </ng-template>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
