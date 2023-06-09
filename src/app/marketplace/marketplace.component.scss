@@ -1,0 +1,44 @@
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.card-text{
+    color: #282828;
+    margin: 0;
+    font-weight:800;
+}
+
+.sort-filter{
+    border-radius: 5rem;
+    font-weight: 800;
+    padding: 1rem;
+    border-color: white ;
+}
+:host ::ng-deep{
+    .paginator .p-paginator{
+        background: none ; 
+    }
+    .p-card{
+        padding: 1rem;
+        border-radius: 2rem;
+        flex-wrap: wrap;
+        background-color: #fafafa;
+    }
+    .p-card .p-card-footer{
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+    .p-card .p-card-content{
+        padding: 0;
+        justify-content: center;
+    }
+    .p-button{
+        border: none;
+        background-color: #282828;
+        border-radius: 5rem;
+        color: #fafafa;
+    }
+}

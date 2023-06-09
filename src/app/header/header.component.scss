@@ -13,3 +13,14 @@
     border: none;
   }
 }
+
+
+:host ::ng-deep {
+  .menubar.p-menubar{
+    border: none;
+    background:#383838 ;
+  }
+  .p-toolbar{
+    background:#383838 ;
+  }
+}

@@ -12,11 +12,13 @@ export class HeaderComponent {
 
   constructor() {
     this.items = [
-      {label: 'Home', icon: PrimeIcons.HOME, routerLink: ['/']},
-      {label: 'Dashboard', icon: PrimeIcons.HOME, routerLink: ['/dashboard']},
-      {label: 'Marketplace', icon: PrimeIcons.MAP_MARKER, routerLink: ['/marketplace']},
-      {label: 'About', icon: PrimeIcons.HOME, routerLink: ['/about']},
-      {label: 'Blog', icon: PrimeIcons.HOME, routerLink: ['/blog']},
+      {label: 'Home', routerLink: ['/']},
+      {label: 'Dashboard',  routerLink: ['/dashboard']},
+      {label: 'Marketplace',  routerLink: ['/marketplace']},
+      {label: 'About',  routerLink: ['/about']},
+      {label: 'Blog', routerLink: ['/blog']},
+      {icon:"fa-solid fa-circle-user fa-xl" },
+      {icon:"fa-solid fa-cart-shopping fa-xl"},
     ];
   }
 }

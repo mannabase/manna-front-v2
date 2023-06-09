@@ -22,6 +22,42 @@ export class MarketplaceComponent {
   ]
   cards: Card[] = [];
 
+  first1: number = 0;
+
+    rows1: number = 10;
+
+    first2: number = 0;
+
+    rows2: number = 10;
+
+    first3: number = 0;
+
+    rows3: number = 10;
+
+    totalRecords: number = 120;
+
+    options = [
+        { label: 5, value: 5 },
+        { label: 10, value: 10 },
+        { label: 20, value: 20 },
+        { label: 120, value: 120 }
+    ]
+
+  onPageChange1(event:any) {
+    this.first1 = event.first;
+    this.rows1 = event.rows;
+}
+
+onPageChange2(event:any) {
+    this.first2 = event.first;
+    this.rows2 = event.rows;
+}
+
+onPageChange3(event:any) {
+    this.first3 = event.first;
+    this.rows3 = event.rows;
+}
+
   ngOnInit() {
     this.selectedCategory = this.categories[1];
     this.items = [
@@ -36,10 +72,9 @@ export class MarketplaceComponent {
       },
     ];
     this.cards = [
-      {name: 'Accounting', image: '../../assets/', price: 30},
-      {name: 'Marketing'},
-      {name: 'Production'},
-      {name: 'Research'}
+      {name: 'GNOMER #234', image:"../../assets/images/marketplace_sample1.png", price: 30},
+      {name: 'SPRING WATER', image:"../../assets/images/marketplace_sample2.png", price: 30},
+      {name: 'GNOMER #1234', image:"../../assets/images/marketplace_sample3.png", price: 30},
     ];
   }
 }

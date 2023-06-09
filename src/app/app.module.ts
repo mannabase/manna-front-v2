@@ -25,6 +25,7 @@ import {CardModule} from "primeng/card";
 import {InputTextModule} from "primeng/inputtext";
 import {RadioButtonModule} from "primeng/radiobutton";
 import {FormsModule} from "@angular/forms";
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent,InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent, AboutComponent, DashboardComponent, BlogComponent],
@@ -44,7 +45,8 @@ import {FormsModule} from "@angular/forms";
     CardModule,
     InputTextModule,
     RadioButtonModule,
-    FormsModule
+    FormsModule,
+    PaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent],
