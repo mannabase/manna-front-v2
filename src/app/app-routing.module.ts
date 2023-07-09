@@ -5,6 +5,7 @@ import {MarketplaceComponent} from "./marketplace/marketplace.component";
 import {AboutComponent} from "./about/about.component";
 import {BlogComponent} from "./blog/blog.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
+import { AccountComponent } from './account/account.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+  },
+  {
+    path: 'account',
+    component: AccountComponent,
   },
 ];
 

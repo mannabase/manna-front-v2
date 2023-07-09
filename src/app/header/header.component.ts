@@ -17,7 +17,7 @@ export class HeaderComponent {
       {label: 'Marketplace',  routerLink: ['/marketplace']},
       {label: 'About',  routerLink: ['/about']},
       {label: 'Blog', routerLink: ['/blog']},
-      {icon:"fa-solid fa-circle-user fa-xl" },
+      {icon:"fa-solid fa-circle-user fa-lg",routerLink: ['/account'] },
       {icon:"fa-solid fa-cart-shopping fa-xl"},
     ];
   }

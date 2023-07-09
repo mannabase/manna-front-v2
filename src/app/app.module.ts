@@ -26,9 +26,13 @@ import {InputTextModule} from "primeng/inputtext";
 import {RadioButtonModule} from "primeng/radiobutton";
 import {FormsModule} from "@angular/forms";
 import { PaginatorModule } from 'primeng/paginator';
+import { AccountComponent } from './account/account.component';
+import { TabViewModule } from 'primeng/tabview';
+import { WalletComponent } from './account/wallet/wallet.component';
+import { UserAccountComponent } from './account/user-account/user-account.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent,InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent, AboutComponent, DashboardComponent, BlogComponent],
+  declarations: [AppComponent, HomeComponent,InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent, AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -46,7 +50,8 @@ import { PaginatorModule } from 'primeng/paginator';
     InputTextModule,
     RadioButtonModule,
     FormsModule,
-    PaginatorModule
+    PaginatorModule,
+    TabViewModule
   ],
   providers: [],
   bootstrap: [AppComponent],

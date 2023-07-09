@@ -1,0 +1,33 @@
+<div>
+    <p-tabView class="tabes fluid" styleClass="flex">
+        <p-tabPanel>
+            <ng-template pTemplate="header">
+                <!-- <i class="pi pi-calendar"></i> -->
+                <img src="../../assets/images/sidepanel_wallet.png" class="icon-image">
+                <span>Wallet</span>
+            </ng-template>
+            <div class="flex justify-content-center">
+                <app-wallet></app-wallet>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel class="flex justify-content-center" header="Header II" >
+            <ng-template pTemplate="header">
+                <img src="../../assets/images/sidepanel_accont.png" class="icon-image">
+                <span>Accont</span>
+            </ng-template>
+            <div class="flex justify-content-center">
+                <app-user-account></app-user-account>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Header III" >
+            <ng-template pTemplate="header">
+                <i class="pi pi-cog icon-image"></i>
+                <span>Settings</span>
+            </ng-template>
+            <p>
+                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
+                qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+            </p>
+        </p-tabPanel>
+    </p-tabView>
+</div>

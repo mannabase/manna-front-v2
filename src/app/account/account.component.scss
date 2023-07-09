@@ -1,0 +1,71 @@
+.image-logo{
+    width: 3rem;
+}
+.icon-image{
+    height: 30px;
+    margin-right: 1rem;
+}
+.claim{
+    background-image: url('../../assets/images/developer_background.png');
+}
+
+.button-get-started {
+    color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 ;
+  }
+
+.tabes{
+    height: 100vh;
+}
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.card-text{
+    color: #282828;
+    margin: 0;
+    font-weight:800;
+}
+.collection-scroll{
+    overflow: auto;
+    height: 600px;
+}
+
+:host ::ng-deep{
+    .p-tabview-nav{
+        display: grid;
+        justify-items:center;
+    }
+    .p-tabview-nav .li{
+        flex-grow: 1;
+    }
+    .p-tabview-panels{
+        flex-grow: 1;
+    }
+    .p-card{
+        padding: 1rem;
+        border-radius: 2rem;
+        flex-wrap: wrap;
+        background-color: #fafafa;
+    }
+    .p-card .p-card-footer{
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+    .p-card .p-card-content{
+        padding: 0;
+        justify-content: center;
+    }
+    .p-button{
+        border: none;
+        background-color: #282828;
+        border-radius: 5rem;
+        color: #fafafa;
+    }
+}
