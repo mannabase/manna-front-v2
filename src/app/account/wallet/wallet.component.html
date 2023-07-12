@@ -17,10 +17,9 @@
     </div>
     <div
         class=" claim shadow-2 p-3 border-round-3xl border-3 bg-cover mr-1">
-        <p-button styleClass="p-button-link">
-            <p class="button-get-started-text my-0 px-0">
-                CLAIM
-            </p>
-        </p-button>
+        <button (click)="handleButtonClick()" styleClass="p-button-link">
+            {{ isConnected ? (isCorrectChain ? 'Claim' : 'Change to ID Chain') : 'Connect MetaMask' }}
+          </button>
+          
     </div>
-    </div>
+</div>
