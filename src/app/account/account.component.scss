@@ -35,37 +35,48 @@
     overflow: auto;
     height: 600px;
 }
-
-:host ::ng-deep{
-    .p-tabview-nav{
-        display: grid;
-        justify-items:center;
+.container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .tabs {
+    min-width: 300px;
+    background-color: #f2f2f2;
+  }
+  
+  .tab {
+    padding: 5px;
+    cursor: pointer;
+    color: #282828;
+  }
+  
+  .tab.active {
+    background-color: #282828;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 10px;
+  }
+  .tabPage{
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+  }
+  .page{
+    min-width: 700px;
+  }
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
     }
-    .p-tabview-nav .li{
-        flex-grow: 1;
+    
+    .tabs {
+      width: 100%;
     }
-    .p-tabview-panels{
-        flex-grow: 1;
+    
+    .content {
+      padding-top: 20px;
     }
-    .p-card{
-        padding: 1rem;
-        border-radius: 2rem;
-        flex-wrap: wrap;
-        background-color: #fafafa;
-    }
-    .p-card .p-card-footer{
-        display: flex;
-        justify-content: space-between;
-        align-items: end;
-    }
-    .p-card .p-card-content{
-        padding: 0;
-        justify-content: center;
-    }
-    .p-button{
-        border: none;
-        background-color: #282828;
-        border-radius: 5rem;
-        color: #fafafa;
-    }
-}
+  }

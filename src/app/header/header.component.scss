@@ -14,6 +14,12 @@
   }
 }
 
+.wallet-header{
+  width: 200px;
+}
+.logo-header{
+  width: 4rem;
+}
 
 :host ::ng-deep {
   .menubar.p-menubar{
@@ -22,5 +28,30 @@
   }
   .p-toolbar{
     background:#383838 ;
+  }
+}
+
+
+@media only screen and (max-width: 768px) {
+  header {
+    .p-menubar {
+      display: none;
+    }
+
+    .hamburger-menu {
+      display: block;
+    }
+  }
+  .wallet-header{
+    display: none;
+  }
+  .logo-header{
+    display: none;
+  }
+  :host ::ng-deep {
+    .p-menubar.p-menubar-mobile-active .p-menubar-root-list {
+      right: 0;
+      min-width: 120px;
+    }
   }
 }

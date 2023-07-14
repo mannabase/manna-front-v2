@@ -1,90 +1,58 @@
-import { Component } from '@angular/core';
-import { ethers } from 'ethers';
-
-declare let ethereum: any;
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MethodsService } from 'src/app/methods.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-wallet',
   templateUrl: './wallet.component.html',
-  styleUrls: ['./wallet.component.scss']
-
+  styleUrls: ['./wallet.component.scss'],
 })
-export class WalletComponent {
+export class WalletComponent implements OnInit, OnDestroy {
   isConnected = false;
   isCorrectChain = false;
-  account: string | null = null;
-  balance: string | null = null;
+  private isConnectedSubscription: Subscription | undefined;
+  private isCorrectChainSubscription: Subscription | undefined;
 
-  async handleButtonClick(): Promise<void> {
-    if (this.isConnected) {
-      if (!this.isCorrectChain) {
-        await this.switchToIDChain();
-      } else {
-        this.claim();
-      }
-    } else {
-      await this.connect();
+  constructor(private methodsService: MethodsService) {}
+
+  ngOnInit() {
+    this.isConnectedSubscription = this.methodsService.isConnected$.subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
+
+    this.isCorrectChainSubscription = this.methodsService.isCorrectChain$.subscribe(isCorrectChain => {
+      this.isCorrectChain = isCorrectChain;
+    });
+
+    this.methodsService.checkMetamaskStatus();
+  }
+
+  ngOnDestroy() {
+    this.isConnectedSubscription?.unsubscribe();
+    this.isCorrectChainSubscription?.unsubscribe();
+  }
+    async checkMetamaskStatus(): Promise<void> {
+      await this.methodsService.checkMetamaskStatus();
     }
-  }
-
-  async connect(): Promise<void> {
-    if (typeof ethereum !== 'undefined') {
-      try {
-        await ethereum.enable();
-        this.isConnected = true;
-        await this.checkChain();
-        this.getAccountAndBalance();
-      } catch (error) {
-        console.error('Error connecting to MetaMask:', error);
-      }
-    } else {
-      console.error('MetaMask is not installed');
-    }
-  }
-
-  async checkChain(): Promise<void> {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const network = await provider.getNetwork();
-    this.isCorrectChain = network.chainId === 0x4a; 
-  }
-
-  async switchToIDChain(): Promise<void> {
-    try {
-      await ethereum.request({
-        method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId: '0x4a',
-            chainName: 'IDChain',
-            rpcUrls: ['https://idchain.one/rpc/'],
-            nativeCurrency: {
-              name: 'Eidi',
-              symbol: 'EIDI',
-              decimals: 18,
-            },
-            blockExplorerUrls: ['https://explorer.idchain.one/'],
-          },
-        ],
-      });
-    } catch (error:any) {
-      if (error.code === 4001) {
-        console.warn('User rejected chain switch');
-      } else {
-        console.error('Error switching chain:', error);
-      }
-    }
-  }
   
-
-  async getAccountAndBalance(): Promise<void> {
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    this.account = await signer.getAddress();
-    const balance = await provider.getBalance(this.account);
-    this.balance = ethers.utils.formatEther(balance);
+    async switchToIDChain(): Promise<void> {
+      await this.methodsService.switchToIDChain();
+    }
+    async checkChain(): Promise<void> {
+      await this.methodsService.checkChain();
+    }
+  
+    async connect(): Promise<void> {
+      await this.methodsService.connect();
+    }
+    async handleButtonClick(): Promise<void> {
+      await this.methodsService.handleButtonClick();
+    }
+  
+    async getAccountAndBalance(): Promise<void> {
+      await this.methodsService.getAccountAndBalance();
+    }
+    async claim(): Promise<void> {
+      await this.methodsService.claim();
+    }
   }
-
-  claim(): void {
-    console.log('Claim button clicked');
-  }
-}

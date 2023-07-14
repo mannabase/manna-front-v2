@@ -23,6 +23,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 40px;
 }
 
 .button-get-started {
@@ -42,7 +43,16 @@
   align-items: center;
 
 }
+.footer-link{
+  display: flex;
+  justify-content: center;
+}
 
 .card-border-explain {
   color: linear-gradient(120deg, rgba(255, 255, 255, 1) 0%, rgba(250, 129, 136, 1) 13%);
+}
+@media only screen and (max-width: 960px) {
+  .text-daily-manna {
+    font-size:x-large;
+  }
 }

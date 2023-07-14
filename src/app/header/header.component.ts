@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {MenuItem, PrimeIcons} from "primeng/api";
+import { Component } from '@angular/core';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
@@ -7,11 +7,10 @@ import {MenuItem, PrimeIcons} from "primeng/api";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  display: boolean = false;
-  items: MenuItem[];
+  menuItems: MenuItem[];
 
   constructor() {
-    this.items = [
+    this.menuItems  = [
       {label: 'Home', routerLink: ['/']},
       {label: 'Dashboard',  routerLink: ['/dashboard']},
       {label: 'Marketplace',  routerLink: ['/marketplace']},
@@ -20,5 +19,8 @@ export class HeaderComponent {
       {icon:"fa-solid fa-circle-user fa-lg",routerLink: ['/account'] },
       {icon:"fa-solid fa-cart-shopping fa-xl"},
     ];
+  }
+  toggleMenu() {
+    // Toggle menu logic here
   }
 }

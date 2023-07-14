@@ -7,10 +7,10 @@
           <img src="../../assets/images/Manna_logo_copy 7.png" alt="Image" class="image-logo"/>
         </div>
         <div>
-          <p class="text-daily-manna text-7xl mt-1 mb-0">Claim your daily manna </p>
+          <p class="text-daily-manna mt-1 mb-0">Claim your daily manna </p>
         </div>
         <div>
-          <p class="text-daily-manna text-7xl my-0">and join the future of money</p>
+          <p class="text-daily-manna my-0">and join the future of money</p>
         </div>
         <div>
           <p class="text-daily-manna text-600 text-lg">Get 1 manna a day and use it for what you love.</p>
@@ -21,7 +21,8 @@
             <p-button class="px-0 py-0 button-get-started "
                       styleClass="p-button-link"
             >
-              <p class="my-0 text-xl font-bold text-white">Get Started
+              <p class="my-0 text-xl font-bold text-white">
+                {{ isConnected ? (isCorrectChain ? 'Claim' : 'Change to ID Chain') : 'Connect MetaMask' }}
               </p>
             </p-button>
           </div>
@@ -38,7 +39,7 @@
           <app-intro-card
             title="Get Verified"
             icon="../../assets/images/verified.png"
-            body="All manna user are verified while presrving user privacy.Making a network of uniqe, real accounts"
+            body="All manna user are verified while presrving user privacy. Making a network of uniqe, real accounts"
             link="Get Verified"
           >
           </app-intro-card>
@@ -47,7 +48,7 @@
           <app-intro-card
             title="Earn"
             icon="../../assets/images/earn_manna_logoes.png"
-            body="Get manna everyday.  Everyone in the world  can join and earn daily manna.Get manna everyday."
+            body="Get manna everyday.  Everyone in the world  can join and earn daily manna. Get manna  everyday."
             link="Earn Now"
           >
           </app-intro-card>
@@ -56,7 +57,7 @@
           <app-intro-card
             title="Spend"
             icon="../../assets/images/spend.png"
-            body="Use manna for what you  love. Trade it in the  marketplace, giv it to those in need, or stake for rewards."
+            body="Use manna for what you love.Trade it in the marketplace, giv it to those in need,or stake for rewards."
             link="Start Spending"
           >
           </app-intro-card>
@@ -209,15 +210,17 @@
         <div class="grid flex justify-content-center">
           <div class="col-12 md:col-6 lg:col-4 ">
             <div class="p-3">
-              <div class="flex justify-content-between align-center mb-3">
+              <div class="flex justify-content-center align-center">
                 <div class="flex align-center">
                   <img src="../../assets/images/Manna_logo_footer.png" style="width:1.5rem;" class="image-logo mr-2">
                   <span class="text-900 font-medium text-xl">mannabase</span>
                 </div>
               </div>
-              <div class="pl-2 col-8">
-                mannabase Mannabase is the hub for Manna. Manna is a digital taken that eveeryone in the workd can claim
-                1 per day.
+              <div class="flex justify-content-center align-center">
+                <p style="text-align: center;">
+                  Mannabase is the hub for Manna. Manna is a digital taken that eveeryone in the workd can claim
+                  1 per day.
+                </p>
               </div>
             </div>
           </div>
@@ -228,29 +231,29 @@
                   <span class="text-900 font-medium text-xl underline">EXPLORE</span>
                 </div>
               </div>
-              <div>
-                <p-button styleClass="p-button-link px-0">
+              <div >
+                <p-button class="footer-link" styleClass="p-button-link px-0">
                   <p class="button-get-started-text my-0">
                     Dashboard
                   </p>
                 </p-button>
               </div>
               <div>
-                <p-button styleClass="p-button-link px-0">
+                <p-button class="footer-link" styleClass="p-button-link px-0">
                   <p class="button-get-started-text my-0">
                     Open App
                   </p>
                 </p-button>
               </div>
               <div>
-                <p-button styleClass="p-button-link px-0">
+                <p-button class="footer-link" styleClass="p-button-link px-0">
                   <p class="button-get-started-text my-0">
                     Aboat
                   </p>
                 </p-button>
               </div>
               <div>
-                <p-button styleClass="p-button-link px-0">
+                <p-button class="footer-link" styleClass="p-button-link px-0">
                   <p class="button-get-started-text my-0">
                     FAQ
                   </p>
@@ -266,28 +269,28 @@
                 </div>
               </div>
               <div>
-                <p-button styleClass="p-button-link px-0">
+                <p-button class="footer-link" styleClass="p-button-link px-0">
                   <p class="button-get-started-text my-0">
                     Twitter
                   </p>
                 </p-button>
               </div>
               <div>
-                <p-button styleClass="p-button-link px-0">
+                <p-button class="footer-link" styleClass="p-button-link px-0">
                   <p class="button-get-started-text my-0">
                     Medium
                   </p>
                 </p-button>
               </div>
               <div>
-                <p-button styleClass="p-button-link px-0">
+                <p-button class="footer-link" styleClass="p-button-link px-0">
                   <p class="button-get-started-text my-0">
                     Disacord
                   </p>
                 </p-button>
               </div>
               <div>
-                <p-button styleClass="p-button-link px-0">
+                <p-button class="footer-link" styleClass="p-button-link px-0">
                   <p class="button-get-started-text my-0">
                     Telegram
                   </p>
@@ -297,12 +300,12 @@
           </div>
           <div class="col-12 md:col-6 lg:col-2 ">
             <div class="p-3">
-              <div class="flex justify-content-between align-center mb-3">
+              <div class="flex justify-content-center align-center mb-3">
                 <div class="flex align-center">
                   <span class="text-900 font-medium text-xl underline">SOCIALS</span>
                 </div>
               </div>
-              <div>
+              <div class="footer-link">
                 <p>
                   team@headeforhumanity.org
                 </p>

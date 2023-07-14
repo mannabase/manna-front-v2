@@ -33,37 +33,3 @@
     overflow: auto;
     height: 600px;
 }
-
-:host ::ng-deep{
-    .p-tabview-nav{
-        display: grid;
-        justify-items:center;
-    }
-    .p-tabview-nav .li{
-        flex-grow: 1;
-    }
-    .p-tabview-panels{
-        flex-grow: 1;
-    }
-    .p-card{
-        padding: 1rem;
-        border-radius: 2rem;
-        flex-wrap: wrap;
-        background-color: #fafafa;
-    }
-    .p-card .p-card-footer{
-        display: flex;
-        justify-content: space-between;
-        align-items: end;
-    }
-    .p-card .p-card-content{
-        padding: 0;
-        justify-content: center;
-    }
-    .p-button{
-        border: none;
-        background-color: #282828;
-        border-radius: 5rem;
-        color: #fafafa;
-    }
-}

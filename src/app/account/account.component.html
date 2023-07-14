@@ -1,31 +1,31 @@
-<div>
-    <p-tabView class="tabes fluid" styleClass="flex">
-        <p-tabPanel>
-            <ng-template pTemplate="header">
-                <!-- <i class="pi pi-calendar"></i> -->
-                <img src="../../assets/images/sidepanel_wallet.png" class="icon-image">
-                <span>Wallet</span>
-            </ng-template>
-                <app-wallet></app-wallet>
-        </p-tabPanel>
-        <p-tabPanel class="flex justify-content-center" header="Header II" >
-            <ng-template pTemplate="header">
-                <img src="../../assets/images/sidepanel_accont.png" class="icon-image">
-                <span>Accont</span>
-            </ng-template>
-            <div class="flex justify-content-center">
-                <app-user-account></app-user-account>
-            </div>
-        </p-tabPanel>
-        <p-tabPanel header="Header III" >
-            <ng-template pTemplate="header">
-                <i class="pi pi-cog icon-image"></i>
-                <span>Settings</span>
-            </ng-template>
+<div class="container">
+    <div class="tabs">
+      <div class="tab" [class.active]="selectedTab === 'Tab 1'" (click)="changeTab('Tab 1')">
+        <img src="../../assets/images/sidepanel_wallet.png" class="icon-image">
+        <span>Wallet</span>
+    </div>
+      <div class="tab" [class.active]="selectedTab === 'Tab 2'" (click)="changeTab('Tab 2')">
+        <img src="../../assets/images/sidepanel_accont.png" class="icon-image">
+        <span>Accont</span>
+    </div>
+      <div class="tab" [class.active]="selectedTab === 'Tab 3'" (click)="changeTab('Tab 3')">
+        <i class="pi pi-cog icon-image"></i>
+        <span>Settings</span>
+    </div>
+    </div>
+    <div class="tabPage">
+        <div *ngIf="selectedTab === 'Tab 1'" class="page">
+            <app-wallet class="flex justify-content-center"></app-wallet>
+          </div>
+          <div *ngIf="selectedTab === 'Tab 2'" class="page">
+            <app-user-account class="flex justify-content-center"></app-user-account>
+          </div>
+          <div *ngIf="selectedTab === 'Tab 3'" class="page">
             <p>
                 At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa
                 qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
             </p>
-        </p-tabPanel>
-    </p-tabView>
+          </div>
+    </div>
 </div>
+  
