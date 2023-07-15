@@ -30,9 +30,10 @@ import { AccountComponent } from './account/account.component';
 import { TabViewModule } from 'primeng/tabview';
 import { WalletComponent } from './account/wallet/wallet.component';
 import { UserAccountComponent } from './account/user-account/user-account.component';
+import { BlogDetailComponent } from './blog-detail/blog-detail.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent,InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent, AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent],
+  declarations: [AppComponent, HomeComponent,InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent, AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

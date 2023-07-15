@@ -1,1 +1,8 @@
-<p>blog works!</p>
+<h2>Blog List</h2>
+<div class="blog-list">
+  <div class="blog-item" *ngFor="let blog of blogs" (click)="viewBlogDetail(blog.id)">
+    <img [src]="blog.imageUrl" alt="Blog Image">
+    <h3>{{ blog.title }}</h3>
+    <p>{{ blog.content }}</p>
+  </div>
+</div>

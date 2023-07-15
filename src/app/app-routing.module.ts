@@ -6,6 +6,7 @@ import {AboutComponent} from "./about/about.component";
 import {BlogComponent} from "./blog/blog.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import { AccountComponent } from './account/account.component';
+import { BlogDetailComponent } from './blog-detail/blog-detail.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,8 @@ const routes: Routes = [
     path: 'account',
     component: AccountComponent,
   },
+  { path: 'blog/:id', 
+  component: BlogDetailComponent },
 ];
 
 @NgModule({
