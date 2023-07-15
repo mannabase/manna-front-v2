@@ -1,10 +1,7 @@
 .image-logo{
     width: 3rem;
 }
-.icon-image{
-    height: 30px;
-    margin-right: 1rem;
-}
+
 .claim{
     background-image: url('../../assets/images/developer_background.png');
 }
@@ -45,7 +42,15 @@
     background-color: #f2f2f2;
   }
   
+  .tabs {
+    min-width: 300px;
+    background-color: #f2f2f2;
+  }
+  
   .tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 5px;
     cursor: pointer;
     color: #282828;
@@ -54,6 +59,27 @@
   .tab.active {
     background-color: #282828;
   }
+  
+  .tab__text {
+    font-size: large;
+    font-weight: 700;
+  }
+  
+  .tab.active .tab__text {
+    color: #f2f2f2;
+  }
+  
+  .tab-image {
+    height: 30px;
+    margin-right: 1rem;
+    color: #282828;
+  }
+  
+  .tab.active .tab-image {
+    color: #f2f2f2;
+  }
+  
+  
   
   .content {
     flex: 1;

@@ -1,24 +1,25 @@
 <div class="container">
-    <div class="tabs">
-      <div class="tab" [class.active]="selectedTab === 'Tab 1'" (click)="changeTab('Tab 1')">
-        <img src="../../assets/images/sidepanel_wallet.png" class="icon-image">
-        <span>Wallet</span>
+  <div class="tabs">
+    <div class="tab" [class.active]="selectedTab === 'Tab 1'" (click)="changeTab('Tab 1')">
+      <img src="../../assets/images/sidepanel_wallet.png" [class.active]="selectedTab === 'Tab 1'" class="tab-image">
+      <span class="tab__text">Wallet</span>
     </div>
-      <div class="tab" [class.active]="selectedTab === 'Tab 2'" (click)="changeTab('Tab 2')">
-        <img src="../../assets/images/sidepanel_accont.png" class="icon-image">
-        <span>Accont</span>
+    <div class="tab" [class.active]="selectedTab === 'Tab 2'" (click)="changeTab('Tab 2')">
+      <img src="../../assets/images/sidepanel_accont.png" class="tab-image">
+      <span class="tab__text" [class.active]="selectedTab === 'Tab 2'">Account</span>
     </div>
-      <div class="tab" [class.active]="selectedTab === 'Tab 3'" (click)="changeTab('Tab 3')">
+  
+      <!-- <div class="tab" [class.active]="selectedTab === 'Tab 3'" (click)="changeTab('Tab 3')">
         <i class="pi pi-cog icon-image"></i>
         <span>Settings</span>
-    </div>
+    </div> -->
     </div>
     <div class="tabPage">
         <div *ngIf="selectedTab === 'Tab 1'" class="page">
             <app-wallet class="flex justify-content-center"></app-wallet>
           </div>
           <div *ngIf="selectedTab === 'Tab 2'" class="page">
-            <app-user-account class="flex justify-content-center"></app-user-account>
+            <app-user-account></app-user-account>
           </div>
           <div *ngIf="selectedTab === 'Tab 3'" class="page">
             <p>

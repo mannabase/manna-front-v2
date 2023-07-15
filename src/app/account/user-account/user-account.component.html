@@ -1,6 +1,13 @@
-
-        <div class="col-12 md:col-6 lg:col-4 border-round-3xl border-3">
-            <h2 >MY TRANSACTIONS</h2>
+        <div class="myaccuont border-round-3xl border-3 mb-3">
+          <h2 class="p-3 mb-3 ">MY ACCOUNT</h2>
+          <div class="wallet-address">
+            <h4 class="my-0 mr-5">My Wallet Address:</h4>
+            <p class="m-0">0x394b4j494nn4j49494jd03b</p>
+            <i class="pi pi-copy"></i>
+          </div>
+        </div>
+        <div class="border-round-3xl border-3">
+            <h2 class="p-3">MY TRANSACTIONS</h2>
             <hr>
             <p-scroller [items]="items" [itemSize]="50" scrollHeight="230px" >
                 <ng-template pTemplate="item" let-item let-options="options">
