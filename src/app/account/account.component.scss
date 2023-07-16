@@ -38,7 +38,7 @@
   }
   .tabs {
     min-width: 300px;
-    background-color: #f2f2f2;
+    background-color:black;
   }
   
   .tab {
@@ -47,11 +47,11 @@
     align-items: center;
     padding: 5px;
     cursor: pointer;
-    color: #282828;
+    color: #282828; 
   }
   
   .tab.active {
-    background-color: #282828;
+    background-color:  #282828;
   }
   
   .tab__text {
