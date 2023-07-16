@@ -18,13 +18,13 @@
         <div class="button-get-started">
           <div class="shadow-2 border-round-3xl border-3 bg-cover "
                style="background-image: url('../../assets/images/get_stared_background.png');">
-            <p-button class="px-0 py-0 button-get-started "
-                      styleClass="p-button-link"
-            >
-              <p class="my-0 text-xl font-bold text-white">
-                {{ isConnected ? (isCorrectChain ? 'Claim' : 'Change to ID Chain') : 'Connect MetaMask' }}
-              </p>
-            </p-button>
+               <p-button (click)="handleButtonClick()" class="px-0 py-0 button-get-started "
+               styleClass="p-button-link"
+     >
+       <p class="my-0 text-xl font-bold text-white">
+         {{ isConnected ? (isCorrectChain ? 'Claim' : 'Change to ID Chain') : 'Connect MetaMask' }}
+       </p>
+     </p-button>
           </div>
         </div>
         <div class="button-learn-more">
@@ -210,14 +210,14 @@
         <div class="grid flex justify-content-center">
           <div class="col-12 md:col-6 lg:col-4 ">
             <div class="p-3">
-              <div class="flex justify-content-center align-center">
-                <div class="flex align-center">
+              <div class="align-center">
+                <div class="manna-text-footer">
                   <img src="../../assets/images/Manna_logo_footer.png" style="width:1.5rem;" class="image-logo mr-2">
                   <span class="text-900 font-medium text-xl">mannabase</span>
                 </div>
               </div>
               <div class="flex justify-content-center align-center">
-                <p style="text-align: center;">
+                <p class="manna-text-footer">
                   Mannabase is the hub for Manna. Manna is a digital taken that eveeryone in the workd can claim
                   1 per day.
                 </p>
@@ -264,9 +264,7 @@
           <div class="col-12 md:col-6 lg:col-2 ">
             <div class="p-3">
               <div class="flex justify-content-between align-center mb-3">
-                <div class="flex align-center">
                   <span class="text-900 font-medium text-xl underline">SOCIALS</span>
-                </div>
               </div>
               <div>
                 <p-button class="footer-link" styleClass="p-button-link px-0">
@@ -300,15 +298,15 @@
           </div>
           <div class="col-12 md:col-6 lg:col-2 ">
             <div class="p-3">
-              <div class="flex justify-content-center align-center mb-3">
-                <div class="flex align-center">
+              <div class="footer-title mb-3">
                   <span class="text-900 font-medium text-xl underline">SOCIALS</span>
-                </div>
               </div>
-              <div class="footer-link">
-                <p>
-                  team@headeforhumanity.org
-                </p>
+              <div>
+                <p-button class="footer-link" styleClass="p-button-link px-0">
+                  <p class="button-get-started-text my-0">
+                    team@headeforhumanity.org
+                  </p>
+                </p-button>
               </div>
             </div>
           </div>

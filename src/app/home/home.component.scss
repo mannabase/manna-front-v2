@@ -1,8 +1,4 @@
 
-.card {
-  /* Card styles */
-  /* background-color: #383838; */
-}
 
 .image-container {
   display: flex;
@@ -31,6 +27,7 @@
   justify-content: center;
   align-items: center;
   padding: 0 ;
+  min-width: 150px;
 }
 
 .button-get-started-text {
@@ -43,10 +40,7 @@
   align-items: center;
 
 }
-.footer-link{
-  display: flex;
-  justify-content: center;
-}
+
 
 .card-border-explain {
   color: linear-gradient(120deg, rgba(255, 255, 255, 1) 0%, rgba(250, 129, 136, 1) 13%);
@@ -54,5 +48,17 @@
 @media only screen and (max-width: 960px) {
   .text-daily-manna {
     font-size:x-large;
+  }
+  .footer-link{
+    display: flex;
+    justify-content: center;
+  }
+  .manna-text-footer{
+    text-align: center
+  }
+  .footer-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
