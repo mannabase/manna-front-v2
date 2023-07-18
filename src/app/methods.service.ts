@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
 import { BehaviorSubject } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 declare let ethereum: any;
 
@@ -10,7 +11,7 @@ declare let ethereum: any;
 export class MethodsService {
   isConnected$ = new BehaviorSubject<boolean>(false);
   isCorrectChain$ = new BehaviorSubject<boolean>(false);
-  account: string | null = null;
+  account$ = new BehaviorSubject<string | null>(null);
   balance: string | null = null;
   async checkMetamaskStatus(): Promise<void> {
     if (typeof ethereum !== 'undefined') {
@@ -92,11 +93,18 @@ export class MethodsService {
   async getAccountAndBalance(): Promise<void> {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
-    this.account = await signer.getAddress();
-    const balance = await provider.getBalance(this.account);
-    this.balance = ethers.utils.formatEther(balance);
+  
+    try {
+      const address = this.account$.getValue(); // Use getValue() to get the current value
+      if (address !== null) {
+        this.account$.next(await signer.getAddress());
+        const balance = await provider.getBalance(address);
+        this.balance = ethers.utils.formatEther(balance);
+      }
+    } catch (error) {
+      console.error('Error getting account and balance:', error);
+    }
   }
-
   claim(): void {
     console.log('Claim button clicked');
   }

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Router, NavigationEnd , ActivatedRoute } from '@angular/router';
+import { MethodsService } from 'src/app/methods.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,8 +12,10 @@ import { Router, NavigationEnd , ActivatedRoute } from '@angular/router';
 export class HeaderComponent {
   menuItems: MenuItem[];
   isAccountPage: boolean = false;
-  
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  walletAddress: string | null = null;
+  private accountSubscription: Subscription | undefined;
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,private methodsService: MethodsService) {
     this.menuItems  = [
       {label: 'Home', routerLink: ['/']},
       {label: 'Dashboard',  routerLink: ['/dashboard']},
@@ -29,6 +33,12 @@ export class HeaderComponent {
         console.log("isAccountPage: ",this.isAccountPage )
       }
     });
+    this.accountSubscription = this.methodsService.account$.subscribe(address => {
+      this.walletAddress = address;
+    });
+  }
+  ngOnDestroy() {
+    this.accountSubscription?.unsubscribe();
   }
   toggleMenu() {
     // Toggle menu logic here
