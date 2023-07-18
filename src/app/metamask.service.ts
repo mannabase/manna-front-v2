@@ -1,21 +1,22 @@
-import { Injectable } from '@angular/core';
-import { ethers } from 'ethers';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ethers} from 'ethers';
+import {BehaviorSubject} from 'rxjs';
 
 declare let ethereum: any;
 
 @Injectable({
   providedIn: 'root'
 })
-export class MethodsService {
+export class MetamaskService {
   isConnected$ = new BehaviorSubject<boolean>(false);
   isCorrectChain$ = new BehaviorSubject<boolean>(false);
   account: string | null = null;
   balance: string | null = null;
+
   async checkMetamaskStatus(): Promise<void> {
     if (typeof ethereum !== 'undefined') {
       try {
-        const accounts = await ethereum.request({ method: 'eth_accounts' });
+        const accounts = await ethereum.request({method: 'eth_accounts'});
         const isConnected = accounts.length > 0;
         this.isConnected$.next(isConnected);
         if (isConnected) {
@@ -36,12 +37,9 @@ export class MethodsService {
     this.isCorrectChain$.next(network.chainId === 0x4a);
   }
 
-  async handleButtonClick(): Promise<void> {
-    const isConnected = this.isConnected$.value;
-    const isCorrectChain = this.isCorrectChain$.value;
-  
-    if (isConnected) {
-      if (!isCorrectChain) {
+  async tryClaim(): Promise<void> {
+    if (this.isConnected$.value) {
+      if (!this.isCorrectChain$.value) {
         await this.switchToIDChain();
       } else {
         this.claim();
@@ -80,7 +78,7 @@ export class MethodsService {
           },
         ],
       });
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.code === 4001) {
         console.warn('User rejected chain switch');
       } else {

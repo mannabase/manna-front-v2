@@ -24,53 +24,53 @@
 
   </div>
   <div class="p-0 col-10">
-      <p-menubar [model]="items" class="fluid">
-        <ng-template pTemplate="end">
-          <!-- <div class="flex justify-content-between">
-            <input type="text" pInputText placeholder="Search marketplace..." class="w-full">
-            <button class="pi pi-search"></button>
-          </div> -->
-          <div class="flex align-items-center search-box">
-            <input class="col-7 search-input" type="text" placeholder="Search marketplace...">
-            <p class="search-icon col-5 m-0">search</p>
+    <p-menubar [model]="items" class="fluid">
+      <ng-template pTemplate="end">
+        <!-- <div class="flex justify-content-between">
+          <input type="text" pInputText placeholder="Search marketplace..." class="w-full">
+          <button class="pi pi-search"></button>
+        </div> -->
+        <div class="flex align-items-center search-box">
+          <input class="col-7 search-input" type="text" placeholder="Search marketplace...">
+          <p class="search-icon col-5 m-0">search</p>
         </div>
-        </ng-template>
-      </p-menubar>
-      <div class="p-5">
-         <div class="flex justify-content-between">
-          <h1>534 LISTINGS</h1>
-          <div class=" align-self-center">
-            <button class="border-dashed mx-4 sort-filter">
-              <!-- <i class="pi-sort-amount-down-alt"></i> -->
-              LOW TO HIGH
-            </button>
-            <button class="border-dashed sort-filter" >
-              PRICE V
-            </button>
-          </div>
-         </div>
-            <p-paginator class="paginator flex grid" (onPageChange)="onPageChange1($event)" 
-            [first]="first1" [rows]="rows1" [totalRecords]="120"
-            [showFirstLastIcon]="false">
-          </p-paginator>
-          <div *ngIf="cards" class="cards gap-3">
-            <div *ngFor="let card of cards; let index = index" class="col-3" key="index">
-              <p-card class="grid p-0">
-                <ng-template pTemplate="header">
-                  <img alt="Card" [src]="card.image">
-                </ng-template>
-                <p class="flex justify-content-center card-text text-base">
-                  {{card.name}}
-                </p>
-                <ng-template pTemplate="footer">
-                  <div>
-                    <p class="card-text text-xs">price</p>
-                    <p class="card-text text-xs">{{card.price}} manna</p>
-                  </div>
-                    <p-button label="buy"></p-button>
-                </ng-template>
-              </p-card>
-            </div>
-          </div>
+      </ng-template>
+    </p-menubar>
+    <div class="p-5">
+      <div class="flex justify-content-between">
+        <h1>534 LISTINGS</h1>
+        <div class=" align-self-center">
+          <button class="border-dashed mx-4 sort-filter">
+            <!-- <i class="pi-sort-amount-down-alt"></i> -->
+            LOW TO HIGH
+          </button>
+          <button class="border-dashed sort-filter">
+            PRICE V
+          </button>
+        </div>
+      </div>
+      <p-paginator class="paginator flex grid" (onPageChange)="onPageChange1($event)"
+                   [first]="first1" [rows]="rows1" [totalRecords]="120"
+                   [showFirstLastIcon]="false">
+      </p-paginator>
+      <div *ngIf="cards" class="cards gap-3">
+        <div *ngFor="let card of cards; let index = index" class="col-3" key="index">
+          <p-card class="grid p-0">
+            <ng-template pTemplate="header">
+              <img alt="Card" [src]="card.image">
+            </ng-template>
+            <p class="flex justify-content-center card-text text-base">
+              {{card.name}}
+            </p>
+            <ng-template pTemplate="footer">
+              <div>
+                <p class="card-text text-xs">price</p>
+                <p class="card-text text-xs">{{card.price}} manna</p>
+              </div>
+              <p-button label="buy"></p-button>
+            </ng-template>
+          </p-card>
+        </div>
+      </div>
+    </div>
   </div>
-</div>

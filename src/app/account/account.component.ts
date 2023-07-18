@@ -1,13 +1,5 @@
-import { Component } from '@angular/core';
-interface Column {
-    field: string;
-    header: string;
-}
-class Card {
-    name?: string;
-    image?: string;
-    price?: number;
-  }
+import {Component} from '@angular/core';
+
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',

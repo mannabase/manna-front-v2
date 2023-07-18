@@ -1,42 +1,43 @@
-        <div class="myaccuont border-round-3xl border-3 mb-3">
-          <h2 class="p-3 mb-3 ">MY ACCOUNT</h2>
-          <div class="wallet-address">
-            <h4 class="my-0 mr-5">My Wallet Address:</h4>
-            <p class="m-0">0x394b4j494nn4j49494jd03b</p>
-            <i class="pi pi-copy"></i>
+<div class="my-account border-round-3xl border-3 flex flex-column gap-3 p-3">
+  <span class="text-4xl font-medium">My Account</span>
+  <div class="wallet-address flex flex-row gap-2 border-round-3xl p-3">
+    <h4 class="m-0 mr-4">My Wallet Address:</h4>
+    <p class="m-0">0x394b4j494nn4j49494jd03b</p>
+    <i class="pi pi-copy"></i>
+  </div>
+</div>
+<!--<div class="border-round-3xl border-3 pb-2">-->
+<!--  <h2 class="p-3">MY TRANSACTIONS</h2>-->
+<!--  <hr>-->
+<!--  <p-scroller class="mb-2" [items]="items" [itemSize]="50" scrollHeight="230px">-->
+<!--    <ng-template pTemplate="item" let-item let-options="options">-->
+<!--      <div class="flex align-items-center p-2" [ngClass]="{ 'surface-ground': options.odd }"-->
+<!--           style="height: 50px;">{{ item }}</div>-->
+<!--    </ng-template>-->
+<!--  </p-scroller>-->
+<!--</div>-->
+<!-- <div class="md:px-6 lg:px-8 border-3 border-round-3xl mt-3">
+  <div class=" block text-4xl font-medium col-10 mt-5">MY COLLECTION</div>
+      <hr/>
+      <div class="collection-scroll">
+        <div *ngIf="cards" class="cards gap-5">
+          <div *ngFor="let card of cards; let index = index" class="col-2" key="index">
+            <p-card class="grid p-0">
+              <ng-template pTemplate="header">
+                <img alt="Card" [src]="card.image">
+              </ng-template>
+              <p class="flex justify-content-center card-text text-base">
+                {{card.name}}
+              </p>
+              <ng-template pTemplate="footer">
+                <div>
+                  <p class="card-text text-xs">price</p>
+                  <p class="card-text text-xs">{{card.price}} manna</p>
+                </div>
+                  <p-button label="buy"></p-button>
+              </ng-template>
+            </p-card>
           </div>
         </div>
-        <div class="border-round-3xl border-3 pb-2">
-            <h2 class="p-3">MY TRANSACTIONS</h2>
-            <hr>
-            <p-scroller class="mb-2" [items]="items" [itemSize]="50" scrollHeight="230px" >
-                <ng-template pTemplate="item" let-item let-options="options">
-                    <div class="flex align-items-center p-2" [ngClass]="{ 'surface-ground': options.odd }" style="height: 50px;">{{ item }}</div>
-                </ng-template>
-            </p-scroller>
-        </div>
-      <!-- <div class="md:px-6 lg:px-8 border-3 border-round-3xl mt-3">
-        <div class=" block text-4xl font-medium col-10 mt-5">MY COLLECTION</div>
-            <hr/>
-            <div class="collection-scroll">
-              <div *ngIf="cards" class="cards gap-5">
-                <div *ngFor="let card of cards; let index = index" class="col-2" key="index">
-                  <p-card class="grid p-0">
-                    <ng-template pTemplate="header">
-                      <img alt="Card" [src]="card.image">
-                    </ng-template>
-                    <p class="flex justify-content-center card-text text-base">
-                      {{card.name}}
-                    </p>
-                    <ng-template pTemplate="footer">
-                      <div>
-                        <p class="card-text text-xs">price</p>
-                        <p class="card-text text-xs">{{card.price}} manna</p>
-                      </div>
-                        <p-button label="buy"></p-button>
-                    </ng-template>
-                  </p-card>
-                </div>
-              </div>
-            </div>
-      </div> -->
+      </div>
+</div> -->

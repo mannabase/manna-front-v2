@@ -1,102 +1,110 @@
-.image-logo{
-    width: 3rem;
+.image-logo {
+  width: 3rem;
 }
 
-.claim{
-    background-image: url('../../assets/images/developer_background.png');
+.claim {
+  background-image: url('../../assets/images/developer_background.png');
 }
 
 .button-get-started {
-    color: aliceblue;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 ;
-  }
-
-.tabes{
-    height: 100vh;
+  color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
 }
+
+.tabes {
+  height: 100vh;
+}
+
 .cards {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2rem;
 }
 
-.card-text{
-    color: #282828;
-    margin: 0;
-    font-weight:800;
+.card-text {
+  color: #282828;
+  margin: 0;
+  font-weight: 800;
 }
-.collection-scroll{
-    overflow: auto;
-    height: 600px;
+
+.collection-scroll {
+  overflow: auto;
+  height: 600px;
 }
+
 .container {
-    display: flex;
-    height: 100vh;
+  display: flex;
+  height: 100vh;
+}
+
+.tabs {
+  min-width: 300px;
+  background-color: black;
+}
+
+.tab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
+  color: #282828;
+  margin: 10px;
+}
+
+.tab.active {
+  background-color: #383838;
+  border-radius: 2em;
+}
+
+.tab__text {
+  font-size: large;
+  font-weight: 700;
+}
+
+.tab.active .tab__text {
+  color: #f2f2f2;
+}
+
+.tab-image {
+  height: 30px;
+  margin-right: 1rem;
+  color: #282828;
+}
+
+.tab.active .tab-image {
+  color: #f2f2f2;
+}
+
+
+.content {
+  flex: 1;
+  padding: 10px;
+}
+
+.tabPage {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.page {
+  min-width: 700px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
   }
+
   .tabs {
-    min-width: 300px;
-    background-color:black;
+    width: 100%;
   }
-  
-  .tab {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-    cursor: pointer;
-    color: #282828; 
-  }
-  
-  .tab.active {
-    background-color:  #282828;
-  }
-  
-  .tab__text {
-    font-size: large;
-    font-weight: 700;
-  }
-  
-  .tab.active .tab__text {
-    color: #f2f2f2;
-  }
-  
-  .tab-image {
-    height: 30px;
-    margin-right: 1rem;
-    color: #282828;
-  }
-  
-  .tab.active .tab-image {
-    color: #f2f2f2;
-  }
-  
-  
-  
+
   .content {
-    flex: 1;
-    padding: 10px;
+    padding-top: 20px;
   }
-  .tabPage{
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-  }
-  .page{
-    min-width: 700px;
-  }
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-    }
-    
-    .tabs {
-      width: 100%;
-    }
-    
-    .content {
-      padding-top: 20px;
-    }
-  }
+}

@@ -1,8 +1,10 @@
-.header {
-  background: #383838;
+.my-header {
+  background-color: #383838;
 }
+
 .black-background {
-  background-color: black; 
+  background: rgb(0, 0, 0);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 1) 300px, rgba(56, 56, 56, 1) 300px);
 }
 
 .button-header {
@@ -17,20 +19,23 @@
   }
 }
 
-.wallet-header{
+.wallet-header {
   width: 200px;
 }
-.logo-header{
-  width: 4rem;
+
+.logo-header {
+  width: 3rem;
+  height: 3rem;
 }
 
 :host ::ng-deep {
-  .menubar.p-menubar{
+  .menubar.p-menubar {
     border: none;
-    background:#383838 ;
+    background: #383838;
   }
-  .p-toolbar{
-    background:#383838 ;
+
+  .p-toolbar {
+    background: #383838;
   }
 }
 
@@ -44,10 +49,10 @@
       display: block;
     }
   }
-  .wallet-header{
+  .wallet-header {
     display: none;
   }
-  .logo-header{
+  .logo-header {
     display: none;
   }
   :host ::ng-deep {
