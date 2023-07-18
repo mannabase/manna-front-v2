@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-blog',
@@ -12,24 +12,25 @@ export class BlogComponent implements OnInit {
       id: 1,
       title: 'Blog 1',
       content: 'This is the content of Blog 1.',
-      imageUrl: 'src/assets/images/marketplace_sample1.png'
+      imageUrl: '../../assets/images/marketplace_sample1.png'
     },
     {
       id: 2,
       title: 'Blog 2',
       content: 'This is the content of Blog 2.',
-      imageUrl: 'src/assets/images/marketplace_sample2.png'
+      imageUrl: '../../assets/images/marketplace_sample2.png'
     },
     {
       id: 3,
       title: 'Blog 3',
       content: 'This is the content of Blog 3.',
-      imageUrl: 'src/assets/images/marketplace_sample3.png'
+      imageUrl: '../../assets/images/marketplace_sample3.png'
     }
   ];
-  
 
-  constructor(private router: Router) { }
+
+  constructor(private router: Router) {
+  }
 
   ngOnInit() {
   }

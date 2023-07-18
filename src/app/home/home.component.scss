@@ -1,5 +1,4 @@
 
-
 .image-container {
   display: flex;
   justify-content: center;
@@ -26,7 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 ;
+  padding: 0;
   min-width: 150px;
 }
 
@@ -45,18 +44,19 @@
 .card-border-explain {
   color: linear-gradient(120deg, rgba(255, 255, 255, 1) 0%, rgba(250, 129, 136, 1) 13%);
 }
+
 @media only screen and (max-width: 960px) {
   .text-daily-manna {
-    font-size:x-large;
+    font-size: x-large;
   }
-  .footer-link{
+  .footer-link {
     display: flex;
     justify-content: center;
   }
-  .manna-text-footer{
+  .manna-text-footer {
     text-align: center
   }
-  .footer-title{
+  .footer-title {
     display: flex;
     justify-content: center;
     align-items: center;

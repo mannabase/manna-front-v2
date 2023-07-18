@@ -1,51 +1,45 @@
-.image-logo{
-    width: 3rem;
+.image-logo {
+  width: 3rem;
 }
-.icon-image{
-    height: 30px;
-    margin-right: 1rem;
+
+.icon-image {
+  height: 30px;
+  margin-right: 1rem;
 }
 
 
 .button-get-started {
-    color: aliceblue;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 ;
-  }
-
-.tabes{
-    height: 100vh;
+  color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
 }
+
+.tabes {
+  height: 100vh;
+}
+
 .cards {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2rem;
 }
 
-.card-text{
-    color: #282828;
-    margin: 0;
-    font-weight:800;
+.card-text {
+  color: #282828;
+  margin: 0;
+  font-weight: 800;
 }
-.collection-scroll{
-    overflow: auto;
-    height: 600px;
+
+.collection-scroll {
+  overflow: auto;
+  height: 600px;
 }
-.myaccuont{
-    min-width: 400px;
-    min-height: 300px;
+
+.my-account {
 }
-.wallet-address{
-    min-width: 250px;
-    min-height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-    background-color: #282828;
-    padding-top: 20px;
-    margin: 20px;
-    border-radius: 20px;
+
+.wallet-address {
+  background-color: #282828;
 }

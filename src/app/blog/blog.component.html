@@ -1,4 +1,3 @@
-<h2>Blog List</h2>
 <div class="blog-list">
   <div class="blog-item" *ngFor="let blog of blogs" (click)="viewBlogDetail(blog.id)">
     <img [src]="blog.imageUrl" alt="Blog Image">
