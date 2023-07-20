@@ -1,5 +1,5 @@
 <!-- bename khoda -->
-<div class="p-grid mt-5">
+<div class="p-grid mt-4">
   <div class="p-col-12 p-md-6 p-lg-4">
     <div class="card ">
       <div>
@@ -16,27 +16,20 @@
           <p class="text-daily-manna text-600 text-lg">Get 1 manna a day and use it for what you love.</p>
         </div>
         <div class="button-get-started">
-            <!-- <button (click)="metamaskService.tryClaim()" class="px-0 py-0 button-get-started "
-                      styleClass="p-button-link"
-            >
-              <p class="my-0 text-xl font-bold text-white">
-                {{ metamaskService.isConnected$.getValue() ? (metamaskService.isCorrectChain$.getValue() ? 'Claim' : 'Change to ID Chain') : 'Connect MetaMask' }}
-              </p>
-            </button> -->
-            <button pButton class="custom-button" (click)="metamaskService.tryClaim()">
+            <button class="custom-button" (click)="metamaskService.tryClaim()">
               <p class="my-0 text-xl font-bold text-white">
                 {{ metamaskService.isConnected$.getValue() ? (metamaskService.isCorrectChain$.getValue() ? 'Claim' : 'Change to ID Chain') : 'Connect MetaMask' }}
               </p>
             </button>
         </div>
         <div class="button-learn-more">
-          <p-button label="Learn more" styleClass="p-button-text text-white">
-          </p-button>
-          <i class="fa-solid fa-circle-down"></i>
-          <!-- <button pButton icon="fa-solid fa-circle-down" class="p-button-rounded p-button-text"></button> -->
+          <a class="my-button">
+            Learn more
+            <i class="fa-solid fa-circle-down"></i>
+          </a>
         </div>
       </div>
-      <div class="grid justify-content-center px-4 py-5 md:px-6 lg:px-10 column-gap-4">
+      <div class="grid justify-content-center m-0 py-5 md:px-6 lg:px-10 column-gap-4">
         <div class=" col-12 md:col-6 lg:col-3 ">
           <app-intro-card
             title="Get Verified"
@@ -65,15 +58,16 @@
           </app-intro-card>
         </div>
       </div>
-      <div class="grid  justify-content-center px-4 py-5 md:px-6 lg:px-10">
+      <div class="grid justify-content-center m-0 py-5 md:px-6 lg:px-10">
         <div class="col-12 md:col-6 lg:col-5 ">
           <div class=" p-3">
             <div class="flex justify-content-between mb-3">
               <div>
                 <div class="py-1">
-                  <p-button label="MANNA ECOSYSTEM" styleClass="p-button-text p-0">
-                  </p-button>
-                  <i class="pi pi-arrow-right"></i>
+                  <a class="my-button">
+                    MANNA ECOSYSTEM
+                    <i class="pi pi-arrow-right"></i>
+                  </a>
                 </div>
                 <div class=" block text-4xl font-medium col-8">Build a global network powerd by the community</div>
                 <div class=" block text-lg font-light col-8">A community powerd global ecosystem using the principles of
@@ -81,11 +75,10 @@
                 </div>
               </div>
             </div>
-            <p-button class="px-0 py-0" styleClass="p-button-rounded p-button-outlined" ngClass="">
-              <p class="button-get-started-text my-0">Get Started
-                <i class="pi pi-arrow-up-right"></i>
-              </p>
-            </p-button>
+            <a class="my-button">
+              Get Started
+              <i class="pi pi-arrow-up-right"></i>
+            </a>
           </div>
         </div>
         <div
@@ -93,7 +86,7 @@
           <img src="../../assets/images/manna-people.png" class="col-12">
         </div>
       </div>
-      <div class="grid justify-content-center px-4 py-5 md:px-6 lg:px-10 gap-4">
+      <div class="grid justify-content-center m-0 py-5 md:px-6 lg:px-10 gap-4">
         <div
           class="grid shadow-2  border-round-3xl bg-cover col-12 md:col-6 lg:col-5"
           style="background-image: url('../../assets/images/governed_background.png');">
@@ -107,11 +100,10 @@
           </div>
           <div class="grid align-self-end">
             <div class="col-8 align-self-end">
-              <p-button class="px-0 py-0" styleClass="p-button-rounded p-button-outlined" ngClass="">
-                <p class="button-get-started-text my-0 ">Get Started
-                  <i class="pi pi-arrow-up-right"></i>
-                </p>
-              </p-button>
+              <a class="my-button">
+                Get Started
+                <i class="pi pi-arrow-up-right"></i>
+              </a>
             </div>
             <div class="col-4">
               <img src="../../assets/images/governed_manna_logo.png" alt="manna" style="width:80%">
@@ -139,8 +131,10 @@
           </div>
         </div>
       </div>
-      <div class="grid justify-content-center px-4 py-5 md:px-6 lg:px-10 gap-4">
-        <h2 class="col-10 my-0 py-0">DEVELOPERS</h2>
+      <!-- <div class="grid justify-content-center py-5 md:px-6 lg:px-10 gap-4">
+        <h2>DEVELOPERS</h2>
+      </div> -->
+      <div class="grid justify-content-center m-0 py-5 md:px-6 lg:px-10 gap-4">
         <div class="grid col-12 md:col-6 lg:col-7 ">
           <div class="shadow-2 p-3 border-3 border-round-3xl bg-cover pt-5"
                style="background-image: url('../../assets/images/developer_main_background.png');">
@@ -150,11 +144,10 @@
             </div>
             <div class="grid">
               <div class="flex align-items-start col-7 ">
-                <p-button class="px-0 py-0" styleClass="p-button-rounded p-button-outlined" ngClass="">
-                  <p class="button-get-started-text my-0">Read more
+                  <a class="my-button pl-2">
+                    Read more
                     <i class="pi pi-arrow-up-right"></i>
-                  </p>
-                </p-button>
+                  </a>
               </div>
               <div class="col-4">
                 <img src="../../assets/images/developer_squere.png" alt="manna" style="width:100%">
@@ -165,21 +158,19 @@
             <div
               class="col shadow-2 p-3 border-round-3xl border-3 bg-cover mr-1"
               style="background-image: url('../../assets/images/developer_background.png');">
-              <p-button styleClass="p-button-link">
-                <p class="button-get-started-text my-0 px-0">Governed Foum
-                  <i class="pi pi-arrow-right"></i>
-                </p>
-              </p-button>
+              <a class="my-button">
+                Governed Foum
+                <i class="pi pi-arrow-right"></i>
+              </a>
             </div>
             <div
               class="col shadow-2 p-3 border-round-3xl border-3 bg-cover "
               style="background-image: url('../../assets/images/developer_background.png');">
               <div class="mb-3">
-                <p-button class="px-0 py-0" styleClass="p-button-link" ngClass="">
-                  <p class="button-get-started-text my-0 px-0">Governed Foum
-                    <i class="pi pi-arrow-right"></i>
-                  </p>
-                </p-button>
+                <a class="my-button">
+                  Governed Foum
+                  <i class="pi pi-arrow-right"></i>
+                </a>
               </div>
             </div>
           </div>
@@ -199,16 +190,15 @@
               <div class="text-lg font-light col-10 p-3">
                 Get paid to build the future of money. Manna Governance offers
               </div>
-              <p-button class="p-5 mb-5" styleClass="p-button-rounded p-button-outlined " ngClass="">
-                <p class="button-get-started-text my-0">Read more
-                  <i class="pi pi-arrow-up-right"></i>
-                </p>
-              </p-button>
+              <a class="my-button m-4">
+                Read more
+                <i class="pi pi-arrow-up-right"></i>
+              </a>
             </div>
           </div>
         </div>
       </div>
-      <div class="px-4 py-5 md:px-6 lg:px-12">
+      <div class="py-5 md:px-6 lg:px-12">
         <div class="grid flex justify-content-center">
           <div class="col-12 md:col-6 lg:col-4 ">
             <div class="p-3">
@@ -229,37 +219,34 @@
           <div class="col-12 md:col-6 lg:col-2 ">
             <div class="p-3">
               <div class="flex justify-content-between align-center mb-3">
-                <div class="flex align-center">
+                <div class="flex align-center footer-title">
                   <span class="text-900 font-medium text-xl underline">EXPLORE</span>
                 </div>
               </div>
-              <div>
-                <p-button class="footer-link" styleClass="p-button-link px-0">
+              <div class="footer-link">
+                <!-- <button class="footer-link" styleClass="p-button-link px-0">
                   <p class="button-get-started-text my-0">
                     Dashboard
                   </p>
-                </p-button>
+                </button> -->
+                <a class="my-button footer-link">
+                  Dashboard
+                </a>
               </div>
-              <div>
-                <p-button class="footer-link" styleClass="p-button-link px-0">
-                  <p class="button-get-started-text my-0">
-                    Open App
-                  </p>
-                </p-button>
+              <div class="footer-link">
+                <a class="my-button footer-link">
+                  Open App
+                </a>
               </div>
-              <div>
-                <p-button class="footer-link" styleClass="p-button-link px-0">
-                  <p class="button-get-started-text my-0">
-                    Aboat
-                  </p>
-                </p-button>
+              <div class="footer-link">
+                <a class="my-button footer-link">
+                  Aboat
+                </a>
               </div>
-              <div>
-                <p-button class="footer-link" styleClass="p-button-link px-0">
-                  <p class="button-get-started-text my-0">
-                    FAQ
-                  </p>
-                </p-button>
+              <div class="footer-link">
+                <a class="my-button footer-link">
+                  FAQ
+                </a>
               </div>
             </div>
           </div>
@@ -268,33 +255,25 @@
               <div class="flex justify-content-between align-center mb-3">
                 <span class="text-900 font-medium text-xl underline">SOCIALS</span>
               </div>
-              <div>
-                <p-button class="footer-link" styleClass="p-button-link px-0">
-                  <p class="button-get-started-text my-0">
-                    Twitter
-                  </p>
-                </p-button>
+              <div class="footer-link">
+                <a class="my-button footer-link">
+                  Twitter
+                </a>
               </div>
-              <div>
-                <p-button class="footer-link" styleClass="p-button-link px-0">
-                  <p class="button-get-started-text my-0">
-                    Medium
-                  </p>
-                </p-button>
+              <div class="footer-link">
+                <a class="my-button footer-link">
+                  Medium
+                </a>
               </div>
-              <div>
-                <p-button class="footer-link" styleClass="p-button-link px-0">
-                  <p class="button-get-started-text my-0">
-                    Disacord
-                  </p>
-                </p-button>
+              <div class="footer-link">
+                <a class="my-button footer-link">
+                  Disacord
+                </a>
               </div>
-              <div>
-                <p-button class="footer-link" styleClass="p-button-link px-0">
-                  <p class="button-get-started-text my-0">
-                    Telegram
-                  </p>
-                </p-button>
+              <div class="footer-link">
+                <a class="my-button footer-link">
+                  Telegram
+                </a>
               </div>
             </div>
           </div>
@@ -304,11 +283,9 @@
                 <span class="text-900 font-medium text-xl underline">SOCIALS</span>
               </div>
               <div>
-                <p-button class="footer-link" styleClass="p-button-link px-0">
-                  <p class="button-get-started-text my-0">
-                    team@headeforhumanity.org
-                  </p>
-                </p-button>
+                <a class="my-button footer-link">
+                  team@headeforhumanity.org
+                </a>
               </div>
             </div>
           </div>
