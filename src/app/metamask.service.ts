@@ -1,13 +1,6 @@
-<<<<<<< HEAD:src/app/methods.service.ts
-import { Injectable } from '@angular/core';
-import { ethers } from 'ethers';
-import { BehaviorSubject } from 'rxjs';
-import { first } from 'rxjs/operators';
-=======
 import {Injectable} from '@angular/core';
 import {ethers} from 'ethers';
 import {BehaviorSubject} from 'rxjs';
->>>>>>> 7b1d482cfb76d7767c8951dd012f7774a154ae07:src/app/metamask.service.ts
 
 declare let ethereum: any;
 
@@ -17,7 +10,7 @@ declare let ethereum: any;
 export class MetamaskService {
   isConnected$ = new BehaviorSubject<boolean>(false);
   isCorrectChain$ = new BehaviorSubject<boolean>(false);
-  account$ = new BehaviorSubject<string | null>(null);
+  account: string | null = null;
   balance: string | null = null;
 
   async checkMetamaskStatus(): Promise<void> {
@@ -97,18 +90,11 @@ export class MetamaskService {
   async getAccountAndBalance(): Promise<void> {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
-  
-    try {
-      const address = this.account$.getValue(); // Use getValue() to get the current value
-      if (address !== null) {
-        this.account$.next(await signer.getAddress());
-        const balance = await provider.getBalance(address);
-        this.balance = ethers.utils.formatEther(balance);
-      }
-    } catch (error) {
-      console.error('Error getting account and balance:', error);
-    }
+    this.account = await signer.getAddress();
+    const balance = await provider.getBalance(this.account);
+    this.balance = ethers.utils.formatEther(balance);
   }
+
   claim(): void {
     console.log('Claim button clicked');
   }

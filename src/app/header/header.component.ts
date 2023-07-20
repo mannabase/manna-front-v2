@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { Router, NavigationEnd , ActivatedRoute } from '@angular/router';
-import { MethodsService } from 'src/app/methods.service';
-import { Subscription } from 'rxjs';
-=======
-import {Component} from '@angular/core';
-import {MenuItem} from 'primeng/api';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
->>>>>>> 7b1d482cfb76d7767c8951dd012f7774a154ae07
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -18,43 +11,44 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 export class HeaderComponent {
   menuItems: MenuItem[];
   isAccountPage: boolean = false;
-<<<<<<< HEAD
-  walletAddress: string | null = null;
-  private accountSubscription: Subscription | undefined;
-
-  constructor(private router: Router, private activatedRoute: ActivatedRoute,private methodsService: MethodsService) {
-    this.menuItems  = [
-=======
+  showMenu: boolean = false;
+  showHomeButton: boolean = true;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     this.menuItems = [
->>>>>>> 7b1d482cfb76d7767c8951dd012f7774a154ae07
-      {label: 'Home', routerLink: ['/']},
-      {label: 'Dashboard', routerLink: ['/dashboard']},
-      {label: 'Marketplace', routerLink: ['/marketplace']},
-      {label: 'About', routerLink: ['/about']},
-      {label: 'Blog', routerLink: ['/blog']},
-      {icon: "fa-solid fa-circle-user fa-lg", routerLink: ['/account']},
-      {icon: "fa-solid fa-cart-shopping fa-xl"},
+      { label: 'Home', routerLink: ['/'] },
+      { label: 'Dashboard', routerLink: ['/dashboard'] },
+      { label: 'Marketplace', routerLink: ['/marketplace'] },
+      { label: 'About', routerLink: ['/about'] },
+      { label: 'Blog', routerLink: ['/blog'] },
+      { icon: 'fa-solid fa-circle-user fa-lg', routerLink: ['/account'] },
+      { icon: 'fa-solid fa-cart-shopping fa-xl' },
     ];
   }
 
   ngOnInit() {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.isAccountPage = event.url.includes('/account');
-        console.log("isAccountPage: ", this.isAccountPage)
+    this.router.events.pipe(
+      filter((event): event is NavigationStart => event instanceof NavigationStart)
+    ).subscribe((event: NavigationStart) => {
+      if (event.url === '/') {
+        this.menuItems = this.menuItems.filter(item => item.label !== 'Home');
+      } else {
+        if (!this.menuItems.find(item => item.label === 'Home')) {
+          this.menuItems.unshift({ label: 'Home', routerLink: ['/'] });
+        }
       }
+
+      this.isAccountPage = event.url.includes('/account');
+      console.log('isAccountPage: ', this.isAccountPage);
     });
-    this.accountSubscription = this.methodsService.account$.subscribe(address => {
-      this.walletAddress = address;
-    });
-  }
-  ngOnDestroy() {
-    this.accountSubscription?.unsubscribe();
   }
 
   toggleMenu() {
-    // Toggle menu logic here
+    this.showMenu = !this.showMenu;
+  }
+  hideMenuOnItemClick() {
+    if (window.innerWidth <= 768) {
+      this.showMenu = false;
+    }
   }
 }

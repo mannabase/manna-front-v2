@@ -21,7 +21,6 @@
 
 .wallet-header {
   width: 200px;
-  background-image: "../../assets/images/wallet_button.png";
 }
 
 .logo-header {
@@ -29,37 +28,92 @@
   height: 3rem;
 }
 
-:host ::ng-deep {
-  .menubar.p-menubar {
-    border: none;
-    background: #383838;
-  }
-
-  .p-toolbar {
-    background: #383838;
-  }
+.menu-bar {
+  padding: 10px;
+  display: flex;
+  align-items: center; 
 }
 
-@media only screen and (max-width: 768px) {
-  header {
-    .p-menubar {
-      display: none;
-    }
+.menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex; 
+}
 
-    .hamburger-menu {
-      display: block;
-    }
-  }
+.menu-item {
+  margin-right: 20px;
+}
+
+.menu-item a {
+  text-decoration: none;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+}
+.menu-item a:hover {
+  color: #fa95f0;
+}
+.menu-item a.active {
+  color: rgb(240, 9, 171);
+}
+
+.menu-item i {
+  font-size: 24px;
+}
+
+
+.hamburger-menu {
+  display: none;
+  cursor: pointer;
+}
+
+
+
+
+@media only screen and (max-width: 768px) {
   .wallet-header {
     display: none;
   }
   .logo-header {
     display: none;
   }
-  :host ::ng-deep {
-    .p-menubar.p-menubar-mobile-active .p-menubar-root-list {
-      right: 0;
-      min-width: 120px;
-    }
+  .menu-list {
+    display: none; 
+  }
+  .my-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .menu-bar {
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  .menu-list {
+    display: none;
+    flex-direction: column;
+    background-color: #383838;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 100%;
+  }
+
+  .menu-bar {
+    flex: 1;
+    justify-content: flex-end;
+  }
+  
+  
+  .hide-button {
+    display: inline-block;
+  }
+
+  .hamburger-menu {
+    display: block;
   }
 }
+

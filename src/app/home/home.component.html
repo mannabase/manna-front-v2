@@ -16,16 +16,18 @@
           <p class="text-daily-manna text-600 text-lg">Get 1 manna a day and use it for what you love.</p>
         </div>
         <div class="button-get-started">
-          <div class="shadow-2 border-round-3xl border-3 bg-cover "
-               style="background-image: url('../../assets/images/get_stared_background.png');">
-            <p-button (click)="metamaskService.tryClaim()" class="px-0 py-0 button-get-started "
+            <!-- <button (click)="metamaskService.tryClaim()" class="px-0 py-0 button-get-started "
                       styleClass="p-button-link"
             >
               <p class="my-0 text-xl font-bold text-white">
                 {{ metamaskService.isConnected$.getValue() ? (metamaskService.isCorrectChain$.getValue() ? 'Claim' : 'Change to ID Chain') : 'Connect MetaMask' }}
               </p>
-            </p-button>
-          </div>
+            </button> -->
+            <button pButton class="custom-button" (click)="metamaskService.tryClaim()">
+              <p class="my-0 text-xl font-bold text-white">
+                {{ metamaskService.isConnected$.getValue() ? (metamaskService.isCorrectChain$.getValue() ? 'Claim' : 'Change to ID Chain') : 'Connect MetaMask' }}
+              </p>
+            </button>
         </div>
         <div class="button-learn-more">
           <p-button label="Learn more" styleClass="p-button-text text-white">

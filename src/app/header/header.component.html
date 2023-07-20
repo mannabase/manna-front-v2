@@ -6,13 +6,24 @@
     <h2 class="font-light m-0">mannabase</h2>
   </div>
   <div class="flex flex-row gap-2 align-items-center">
-    <p-menubar [model]="menuItems" styleClass="menubar">
-    </p-menubar>
-<<<<<<< HEAD
-    <h4 class="wallet-header"> walletAddress : {{ walletAddress }} </h4>
-=======
+    <nav class="menu-bar">
+      <span class="hamburger-menu" (click)="toggleMenu">&#9776;</span>
+      <ul class="menu-list" [ngClass]="{ 'show-menu': showMenu }">
+        <ng-container *ngFor="let item of menuItems">
+          <li class="menu-item" *ngIf="item.label && showHomeButton">
+            <a [routerLink]="item.routerLink" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" (click)="hideMenuOnItemClick()">
+              {{ item.label }}
+            </a>
+          </li>
+          <li class="menu-item" *ngIf="item.icon">
+            <a [routerLink]="item.routerLink" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" (click)="hideMenuOnItemClick()">
+              <i class="{{ item.icon }}"></i>
+            </a>
+          </li>
+        </ng-container>
+      </ul>
+    </nav>
     <img src="../../assets/images/wallet_button.png" class="wallet-header">
->>>>>>> 7b1d482cfb76d7767c8951dd012f7774a154ae07
   </div>
 </div>
 
