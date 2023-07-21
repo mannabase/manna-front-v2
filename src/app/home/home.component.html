@@ -16,19 +16,19 @@
           <p class="text-daily-manna text-600 text-lg">Get 1 manna a day and use it for what you love.</p>
         </div>
         <div class="button-get-started">
-            <button class="custom-button" (click)="metamaskService.tryClaim()">
-              <p class="flex justify-content-center my-0 text-xl font-bold text-white">
-                {{
-                  metamaskService.isConnected$.getValue()
-                    ? (metamaskService.isCorrectChain$.getValue()
-                        ? (metamaskService.isVerified$.getValue() ? 'Claim' : 'Verify')
-                        : 'Change to ID Chain')
-                    : 'Connect MetaMask'
-                }}
-              </p>
-            </button>
+          <button class="custom-button" (click)="metamaskService.tryClaim()">
+            <p class="flex justify-content-center my-0 text-xl font-bold text-white">
+              {{
+              metamaskService.isConnected$.getValue()
+                ? (metamaskService.isCorrectChain$.getValue()
+                  ? (metamaskService.isVerified$.getValue() ? 'Claim' : 'Verify')
+                  : 'Change to ID Chain')
+                : 'Connect MetaMask'
+              }}
+            </p>
+          </button>
         </div>
-        <div class="button-learn-more">
+        <div class="button-learn-more pt-1">
           <a class="my-button">
             Learn more
             <i class="fa-solid fa-circle-down"></i>
@@ -150,10 +150,10 @@
             </div>
             <div class="grid">
               <div class="flex align-items-start col-7 ">
-                  <a class="my-button pl-2">
-                    Read more
-                    <i class="pi pi-arrow-up-right"></i>
-                  </a>
+                <a class="my-button pl-2">
+                  Read more
+                  <i class="pi pi-arrow-up-right"></i>
+                </a>
               </div>
               <div class="col-4">
                 <img src="../../assets/images/developer_squere.png" alt="manna" style="width:100%">

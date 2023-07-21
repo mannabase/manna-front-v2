@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ButtonModule} from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
+import {DialogModule} from 'primeng/dialog';
 import {MenuModule} from 'primeng/menu';
 import {SidebarModule} from 'primeng/sidebar';
 import {ToastModule} from 'primeng/toast';
@@ -32,12 +32,15 @@ import {TabViewModule} from 'primeng/tabview';
 import {WalletComponent} from './account/wallet/wallet.component';
 import {UserAccountComponent} from './account/user-account/user-account.component';
 import {BlogDetailComponent} from './blog-detail/blog-detail.component';
-import { MetamaskService } from './metamask.service';
-import Swal from 'sweetalert2';
-import QRCode from 'qrcode';
+import {MetamaskService} from './metamask.service';
+import {MessageService} from "primeng/api";
+import {NgxResizeObserverModule} from 'ngx-resize-observer';
+import {VerificationDialogComponent} from './verification-dialog/verification-dialog.component';
+import {DialogService} from "primeng/dynamicdialog";
+import {QRCodeModule} from 'angularx-qrcode';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent, AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent],
+  declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent, AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -58,8 +61,10 @@ import QRCode from 'qrcode';
     PaginatorModule,
     TabViewModule,
     DialogModule,
+    NgxResizeObserverModule,
+    QRCodeModule
   ],
-  providers: [MetamaskService],
+  providers: [MetamaskService, MessageService, DialogService],
   bootstrap: [AppComponent],
 })
 export class AppModule {

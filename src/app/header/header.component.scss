@@ -1,6 +1,7 @@
 .my-header {
   background-color: #383838;
 }
+
 .black-background {
   background: rgb(0, 0, 0);
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 300px, rgba(56, 56, 56, 1) 300px);
@@ -34,14 +35,14 @@
 .menu-bar {
   padding: 10px;
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .menu-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex; 
+  display: flex;
 }
 
 .menu-item {
@@ -54,9 +55,11 @@
   padding: 8px;
   border-radius: 4px;
 }
+
 .menu-item a:hover {
   color: #fbb8d5;
 }
+
 .menu-item a.active {
   color: rgb(241, 99, 151);
 }
@@ -70,73 +73,37 @@
   display: none;
   cursor: pointer;
 }
+
 :host {
   ::ng-deep .custom-button {
-      display: flex;
-      justify-content: center;
-      background-image: url('../../assets/images/get_stared_background.png');
-      background-size: cover;
-      background-repeat: no-repeat;
-      color: white; 
-      padding: 8px 16px;
-      font-size: 16px; 
-      cursor: pointer;
-      border: 5px;
-      border-color: white;
-      border-radius: 50px; 
-      min-width: 150px;
-    }
+    display: flex;
+    justify-content: center;
+    background-image: url('../../assets/images/get_stared_background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 5px;
+    border-color: white;
+    border-radius: 50px;
+    min-width: 150px;
+  }
 
   ::ng-deep .p-button.custom-button:active {
     border-color: #ff0000;
   }
 }
 
-
-
-@media only screen and (max-width: 768px) {
-  .wallet-header {
-    display: none;
-  }
-  .logo-header {
-    display: none;
-  }
-  .menu-list {
-    display: none; 
-  }
-  .my-header {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .menu-bar {
-    flex: 1;
-    justify-content: flex-end;
-  }
-
-  .menu-list {
-    display: none;
-    flex-direction: column;
-    background-color: #383838;
-    position: absolute;
-    top: 50px;
-    right: 0;
+.side-bar-menu {
+  ::ng-deep .p-menu {
     width: 100%;
+    background: none;
+    border: none;
   }
 
-  .menu-bar {
-    flex: 1;
-    justify-content: flex-end;
-  }
-  
-  
-  .hide-button {
-    display: inline-block;
-  }
-
-  .hamburger-menu {
-    display: block;
+  ::ng-deep .p-menuitem-link {
+    border-radius: 2em;
   }
 }
-

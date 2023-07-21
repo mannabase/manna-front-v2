@@ -1,32 +1,47 @@
 <div class="my-header flex flex-row w-full justify-content-between align-items-center"
-     [ngClass]="{ 'black-background': isAccountPage }">
-  <div class="flex flex-row gap-2 align-items-center">
-    <!-- <button pButton icon="pi pi-bars" class="p-button-rounded p-button-text" (click)="display = true"></button> -->
+     [ngClass]="{ 'black-background': isAccountPage }" (onResize)="handleResize($event)">
+  <div class="flex flex-row gap-2 align-items-center p-2">
+    <button pButton *ngIf="showBurgerMenu" icon="pi pi-bars" class="p-button-rounded p-button-text" style="color: white"
+            (click)="displaySideBar = true"></button>
     <img src="../../assets/images/header_manna_logo.png" class="logo-header">
     <h2 class="font-light m-0">mannabase</h2>
   </div>
   <div class="flex flex-row gap-2 align-items-center">
-    <nav class="menu-bar">
-      <span class="hamburger-menu" (click)="toggleMenu">&#9776;</span>
-      <ul class="menu-list" [ngClass]="{ 'show-menu': showMenu }">
+
+    <nav class="menu-bar" *ngIf="!showBurgerMenu">
+      <ul class="menu-list" [ngClass]="{ 'show-menu': showBurgerMenu }">
         <ng-container *ngFor="let item of menuItems">
-          <li class="menu-item" *ngIf="item.label && showHomeButton">
-            <a [routerLink]="item.routerLink" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" (click)="hideMenuOnItemClick()">
+          <li class="menu-item" *ngIf="item.label && !item.icon">
+            <a [routerLink]="item.routerLink" [routerLinkActive]="['active']"
+               [routerLinkActiveOptions]="{ exact: true }">
               {{ item.label }}
             </a>
           </li>
           <li class="menu-item" *ngIf="item.icon">
-            <a [routerLink]="item.routerLink" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }" (click)="hideMenuOnItemClick()">
+            <a [routerLink]="item.routerLink" [routerLinkActive]="['active']"
+               [routerLinkActiveOptions]="{ exact: true }">
               <i class="{{ item.icon }}"></i>
             </a>
           </li>
         </ng-container>
       </ul>
     </nav>
+
     <div class="custom-button" *ngIf="walletAddress">
       {{ walletAddress | slice:0:6 }}...{{ walletAddress | slice:-4 }}
     </div>
   </div>
 </div>
+
+<p-sidebar [(visible)]="displaySideBar">
+  <ng-template pTemplate="header">
+    <h2 style="font-weight:normal">Menu</h2>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="flex flex-column w-full">
+      <p-menu [model]="menuItems" class="w-full side-bar-menu"></p-menu>
+    </div>
+  </ng-template>
+</p-sidebar>
 
 

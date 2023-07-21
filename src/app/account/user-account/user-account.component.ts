@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import Swal from 'sweetalert2';
+import {MessageService} from "primeng/api";
+
 class Card {
   name?: string;
   image?: string;
@@ -14,7 +15,12 @@ class Card {
 export class UserAccountComponent {
   cards: Card[] = [];
   items!: string[];
-  walletAddress: string='0x394b4j494nn4j49494jd03b';
+  walletAddress: string = '0x394b4j494nn4j49494jd03b';
+
+  constructor(readonly messageService: MessageService) {
+  }
+
+
   ngOnInit() {
     this.items = Array.from({length: 7}).map((_, i) => `Item #${i}`);
     this.cards = [
@@ -26,6 +32,7 @@ export class UserAccountComponent {
       {name: 'GNOMER #1234', image: "../../assets/images/marketplace_sample3.png", price: 30},
     ]
   }
+
   copyToClipboard() {
     const textField = document.createElement('textarea');
     textField.innerText = this.walletAddress;
@@ -33,13 +40,6 @@ export class UserAccountComponent {
     textField.select();
     document.execCommand('copy');
     textField.remove();
-    Swal.fire({
-      icon: 'success',
-      title: 'Address Copied!',
-      // text: 'Wallet address has been copied to the clipboard.',
-      timer: 2000,
-      showConfirmButton: false,
-      position: 'bottom',
-    });
+    this.messageService.add({severity: 'success', detail: 'Address Copied'});
   }
 }
