@@ -85,6 +85,8 @@ export class MetamaskService {
               console.error('Error: Wallet address is null or empty');
             }
           }
+        } else {
+          await this.connect();
         }
       } catch (error) {
         console.error('Error checking MetaMask status:', error);
