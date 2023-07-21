@@ -7,7 +7,7 @@
       <span class="text-900 font-medium text-xl">manna</span>
     </div>
     <div>
-      <h2 class="m-0">456.56</h2>
+      <h2 class="m-0">---</h2>
     </div>
   </div>
   <hr/>
@@ -15,14 +15,11 @@
     <p>Daily Manna:</p>
     <p>7 available</p>
   </div>
-  <div class="shadow-2 border-round-3xl border-3 bg-cover "
-       style="background-image: url('../../assets/images/get_stared_background.png');">
-    <p-button (click)="metamaskService.tryClaim()" class="px-0 py-0 button-get-started "
-              styleClass="p-button-link"
-    >
-      <p class="my-0 text-xl font-bold text-white">
-        {{ metamaskService.isConnected$.getValue() ? (metamaskService.isCorrectChain$.getValue() ? 'Claim' : 'Change to ID Chain') : 'Connect MetaMask' }}
-      </p>
-    </p-button>
-  </div>
+       <div class="button-get-started">
+        <button class="custom-button" (click)="metamaskService.tryClaim()">
+          <p class="flex justify-content-cnter my-0 text-xl font-bold text-white">
+            {{ metamaskService.isConnected$.getValue() ? (metamaskService.isCorrectChain$.getValue() ? 'Claim' : 'Change to ID Chain') : 'Connect MetaMask' }}
+          </p>
+        </button>
+    </div>
 </div>

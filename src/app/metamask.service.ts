@@ -1,6 +1,7 @@
-import {Injectable} from '@angular/core';
-import {ethers} from 'ethers';
-import {BehaviorSubject} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { ethers } from 'ethers';
+import { BehaviorSubject } from 'rxjs';
+import Swal from 'sweetalert2';
 
 declare let ethereum: any;
 
@@ -10,26 +11,44 @@ declare let ethereum: any;
 export class MetamaskService {
   isConnected$ = new BehaviorSubject<boolean>(false);
   isCorrectChain$ = new BehaviorSubject<boolean>(false);
-  account: string | null = null;
-  balance: string | null = null;
+  account$ = new BehaviorSubject<string | null>(null); 
 
   async checkMetamaskStatus(): Promise<void> {
-    if (typeof ethereum !== 'undefined') {
-      try {
-        const accounts = await ethereum.request({method: 'eth_accounts'});
-        const isConnected = accounts.length > 0;
-        this.isConnected$.next(isConnected);
-        if (isConnected) {
-          await this.checkChain();
-          this.getAccountAndBalance();
-        }
-      } catch (error) {
-        console.error('Error checking MetaMask status:', error);
+  if (typeof ethereum !== 'undefined') {
+    try {
+      const accounts = await ethereum.request({ method: 'eth_accounts' });
+      const isConnected = accounts.length > 0;
+      this.isConnected$.next(isConnected);
+      if (isConnected) {
+        await this.checkChain();
+        this.getAccount();
       }
-    } else {
-      console.error('MetaMask is not installed');
+    } catch (error) {
+      console.error('Error checking MetaMask status:', error);
+      Swal.fire({
+        icon: 'error',
+        title: `'Error checking MetaMask status:', error`,
+        timer: 2000,
+        showConfirmButton: false,
+        position: 'bottom',
+      });
     }
+  } else {
+    console.error('MetaMask is not installed');
+    Swal.fire({
+      icon: 'error',
+      title: 'MetaMask is not installed',
+      text: 'to connect your wallet install metamask extension',
+      confirmButtonColor: '#d33',
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      }
+    })
   }
+}
 
   async checkChain(): Promise<void> {
     const provider = new ethers.providers.Web3Provider(ethereum);
@@ -54,7 +73,7 @@ export class MetamaskService {
       await ethereum.enable();
       this.isConnected$.next(true);
       await this.checkChain();
-      this.getAccountAndBalance();
+      this.getAccount();
     } catch (error) {
       console.error('Error connecting to MetaMask:', error);
     }
@@ -78,7 +97,7 @@ export class MetamaskService {
           },
         ],
       });
-    } catch (error: any) {
+    } catch (error:any) {
       if (error.code === 4001) {
         console.warn('User rejected chain switch');
       } else {
@@ -87,12 +106,10 @@ export class MetamaskService {
     }
   }
 
-  async getAccountAndBalance(): Promise<void> {
+  async getAccount(): Promise<void> {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
-    this.account = await signer.getAddress();
-    const balance = await provider.getBalance(this.account);
-    this.balance = ethers.utils.formatEther(balance);
+    this.account$.next(await signer.getAddress()); // Update the wallet address
   }
 
   claim(): void {

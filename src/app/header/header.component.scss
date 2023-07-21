@@ -1,7 +1,6 @@
 .my-header {
   background-color: #383838;
 }
-
 .black-background {
   background: rgb(0, 0, 0);
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 300px, rgba(56, 56, 56, 1) 300px);
@@ -20,7 +19,11 @@
 }
 
 .wallet-header {
-  width: 200px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  // width: 400px;
+  background-image: url('../../assets/images/wallet_button.png');
+  padding: auto;
 }
 
 .logo-header {
@@ -52,10 +55,10 @@
   border-radius: 4px;
 }
 .menu-item a:hover {
-  color: #fa95f0;
+  color: #fbb8d5;
 }
 .menu-item a.active {
-  color: rgb(240, 9, 171);
+  color: rgb(241, 99, 151);
 }
 
 .menu-item i {
@@ -67,7 +70,27 @@
   display: none;
   cursor: pointer;
 }
+:host {
+  ::ng-deep .custom-button {
+      display: flex;
+      justify-content: center;
+      background-image: url('../../assets/images/get_stared_background.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      color: white; 
+      padding: 8px 16px;
+      font-size: 16px; 
+      cursor: pointer;
+      border: 5px;
+      border-color: white;
+      border-radius: 50px; 
+      min-width: 150px;
+    }
 
+  ::ng-deep .p-button.custom-button:active {
+    border-color: #ff0000;
+  }
+}
 
 
 

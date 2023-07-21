@@ -50,3 +50,31 @@
   align-items: center;
   padding: 0;
 }
+.button-get-started {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  min-width: 150px;
+}
+:host {
+  ::ng-deep .custom-button {
+      display: flex;
+      justify-content: center;
+      background-image: url('../../../assets/images/get_stared_background.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      color: white; 
+      padding: 8px 16px;
+      font-size: 16px; 
+      cursor: pointer;
+      border: 5px;
+      border-color: white;
+      border-radius: 50px; 
+      min-width: 150px;
+    }
+
+  ::ng-deep .p-button.custom-button:active {
+    border-color: #ff0000;
+  }
+}

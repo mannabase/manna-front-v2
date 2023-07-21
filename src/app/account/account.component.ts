@@ -6,9 +6,10 @@ import {Component} from '@angular/core';
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent {
-  selectedTab: string = 'Tab 1';
+  selectedTab: string = 'Account';
 
   changeTab(tabName: string) {
     this.selectedTab = tabName;
   }
+
 }

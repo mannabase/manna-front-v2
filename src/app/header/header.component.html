@@ -23,7 +23,9 @@
         </ng-container>
       </ul>
     </nav>
-    <img src="../../assets/images/wallet_button.png" class="wallet-header">
+    <div class="custom-button" *ngIf="walletAddress">
+      {{ walletAddress | slice:0:6 }}...{{ walletAddress | slice:-4 }}
+    </div>
   </div>
 </div>
 

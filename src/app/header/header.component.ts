@@ -1,20 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { MetamaskService } from '../metamask.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   menuItems: MenuItem[];
   isAccountPage: boolean = false;
   showMenu: boolean = false;
   showHomeButton: boolean = true;
+  walletAddress: string | null = null;
+  private accountSubscription: Subscription = new Subscription();
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(
+    private router: Router,
+     private activatedRoute: ActivatedRoute,
+     private metamaskService: MetamaskService)
+     {
     this.menuItems = [
       { label: 'Home', routerLink: ['/'] },
       { label: 'Dashboard', routerLink: ['/dashboard'] },
@@ -41,8 +49,13 @@ export class HeaderComponent {
       this.isAccountPage = event.url.includes('/account');
       console.log('isAccountPage: ', this.isAccountPage);
     });
+    this.accountSubscription = this.metamaskService.account$.subscribe(address => {
+      this.walletAddress = address;
+    });
   }
-
+  ngOnDestroy() {
+    this.accountSubscription?.unsubscribe();
+  }
   toggleMenu() {
     this.showMenu = !this.showMenu;
   }

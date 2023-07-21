@@ -1,19 +1,19 @@
 <div class="container">
   <div class="tabs">
-    <div class="tab" [class.active]="selectedTab === 'Tab 1'" (click)="changeTab('Tab 1')">
-      <img src="../../assets/images/sidepanel_wallet.png" [class.active]="selectedTab === 'Tab 1'" class="tab-image">
+    <div class="tab" [class.active]="selectedTab === 'Account'" (click)="changeTab('Account')">
+      <img src="../../assets/images/sidepanel_wallet.png" [class.active]="selectedTab === 'Account'" class="tab-image">
       <span class="tab__text">Wallet</span>
     </div>
-    <div class="tab" [class.active]="selectedTab === 'Tab 2'" (click)="changeTab('Tab 2')">
+    <div class="tab" [class.active]="selectedTab === 'Wallet'" (click)="changeTab('Wallet')">
       <img src="../../assets/images/sidepanel_accont.png" class="tab-image">
-      <span class="tab__text" [class.active]="selectedTab === 'Tab 2'">Account</span>
+      <span class="tab__text" [class.active]="selectedTab === 'Wallet'">Account</span>
     </div>
   </div>
   <div class="tabPage p-2">
-    <div *ngIf="selectedTab === 'Tab 1'" class="page">
+    <div *ngIf="selectedTab === 'Account'" class="page">
       <app-wallet class="flex justify-content-center"></app-wallet>
     </div>
-    <div *ngIf="selectedTab === 'Tab 2'" class="page">
+    <div *ngIf="selectedTab === 'Wallet'" class="page">
       <app-user-account></app-user-account>
     </div>
   </div>
