@@ -83,7 +83,7 @@ export class MetamaskService {
     }
   }
 
-  async generateAndShowQRCode(walletAddress: string): Promise<void> {
+  generateAndShowQRCode(walletAddress: string) {
     this.dialogService.open(VerificationDialogComponent, {
       header: 'Verify with BrightID',
       data: {
@@ -92,32 +92,23 @@ export class MetamaskService {
     })
   }
 
-  async verify(walletAddress: string): Promise<void> {
-    try {
-      const response = await this.http
-        .get<string>(`https://mannabase.com/backend/brightId/verifications/${walletAddress}`)
-        .toPromise();
-
-      if (response) {
-        this.isVerified$.next(true);
-        await this.generateAndShowQRCode(walletAddress);
-      } else {
-        this.isVerified$.next(false);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Verification Failed',
-          detail: 'The verification process failed. Please try again later or contact support.'
-        })
-      }
-    } catch (error) {
-      console.error('Error verifying the wallet address:', error);
-      this.isVerified$.next(false);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Verification Error',
-        detail: 'An error occurred while verifying the wallet address. Please try again later or contact support.'
-      })
-    }
+  verify(walletAddress: string) {
+    this.http
+      .get<string>(`https://mannabase.com/backend/brightId/verifications/${walletAddress}`)
+      .subscribe({
+        next: (response: any) => {
+          this.isVerified$.next(true);
+          this.generateAndShowQRCode(walletAddress);
+        },
+        error: (err) => {
+          this.isVerified$.next(false);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Verification Failed',
+            detail: 'The verification process failed. Please try again later or contact support.'
+          })
+        }
+      });
   }
 
   async connect(): Promise<void> {
