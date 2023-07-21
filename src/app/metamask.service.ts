@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable,Injector } from '@angular/core';
 import { ethers } from 'ethers';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import QRCode from 'qrcode';
 
 declare let ethereum: any;
 
@@ -11,8 +13,14 @@ declare let ethereum: any;
 export class MetamaskService {
   isConnected$ = new BehaviorSubject<boolean>(false);
   isCorrectChain$ = new BehaviorSubject<boolean>(false);
-  account$ = new BehaviorSubject<string | null>(null); 
+  // account$ = new BehaviorSubject<string | null>(null); 
+  isVerified$ = new BehaviorSubject<boolean>(false);
+  account$ = new BehaviorSubject<string>('');
+  private http: HttpClient;
 
+  constructor(private injector: Injector) {
+    this.http = this.injector.get(HttpClient);
+  }
   async checkMetamaskStatus(): Promise<void> {
   if (typeof ethereum !== 'undefined') {
     try {
@@ -57,17 +65,73 @@ export class MetamaskService {
   }
 
   async tryClaim(): Promise<void> {
-    if (this.isConnected$.value) {
-      if (!this.isCorrectChain$.value) {
-        await this.switchToIDChain();
-      } else {
-        this.claim();
+    if (typeof ethereum !== 'undefined') {
+      try {
+        const accounts = await ethereum.request({ method: 'eth_accounts' });
+        const isConnected = accounts.length > 0;
+        this.isConnected$.next(isConnected);
+
+        if (isConnected) {
+          await this.checkChain();
+          this.getAccount();
+
+          if (this.isVerified$.value) {
+            this.claim();
+          } else {
+            const walletAddress = this.account$.getValue();
+            if (walletAddress) {
+              await this.verify(walletAddress);
+            } else {
+              console.error('Error: Wallet address is null or empty');
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error checking MetaMask status:', error);
       }
     } else {
-      await this.connect();
+      console.error('MetaMask is not installed');
     }
   }
+  async generateAndShowQRCode(walletAddress: string): Promise<void> {
+    const qrCodeValue = `brightid://link-verification/http:%2f%2fnode.brightid.org/idchain/${walletAddress}`;
+    Swal.fire({
+      imageUrl: `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrCodeValue)}`,
+      imageAlt: 'QR Code',
+      showCloseButton: true,
+      confirmButtonText: 'Verify'
+    });
+  }
+  async verify(walletAddress: string): Promise<void> {
+    try {
+      const response = await this.http
+        .get<string>(`https://mannabase.com/backend/brightId/verifications/${walletAddress}`)
+        .toPromise();
 
+      if (response) {
+        this.isVerified$.next(true);
+        await this.generateAndShowQRCode(walletAddress);
+      } else {
+        this.isVerified$.next(false);
+        Swal.fire({
+          icon: 'error',
+          title: 'Verification Failed',
+          text: 'The verification process failed. Please try again later or contact support.',
+          showCloseButton: true,
+          showConfirmButton: false
+        });
+      }
+    } catch (error) {
+      console.error('Error verifying the wallet address:', error);
+      this.isVerified$.next(false);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while verifying the wallet address. Please try again later or contact support.',
+        showCloseButton: true,
+      });
+    }
+  }
   async connect(): Promise<void> {
     try {
       await ethereum.enable();
