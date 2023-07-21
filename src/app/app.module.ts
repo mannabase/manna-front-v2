@@ -34,6 +34,7 @@ import {UserAccountComponent} from './account/user-account/user-account.componen
 import {BlogDetailComponent} from './blog-detail/blog-detail.component';
 import { MetamaskService } from './metamask.service';
 import Swal from 'sweetalert2';
+import QRCode from 'qrcode';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent, AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent],
