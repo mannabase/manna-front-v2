@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {MessageService} from "primeng/api";
+import {MetamaskService} from 'src/app/metamask.service';
 
 class Card {
   name?: string;
@@ -17,7 +18,7 @@ export class UserAccountComponent {
   items!: string[];
   walletAddress: string = '0x394b4j494nn4j49494jd03b';
 
-  constructor(readonly messageService: MessageService) {
+  constructor(readonly messageService: MessageService,public metamaskService: MetamaskService) {
   }
 
 

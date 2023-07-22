@@ -14,7 +14,6 @@ export class WalletComponent implements OnInit {
   
   ngOnInit() {
     this.metamaskService.checkMetamaskStatus();
-    this.metamaskService.getBalance();
   }
 
 }

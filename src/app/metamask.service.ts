@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable,Input } from '@angular/core';
 import {ethers} from 'ethers';
 import {BehaviorSubject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
@@ -12,15 +12,20 @@ declare let ethereum: any;
   providedIn: 'root'
 })
 export class MetamaskService {
+  private serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/'
   isConnected$ = new BehaviorSubject<boolean>(false);
   isCorrectChain$ = new BehaviorSubject<boolean>(false);
   // account$ = new BehaviorSubject<string | null>(null);
   isVerified$ = new BehaviorSubject<boolean>(false);
   account$ = new BehaviorSubject<string>('');
+  isVerifiedStatus$ = new BehaviorSubject<string>('');
+  hasTakenResult$ = new BehaviorSubject<string>('');
+  getBalance$ = new BehaviorSubject<string>('');
+  mannaWallet$ = new BehaviorSubject<string>('');
+  email: string = ''; 
 
   constructor(private http: HttpClient, readonly messageService: MessageService, readonly dialogService: DialogService) {
   }
-
   async checkMetamaskStatus(): Promise<void> {
     if (typeof ethereum !== 'undefined') {
       try {
@@ -57,12 +62,12 @@ export class MetamaskService {
         const accounts = await ethereum.request({method: 'eth_accounts'});
         const isConnected = accounts.length > 0;
         this.isConnected$.next(isConnected);
-
         if (isConnected) {
           await this.checkChain();
           this.getAccount();
-
-          if (this.isVerified$.value) {
+          if (!this.isCorrectChain$.value) {
+                await this.switchToIDChain();
+          }else if (this.isVerified$.value) {
             this.claim();
           } else {
             const walletAddress = this.account$.getValue();
@@ -94,22 +99,101 @@ export class MetamaskService {
 
   verify(walletAddress: string) {
     this.http
-      .get<string>(`https://mannabase.com/backend/brightId/verifications/${walletAddress}`)
+      .get<string>(this.serverUrl+`brightId/isLinked/${walletAddress}`)
       .subscribe({
         next: (response: any) => {
-          this.isVerified$.next(true);
+          this.isVerifiedStatus$.next(response.status); // Set the response status in isVerifiedStatus$
           this.generateAndShowQRCode(walletAddress);
         },
         error: (err) => {
-          this.isVerified$.next(false);
+          this.isVerifiedStatus$.next('NOT_VERIFIED'); // Set status to "NOT_VERIFIED" on error
           this.messageService.add({
             severity: 'error',
             summary: 'Verification Failed',
             detail: 'The verification process failed. Please try again later or contact support.'
-          })
+          });
         }
       });
   }
+  hasTaken(walletAddress: string) {
+    this.http
+      .get<string>(this.serverUrl+`conversion/claimable/${walletAddress}`)
+      .subscribe({
+        next: (response: any) => {
+          this.hasTakenResult$.next(response.status); // Set the response status in isVerifiedStatus$
+          this.generateAndShowQRCode(walletAddress);
+        },
+        error: (err) => {
+          this.isVerifiedStatus$.next('NOT_VERIFIED'); // Set status to "NOT_VERIFIED" on error
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Verification Failed',
+            detail: 'The verification process failed. Please try again later or contact support.'
+          });
+        }
+      });
+  }
+  getBalance(walletAddress: string) {
+    this.http
+      .get<string>(this.serverUrl+`conversion/getBalance/${walletAddress}`)
+      .subscribe({
+        next: (response: any) => {
+          this.getBalance$.next(response.data);
+        },
+        error: (err) => {
+          this.getBalance$.next('not set');
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Verification Failed',
+            detail: 'The verification process failed. Please try again later or contact support.'
+          });
+        }
+      });
+  }
+  mannaWallet(walletAddress: string) {
+    this.http
+      .get<string>(this.serverUrl+`conversion/mannaWallet/${walletAddress}`)
+      .subscribe({
+        next: (response: any) => {
+          this.mannaWallet$.next(response.data);
+        },
+        error: (err) => {
+          this.mannaWallet$.next('not set');
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Verification Failed',
+            detail: 'The verification process failed. Please try again later or contact support.'
+          });
+        }
+      });
+  }
+  submitEmail(email: string): void {
+    const payload =
+      { email: email };
+    this.http.post<any>(this.serverUrl+'conversion/requestMailCode', payload)
+      .subscribe(
+        (response) => {
+          // Handle the successful response from the server
+          console.log('Email verification request successful:', response);
+          // Optionally, display a success message using the MessageService
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Verification Email Sent',
+            detail: 'An email with the verification code has been sent to your email address.'
+          });
+        },
+        (error) => {
+          // Handle errors and display an error message using the MessageService
+          console.error('Error verifying email:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Verification Failed',
+            detail: 'Failed to send the verification email. Please try again later or contact support.'
+          });
+        }
+      );
+  }
+  
 
   async connect(): Promise<void> {
     try {
