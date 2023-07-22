@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {MetamaskService} from 'src/app/metamask.service';
+import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 
 @Component({
     selector: 'app-home',
@@ -8,7 +8,7 @@ import {MetamaskService} from 'src/app/metamask.service';
 })
 export class HomeComponent implements OnInit {
 
-    constructor(public metamaskService: MetamaskService) {
+    constructor(public metamaskService: MetamaskBrightIdService) {
     }
 
     ngOnInit() {

@@ -15,17 +15,17 @@
     <p>Daily Manna:</p>
     <p>7 available</p>
   </div>
-       <div class="button-get-started">
-        <button class="custom-button" (click)="metamaskService.tryClaim()">
-          <p class="flex justify-content-center my-0 text-xl font-bold text-white">
-            {{
-              metamaskService.isConnected$.getValue()
-                ? (metamaskService.isCorrectChain$.getValue()
-                    ? (metamaskService.isVerified$.getValue() ? 'Claim' : 'Verify')
-                    : 'Change to ID Chain')
-                : 'Connect MetaMask'
-            }}
-          </p>
-        </button>
-    </div>
+  <div class="button-get-started">
+    <button class="custom-button" (click)="metamaskService.tryClaim()">
+      <p class="flex justify-content-center my-0 text-xl font-bold text-white">
+        {{
+        metamaskService.isConnected$.getValue()
+          ? (metamaskService.isCorrectNetwork()
+            ? (metamaskService.isVerified$.getValue() ? 'Claim' : 'Verify')
+            : 'Change to ID Chain')
+          : 'Connect MetaMask'
+        }}
+      </p>
+    </button>
+  </div>
 </div>

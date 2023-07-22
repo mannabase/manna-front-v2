@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
-import {MetamaskService} from '../metamask.service';
+import {MetamaskBrightIdService} from '../metamask-bright-id.service';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
-        private metamaskService: MetamaskService) {
+        private metamaskService: MetamaskBrightIdService) {
         this.menuItems = [
             {label: 'Home', routerLink: ['/']},
             {label: 'Marketplace', routerLink: ['/marketplace']},

@@ -32,7 +32,7 @@ import {TabViewModule} from 'primeng/tabview';
 import {WalletComponent} from './account/wallet/wallet.component';
 import {UserAccountComponent} from './account/user-account/user-account.component';
 import {BlogDetailComponent} from './blog-detail/blog-detail.component';
-import {MetamaskService} from './metamask.service';
+import {MetamaskBrightIdService} from './metamask-bright-id.service';
 import {MessageService} from "primeng/api";
 import {NgxResizeObserverModule} from 'ngx-resize-observer';
 import {VerificationDialogComponent} from './verification-dialog/verification-dialog.component';
@@ -64,7 +64,7 @@ import {QRCodeModule} from 'angularx-qrcode';
     NgxResizeObserverModule,
     QRCodeModule
   ],
-  providers: [MetamaskService, MessageService, DialogService],
+  providers: [MetamaskBrightIdService, MessageService, DialogService],
   bootstrap: [AppComponent],
 })
 export class AppModule {

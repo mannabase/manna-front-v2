@@ -1,6 +1,6 @@
-import {Injectable,Input } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ethers} from 'ethers';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {MessageService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
@@ -8,24 +8,30 @@ import {VerificationDialogComponent} from "./verification-dialog/verification-di
 
 declare let ethereum: any;
 
+export enum VerificationStatus {
+  NOT_LINKED = "NOT_LINKED",
+  NOT_VERIFIED = "NOT_VERIFIED",
+  SUCCESSFUL = "SUCCESSFUL",
+  TRANSFERRED = "TRANSFERRED",
+}
+
 @Injectable({
   providedIn: 'root'
 })
-export class MetamaskService {
+export class MetamaskBrightIdService {
   private serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/'
+  network$ = new BehaviorSubject<ethers.providers.Network | null>(null);
   isConnected$ = new BehaviorSubject<boolean>(false);
-  isCorrectChain$ = new BehaviorSubject<boolean>(false);
-  // account$ = new BehaviorSubject<string | null>(null);
-  isVerified$ = new BehaviorSubject<boolean>(false);
   account$ = new BehaviorSubject<string>('');
-  isVerifiedStatus$ = new BehaviorSubject<string>('');
+  verificationStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
   hasTakenResult$ = new BehaviorSubject<string>('');
   getBalance$ = new BehaviorSubject<string>('');
   mannaWallet$ = new BehaviorSubject<string>('');
-  email: string = ''; 
+  email: string = '';
 
   constructor(private http: HttpClient, readonly messageService: MessageService, readonly dialogService: DialogService) {
   }
+
   async checkMetamaskStatus(): Promise<void> {
     if (typeof ethereum !== 'undefined') {
       try {
@@ -33,15 +39,13 @@ export class MetamaskService {
         const isConnected = accounts.length > 0;
         this.isConnected$.next(isConnected);
         if (isConnected) {
-          await this.checkChain();
-          this.getAccount();
+          await this.loadNetwork();
+          this.loadAccount();
         }
       } catch (error) {
-        console.error('Error checking MetaMask status:', error);
         this.messageService.add({severity: 'error', summary: 'Error checking MetaMask status', detail: error + ""})
       }
     } else {
-      console.error('MetaMask is not installed');
       this.messageService.add({
         severity: 'error',
         summary: 'MetaMask is not installed',
@@ -50,45 +54,70 @@ export class MetamaskService {
     }
   }
 
-  async checkChain(): Promise<void> {
+  async loadNetwork() {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const network = await provider.getNetwork();
-    this.isCorrectChain$.next(network.chainId === 0x4a);
+    this.network$.next(network)
+  }
+
+  public isCorrectNetwork() {
+    if (this.network$.value == null)
+      return false
+    return this.network$.value.chainId === 0x4a
+  }
+
+  public isUserVerified() {
+    return this.verificationStatus$.value == VerificationStatus.SUCCESSFUL;
   }
 
   async tryClaim(): Promise<void> {
-    if (typeof ethereum !== 'undefined') {
-      try {
-        const accounts = await ethereum.request({method: 'eth_accounts'});
-        const isConnected = accounts.length > 0;
-        this.isConnected$.next(isConnected);
-        if (isConnected) {
-          await this.checkChain();
-          this.getAccount();
-          if (!this.isCorrectChain$.value) {
-                await this.switchToIDChain();
-          }else if (this.isVerified$.value) {
-            this.claim();
-          } else {
-            const walletAddress = this.account$.getValue();
-            if (walletAddress) {
-              await this.verify(walletAddress);
-            } else {
-              console.error('Error: Wallet address is null or empty');
-            }
+    if (typeof ethereum == 'undefined') {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'MetaMask is not installed',
+        detail: 'Please install metamask extension'
+      })
+      return;
+    }
+
+    try {
+      const accounts = await ethereum.request({method: 'eth_accounts'});
+      const isConnected = accounts.length > 0;
+      this.isConnected$.next(isConnected);
+      if (!isConnected)
+        await this.connect();
+
+      await this.loadNetwork();
+      if (!this.isCorrectNetwork())
+        await this.switchToIDChain();
+
+      this.loadAccount();
+      const walletAddress = this.account$.getValue();
+
+      this.getVerificationStatus(walletAddress)
+        .subscribe({
+          next: (response: any) => {
+            this.verificationStatus$.next(response.status);
+            if (!this.isUserVerified())
+              this.verifyBrightId(walletAddress);
+            else
+              this.claim();
+          },
+          error: (err) => {
+            this.verificationStatus$.next(VerificationStatus.NOT_LINKED);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Verification Failed',
+              detail: 'The verification process failed. Please try again later or contact support.'
+            });
           }
-        } else {
-          await this.connect();
-        }
-      } catch (error) {
-        console.error('Error checking MetaMask status:', error);
-      }
-    } else {
-      console.error('MetaMask is not installed');
+        })
+    } catch (error) {
+      console.error('Error checking MetaMask status:', error);
     }
   }
 
-  generateAndShowQRCode(walletAddress: string) {
+  verifyBrightId(walletAddress: string) {
     this.dialogService.open(VerificationDialogComponent, {
       header: 'Verify with BrightID',
       data: {
@@ -97,34 +126,20 @@ export class MetamaskService {
     })
   }
 
-  verify(walletAddress: string) {
-    this.http
-      .get<string>(this.serverUrl+`brightId/isLinked/${walletAddress}`)
-      .subscribe({
-        next: (response: any) => {
-          this.isVerifiedStatus$.next(response.status); // Set the response status in isVerifiedStatus$
-          this.generateAndShowQRCode(walletAddress);
-        },
-        error: (err) => {
-          this.isVerifiedStatus$.next('NOT_VERIFIED'); // Set status to "NOT_VERIFIED" on error
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Verification Failed',
-            detail: 'The verification process failed. Please try again later or contact support.'
-          });
-        }
-      });
+  getVerificationStatus(walletAddress: string): Observable<string> {
+    return this.http.get<string>(this.serverUrl + `brightId/isLinked/${walletAddress}`);
   }
+
   hasTaken(walletAddress: string) {
     this.http
-      .get<string>(this.serverUrl+`conversion/claimable/${walletAddress}`)
+      .get<string>(this.serverUrl + `conversion/claimable/${walletAddress}`)
       .subscribe({
         next: (response: any) => {
           this.hasTakenResult$.next(response.status); // Set the response status in isVerifiedStatus$
-          this.generateAndShowQRCode(walletAddress);
+          this.verifyBrightId(walletAddress);
         },
         error: (err) => {
-          this.isVerifiedStatus$.next('NOT_VERIFIED'); // Set status to "NOT_VERIFIED" on error
+          this.verificationStatus$.next('NOT_VERIFIED'); // Set status to "NOT_VERIFIED" on error
           this.messageService.add({
             severity: 'error',
             summary: 'Verification Failed',
@@ -133,9 +148,10 @@ export class MetamaskService {
         }
       });
   }
+
   getBalance(walletAddress: string) {
     this.http
-      .get<string>(this.serverUrl+`conversion/getBalance/${walletAddress}`)
+      .get<string>(this.serverUrl + `conversion/getBalance/${walletAddress}`)
       .subscribe({
         next: (response: any) => {
           this.getBalance$.next(response.data);
@@ -150,9 +166,10 @@ export class MetamaskService {
         }
       });
   }
+
   mannaWallet(walletAddress: string) {
     this.http
-      .get<string>(this.serverUrl+`conversion/mannaWallet/${walletAddress}`)
+      .get<string>(this.serverUrl + `conversion/mannaWallet/${walletAddress}`)
       .subscribe({
         next: (response: any) => {
           this.mannaWallet$.next(response.data);
@@ -167,10 +184,11 @@ export class MetamaskService {
         }
       });
   }
+
   submitEmail(email: string): void {
     const payload =
-      { email: email };
-    this.http.post<any>(this.serverUrl+'conversion/requestMailCode', payload)
+      {email: email};
+    this.http.post<any>(this.serverUrl + 'conversion/requestMailCode', payload)
       .subscribe(
         (response) => {
           // Handle the successful response from the server
@@ -193,14 +211,14 @@ export class MetamaskService {
         }
       );
   }
-  
+
 
   async connect(): Promise<void> {
     try {
       await ethereum.enable();
       this.isConnected$.next(true);
-      await this.checkChain();
-      this.getAccount();
+      await this.loadNetwork();
+      this.loadAccount();
     } catch (error) {
       console.error('Error connecting to MetaMask:', error);
     }
@@ -226,14 +244,20 @@ export class MetamaskService {
       });
     } catch (error: any) {
       if (error.code === 4001) {
-        console.warn('User rejected chain switch');
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'You rejected chain switch',
+        });
       } else {
-        console.error('Error switching chain:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error switching chain',
+        });
       }
     }
   }
 
-  async getAccount(): Promise<void> {
+  async loadAccount(): Promise<void> {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
     this.account$.next(await signer.getAddress()); // Update the wallet address

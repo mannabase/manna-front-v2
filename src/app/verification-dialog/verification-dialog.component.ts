@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
-import {MetamaskService} from 'src/app/metamask.service';
+import {MetamaskBrightIdService, VerificationStatus} from 'src/app/metamask-bright-id.service';
 
 @Component({
   selector: 'app-verification-dialog',
@@ -14,8 +14,10 @@ export class VerificationDialogComponent {
   error: boolean = false;
   qrCodeValue: string;
 
-  constructor(readonly dynamicDialogConfig: DynamicDialogConfig,public metamaskService: MetamaskService) {
+  protected readonly VerificationStatus = VerificationStatus;
+
+  constructor(readonly dynamicDialogConfig: DynamicDialogConfig, public metamaskService: MetamaskBrightIdService) {
     this.qrCodeValue = `brightid://link-verification/http:%2f%2fnode.brightid.org/idchain/${dynamicDialogConfig.data}`;
   }
-  
+
 }
