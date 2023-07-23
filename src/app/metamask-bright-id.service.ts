@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {MessageService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
 import {VerificationDialogComponent} from "./verification-dialog/verification-dialog.component";
+import {MannaToClaimService} from "./mannaToClaim.service";
 
 declare let ethereum: any;
 
@@ -14,22 +15,27 @@ export enum VerificationStatus {
   SUCCESSFUL = "SUCCESSFUL",
   TRANSFERRED = "TRANSFERRED",
 }
-
 @Injectable({
   providedIn: 'root'
 })
 export class MetamaskBrightIdService {
-  private serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/'
+  private serverUrl: string;
   network$ = new BehaviorSubject<ethers.providers.Network | null>(null);
   isConnected$ = new BehaviorSubject<boolean>(false);
   account$ = new BehaviorSubject<string>('');
   verificationStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
-  hasTakenResult$ = new BehaviorSubject<string>('');
-  getBalance$ = new BehaviorSubject<string>('');
-  mannaWallet$ = new BehaviorSubject<string>('');
-  email: string = '';
+  checkBrightIdStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
+  mannaToClaimService: MannaToClaimService;
 
-  constructor(private http: HttpClient, readonly messageService: MessageService, readonly dialogService: DialogService) {
+  constructor(
+    private http: HttpClient,
+    readonly messageService: MessageService,
+    readonly dialogService: DialogService,
+    mannaToClaim: MannaToClaimService
+  ) {
+    this.serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/';
+    this.mannaToClaimService = mannaToClaim;
+    this.mannaToClaimService.setServerUrl(this.serverUrl); 
   }
 
   async checkMetamaskStatus(): Promise<void> {
@@ -101,7 +107,7 @@ export class MetamaskBrightIdService {
             if (!this.isUserVerified())
               this.verifyBrightId(walletAddress);
             else
-              this.claim();
+              this.mannaToClaimService.claim();
           },
           error: (err) => {
             this.verificationStatus$.next(VerificationStatus.NOT_LINKED);
@@ -129,90 +135,22 @@ export class MetamaskBrightIdService {
   getVerificationStatus(walletAddress: string): Observable<string> {
     return this.http.get<string>(this.serverUrl + `brightId/isLinked/${walletAddress}`);
   }
-
-  hasTaken(walletAddress: string) {
+  checkBrightIdStatus(walletAddress: string) {
     this.http
-      .get<string>(this.serverUrl + `conversion/claimable/${walletAddress}`)
+      .get<string>(this.serverUrl + `brightId/verifications/${walletAddress}`)
       .subscribe({
         next: (response: any) => {
-          this.hasTakenResult$.next(response.status); // Set the response status in isVerifiedStatus$
-          this.verifyBrightId(walletAddress);
+          this.checkBrightIdStatus$.next(response.data);
         },
         error: (err) => {
-          this.verificationStatus$.next('NOT_VERIFIED'); // Set status to "NOT_VERIFIED" on error
           this.messageService.add({
             severity: 'error',
-            summary: 'Verification Failed',
-            detail: 'The verification process failed. Please try again later or contact support.'
+            summary: 'You are not Verified',
+            detail: 'The verification process failed'
           });
         }
       });
   }
-
-  getBalance(walletAddress: string) {
-    this.http
-      .get<string>(this.serverUrl + `conversion/getBalance/${walletAddress}`)
-      .subscribe({
-        next: (response: any) => {
-          this.getBalance$.next(response.data);
-        },
-        error: (err) => {
-          this.getBalance$.next('not set');
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Verification Failed',
-            detail: 'The verification process failed. Please try again later or contact support.'
-          });
-        }
-      });
-  }
-
-  mannaWallet(walletAddress: string) {
-    this.http
-      .get<string>(this.serverUrl + `conversion/mannaWallet/${walletAddress}`)
-      .subscribe({
-        next: (response: any) => {
-          this.mannaWallet$.next(response.data);
-        },
-        error: (err) => {
-          this.mannaWallet$.next('not set');
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Verification Failed',
-            detail: 'The verification process failed. Please try again later or contact support.'
-          });
-        }
-      });
-  }
-
-  submitEmail(email: string): void {
-    const payload =
-      {email: email};
-    this.http.post<any>(this.serverUrl + 'conversion/requestMailCode', payload)
-      .subscribe(
-        (response) => {
-          // Handle the successful response from the server
-          console.log('Email verification request successful:', response);
-          // Optionally, display a success message using the MessageService
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Verification Email Sent',
-            detail: 'An email with the verification code has been sent to your email address.'
-          });
-        },
-        (error) => {
-          // Handle errors and display an error message using the MessageService
-          console.error('Error verifying email:', error);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Verification Failed',
-            detail: 'Failed to send the verification email. Please try again later or contact support.'
-          });
-        }
-      );
-  }
-
-
   async connect(): Promise<void> {
     try {
       await ethereum.enable();
@@ -260,10 +198,6 @@ export class MetamaskBrightIdService {
   async loadAccount(): Promise<void> {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
-    this.account$.next(await signer.getAddress()); // Update the wallet address
-  }
-
-  claim(): void {
-    console.log('Claim button clicked');
+    this.account$.next(await signer.getAddress());
   }
 }

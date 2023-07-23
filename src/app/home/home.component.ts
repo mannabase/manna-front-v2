@@ -8,11 +8,11 @@ import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 })
 export class HomeComponent implements OnInit {
 
-    constructor(public metamaskService: MetamaskBrightIdService) {
+    constructor(public metamaskBrightIdService: MetamaskBrightIdService) {
     }
 
     ngOnInit() {
-        this.metamaskService.checkMetamaskStatus();
+        this.metamaskBrightIdService.checkMetamaskStatus();
     }
 
 }

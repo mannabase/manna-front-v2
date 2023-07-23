@@ -16,12 +16,12 @@
           <p class="text-daily-manna text-600 text-lg">Get 1 manna a day and use it for what you love.</p>
         </div>
         <div class="button-get-started">
-          <button class="custom-button" (click)="metamaskService.tryClaim()">
+          <button class="custom-button" (click)="metamaskBrightIdService.tryClaim()">
             <p class="flex justify-content-center my-0 text-xl font-bold text-white">
               {{
-              metamaskService.isConnected$.getValue()
-                ? (metamaskService.isCorrectNetwork()
-                  ? (metamaskService.isVerified$.getValue() ? 'Claim' : 'Verify')
+                metamaskBrightIdService.isConnected$.getValue()
+                ? (metamaskBrightIdService.isCorrectNetwork()
+                  ? (metamaskBrightIdService.verificationStatus$.getValue() ? 'Claim' : 'Verify')
                   : 'Change to ID Chain')
                 : 'Connect MetaMask'
               }}

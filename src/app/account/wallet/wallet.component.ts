@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
+import {MannaToClaimService} from 'src/app/mannaToClaim.service';
 
 @Component({
   selector: 'app-wallet',
@@ -9,11 +10,12 @@ import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 export class WalletComponent implements OnInit {
 
 
-  constructor(public metamaskService: MetamaskBrightIdService) {
+  constructor(public metamaskBrightIdService: MetamaskBrightIdService,
+    public mannaToClaimService: MannaToClaimService) {
   }
 
   ngOnInit() {
-    this.metamaskService.checkMetamaskStatus();
+    this.metamaskBrightIdService.checkMetamaskStatus();
   }
 
 }

@@ -7,7 +7,7 @@
       <span class="text-900 font-medium text-xl">manna</span>
     </div>
     <div>
-      <h2 class="m-0">{{metamaskService.getBalance$}}</h2>
+      <h2 class="m-0">{{mannaToClaimService.getBalance$}}</h2>
     </div>
   </div>
   <hr/>
@@ -16,12 +16,12 @@
     <p>7 available</p>
   </div>
   <div class="button-get-started">
-    <button class="custom-button" (click)="metamaskService.tryClaim()">
+    <button class="custom-button" (click)="metamaskBrightIdService.tryClaim()">
       <p class="flex justify-content-center my-0 text-xl font-bold text-white">
         {{
-        metamaskService.isConnected$.getValue()
-          ? (metamaskService.isCorrectNetwork()
-            ? (metamaskService.isVerified$.getValue() ? 'Claim' : 'Verify')
+          metamaskBrightIdService.isConnected$.getValue()
+          ? (metamaskBrightIdService.isCorrectNetwork()
+            ? (metamaskBrightIdService.verificationStatus$.getValue() ? 'Claim' : 'Verify')
             : 'Change to ID Chain')
           : 'Connect MetaMask'
         }}

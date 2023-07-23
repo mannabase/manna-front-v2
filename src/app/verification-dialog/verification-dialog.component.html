@@ -9,34 +9,17 @@
         <!-- Error checking wallet link status. Please try again later. -->
       <!-- </div> -->
 
-    <div *ngIf="(metamaskService.verificationStatus$ | async) === 'SUCCESSFUL' && (metamaskService.hasTakenResult$ | async) === 'Email is not set'" class="vrification">
-        <input type="email" [(ngModel)]="email" name="email" required>
-        <button type="submit">Submit</button>
-    </div>
-    <div *ngIf="(metamaskService.verificationStatus$ | async) === 'TRANSFERRED'" class="vrification">
-        <qrcode [qrdata]="qrCodeValue" [width]="256"></qrcode>
-          <button class="verify-button mt-2">
+    <div *ngIf="(metamaskBrightIdService.verificationStatus$ | async) !=='SUCCESSFUL'
+     && (mannaToClaimService.hasTakenResult$ | async) === 'Email is not set'"
+      class="vrification">
+        <button class="verify-button mt-2" (click)="onCheckVerify()">
             check verify
         </button>
-        you are: TRANSFERRED
     </div>
-    <div *ngIf="(metamaskService.verificationStatus$ | async) === VerificationStatus.NOT_LINKED" class="vrification">
-        <qrcode [qrdata]="qrCodeValue" [width]="256"></qrcode>
-        <button class="verify-button mt-2">
-          check verify
-      </button>
-      you are: NOT_LINKED
-    </div>
-    <div *ngIf="(metamaskService.verificationStatus$ | async) === 'NOT_VERIFIED'" class="vrification">
-        <qrcode [qrdata]="qrCodeValue" [width]="256"></qrcode>
-          <button class="verify-button mt-2">
-            check verify
-        </button>
-        you are: NOT_VERIFIED
-    </div>
-    <div  class="vrification">
+    <!-- this is for test email -->
+    <div  class="vrification">  
         <input type="email" [(ngModel)]="email" name="email" required>
-        <button class="verify-button mt-2" (click)="metamaskService.submitEmail(email)">
+        <button class="verify-button mt-2" (click)="mannaToClaimService.submitEmail(email)">
             Submit
         </button>
     </div>

@@ -18,7 +18,7 @@ export class UserAccountComponent {
   items!: string[];
   walletAddress: string = '0x394b4j494nn4j49494jd03b';
 
-  constructor(readonly messageService: MessageService,public metamaskService: MetamaskBrightIdService) {
+  constructor(readonly messageService: MessageService,public metamaskBrightIdService: MetamaskBrightIdService) {
   }
 
 
