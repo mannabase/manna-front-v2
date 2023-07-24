@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {ethers} from 'ethers';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of, switchMap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {MessageService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
 import {VerificationDialogComponent} from "./verification-dialog/verification-dialog.component";
 import {MannaService} from "./manna.service";
+import {UserClaimingState, UserService} from "./user.service";
 
 declare let ethereum: any;
 
@@ -20,45 +21,21 @@ export enum VerificationStatus {
   providedIn: 'root'
 })
 export class MetamaskBrightIdService {
-  private serverUrl: string;
+  serverUrl: string;
   network$ = new BehaviorSubject<ethers.providers.Network | null>(null);
-  isConnected$ = new BehaviorSubject<boolean>(false);
   account$ = new BehaviorSubject<string>('');
   verificationStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
   checkBrightIdStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
-  mannaService: MannaService;
 
   constructor(
     private http: HttpClient,
     readonly messageService: MessageService,
     readonly dialogService: DialogService,
-    mannaService: MannaService
+    readonly mannaService: MannaService,
+    readonly userService: UserService
   ) {
     this.serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/';
-    this.mannaService = mannaService;
     this.mannaService.setServerUrl(this.serverUrl);
-  }
-
-  async checkMetamaskStatus(): Promise<void> {
-    if (typeof ethereum !== 'undefined') {
-      try {
-        const accounts = await ethereum.request({method: 'eth_accounts'});
-        const isConnected = accounts.length > 0;
-        this.isConnected$.next(isConnected);
-        if (isConnected) {
-          await this.loadNetwork();
-          this.loadAccount();
-        }
-      } catch (error) {
-        this.messageService.add({severity: 'error', summary: 'Error checking MetaMask status', detail: error + ""})
-      }
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'MetaMask is not installed',
-        detail: 'Please install metamask extension'
-      })
-    }
   }
 
   async loadNetwork() {
@@ -73,66 +50,116 @@ export class MetamaskBrightIdService {
     return this.network$.value.chainId === 0x4a
   }
 
-  public isUserVerified() {
-    return this.verificationStatus$.value == VerificationStatus.SUCCESSFUL;
-  }
+  async checkMetamaskState(): Promise<void> {
+    if (typeof ethereum !== 'undefined') {
+      try {
+        const accounts = await ethereum.request({method: 'eth_accounts'});
+        const isConnected = accounts.length > 0;
+        if (isConnected) {
+          this.userService.userClaimingState$.next(UserClaimingState.METAMASK_CONNECTED);
+          await this.loadNetwork();
+          if (!this.isCorrectNetwork())
+            await this.switchToIDChain();
 
-  async tryClaim(): Promise<void> {
-    if (typeof ethereum == 'undefined') {
+          if (this.isCorrectNetwork())
+            this.userService.userClaimingState$.next(UserClaimingState.CORRECT_CHAIN);
+
+          await this.loadAccount();
+        } else {
+          this.userService.userClaimingState$.next(UserClaimingState.ZERO);
+        }
+      } catch (error) {
+        this.messageService.add({severity: 'error', summary: 'Error checking MetaMask status', detail: error + ""})
+      }
+    } else {
       this.messageService.add({
         severity: 'error',
         summary: 'MetaMask is not installed',
         detail: 'Please install metamask extension'
       })
-      return;
     }
-
-    try {
-      const accounts = await ethereum.request({method: 'eth_accounts'});
-      const isConnected = accounts.length > 0;
-      this.isConnected$.next(isConnected);
-      if (!isConnected)
-        await this.connect();
-
-      await this.loadNetwork();
-      if (!this.isCorrectNetwork())
-        await this.switchToIDChain();
-
-      this.loadAccount();
-      const walletAddress = this.account$.getValue();
-
-      this.getVerificationStatus(walletAddress)
-        .subscribe({
-          next: (response: any) => {
-            this.verificationStatus$.next(response.status);
-            if (!this.isUserVerified())
-              this.verifyBrightId(walletAddress);
-            else
-              this.mannaService.claim();
-          },
-          error: (err) => {
-            this.verificationStatus$.next(VerificationStatus.NOT_LINKED);
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Verification Failed',
-              detail: 'The verification process failed. Please try again later or contact support.'
-            });
-          }
-        })
-    } catch (error) {
-      console.error('Error checking MetaMask status:', error);
-    }
-    // this.userService.updateUserState();
   }
 
-  verifyBrightId(walletAddress: string) {
-    this.dialogService.open(VerificationDialogComponent, {
+
+  tryClaim() {
+    return of(this.checkMetamaskState())
+      .pipe(
+        switchMap((value: any) => {
+          if (this.userService.userClaimingState$.value != UserClaimingState.ZERO
+            && this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED) {
+            const walletAddress = this.account$.getValue();
+            return this.getVerificationStatus(walletAddress);
+          } else {
+            throw new Error("Metamask is not connected");
+          }
+        }),
+        switchMap((value: any) => {
+          const walletAddress = this.account$.getValue();
+          this.verificationStatus$.next(value.status);
+          if (this.verificationStatus$.value == VerificationStatus.SUCCESSFUL)
+            this.userService.userClaimingState$.next(UserClaimingState.VERIFIED)
+
+          if (this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED) {
+            return of(true)
+          } else {
+            return this.openVerifyDialog(walletAddress)
+              .pipe(
+                switchMap(_ => {
+                  if (this.userService.userClaimingState$.value == UserClaimingState.VERIFIED) {
+                    return of(true)
+                  } else {
+                    throw new Error("Verification failed");
+                  }
+                })
+              );
+          }
+        }),
+        switchMap(_ => {
+          if (this.userService.userClaimingState$.value != UserClaimingState.READY) {
+            const walletAddress = this.account$.getValue();
+            return this.openEmailDialog(walletAddress)
+              .pipe(
+                switchMap(_ => {
+                  if (this.userService.userClaimingState$.value == UserClaimingState.READY) {
+                    return of(true)
+                  } else {
+                    throw new Error("Email checking failed");
+                  }
+                })
+              );
+          } else
+            return of(true)
+        }),
+        switchMap(_ => {
+          if (this.userService.userClaimingState$.value == UserClaimingState.READY) {
+            return this.mannaService.claim()
+          } else {
+            throw new Error("Failed to claim");
+          }
+        })
+      )
+  }
+
+  openVerifyDialog(walletAddress: string) {
+    let ref = this.dialogService.open(VerificationDialogComponent, {
       header: 'Verify with BrightID',
       data: {
         wallet: walletAddress
       }
     })
+    return ref.onClose;
   }
+
+  openEmailDialog(walletAddress: string) {
+    let ref = this.dialogService.open(VerificationDialogComponent, {
+      header: 'Verify with BrightID',
+      data: {
+        wallet: walletAddress
+      }
+    })
+    return ref.onClose;
+  }
+
 
   getVerificationStatus(walletAddress: string): Observable<string> {
     return this.http.get<string>(this.serverUrl + `brightId/isLinked/${walletAddress}`);
@@ -155,17 +182,6 @@ export class MetamaskBrightIdService {
       });
   }
 
-  async connect(): Promise<void> {
-    try {
-      await ethereum.enable();
-      this.isConnected$.next(true);
-      await this.loadNetwork();
-      this.loadAccount();
-    } catch (error) {
-      console.error('Error connecting to MetaMask:', error);
-    }
-  }
-
   async switchToIDChain(): Promise<void> {
     try {
       await ethereum.request({
@@ -184,6 +200,7 @@ export class MetamaskBrightIdService {
           },
         ],
       });
+      await this.loadNetwork();
     } catch (error: any) {
       if (error.code === 4001) {
         this.messageService.add({

@@ -18,13 +18,7 @@
   <div class="button-get-started">
     <button class="manna-button" (click)="metamaskBrightIdService.tryClaim()">
       <p class="flex justify-content-center my-0 text-xl font-bold text-white">
-        {{
-        metamaskBrightIdService.isConnected$.getValue()
-          ? (metamaskBrightIdService.isCorrectNetwork()
-            ? (metamaskBrightIdService.verificationStatus$.getValue() ? 'Claim' : 'Verify')
-            : 'Change to ID Chain')
-          : 'Connect MetaMask'
-        }}
+        {{ buttonMessageMap.get(userService.userClaimingState$.value) }}
       </p>
     </button>
   </div>

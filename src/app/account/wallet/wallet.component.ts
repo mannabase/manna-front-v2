@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 import {MannaService} from 'src/app/manna.service';
 import {MessageService} from "primeng/api";
+import {UserClaimingState, UserService} from "../../user.service";
 
 @Component({
   selector: 'app-wallet',
@@ -9,15 +10,23 @@ import {MessageService} from "primeng/api";
   styleUrls: ['./wallet.component.scss'],
 })
 export class WalletComponent implements OnInit {
+  buttonMessageMap = new Map<UserClaimingState, string>([
+    [UserClaimingState.ZERO, 'Connect Metamask'],
+    [UserClaimingState.METAMASK_CONNECTED, 'Change to ID Chain'],
+    [UserClaimingState.CORRECT_CHAIN, 'Verify'],
+    [UserClaimingState.VERIFIED, 'Enter email'],
+    [UserClaimingState.READY, 'Claim'],
+  ])
+
 
   balance?: number;
 
   constructor(readonly metamaskBrightIdService: MetamaskBrightIdService, readonly mannaService: MannaService,
-              readonly messageService: MessageService) {
+              readonly messageService: MessageService, readonly userService: UserService) {
   }
 
   ngOnInit() {
-    this.metamaskBrightIdService.checkMetamaskStatus();
+    this.metamaskBrightIdService.checkMetamaskState();
     if (this.metamaskBrightIdService.account$.getValue() != null) {
       this.mannaService.getBalance(this.metamaskBrightIdService.account$.getValue())
         .subscribe({

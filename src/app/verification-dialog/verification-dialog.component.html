@@ -8,7 +8,7 @@
 
   <div class="flex flex-column gap-2">
     <span>Please enter your email</span>
-    <input pInputText type="email" id="email" [formControl]="emailForm" name="email" required>
+    <input pInputText type="email" id="email" [formControl]="emailForm" name="email">
     <button class="manna-button mt-2" (click)="mannaService.submitEmail(emailForm.value!)"
             [disabled]="!emailForm.valid">
       Submit

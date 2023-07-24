@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {MessageService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
@@ -90,7 +90,7 @@ export class MannaService {
       );
   }
 
-  claim(): void {
-    console.log('Claim button clicked');
+  claim(): Observable<any> {
+    return of("HAHA")
   }
 }
