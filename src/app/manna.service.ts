@@ -1,18 +1,15 @@
 import {Injectable} from '@angular/core';
-import {ethers} from 'ethers';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {MessageService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
-import {VerificationDialogComponent} from "./verification-dialog/verification-dialog.component";
 
 @Injectable({
   providedIn: 'root'
 })
-export class MannaToClaimService {
-  private serverUrl!: string; 
+export class MannaService {
+  private serverUrl!: string;
   hasTakenResult$ = new BehaviorSubject<string>('');
-  getBalance$ = new BehaviorSubject<string>('');
   mannaWallet$ = new BehaviorSubject<string>('');
   email: string = '';
 
@@ -26,32 +23,15 @@ export class MannaToClaimService {
   setServerUrl(serverUrl: string) {
     this.serverUrl = serverUrl;
   }
+
   hasTaken(walletAddress: string) {
-      this.http
-        .get<string>(this.serverUrl + `conversion/claimable/${walletAddress}`)
-        .subscribe({
-          next: (response: any) => {
-            this.hasTakenResult$.next(response.status); 
-          },
-          error: (err) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Verification Failed',
-              detail: 'The verification process failed. Please try again later or contact support.'
-            });
-          }
-        });
-    }
-    
-  getBalance(walletAddress: string) {
     this.http
-      .get<string>(this.serverUrl + `conversion/getBalance/${walletAddress}`)
+      .get<string>(this.serverUrl + `conversion/claimable/${walletAddress}`)
       .subscribe({
         next: (response: any) => {
-          this.getBalance$.next(response.data);
+          this.hasTakenResult$.next(response.status);
         },
         error: (err) => {
-          this.getBalance$.next('not set');
           this.messageService.add({
             severity: 'error',
             summary: 'Verification Failed',
@@ -60,6 +40,11 @@ export class MannaToClaimService {
         }
       });
   }
+
+  getBalance(walletAddress: string) {
+    return this.http.get<string>(this.serverUrl + `conversion/getBalance/${walletAddress}`);
+  }
+
   mannaWallet(walletAddress: string) {
     this.http
       .get<string>(this.serverUrl + `conversion/mannaWallet/${walletAddress}`)
@@ -77,6 +62,7 @@ export class MannaToClaimService {
         }
       });
   }
+
   submitEmail(email: string): void {
     const payload =
       {email: email};
@@ -103,6 +89,7 @@ export class MannaToClaimService {
         }
       );
   }
+
   claim(): void {
     console.log('Claim button clicked');
   }

@@ -1,25 +1,17 @@
+<div class="root">
+  <div *ngIf="(metamaskBrightIdService.verificationStatus$ | async) !=='SUCCESSFUL'
+     && (mannaToClaimService.hasTakenResult$ | async) === 'Email is not set'">
+    <button class="verify-button mt-2" (click)="onCheckVerify()">
+      check verify
+    </button>
+  </div>
 
-    <!-- <div *ngIf="loading"> -->
-        <!-- Show a loading message or spinner -->
-        <!-- Loading...
-      </div> -->
-
-      <!-- <div *ngIf="error"> -->
-        <!-- Show an error message -->
-        <!-- Error checking wallet link status. Please try again later. -->
-      <!-- </div> -->
-
-    <div *ngIf="(metamaskBrightIdService.verificationStatus$ | async) !=='SUCCESSFUL'
-     && (mannaToClaimService.hasTakenResult$ | async) === 'Email is not set'"
-      class="vrification">
-        <button class="verify-button mt-2" (click)="onCheckVerify()">
-            check verify
-        </button>
-    </div>
-    <!-- this is for test email -->
-    <div  class="vrification">  
-        <input type="email" [(ngModel)]="email" name="email" required>
-        <button class="verify-button mt-2" (click)="mannaToClaimService.submitEmail(email)">
-            Submit
-        </button>
-    </div>
+  <div class="flex flex-column gap-2">
+    <span>Please enter your email</span>
+    <input pInputText type="email" id="email" [formControl]="emailForm" name="email" required>
+    <button class="manna-button mt-2" (click)="mannaToClaimService.submitEmail(emailForm.value!)"
+            [disabled]="!emailForm.valid">
+      Submit
+    </button>
+  </div>
+</div>

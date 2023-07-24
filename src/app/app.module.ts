@@ -25,7 +25,7 @@ import {MenubarModule} from "primeng/menubar";
 import {CardModule} from "primeng/card";
 import {InputTextModule} from "primeng/inputtext";
 import {RadioButtonModule} from "primeng/radiobutton";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PaginatorModule} from 'primeng/paginator';
 import {AccountComponent} from './account/account.component';
 import {TabViewModule} from 'primeng/tabview';
@@ -33,7 +33,7 @@ import {WalletComponent} from './account/wallet/wallet.component';
 import {UserAccountComponent} from './account/user-account/user-account.component';
 import {BlogDetailComponent} from './blog-detail/blog-detail.component';
 import {MetamaskBrightIdService} from './metamask-bright-id.service';
-import {MannaToClaimService} from './mannaToClaim.service';
+import {MannaService} from './manna.service';
 import {MessageService} from "primeng/api";
 import {NgxResizeObserverModule} from 'ngx-resize-observer';
 import {VerificationDialogComponent} from './verification-dialog/verification-dialog.component';
@@ -63,9 +63,10 @@ import {QRCodeModule} from 'angularx-qrcode';
     TabViewModule,
     DialogModule,
     NgxResizeObserverModule,
-    QRCodeModule
+    QRCodeModule,
+    ReactiveFormsModule
   ],
-  providers: [MetamaskBrightIdService,MannaToClaimService, MessageService, DialogService],
+  providers: [MetamaskBrightIdService,MannaService, MessageService, DialogService],
   bootstrap: [AppComponent],
 })
 export class AppModule {
