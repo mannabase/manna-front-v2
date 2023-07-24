@@ -6,6 +6,7 @@ import {MessageService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
 import {VerificationDialogComponent} from "./verification-dialog/verification-dialog.component";
 import {MannaToClaimService} from "./mannaToClaim.service";
+import {UserService} from "./user.service";
 
 declare let ethereum: any;
 
@@ -26,16 +27,20 @@ export class MetamaskBrightIdService {
   verificationStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
   checkBrightIdStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
   mannaToClaimService: MannaToClaimService;
+  // userService: UserService;
 
   constructor(
     private http: HttpClient,
     readonly messageService: MessageService,
     readonly dialogService: DialogService,
-    mannaToClaim: MannaToClaimService
+    mannaToClaim: MannaToClaimService,
+    // userService: UserService 
+
   ) {
     this.serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/';
     this.mannaToClaimService = mannaToClaim;
     this.mannaToClaimService.setServerUrl(this.serverUrl); 
+    // this.userService = userService;
   }
 
   async checkMetamaskStatus(): Promise<void> {
@@ -121,6 +126,7 @@ export class MetamaskBrightIdService {
     } catch (error) {
       console.error('Error checking MetaMask status:', error);
     }
+    // this.userService.updateUserState();
   }
 
   verifyBrightId(walletAddress: string) {

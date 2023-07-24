@@ -14,6 +14,7 @@ export class MannaToClaimService {
   hasTakenResult$ = new BehaviorSubject<string>('');
   getBalance$ = new BehaviorSubject<string>('');
   mannaWallet$ = new BehaviorSubject<string>('');
+  claimable$ = new BehaviorSubject<number>(0);
   email: string = '';
 
   constructor(
@@ -66,6 +67,23 @@ export class MannaToClaimService {
       .subscribe({
         next: (response: any) => {
           this.mannaWallet$.next(response.data);
+        },
+        error: (err) => {
+          this.mannaWallet$.next('not set');
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Verification Failed',
+            detail: 'The verification process failed. Please try again later or contact support.'
+          });
+        }
+      });
+  }
+  claimable(walletAddress: string) {
+    this.http
+      .get<string>(this.serverUrl + `/conversion/claimable/${walletAddress}`)
+      .subscribe({
+        next: (response: any) => {
+          this.claimable$.next(response.datadata.value);
         },
         error: (err) => {
           this.mannaWallet$.next('not set');
