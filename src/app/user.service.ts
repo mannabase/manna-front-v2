@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {MetamaskBrightIdService, VerificationStatus} from './metamask-bright-id.service';
-import {MannaToClaimService} from './mannaToClaim.service';
+import {MannaService} from './manna.service';
 import {BehaviorSubject} from 'rxjs';
 
 export enum UserState {
@@ -19,7 +19,7 @@ export class UserService {
   
   constructor(
     private metamaskBrightIdService: MetamaskBrightIdService,
-    private mannaToClaimService: MannaToClaimService
+    private mannaService: MannaService
   ) {}
 
   updateUserState(): void {

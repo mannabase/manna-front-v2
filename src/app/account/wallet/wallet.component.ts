@@ -12,14 +12,14 @@ export class WalletComponent implements OnInit {
 
   balance?: number;
 
-  constructor(readonly metamaskBrightIdService: MetamaskBrightIdService, readonly mannaToClaimService: MannaService,
+  constructor(readonly metamaskBrightIdService: MetamaskBrightIdService, readonly mannaService: MannaService,
               readonly messageService: MessageService) {
   }
 
   ngOnInit() {
     this.metamaskBrightIdService.checkMetamaskStatus();
     if (this.metamaskBrightIdService.account$.getValue() != null) {
-      this.mannaToClaimService.getBalance(this.metamaskBrightIdService.account$.getValue())
+      this.mannaService.getBalance(this.metamaskBrightIdService.account$.getValue())
         .subscribe({
           next: (response: any) => {
             this.balance = response.data

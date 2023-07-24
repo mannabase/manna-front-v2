@@ -16,7 +16,7 @@ export class VerificationDialogComponent {
 
   constructor(readonly dynamicDialogConfig: DynamicDialogConfig,
               public metamaskBrightIdService: MetamaskBrightIdService,
-              public mannaToClaimService: MannaService) {
+              public mannaService: MannaService) {
     this.qrCodeValue = `brightid://link-verification/http:%2f%2fnode.brightid.org/idchain/${dynamicDialogConfig.data}`;
   }
 

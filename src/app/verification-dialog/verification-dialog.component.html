@@ -1,6 +1,6 @@
 <div class="root">
   <div *ngIf="(metamaskBrightIdService.verificationStatus$ | async) !=='SUCCESSFUL'
-     && (mannaToClaimService.hasTakenResult$ | async) === 'Email is not set'">
+     && (mannaService.hasTakenResult$ | async) === 'Email is not set'">
     <button class="verify-button mt-2" (click)="onCheckVerify()">
       check verify
     </button>
@@ -9,7 +9,7 @@
   <div class="flex flex-column gap-2">
     <span>Please enter your email</span>
     <input pInputText type="email" id="email" [formControl]="emailForm" name="email" required>
-    <button class="manna-button mt-2" (click)="mannaToClaimService.submitEmail(emailForm.value!)"
+    <button class="manna-button mt-2" (click)="mannaService.submitEmail(emailForm.value!)"
             [disabled]="!emailForm.valid">
       Submit
     </button>

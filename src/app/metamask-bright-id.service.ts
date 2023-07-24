@@ -5,12 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {MessageService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
 import {VerificationDialogComponent} from "./verification-dialog/verification-dialog.component";
-<<<<<<< HEAD
-import {MannaToClaimService} from "./mannaToClaim.service";
-import {UserService} from "./user.service";
-=======
 import {MannaService} from "./manna.service";
->>>>>>> b9f4945551fc7d147681b019228f3d7b41dc88f2
 
 declare let ethereum: any;
 
@@ -31,33 +26,17 @@ export class MetamaskBrightIdService {
   account$ = new BehaviorSubject<string>('');
   verificationStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
   checkBrightIdStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
-<<<<<<< HEAD
-  mannaToClaimService: MannaToClaimService;
-  // userService: UserService;
-=======
-  mannaToClaimService: MannaService;
->>>>>>> b9f4945551fc7d147681b019228f3d7b41dc88f2
+  mannaService: MannaService;
 
   constructor(
     private http: HttpClient,
     readonly messageService: MessageService,
     readonly dialogService: DialogService,
-<<<<<<< HEAD
-    mannaToClaim: MannaToClaimService,
-    // userService: UserService 
-
+    mannaService: MannaService
   ) {
     this.serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/';
-    this.mannaToClaimService = mannaToClaim;
-    this.mannaToClaimService.setServerUrl(this.serverUrl); 
-    // this.userService = userService;
-=======
-    mannaToClaim: MannaService
-  ) {
-    this.serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/';
-    this.mannaToClaimService = mannaToClaim;
-    this.mannaToClaimService.setServerUrl(this.serverUrl);
->>>>>>> b9f4945551fc7d147681b019228f3d7b41dc88f2
+    this.mannaService = mannaService;
+    this.mannaService.setServerUrl(this.serverUrl);
   }
 
   async checkMetamaskStatus(): Promise<void> {
@@ -129,7 +108,7 @@ export class MetamaskBrightIdService {
             if (!this.isUserVerified())
               this.verifyBrightId(walletAddress);
             else
-              this.mannaToClaimService.claim();
+              this.mannaService.claim();
           },
           error: (err) => {
             this.verificationStatus$.next(VerificationStatus.NOT_LINKED);
