@@ -34,6 +34,7 @@ import {UserAccountComponent} from './account/user-account/user-account.componen
 import {BlogDetailComponent} from './blog-detail/blog-detail.component';
 import {MetamaskBrightIdService} from './metamask-bright-id.service';
 import {MannaService} from './manna.service';
+import {UserService} from './user.service';
 import {MessageService} from "primeng/api";
 import {NgxResizeObserverModule} from 'ngx-resize-observer';
 import {VerificationDialogComponent} from './verification-dialog/verification-dialog.component';
@@ -66,7 +67,7 @@ import {QRCodeModule} from 'angularx-qrcode';
     QRCodeModule,
     ReactiveFormsModule
   ],
-  providers: [MetamaskBrightIdService,MannaService, MessageService, DialogService],
+  providers: [MetamaskBrightIdService,MannaService, MessageService, DialogService,UserService],
   bootstrap: [AppComponent],
 })
 export class AppModule {
