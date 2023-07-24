@@ -5,8 +5,12 @@ import {HttpClient} from '@angular/common/http';
 import {MessageService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
 import {VerificationDialogComponent} from "./verification-dialog/verification-dialog.component";
+<<<<<<< HEAD
 import {MannaToClaimService} from "./mannaToClaim.service";
 import {UserService} from "./user.service";
+=======
+import {MannaService} from "./manna.service";
+>>>>>>> b9f4945551fc7d147681b019228f3d7b41dc88f2
 
 declare let ethereum: any;
 
@@ -16,6 +20,7 @@ export enum VerificationStatus {
   SUCCESSFUL = "SUCCESSFUL",
   TRANSFERRED = "TRANSFERRED",
 }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,13 +31,18 @@ export class MetamaskBrightIdService {
   account$ = new BehaviorSubject<string>('');
   verificationStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
   checkBrightIdStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
+<<<<<<< HEAD
   mannaToClaimService: MannaToClaimService;
   // userService: UserService;
+=======
+  mannaToClaimService: MannaService;
+>>>>>>> b9f4945551fc7d147681b019228f3d7b41dc88f2
 
   constructor(
     private http: HttpClient,
     readonly messageService: MessageService,
     readonly dialogService: DialogService,
+<<<<<<< HEAD
     mannaToClaim: MannaToClaimService,
     // userService: UserService 
 
@@ -41,6 +51,13 @@ export class MetamaskBrightIdService {
     this.mannaToClaimService = mannaToClaim;
     this.mannaToClaimService.setServerUrl(this.serverUrl); 
     // this.userService = userService;
+=======
+    mannaToClaim: MannaService
+  ) {
+    this.serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/';
+    this.mannaToClaimService = mannaToClaim;
+    this.mannaToClaimService.setServerUrl(this.serverUrl);
+>>>>>>> b9f4945551fc7d147681b019228f3d7b41dc88f2
   }
 
   async checkMetamaskStatus(): Promise<void> {
@@ -141,6 +158,7 @@ export class MetamaskBrightIdService {
   getVerificationStatus(walletAddress: string): Observable<string> {
     return this.http.get<string>(this.serverUrl + `brightId/isLinked/${walletAddress}`);
   }
+
   checkBrightIdStatus(walletAddress: string) {
     this.http
       .get<string>(this.serverUrl + `brightId/verifications/${walletAddress}`)
@@ -157,6 +175,7 @@ export class MetamaskBrightIdService {
         }
       });
   }
+
   async connect(): Promise<void> {
     try {
       await ethereum.enable();

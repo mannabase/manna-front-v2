@@ -7,7 +7,7 @@
       <span class="text-900 font-medium text-xl">manna</span>
     </div>
     <div>
-      <h2 class="m-0">{{mannaToClaimService.getBalance$}}</h2>
+      <h2 class="m-0">{{balance}}</h2>
     </div>
   </div>
   <hr/>
@@ -16,10 +16,10 @@
     <p>7 available</p>
   </div>
   <div class="button-get-started">
-    <button class="custom-button" (click)="metamaskBrightIdService.tryClaim()">
+    <button class="manna-button" (click)="metamaskBrightIdService.tryClaim()">
       <p class="flex justify-content-center my-0 text-xl font-bold text-white">
         {{
-          metamaskBrightIdService.isConnected$.getValue()
+        metamaskBrightIdService.isConnected$.getValue()
           ? (metamaskBrightIdService.isCorrectNetwork()
             ? (metamaskBrightIdService.verificationStatus$.getValue() ? 'Claim' : 'Verify')
             : 'Change to ID Chain')

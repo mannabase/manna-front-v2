@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
-import {MannaToClaimService} from 'src/app/mannaToClaim.service';
+import {MannaService} from 'src/app/manna.service';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-wallet',
@@ -9,13 +10,28 @@ import {MannaToClaimService} from 'src/app/mannaToClaim.service';
 })
 export class WalletComponent implements OnInit {
 
+  balance?: number;
 
-  constructor(public metamaskBrightIdService: MetamaskBrightIdService,
-    public mannaToClaimService: MannaToClaimService) {
+  constructor(readonly metamaskBrightIdService: MetamaskBrightIdService, readonly mannaToClaimService: MannaService,
+              readonly messageService: MessageService) {
   }
 
   ngOnInit() {
     this.metamaskBrightIdService.checkMetamaskStatus();
+    if (this.metamaskBrightIdService.account$.getValue() != null) {
+      this.mannaToClaimService.getBalance(this.metamaskBrightIdService.account$.getValue())
+        .subscribe({
+          next: (response: any) => {
+            this.balance = response.data
+          },
+          error: (err) => {
+            this.balance = 0
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Failed to load balance',
+            });
+          }
+        });
+    }
   }
-
 }

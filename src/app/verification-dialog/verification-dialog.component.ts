@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
-import {MetamaskBrightIdService, VerificationStatus} from 'src/app/metamask-bright-id.service';
-import {MannaToClaimService} from 'src/app/mannaToClaim.service';
+import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
+import {MannaService} from 'src/app/manna.service';
+import {FormControl, Validators,} from "@angular/forms";
 
 
 @Component({
@@ -10,19 +11,15 @@ import {MannaToClaimService} from 'src/app/mannaToClaim.service';
   styleUrls: ['./verification-dialog.component.scss']
 })
 export class VerificationDialogComponent {
-  // linkStatus: string;
-  email: string = '';
-  loading: boolean = true;
-  error: boolean = false;
   qrCodeValue: string;
-  protected readonly VerificationStatus = VerificationStatus;
+  emailForm = new FormControl(null, [Validators.required, Validators.email])
 
   constructor(readonly dynamicDialogConfig: DynamicDialogConfig,
-     public metamaskBrightIdService: MetamaskBrightIdService,
-     public mannaToClaimService: MannaToClaimService) {
-    this.qrCodeValue = 
-      `brightid://link-verification/http:%2f%2fnode.brightid.org/idchain/${dynamicDialogConfig.data}`;
+              public metamaskBrightIdService: MetamaskBrightIdService,
+              public mannaToClaimService: MannaService) {
+    this.qrCodeValue = `brightid://link-verification/http:%2f%2fnode.brightid.org/idchain/${dynamicDialogConfig.data}`;
   }
+
   onCheckVerify() {
     const walletAddress = this.metamaskBrightIdService.account$.getValue();
     this.metamaskBrightIdService.checkBrightIdStatus(walletAddress);
