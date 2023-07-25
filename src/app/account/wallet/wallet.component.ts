@@ -26,7 +26,7 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.metamaskBrightIdService.checkMetamaskState();
+    this.metamaskBrightIdService.checkUserState();
     if (this.metamaskBrightIdService.account$.getValue() != null) {
       this.mannaService.getBalance(this.metamaskBrightIdService.account$.getValue())
         .subscribe({

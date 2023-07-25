@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ethers} from 'ethers';
-import {BehaviorSubject, Observable, of, switchMap} from 'rxjs';
+import {BehaviorSubject, firstValueFrom, Observable, of, switchMap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {MessageService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
@@ -51,7 +51,7 @@ export class MetamaskBrightIdService {
     return this.network$.value.chainId === 0x4a
   }
 
-  async checkMetamaskState(): Promise<void> {
+  async checkUserState(): Promise<void> {
     if (typeof ethereum !== 'undefined') {
       try {
         const accounts = await ethereum.request({method: 'eth_accounts'});
@@ -66,6 +66,9 @@ export class MetamaskBrightIdService {
             this.userService.userClaimingState$.next(UserClaimingState.CORRECT_CHAIN);
 
           await this.loadAccount();
+          const walletAddress = this.account$.getValue();
+          const verificationStatus = await firstValueFrom(this.getVerificationStatus(walletAddress))
+          this.verificationStatus$.next(verificationStatus.status);
         } else {
           this.userService.userClaimingState$.next(UserClaimingState.ZERO);
         }
@@ -83,21 +86,10 @@ export class MetamaskBrightIdService {
 
 
   tryClaim() {
-    return of(this.checkMetamaskState())
+    return of(this.checkUserState())
       .pipe(
         switchMap((value: any) => {
-          if (this.userService.userClaimingState$.value != UserClaimingState.ZERO
-            && this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED) {
-            const walletAddress = this.account$.getValue();
-            return this.getVerificationStatus(walletAddress);
-          } else {
-            console.log('connect to matamask ...',this.verificationStatus$.value,"userClaimingState",this.userService.userClaimingState$.value); //for fix the bug 
-            throw new Error("Metamask is not connected");
-          }
-        }),
-        switchMap((value: any) => {
           const walletAddress = this.account$.getValue();
-          this.verificationStatus$.next(value.status);
           if (this.verificationStatus$.value == VerificationStatus.SUCCESSFUL)
             this.userService.userClaimingState$.next(UserClaimingState.VERIFIED)
 
@@ -105,7 +97,7 @@ export class MetamaskBrightIdService {
             && this.userService.userClaimingState$.value != UserClaimingState.CORRECT_CHAIN) {
             return of(true)
           } else {
-            console.log('to verifiy...',this.verificationStatus$.value,"userClaimingState",this.userService.userClaimingState$.value); //for fix the bug 
+            console.log('to verifiy...', this.verificationStatus$.value, "userClaimingState", this.userService.userClaimingState$.value); //for fix the bug
             return this.openVerifyDialog(walletAddress)
               .pipe(
                 switchMap(_ => {
@@ -120,7 +112,7 @@ export class MetamaskBrightIdService {
         }),
         switchMap(_ => {
           if (this.userService.userClaimingState$.value != UserClaimingState.READY) {
-            console.log('email submit...',this.verificationStatus$.value,"  userClaimingState is",this.userService.userClaimingState$.value); //for fix the bug 
+            console.log('email submit...', this.verificationStatus$.value, "  userClaimingState is", this.userService.userClaimingState$.value); //for fix the bug
             const walletAddress = this.account$.getValue();
             return this.openEmailDialog(walletAddress)
               .pipe(
@@ -166,7 +158,7 @@ export class MetamaskBrightIdService {
   }
 
 
-  getVerificationStatus(walletAddress: string): Observable<string> {
+  getVerificationStatus(walletAddress: string): Observable<any> {
     return this.http.get<string>(this.serverUrl + `brightId/isLinked/${walletAddress}`);
   }
 

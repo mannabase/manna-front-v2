@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.metamaskBrightIdService.checkMetamaskState();
+    this.metamaskBrightIdService.checkUserState();
   }
 
   handleButtonClick() {
