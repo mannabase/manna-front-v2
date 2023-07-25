@@ -40,9 +40,10 @@ import {NgxResizeObserverModule} from 'ngx-resize-observer';
 import {VerificationDialogComponent} from './verification-dialog/verification-dialog.component';
 import {DialogService} from "primeng/dynamicdialog";
 import {QRCodeModule} from 'angularx-qrcode';
+import { EmailDialogComponent } from './email-dialog/email-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent, AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent],
+  declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent, AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, EmailDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

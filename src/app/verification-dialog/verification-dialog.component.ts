@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {DynamicDialogConfig} from "primeng/dynamicdialog";
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 import {MannaService} from 'src/app/manna.service';
-import {FormControl, Validators,} from "@angular/forms";
 
 
 @Component({
@@ -12,7 +11,6 @@ import {FormControl, Validators,} from "@angular/forms";
 })
 export class VerificationDialogComponent {
   qrCodeValue: string;
-  emailForm = new FormControl(null, [Validators.required, Validators.email])
 
   constructor(readonly dynamicDialogConfig: DynamicDialogConfig,
               public metamaskBrightIdService: MetamaskBrightIdService,

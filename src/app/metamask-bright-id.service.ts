@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {MessageService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
 import {VerificationDialogComponent} from "./verification-dialog/verification-dialog.component";
+import {EmailDialogComponent} from "./email-dialog/email-dialog.component";
 import {MannaService} from "./manna.service";
 import {UserClaimingState, UserService} from "./user.service";
 
@@ -90,6 +91,7 @@ export class MetamaskBrightIdService {
             const walletAddress = this.account$.getValue();
             return this.getVerificationStatus(walletAddress);
           } else {
+            console.log('connect to matamask ...'); //for fix the bug 
             throw new Error("Metamask is not connected");
           }
         }),
@@ -102,6 +104,7 @@ export class MetamaskBrightIdService {
           if (this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED) {
             return of(true)
           } else {
+            console.log('to verifiy...'); //for fix the bug 
             return this.openVerifyDialog(walletAddress)
               .pipe(
                 switchMap(_ => {
@@ -116,6 +119,7 @@ export class MetamaskBrightIdService {
         }),
         switchMap(_ => {
           if (this.userService.userClaimingState$.value != UserClaimingState.READY) {
+            console.log('email submit...'); //for fix the bug 
             const walletAddress = this.account$.getValue();
             return this.openEmailDialog(walletAddress)
               .pipe(
@@ -145,14 +149,14 @@ export class MetamaskBrightIdService {
       header: 'Verify with BrightID',
       data: {
         wallet: walletAddress
-      }
+      },
     })
     return ref.onClose;
   }
 
   openEmailDialog(walletAddress: string) {
-    let ref = this.dialogService.open(VerificationDialogComponent, {
-      header: 'Verify with BrightID',
+    let ref = this.dialogService.open(EmailDialogComponent, {
+      header: 'submit your email:',
       data: {
         wallet: walletAddress
       }
