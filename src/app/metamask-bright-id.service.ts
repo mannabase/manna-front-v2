@@ -91,7 +91,7 @@ export class MetamaskBrightIdService {
             const walletAddress = this.account$.getValue();
             return this.getVerificationStatus(walletAddress);
           } else {
-            console.log('connect to matamask ...'); //for fix the bug 
+            console.log('connect to matamask ...',this.verificationStatus$.value,"userClaimingState",this.userService.userClaimingState$.value); //for fix the bug 
             throw new Error("Metamask is not connected");
           }
         }),
@@ -101,10 +101,11 @@ export class MetamaskBrightIdService {
           if (this.verificationStatus$.value == VerificationStatus.SUCCESSFUL)
             this.userService.userClaimingState$.next(UserClaimingState.VERIFIED)
 
-          if (this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED) {
+          if (this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED
+            && this.userService.userClaimingState$.value != UserClaimingState.CORRECT_CHAIN) {
             return of(true)
           } else {
-            console.log('to verifiy...'); //for fix the bug 
+            console.log('to verifiy...',this.verificationStatus$.value,"userClaimingState",this.userService.userClaimingState$.value); //for fix the bug 
             return this.openVerifyDialog(walletAddress)
               .pipe(
                 switchMap(_ => {
@@ -119,7 +120,7 @@ export class MetamaskBrightIdService {
         }),
         switchMap(_ => {
           if (this.userService.userClaimingState$.value != UserClaimingState.READY) {
-            console.log('email submit...'); //for fix the bug 
+            console.log('email submit...',this.verificationStatus$.value,"  userClaimingState is",this.userService.userClaimingState$.value); //for fix the bug 
             const walletAddress = this.account$.getValue();
             return this.openEmailDialog(walletAddress)
               .pipe(
