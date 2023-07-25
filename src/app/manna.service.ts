@@ -24,7 +24,8 @@ export class MannaService {
   }
 
   getBalance(walletAddress: string) {
-    return this.http.get<string>(this.serverUrl + `conversion/getBalance/${walletAddress}`);
+    return of(8.2)
+    // return this.http.get<string>(this.serverUrl + `conversion/getBalance/${walletAddress}`);
   }
 
   mannaWallet(walletAddress: string) {

@@ -69,6 +69,9 @@ export class MetamaskBrightIdService {
           const walletAddress = this.account$.getValue();
           const verificationStatus = await firstValueFrom(this.getVerificationStatus(walletAddress))
           this.verificationStatus$.next(verificationStatus.status);
+          
+          if (this.verificationStatus$.value == VerificationStatus.SUCCESSFUL)
+            this.userService.userClaimingState$.next(UserClaimingState.VERIFIED)
         } else {
           this.userService.userClaimingState$.next(UserClaimingState.ZERO);
         }
@@ -90,8 +93,7 @@ export class MetamaskBrightIdService {
       .pipe(
         switchMap((value: any) => {
           const walletAddress = this.account$.getValue();
-          if (this.verificationStatus$.value == VerificationStatus.SUCCESSFUL)
-            this.userService.userClaimingState$.next(UserClaimingState.VERIFIED)
+          
 
           if (this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED
             && this.userService.userClaimingState$.value != UserClaimingState.CORRECT_CHAIN) {
