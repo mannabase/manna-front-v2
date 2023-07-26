@@ -1,6 +1,8 @@
-<div class="root">
-    <qrcode [qrdata]="qrCodeValue" [width]="256"></qrcode>
-    <button class="manna-button mt-2" (click)="onCheckVerify()">
-      check verify
+<div class="flex flex-column gap-2" >
+  <div *ngIf="isLoadingQRCode" class="skeleton shimmer"></div>
+  <qrcode *ngIf="!isLoadingQRCode" [qrdata]="qrCodeValue" [width]="256"></qrcode>
+    <button class="manna-button mt-2" (click)="onCheckVerify()" [disabled]="isLoading">
+      <span *ngIf="!isLoading">check verify</span>
+      <span *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i>Loading...</span>
     </button>
 </div>
