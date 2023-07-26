@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ethers} from 'ethers';
-import {BehaviorSubject, firstValueFrom, Observable, of, switchMap} from 'rxjs';
+import { from, BehaviorSubject, Observable, of, firstValueFrom,switchMap } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {MessageService} from "primeng/api";
 import {DialogService} from "primeng/dynamicdialog";
@@ -51,93 +52,104 @@ export class MetamaskBrightIdService {
     return this.network$.value.chainId === 0x4a
   }
 
-  async checkUserState(): Promise<void> {
+  async checkUserState(): Promise<boolean> {
     if (typeof ethereum !== 'undefined') {
-      try {
-        const accounts = await ethereum.request({method: 'eth_accounts'});
-        const isConnected = accounts.length > 0;
-        if (isConnected) {
-          this.userService.userClaimingState$.next(UserClaimingState.METAMASK_CONNECTED);
-          await this.loadNetwork();
-          if (!this.isCorrectNetwork())
-            await this.switchToIDChain();
+      const accounts = await ethereum.request({method: 'eth_accounts'});
+      const isConnected = accounts.length > 0;
+      if (isConnected) {
+        this.userService.userClaimingState$.next(UserClaimingState.METAMASK_CONNECTED);
+        await this.loadNetwork();
+        if (!this.isCorrectNetwork())
+          await this.switchToIDChain();
 
-          if (this.isCorrectNetwork())
-            this.userService.userClaimingState$.next(UserClaimingState.CORRECT_CHAIN);
+        if (this.isCorrectNetwork())
+          this.userService.userClaimingState$.next(UserClaimingState.CORRECT_CHAIN);
 
-          await this.loadAccount();
-          const walletAddress = this.account$.getValue();
-          const verificationStatus = await firstValueFrom(this.getVerificationStatus(walletAddress))
-          this.verificationStatus$.next(verificationStatus.status);
-          
-          if (this.verificationStatus$.value == VerificationStatus.SUCCESSFUL)
-            this.userService.userClaimingState$.next(UserClaimingState.VERIFIED)
-        } else {
-          this.userService.userClaimingState$.next(UserClaimingState.ZERO);
-        }
-      } catch (error) {
-        this.messageService.add({severity: 'error', summary: 'Error checking MetaMask status', detail: error + ""})
+        await this.loadAccount();
+        const walletAddress = this.account$.getValue();
+        const verificationStatus = await firstValueFrom(this.getVerificationStatus(walletAddress))
+        this.verificationStatus$.next(verificationStatus.status);
+        
+        if (this.verificationStatus$.value == VerificationStatus.SUCCESSFUL)
+          this.userService.userClaimingState$.next(UserClaimingState.VERIFIED)
+      } else {
+        this.userService.userClaimingState$.next(UserClaimingState.ZERO);
       }
+      return isConnected;
     } else {
       this.messageService.add({
         severity: 'error',
         summary: 'MetaMask is not installed',
         detail: 'Please install metamask extension'
-      })
+      });
+      return false;
     }
   }
-
+  
 
   tryClaim() {
-    return of(this.checkUserState())
-      .pipe(
-        switchMap((value: any) => {
+    return from(this.checkUserState()).pipe(
+      switchMap((isConnected: boolean) => {
+        if (!isConnected) {
+          return from(ethereum.request({ method: 'eth_requestAccounts' })).pipe(
+            tap(() => this.userService.userClaimingState$.next(UserClaimingState.METAMASK_CONNECTED)),
+            switchMap(() => this.checkUserState())
+          );
+        } else {
+          return of(true);
+        }
+      }),
+      switchMap((value: any) => {
+        const walletAddress = this.account$.getValue();
+        if (this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED
+          && this.userService.userClaimingState$.value != UserClaimingState.CORRECT_CHAIN) {
+          return of(true)
+        } else {
+          return this.openVerifyDialog(walletAddress)
+            .pipe(
+              switchMap(_ => {
+                if (this.userService.userClaimingState$.value == UserClaimingState.VERIFIED) {
+                  return of(true)
+                } else {
+                  throw new Error("Verification failed");
+                }
+              })
+            );
+        }
+      }),
+      switchMap(_ => {
+        if (this.userService.userClaimingState$.value != UserClaimingState.READY) {
           const walletAddress = this.account$.getValue();
-          
-
-          if (this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED
-            && this.userService.userClaimingState$.value != UserClaimingState.CORRECT_CHAIN) {
-            return of(true)
-          } else {
-            console.log('to verifiy...', this.verificationStatus$.value, "userClaimingState", this.userService.userClaimingState$.value); //for fix the bug
-            return this.openVerifyDialog(walletAddress)
-              .pipe(
-                switchMap(_ => {
-                  if (this.userService.userClaimingState$.value == UserClaimingState.VERIFIED) {
-                    return of(true)
-                  } else {
-                    throw new Error("Verification failed");
-                  }
-                })
-              );
-          }
-        }),
-        switchMap(_ => {
-          if (this.userService.userClaimingState$.value != UserClaimingState.READY) {
-            console.log('email submit...', this.verificationStatus$.value, "  userClaimingState is", this.userService.userClaimingState$.value); //for fix the bug
-            const walletAddress = this.account$.getValue();
-            return this.openEmailDialog(walletAddress)
-              .pipe(
-                switchMap(_ => {
-                  if (this.userService.userClaimingState$.value == UserClaimingState.READY) {
-                    return of(true)
-                  } else {
-                    throw new Error("Email checking failed");
-                  }
-                })
-              );
-          } else
-            return of(true)
-        }),
-        switchMap(_ => {
-          if (this.userService.userClaimingState$.value == UserClaimingState.READY) {
-            return this.mannaService.claim()
-          } else {
-            throw new Error("Failed to claim");
-          }
-        })
-      )
+          return this.openEmailDialog(walletAddress)
+            .pipe(
+              switchMap(_ => {
+                if (this.userService.userClaimingState$.value == UserClaimingState.READY) {
+                  return of(true)
+                } else {
+                  throw new Error("Email checking failed");
+                }
+              })
+            );
+        } else
+          return of(true)
+      }),
+      switchMap(_ => {
+        if (this.userService.userClaimingState$.value == UserClaimingState.READY) {
+          return this.mannaService.claim()
+        } else {
+          throw new Error("Failed to claim");
+        }
+      })
+    )
   }
+
+
+  
+  
+  
+  
+
+  
 
   openVerifyDialog(walletAddress: string) {
     let ref = this.dialogService.open(VerificationDialogComponent, {
