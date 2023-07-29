@@ -28,6 +28,7 @@ export class MetamaskBrightIdService {
   account$ = new BehaviorSubject<string>('');
   verificationStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
   checkBrightIdStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
+  balance$ = new BehaviorSubject<ethers.BigNumber | null>(null);
 
   constructor(
     private http: HttpClient,
@@ -49,7 +50,7 @@ export class MetamaskBrightIdService {
   public isCorrectNetwork() {
     if (this.network$.value == null)
       return false
-    return this.network$.value.chainId === 0x4a
+    return this.network$.value.chainId === 42161
   }
 
   async checkUserState(): Promise<boolean> {
@@ -60,7 +61,7 @@ export class MetamaskBrightIdService {
         this.userService.userClaimingState$.next(UserClaimingState.METAMASK_CONNECTED);
         await this.loadNetwork();
         if (!this.isCorrectNetwork())
-          await this.switchToIDChain();
+          await this.switchToArbitrum();
 
         if (this.isCorrectNetwork())
           this.userService.userClaimingState$.next(UserClaimingState.CORRECT_CHAIN);
@@ -90,6 +91,7 @@ export class MetamaskBrightIdService {
   tryClaim() {
     return from(this.checkUserState()).pipe(
       switchMap((isConnected: boolean) => {
+        console.log('userClaimingState :',this.userService.userClaimingState$.value)
         if (!isConnected) {
           return from(ethereum.request({ method: 'eth_requestAccounts' })).pipe(
             tap(() => this.userService.userClaimingState$.next(UserClaimingState.METAMASK_CONNECTED)),
@@ -100,6 +102,7 @@ export class MetamaskBrightIdService {
         }
       }),
       switchMap((value: any) => {
+        console.log('userClaimingState :',this.userService.userClaimingState$.value)
         const walletAddress = this.account$.getValue();
         if (this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED
           && this.userService.userClaimingState$.value != UserClaimingState.CORRECT_CHAIN) {
@@ -118,22 +121,7 @@ export class MetamaskBrightIdService {
         }
       }),
       switchMap(_ => {
-        if (this.userService.userClaimingState$.value != UserClaimingState.READY) {
-          const walletAddress = this.account$.getValue();
-          return this.openEmailDialog(walletAddress)
-            .pipe(
-              switchMap(_ => {
-                if (this.userService.userClaimingState$.value == UserClaimingState.READY) {
-                  return of(true)
-                } else {
-                  throw new Error("Email checking failed");
-                }
-              })
-            );
-        } else
-          return of(true)
-      }),
-      switchMap(_ => {
+        console.log('userClaimingState :',this.userService.userClaimingState$.value)
         if (this.userService.userClaimingState$.value == UserClaimingState.READY) {
           return this.mannaService.claim()
         } else {
@@ -193,21 +181,21 @@ export class MetamaskBrightIdService {
       });
   }
 
-  async switchToIDChain(): Promise<void> {
+  async switchToArbitrum(): Promise<void> {
     try {
       await ethereum.request({
         method: 'wallet_addEthereumChain',
         params: [
           {
-            chainId: '0x4a',
-            chainName: 'IDChain',
-            rpcUrls: ['https://idchain.one/rpc/'],
+            chainId: '0xa4b1', 
+            chainName: 'Arbitrum One',
+            rpcUrls: ['https://arbitrum-mainnet.infura.io'], 
             nativeCurrency: {
-              name: 'Eidi',
-              symbol: 'EIDI',
+              name: 'Ethereum',
+              symbol: 'ETH',
               decimals: 18,
             },
-            blockExplorerUrls: ['https://explorer.idchain.one/'],
+            blockExplorerUrls: ['https://explorer.arbitrum.io'],
           },
         ],
       });
@@ -231,5 +219,15 @@ export class MetamaskBrightIdService {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
     this.account$.next(await signer.getAddress());
+  }
+  async loadBalance() {
+    if (this.account$.value) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const balance = await signer.getBalance();
+      this.balance$.next(balance);
+    } else {
+      this.balance$.next(null);
+    }
   }
 }

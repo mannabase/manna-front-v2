@@ -3,6 +3,7 @@ import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 import {MannaService} from 'src/app/manna.service';
 import {MessageService} from "primeng/api";
 import {UserClaimingState, UserService} from "../../user.service";
+import { ethers } from 'ethers';
 
 @Component({
   selector: 'app-wallet',
@@ -10,6 +11,7 @@ import {UserClaimingState, UserService} from "../../user.service";
   styleUrls: ['./wallet.component.scss'],
 })
 export class WalletComponent implements OnInit {
+  balance: string | null = null;
   buttonMessageMap = new Map<UserClaimingState, string>([
     [UserClaimingState.ZERO, 'Connect Metamask'],
     [UserClaimingState.METAMASK_CONNECTED, 'Change to ID Chain'],
@@ -18,29 +20,32 @@ export class WalletComponent implements OnInit {
     [UserClaimingState.READY, 'Claim'],
   ])
 
-
-  balance?: number;
-
   constructor(readonly metamaskBrightIdService: MetamaskBrightIdService, readonly mannaService: MannaService,
               readonly messageService: MessageService, readonly userService: UserService) {
   }
 
   ngOnInit() {
     this.metamaskBrightIdService.checkUserState();
-    if (this.metamaskBrightIdService.account$.getValue() != null) {
-      this.mannaService.getBalance(this.metamaskBrightIdService.account$.getValue())
-        .subscribe({
-          next: (response: any) => {
-            this.balance = response.data
-          },
-          error: (err) => {
-            this.balance = 0
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Failed to load balance',
-            });
-          }
-        });
-    }
+    // if (this.metamaskBrightIdService.account$.getValue() != null) {
+    //   this.mannaService.getBalance(this.metamaskBrightIdService.account$.getValue())
+    //     .subscribe({
+    //       next: (response: any) => {
+    //         this.balance = response.data
+    //       },
+    //       error: (err) => {
+    //         this.balance = 0
+    //         this.messageService.add({
+    //           severity: 'error',
+    //           summary: 'Failed to load balance',
+    //         });
+    //       }
+    //     });
+    // }
+    this.metamaskBrightIdService.balance$.subscribe(
+      balance => {
+        this.balance = balance ? ethers.utils.formatEther(balance) : null;
+      }
+    );
+    this.metamaskBrightIdService.loadBalance();
   }
 }

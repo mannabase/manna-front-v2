@@ -14,8 +14,7 @@ export class HomeComponent implements OnInit {
     [UserClaimingState.ZERO, 'Connect Metamask'],
     [UserClaimingState.METAMASK_CONNECTED, 'Change to ID Chain'],
     [UserClaimingState.CORRECT_CHAIN, 'Verify'],
-    [UserClaimingState.VERIFIED, 'Enter email'],
-    [UserClaimingState.READY, 'Claim'],
+    [UserClaimingState.VERIFIED, 'Claim'],
   ])
 
   constructor(readonly metamaskBrightIdService: MetamaskBrightIdService,
