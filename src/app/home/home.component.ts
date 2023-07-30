@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {TuiAlertService} from '@taiga-ui/core';
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 import {UserClaimingState, UserService} from 'src/app/user.service';
-import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-home',
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
 
   constructor(readonly metamaskBrightIdService: MetamaskBrightIdService,
               readonly userService: UserService,
-              readonly messageService: MessageService) {
+              readonly alertService: TuiAlertService) {
   }
 
   ngOnInit() {
@@ -30,10 +30,7 @@ export class HomeComponent implements OnInit {
     this.metamaskBrightIdService.tryClaim()
       .subscribe({
         error: err => {
-          this.messageService.add({
-            severity: 'error',
-            detail: err
-          })
+          this.alertService.open(err, {status: "error"})
         }
       })
   }

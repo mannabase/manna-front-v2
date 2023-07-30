@@ -1,10 +1,7 @@
 import {Component} from '@angular/core';
-import {DynamicDialogConfig} from "primeng/dynamicdialog";
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
-import {MannaService} from 'src/app/manna.service';
-import {UserClaimingState,UserService} from 'src/app/user.service';
-import {MessageService} from 'primeng/api';
-
+import {UserClaimingState, UserService} from 'src/app/user.service';
+import {TuiAlertService} from "@taiga-ui/core";
 
 @Component({
   selector: 'app-verification-dialog',
@@ -16,17 +13,17 @@ export class VerificationDialogComponent {
   isLoading: boolean = false;
   isLoadingQRCode: boolean = false;
 
-  constructor(readonly dynamicDialogConfig: DynamicDialogConfig,
-              public metamaskBrightIdService: MetamaskBrightIdService,
-              public mannaService: MannaService,
+  constructor(public metamaskBrightIdService: MetamaskBrightIdService,
               public userService: UserService,
-              private messageService: MessageService) {}
+              private alertService: TuiAlertService) {
+  }
+
   ngOnInit() {
     this.isLoadingQRCode = true;
     const walletAddress = this.metamaskBrightIdService.account$.getValue();
     this.metamaskBrightIdService.getVerificationStatus(walletAddress).subscribe(
       res => {
-        this.qrCodeValue = res.link; 
+        this.qrCodeValue = res.link;
         this.isLoadingQRCode = false;
       },
       err => {
@@ -45,16 +42,24 @@ export class VerificationDialogComponent {
           this.isLoading = false;
           if (response.status === "SUCCESSFUL") {
             this.userService.userClaimingState$.next(UserClaimingState.VERIFIED);
-            this.messageService.add({severity:'success', summary: 'Success', detail: 'Verification successful!'});
+            this.alertService.open("Verification successful!", {
+              status: "success"
+            });
           } else {
-            this.messageService.add({severity:'error', summary: 'Failed', detail: 'Verification failed. Please try again.'});
+            this.alertService.open("Verification failed. Please try again.", {
+              status: "error",
+              label: 'Failed'
+            });
           }
         },
         error: (err) => {
           this.isLoading = false;
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Error during verification.'});
+          this.alertService.open("Error during verification", {
+            status: "error",
+            label: 'Failed'
+          });
         },
       });
   }
-  
+
 }

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {MessageService} from "primeng/api";
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
+import {TuiAlertService} from "@taiga-ui/core";
 
 class Card {
   name?: string;
@@ -18,7 +18,7 @@ export class UserAccountComponent {
   items!: string[];
   walletAddress: string = '0x394b4j494nn4j49494jd03b';
 
-  constructor(readonly messageService: MessageService,public metamaskBrightIdService: MetamaskBrightIdService) {
+  constructor(readonly alertService: TuiAlertService, public metamaskBrightIdService: MetamaskBrightIdService) {
   }
 
 
@@ -41,6 +41,8 @@ export class UserAccountComponent {
     textField.select();
     document.execCommand('copy');
     textField.remove();
-    this.messageService.add({severity: 'success', detail: 'Address Copied'});
+    this.alertService.open('Address Copied', {
+      status: "success"
+    })
   }
 }

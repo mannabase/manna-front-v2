@@ -1,14 +1,13 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable, Injector} from '@angular/core';
 import {ethers} from 'ethers';
-import { from, BehaviorSubject, Observable, of, firstValueFrom,switchMap } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import {BehaviorSubject, firstValueFrom, from, Observable, of, switchMap} from 'rxjs';
+import {tap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
-import {MessageService} from "primeng/api";
-import {DialogService} from "primeng/dynamicdialog";
 import {VerificationDialogComponent} from "./verification-dialog/verification-dialog.component";
-import {EmailDialogComponent} from "./email-dialog/email-dialog.component";
 import {MannaService} from "./manna.service";
 import {UserClaimingState, UserService} from "./user.service";
+import {TuiAlertService, TuiDialogService} from "@taiga-ui/core";
+import {PolymorpheusComponent} from "@tinkoff/ng-polymorpheus";
 
 declare let ethereum: any;
 
@@ -32,10 +31,11 @@ export class MetamaskBrightIdService {
 
   constructor(
     private http: HttpClient,
-    readonly messageService: MessageService,
-    readonly dialogService: DialogService,
+    readonly alertService: TuiAlertService,
+    readonly dialogService: TuiDialogService,
     readonly mannaService: MannaService,
-    readonly userService: UserService
+    readonly userService: UserService,
+    readonly injector: Injector
   ) {
     this.serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/';
     this.mannaService.setServerUrl(this.serverUrl);
@@ -70,7 +70,7 @@ export class MetamaskBrightIdService {
         const walletAddress = this.account$.getValue();
         const verificationStatus = await firstValueFrom(this.getVerificationStatus(walletAddress))
         this.verificationStatus$.next(verificationStatus.status);
-        
+
         if (this.verificationStatus$.value == VerificationStatus.SUCCESSFUL)
           this.userService.userClaimingState$.next(UserClaimingState.VERIFIED)
       } else {
@@ -78,22 +78,21 @@ export class MetamaskBrightIdService {
       }
       return isConnected;
     } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'MetaMask is not installed',
-        detail: 'Please install metamask extension'
-      });
+      this.alertService.open("Please install metamask extension", {
+        label: 'MetaMask is not installed',
+        status: "error",
+      })
       return false;
     }
   }
-  
+
 
   tryClaim() {
     return from(this.checkUserState()).pipe(
       switchMap((isConnected: boolean) => {
-        console.log('userClaimingState :',this.userService.userClaimingState$.value)
+        console.log('userClaimingState :', this.userService.userClaimingState$.value)
         if (!isConnected) {
-          return from(ethereum.request({ method: 'eth_requestAccounts' })).pipe(
+          return from(ethereum.request({method: 'eth_requestAccounts'})).pipe(
             tap(() => this.userService.userClaimingState$.next(UserClaimingState.METAMASK_CONNECTED)),
             switchMap(() => this.checkUserState())
           );
@@ -102,7 +101,7 @@ export class MetamaskBrightIdService {
         }
       }),
       switchMap((value: any) => {
-        console.log('userClaimingState :',this.userService.userClaimingState$.value)
+        console.log('userClaimingState :', this.userService.userClaimingState$.value)
         const walletAddress = this.account$.getValue();
         if (this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED
           && this.userService.userClaimingState$.value != UserClaimingState.CORRECT_CHAIN) {
@@ -121,7 +120,7 @@ export class MetamaskBrightIdService {
         }
       }),
       switchMap(_ => {
-        console.log('userClaimingState :',this.userService.userClaimingState$.value)
+        console.log('userClaimingState :', this.userService.userClaimingState$.value)
         if (this.userService.userClaimingState$.value == UserClaimingState.READY) {
           return this.mannaService.claim()
         } else {
@@ -132,31 +131,15 @@ export class MetamaskBrightIdService {
   }
 
 
-  
-  
-  
-  
-
-  
-
   openVerifyDialog(walletAddress: string) {
-    let ref = this.dialogService.open(VerificationDialogComponent, {
-      header: 'Verify with BrightID',
-      data: {
-        wallet: walletAddress
+    return this.dialogService.open<number>(
+      new PolymorpheusComponent(VerificationDialogComponent, this.injector),
+      {
+        data: 237,
+        dismissible: false,
+        label: 'Verify',
       },
-    })
-    return ref.onClose;
-  }
-
-  openEmailDialog(walletAddress: string) {
-    let ref = this.dialogService.open(EmailDialogComponent, {
-      header: 'submit your email:',
-      data: {
-        wallet: walletAddress
-      }
-    })
-    return ref.onClose;
+    );
   }
 
 
@@ -172,11 +155,10 @@ export class MetamaskBrightIdService {
           this.checkBrightIdStatus$.next(response.data);
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'You are not Verified',
-            detail: 'The verification process failed'
-          });
+          this.alertService.open("The verification process failed", {
+            label: 'You are not Verified',
+            status: "error",
+          })
         }
       });
   }
@@ -187,9 +169,9 @@ export class MetamaskBrightIdService {
         method: 'wallet_addEthereumChain',
         params: [
           {
-            chainId: '0xa4b1', 
+            chainId: '0xa4b1',
             chainName: 'Arbitrum One',
-            rpcUrls: ['https://arbitrum-mainnet.infura.io'], 
+            rpcUrls: ['https://arbitrum-mainnet.infura.io'],
             nativeCurrency: {
               name: 'Ethereum',
               symbol: 'ETH',
@@ -202,15 +184,13 @@ export class MetamaskBrightIdService {
       await this.loadNetwork();
     } catch (error: any) {
       if (error.code === 4001) {
-        this.messageService.add({
-          severity: 'warn',
-          summary: 'You rejected chain switch',
-        });
+        this.alertService.open("You rejected chain switch", {
+          status: "warning",
+        })
       } else {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error switching chain',
-        });
+        this.alertService.open("Error switching chain", {
+          status: "error",
+        })
       }
     }
   }
@@ -220,6 +200,7 @@ export class MetamaskBrightIdService {
     const signer = provider.getSigner();
     this.account$.next(await signer.getAddress());
   }
+
   async loadBalance() {
     if (this.account$.value) {
       const provider = new ethers.providers.Web3Provider(ethereum);

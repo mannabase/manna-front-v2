@@ -45,8 +45,9 @@
   display: flex;
 }
 
-.menu-item {
+.menu-button {
   margin-right: 20px;
+  font-size: 1.2em;
 }
 
 .menu-item a {
@@ -85,8 +86,7 @@
     padding: 8px 16px;
     font-size: 16px;
     cursor: pointer;
-    border: 5px;
-    border-color: white;
+    border: 5px white;
     border-radius: 50px;
     min-width: 150px;
   }
@@ -106,4 +106,8 @@
   ::ng-deep .p-menuitem-link {
     border-radius: 2em;
   }
+}
+
+.side-bar {
+  background-color: #383838;
 }

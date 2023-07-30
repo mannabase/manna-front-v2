@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 import {MannaService} from 'src/app/manna.service';
-import {MessageService} from "primeng/api";
 import {UserClaimingState, UserService} from "../../user.service";
-import { ethers } from 'ethers';
+import {ethers} from 'ethers';
+import {TuiAlertService} from "@taiga-ui/core";
 
 @Component({
   selector: 'app-wallet',
@@ -21,7 +21,7 @@ export class WalletComponent implements OnInit {
   ])
 
   constructor(readonly metamaskBrightIdService: MetamaskBrightIdService, readonly mannaService: MannaService,
-              readonly messageService: MessageService, readonly userService: UserService) {
+              readonly alertService: TuiAlertService, readonly userService: UserService) {
   }
 
   ngOnInit() {
