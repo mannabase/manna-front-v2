@@ -1,0 +1,9 @@
+<span class="pb-3">{{state}}</span>
+
+<div *ngIf="state == MetamaskState.WRONG_CHAIN">
+    <button tuiButton (click)="switchChain()" size="m">Switch chain to {{mannaChain}}</button>
+</div>
+
+<div *ngIf="state == MetamaskState.NOT_CONNECTED">
+    <button tuiButton (click)="connectMetamask()" size="m">Connect to Metamask</button>
+</div>

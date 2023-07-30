@@ -16,10 +16,8 @@
     <p>7 available</p>
   </div>
   <div class="button-get-started">
-    <button class="manna-button" (click)="metamaskBrightIdService.tryClaim()">
-      <p class="flex justify-content-center my-0 text-xl font-bold text-white">
-        {{ buttonMessageMap.get(userService.userClaimingState$.value) }}
-      </p>
+    <button class="manna-button" (click)="openClaimDialog()">
+      Claim
     </button>
   </div>
 </div>

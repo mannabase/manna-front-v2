@@ -57,7 +57,7 @@
 
 .tab.active {
   background-color: #383838;
-  border-radius: 2em;
+  border-radius: var(--manna-border-radius);
 }
 
 .tab__text {

@@ -1,0 +1,25 @@
+<div class="flex flex-column gap-2">
+    <tui-stepper [activeItemIndex]="currentStep">
+        <button tuiStep [stepState]="currentStep > 0 ? 'pass' : 'normal'" [disabled]="currentStep != 0">
+            Metamask
+        </button>
+        <button tuiStep [stepState]="currentStep > 1 ? 'pass' : 'normal'" [disabled]="currentStep != 1">
+            Verification
+        </button>
+        <button tuiStep stepState="normal" [disabled]="currentStep != 2">
+            Claim
+        </button>
+    </tui-stepper>
+
+    <div class="stepper-body">
+        <app-metamask-connection *ngIf="currentStep == 0" (nextStep)="currentStep  = currentStep + 1">
+
+        </app-metamask-connection>
+        <app-verification *ngIf="currentStep == 1" (nextStep)="currentStep  = currentStep + 1">
+
+        </app-verification>
+        <app-claim-manna *ngIf="currentStep == 2">
+
+        </app-claim-manna>
+    </div>
+</div>

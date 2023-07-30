@@ -3,7 +3,7 @@
   background-color: #eee;
   height: 256px;
   width: 256px;
-  border-radius: 5px;
+  border-radius: var(--manna-border-radius);
 }
 
 @keyframes shimmer {

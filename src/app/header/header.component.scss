@@ -54,7 +54,7 @@
   text-decoration: none;
   color: #fff;
   padding: 8px;
-  border-radius: 4px;
+  border-radius: var(--manna-border-radius);
 }
 
 .menu-item a:hover {
@@ -75,27 +75,6 @@
   cursor: pointer;
 }
 
-:host {
-  ::ng-deep .custom-button {
-    display: flex;
-    justify-content: center;
-    background-image: url('../../assets/images/get_stared_background.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: white;
-    padding: 8px 16px;
-    font-size: 16px;
-    cursor: pointer;
-    border: 5px white;
-    border-radius: 50px;
-    min-width: 150px;
-  }
-
-  ::ng-deep .p-button.custom-button:active {
-    border-color: #ff0000;
-  }
-}
-
 .side-bar-menu {
   ::ng-deep .p-menu {
     width: 100%;
@@ -104,7 +83,7 @@
   }
 
   ::ng-deep .p-menuitem-link {
-    border-radius: 2em;
+    border-radius: var(--manna-border-radius);
   }
 }
 

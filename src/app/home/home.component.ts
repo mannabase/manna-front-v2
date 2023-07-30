@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {TuiAlertService} from '@taiga-ui/core';
+import {Component, Injector, OnInit} from '@angular/core';
+import {TuiAlertService, TuiDialogService} from '@taiga-ui/core';
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 import {UserClaimingState, UserService} from 'src/app/user.service';
+import {PolymorpheusComponent} from "@tinkoff/ng-polymorpheus";
+import {VerificationDialogComponent} from "../verification-dialog/verification-dialog.component";
+import {ClaimDialogComponent} from "../claim-dialog/claim-dialog.component";
 
 @Component({
   selector: 'app-home',
@@ -18,7 +21,8 @@ export class HomeComponent implements OnInit {
   ])
 
   constructor(readonly metamaskBrightIdService: MetamaskBrightIdService,
-              readonly userService: UserService,
+              readonly dialogService: TuiDialogService,
+              readonly injector: Injector,
               readonly alertService: TuiAlertService) {
   }
 
@@ -26,13 +30,16 @@ export class HomeComponent implements OnInit {
     this.metamaskBrightIdService.checkUserState();
   }
 
-  handleButtonClick() {
-    this.metamaskBrightIdService.tryClaim()
-      .subscribe({
-        error: err => {
-          this.alertService.open(err, {status: "error"})
-        }
-      })
-  }
+  openClaimDialog() {
+    this.dialogService.open<number>(
+      new PolymorpheusComponent(ClaimDialogComponent, this.injector),
+      {
+        dismissible: true,
+      },
+    ).subscribe({
+      next: value => {
 
+      }
+    })
+  }
 }

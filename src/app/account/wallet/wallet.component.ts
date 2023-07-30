@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 import {MannaService} from 'src/app/manna.service';
 import {UserClaimingState, UserService} from "../../user.service";
 import {ethers} from 'ethers';
-import {TuiAlertService} from "@taiga-ui/core";
+import {TuiAlertService, TuiDialogService} from "@taiga-ui/core";
+import {PolymorpheusComponent} from "@tinkoff/ng-polymorpheus";
+import {ClaimDialogComponent} from "../../claim-dialog/claim-dialog.component";
 
 @Component({
   selector: 'app-wallet',
@@ -20,32 +22,30 @@ export class WalletComponent implements OnInit {
     [UserClaimingState.READY, 'Claim'],
   ])
 
-  constructor(readonly metamaskBrightIdService: MetamaskBrightIdService, readonly mannaService: MannaService,
-              readonly alertService: TuiAlertService, readonly userService: UserService) {
+  constructor(readonly metamaskBrightIdService: MetamaskBrightIdService, readonly dialogService: TuiDialogService,
+              readonly injector: Injector, readonly userService: UserService) {
   }
 
   ngOnInit() {
     this.metamaskBrightIdService.checkUserState();
-    // if (this.metamaskBrightIdService.account$.getValue() != null) {
-    //   this.mannaService.getBalance(this.metamaskBrightIdService.account$.getValue())
-    //     .subscribe({
-    //       next: (response: any) => {
-    //         this.balance = response.data
-    //       },
-    //       error: (err) => {
-    //         this.balance = 0
-    //         this.messageService.add({
-    //           severity: 'error',
-    //           summary: 'Failed to load balance',
-    //         });
-    //       }
-    //     });
-    // }
     this.metamaskBrightIdService.balance$.subscribe(
       balance => {
         this.balance = balance ? ethers.utils.formatEther(balance) : null;
       }
     );
     this.metamaskBrightIdService.loadBalance();
+  }
+
+  openClaimDialog() {
+    this.dialogService.open<number>(
+      new PolymorpheusComponent(ClaimDialogComponent, this.injector),
+      {
+        dismissible: true,
+      },
+    ).subscribe({
+      next: value => {
+
+      }
+    })
   }
 }

@@ -36,28 +36,34 @@ import {VerificationDialogComponent} from './verification-dialog/verification-di
 import {QRCodeModule} from 'angularx-qrcode';
 import {TuiSidebarModule} from '@taiga-ui/addon-mobile';
 import {TuiActiveZoneModule} from '@taiga-ui/cdk';
+import { ClaimDialogComponent } from './claim-dialog/claim-dialog.component';
+import {TuiStepperModule} from "@taiga-ui/kit";
+import { MetamaskConnectionComponent } from './claim-dialog/metamask-connection/metamask-connection.component';
+import { VerificationComponent } from './claim-dialog/verification/verification.component';
+import { ClaimMannaComponent } from './claim-dialog/claim-manna/claim-manna.component';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent,
-    AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    AngularSvgIconModule,
-    FormsModule,
-    NgxResizeObserverModule,
-    QRCodeModule,
-    ReactiveFormsModule,
-    TuiRootModule,
-    TuiDialogModule,
-    TuiAlertModule,
-    TuiSidebarModule,
-    TuiActiveZoneModule,
-    TuiButtonModule,
-    TuiLinkModule,
-  ],
+    AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, VerificationComponent, ClaimMannaComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        AngularSvgIconModule,
+        FormsModule,
+        NgxResizeObserverModule,
+        QRCodeModule,
+        ReactiveFormsModule,
+        TuiRootModule,
+        TuiDialogModule,
+        TuiAlertModule,
+        TuiSidebarModule,
+        TuiActiveZoneModule,
+        TuiButtonModule,
+        TuiLinkModule,
+        TuiStepperModule,
+    ],
   providers: [MetamaskBrightIdService, MannaService, UserService,
     {
       provide: TUI_SANITIZER,
