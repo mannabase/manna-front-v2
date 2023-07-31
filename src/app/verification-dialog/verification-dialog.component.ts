@@ -20,46 +20,9 @@ export class VerificationDialogComponent {
 
   ngOnInit() {
     this.isLoadingQRCode = true;
-    const walletAddress = this.metamaskBrightIdService.account$.getValue();
-    this.metamaskBrightIdService.getVerificationStatus(walletAddress).subscribe(
-      res => {
-        this.qrCodeValue = res.link;
-        this.isLoadingQRCode = false;
-      },
-      err => {
-        console.error(err);
-        this.isLoadingQRCode = false;
-      }
-    );
   }
 
   onCheckVerify() {
-    this.isLoading = true;
-    const walletAddress = this.metamaskBrightIdService.account$.getValue();
-    this.metamaskBrightIdService.getVerificationStatus(walletAddress)
-      .subscribe({
-        next: (response) => {
-          this.isLoading = false;
-          if (response.status === "SUCCESSFUL") {
-            this.userService.userClaimingState$.next(UserClaimingState.VERIFIED);
-            this.alertService.open("Verification successful!", {
-              status: "success"
-            }).subscribe();
-          } else {
-            this.alertService.open("Verification failed. Please try again.", {
-              status: "error",
-              label: 'Failed'
-            }).subscribe();
-          }
-        },
-        error: (err) => {
-          this.isLoading = false;
-          this.alertService.open("Error during verification", {
-            status: "error",
-            label: 'Failed'
-          }).subscribe();
-        },
-      });
   }
 
 }

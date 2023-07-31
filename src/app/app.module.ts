@@ -37,7 +37,8 @@ import {QRCodeModule} from 'angularx-qrcode';
 import {TuiSidebarModule} from '@taiga-ui/addon-mobile';
 import {TuiActiveZoneModule} from '@taiga-ui/cdk';
 import { ClaimDialogComponent } from './claim-dialog/claim-dialog.component';
-import {TuiStepperModule} from "@taiga-ui/kit";
+import {TuiStepperModule } from "@taiga-ui/kit";
+import { TuiLoaderModule } from '@taiga-ui/core';
 import { MetamaskConnectionComponent } from './claim-dialog/metamask-connection/metamask-connection.component';
 import { VerificationComponent } from './claim-dialog/verification/verification.component';
 import { ClaimMannaComponent } from './claim-dialog/claim-manna/claim-manna.component';
@@ -64,6 +65,7 @@ import { ClaimMannaComponent } from './claim-dialog/claim-manna/claim-manna.comp
         TuiLinkModule,
         TuiStepperModule,
         TuiSvgModule,
+        TuiLoaderModule
     ],
   providers: [MetamaskBrightIdService, MannaService, UserService,
     {

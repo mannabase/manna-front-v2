@@ -1,23 +1,23 @@
 import {Inject, Injectable, Injector} from '@angular/core';
-import {ethers} from 'ethers';
-import {BehaviorSubject, firstValueFrom, from, map, Observable, of, switchMap} from 'rxjs';
+import {ethers , providers } from 'ethers';
+import {BehaviorSubject, catchError, firstValueFrom, from, map, Observable, of, switchMap} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
-import {VerificationDialogComponent} from "./verification-dialog/verification-dialog.component";
 import {MannaService} from "./manna.service";
-import {UserClaimingState, UserService} from "./user.service";
+import { UserService} from "./user.service";
 import {TuiAlertService, TuiDialogService} from "@taiga-ui/core";
 import {PolymorpheusComponent} from "@tinkoff/ng-polymorpheus";
 import {chainConfig, mannaChainId, serverUrl} from "./config";
+import { userVerificationStatus } from 'brightid_sdk_v6';
+import { MannaBrightID,ClaimManna,Manna } from './ABI';
+
+
 
 declare let ethereum: any;
 
-export enum VerificationStatus {
-    NOT_LINKED = "NOT_LINKED",
-    NOT_VERIFIED = "NOT_VERIFIED",
-    SUCCESSFUL = "SUCCESSFUL",
-    TRANSFERRED = "TRANSFERRED",
-}
+declare global {
+    interface Window { ethereum: any; }
+  }
 
 export enum MetamaskState {
     NOT_INSTALLED = "NOT_INSTALLED",
@@ -26,6 +26,11 @@ export enum MetamaskState {
     WRONG_CHAIN = "WRONG_CHAIN",
     READY = "READY",
 }
+export enum brightIdState {
+    NOT_VERIFIED = "NOT_VERIFIED",
+    VERIFIED = "VERIFIED",
+    UNIQUE_VERIFIED = "UNIQUE_VERIFIED",
+}
 
 @Injectable({
     providedIn: 'root'
@@ -33,9 +38,13 @@ export enum MetamaskState {
 export class MetamaskBrightIdService {
     network$ = new BehaviorSubject<ethers.providers.Network | null>(null);
     account$ = new BehaviorSubject<string>('');
-    verificationStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
-    checkBrightIdStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
     balance$ = new BehaviorSubject<ethers.BigNumber | null>(null);
+    qrcodeValue: string = '';
+    private provider: ethers.providers.Web3Provider;
+    private signer: ethers.providers.JsonRpcSigner;
+    private mannaBrightIDContract: ethers.Contract;
+    private verifyMeLoading: boolean = false;
+    private brightIdVerifiedData: any = null;
 
     constructor(
         private http: HttpClient,
@@ -43,29 +52,19 @@ export class MetamaskBrightIdService {
         readonly dialogService: TuiDialogService,
         readonly mannaService: MannaService,
         readonly userService: UserService,
-        readonly injector: Injector
+        readonly injector: Injector,
     ) {
+        this.provider = new ethers.providers.Web3Provider(ethereum);
+        this.signer = this.provider.getSigner();
+        const mannaBrightIDContractAddress = '0x3AF27879b3627654a96Ed6DeDB6003Cc90272877';
+        this.mannaBrightIDContract = new ethers.Contract(mannaBrightIDContractAddress, MannaBrightID, this.signer);
     }
-
     connect(): Observable<string> {
         return from((window as any).ethereum.request({method: 'eth_requestAccounts'}))
             .pipe(
                 map((accounts: any) => accounts[0])
             );
     }
-
-    async loadNetwork() {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const network = await provider.getNetwork();
-        this.network$.next(network)
-    }
-
-    public isCorrectNetwork() {
-        if (this.network$.value == null)
-            return false
-        return this.network$.value.chainId === 42161
-    }
-
     public checkMetamaskState(): Observable<MetamaskState> {
         return new Observable(subscriber => {
             if (typeof ethereum == 'undefined') {
@@ -74,11 +73,12 @@ export class MetamaskBrightIdService {
             }
             from(ethereum.request({method: 'eth_accounts'}) as Promise<any[]>)
                 .subscribe({
-                    next: (accounts: any[]) => {
-                        if (accounts.length == 0) {
+                    next: (account: any[]) => {
+                        if (account.length == 0) {
                             subscriber.next(MetamaskState.NOT_CONNECTED);
                             return;
                         }
+                        this.account$.next(account[0]);
                         subscriber.next(MetamaskState.CONNECTED);
                         const provider = new ethers.providers.Web3Provider(ethereum);
                         from(provider.getNetwork())
@@ -105,126 +105,90 @@ export class MetamaskBrightIdService {
                 })
         })
     }
-
-    async checkUserState(): Promise<boolean> {
-        if (typeof ethereum !== 'undefined') {
-            const accounts = await ethereum.request({method: 'eth_accounts'});
-            const isConnected = accounts.length > 0;
-            if (isConnected) {
-                this.userService.userClaimingState$.next(UserClaimingState.METAMASK_CONNECTED);
-                await this.loadNetwork();
-                if (!this.isCorrectNetwork())
-                    await this.switchToMannaChain();
-
-                if (this.isCorrectNetwork())
-                    this.userService.userClaimingState$.next(UserClaimingState.CORRECT_CHAIN);
-
-                await this.loadAccount();
-                const walletAddress = this.account$.getValue();
-                const verificationStatus = await firstValueFrom(this.getVerificationStatus(walletAddress))
-                this.verificationStatus$.next(verificationStatus.status);
-
-                if (this.verificationStatus$.value == VerificationStatus.SUCCESSFUL)
-                    this.userService.userClaimingState$.next(UserClaimingState.VERIFIED)
-            } else {
-                this.userService.userClaimingState$.next(UserClaimingState.ZERO);
-            }
-            return isConnected;
-        } else {
-            this.alertService.open("Please install metamask extension", {
-                label: 'MetaMask is not installed',
-                status: "error",
-            }).subscribe();
-            return false;
-        }
-    }
-
-
-    tryClaim() {
-        return from(this.checkUserState()).pipe(
-            switchMap((isConnected: boolean) => {
-                console.log('userClaimingState :', this.userService.userClaimingState$.value)
-                if (!isConnected) {
-                    return from(ethereum.request({method: 'eth_requestAccounts'})).pipe(
-                        tap(() => this.userService.userClaimingState$.next(UserClaimingState.METAMASK_CONNECTED)),
-                        switchMap(() => this.checkUserState())
-                    );
-                } else {
-                    return of(true);
+    public checkBrightIdState(): Observable<brightIdState> {
+        return from(userVerificationStatus("Manna", `${this.account$.value}`, {
+            signed: "eth",
+            timestamp: "milliseconds"
+        })).pipe(
+            tap((data: any) => {
+                if (data.verified) {
+                    this.brightIdVerifiedData = data;
                 }
             }),
-            switchMap((value: any) => {
-                console.log('userClaimingState :', this.userService.userClaimingState$.value)
-                const walletAddress = this.account$.getValue();
-                if (this.userService.userClaimingState$.value != UserClaimingState.METAMASK_CONNECTED
-                    && this.userService.userClaimingState$.value != UserClaimingState.CORRECT_CHAIN) {
-                    return of(true)
+            map((data: any) => {
+                if (data.verified && data.unique) {
+                    return brightIdState.UNIQUE_VERIFIED;
+                } else if (data.verified) {
+                    return brightIdState.VERIFIED;
                 } else {
-                    return this.openVerifyDialog(walletAddress)
-                        .pipe(
-                            switchMap(_ => {
-                                if (this.userService.userClaimingState$.value == UserClaimingState.VERIFIED) {
-                                    return of(true)
-                                } else {
-                                    throw new Error("Verification failed");
-                                }
-                            })
-                        );
+                    return brightIdState.NOT_VERIFIED;
                 }
             }),
-            switchMap(_ => {
-                console.log('userClaimingState :', this.userService.userClaimingState$.value)
-                if (this.userService.userClaimingState$.value == UserClaimingState.READY) {
-                    return this.mannaService.claim()
-                } else {
-                    throw new Error("Failed to claim");
-                }
+            catchError((error: any) => {
+                    this.qrcodeValue = `brightid://link-verification/Manna/${this.account$.value}`;
+                    this.alertService.open("User not found. Please verify using the QR code.", {
+                        status: "error"
+                    }).subscribe();
+                return of(brightIdState.NOT_VERIFIED);
             })
-        )
-    }
-
-
-    openVerifyDialog(walletAddress: string) {
-        return this.dialogService.open<number>(
-            new PolymorpheusComponent(VerificationDialogComponent, this.injector),
-            {
-                data: 237,
-                dismissible: false,
-                label: 'Verify',
-            },
         );
     }
-
-
-    getVerificationStatus(walletAddress: string): Observable<any> {
-        return this.http.get<string>(serverUrl + `brightId/isLinked/${walletAddress}`);
+    
+    verifyMe(): Observable<void | null> {
+        if (!this.verifyMeLoading) {
+            this.verifyMeLoading = true;
+    
+            return this.checkBrightIdState().pipe(
+                switchMap(verificationStatus => {
+                    if (verificationStatus === brightIdState.VERIFIED && this.brightIdVerifiedData) {
+                        const userAddress = this.account$.value;
+    
+                        return from(
+                            this.mannaBrightIDContract['verify'](
+                                [userAddress],
+                                this.brightIdVerifiedData.timestamp,
+                                this.brightIdVerifiedData.sig.v,
+                                `0x${this.brightIdVerifiedData.sig.r}`,
+                                `0x${this.brightIdVerifiedData.sig.s}`
+                            )
+                        ).pipe(
+                            map((response: any) => response as providers.TransactionResponse),
+                            switchMap((transactionResponse: providers.TransactionResponse) =>
+                                from(transactionResponse.wait()).pipe(
+                                    map(() => null),
+                                )
+                            ),
+                            tap(() => {
+                                this.verifyMeLoading = false;
+                                this.loadBalance();
+                            }),
+                        );
+                    } else {
+                        this.verifyMeLoading = false;
+                        return of(null);
+                    }
+                }),
+                catchError(err => {
+                    console.error(err.message);
+                    this.verifyMeLoading = false;
+                    return of(null);
+                })
+            );
+        }
+        return of(null);
     }
-
-    checkBrightIdStatus(walletAddress: string) {
-        this.http
-            .get<string>(serverUrl + `brightId/verifications/${walletAddress}`)
-            .subscribe({
-                next: (response: any) => {
-                    this.checkBrightIdStatus$.next(response.data);
-                },
-                error: (err) => {
-                    this.alertService.open("The verification process failed", {
-                        label: 'You are not Verified',
-                        status: "error",
-                    }).subscribe();
-                }
-            });
-    }
+    
+    
+    
+    
+    
+    
+    
 
     switchToMannaChain(): Observable<any> {
         return from(ethereum.request(chainConfig));
     }
 
-    async loadAccount(): Promise<void> {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        this.account$.next(await signer.getAddress());
-    }
 
     async loadBalance() {
         if (this.account$.value) {

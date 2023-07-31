@@ -27,7 +27,6 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.metamaskBrightIdService.checkUserState();
     this.metamaskBrightIdService.balance$.subscribe(
       balance => {
         this.balance = balance ? ethers.utils.formatEther(balance) : null;

@@ -3,7 +3,6 @@ import {TuiAlertService, TuiDialogService} from '@taiga-ui/core';
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 import {UserClaimingState, UserService} from 'src/app/user.service';
 import {PolymorpheusComponent} from "@tinkoff/ng-polymorpheus";
-import {VerificationDialogComponent} from "../verification-dialog/verification-dialog.component";
 import {ClaimDialogComponent} from "../claim-dialog/claim-dialog.component";
 
 @Component({
@@ -27,7 +26,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.metamaskBrightIdService.checkUserState();
   }
 
   openClaimDialog() {

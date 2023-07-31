@@ -1,3 +1,9 @@
-<p>verification works!</p>
+<p *ngIf="!qrCodeValue">Please click 'Check Verification' button to check your verification status.</p>
 
-<button tuiButton (click)="nextStep.emit()">Next</button>
+<qrcode *ngIf="qrCodeValue" [qrdata]="qrCodeValue" height="256"></qrcode>
+
+<button tuiButton [disabled]="loading" (click)="checkVerification()">
+    <tui-loader *ngIf="loading">loadin..</tui-loader>
+    <ng-container *ngIf="!loading">{{state === brightIdState.VERIFIED ? 'Next' : 'Check Verification'}}</ng-container>
+</button>
+<button tuiButton *ngIf="state === brightIdState.UNIQUE_VERIFIED" (click)="onVerify()">Verify</button>
