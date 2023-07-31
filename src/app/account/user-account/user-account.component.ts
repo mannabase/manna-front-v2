@@ -43,6 +43,6 @@ export class UserAccountComponent {
     textField.remove();
     this.alertService.open('Address Copied', {
       status: "success"
-    })
+    }).subscribe();
   }
 }

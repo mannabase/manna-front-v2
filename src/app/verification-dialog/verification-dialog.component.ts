@@ -44,12 +44,12 @@ export class VerificationDialogComponent {
             this.userService.userClaimingState$.next(UserClaimingState.VERIFIED);
             this.alertService.open("Verification successful!", {
               status: "success"
-            });
+            }).subscribe();
           } else {
             this.alertService.open("Verification failed. Please try again.", {
               status: "error",
               label: 'Failed'
-            });
+            }).subscribe();
           }
         },
         error: (err) => {
@@ -57,7 +57,7 @@ export class VerificationDialogComponent {
           this.alertService.open("Error during verification", {
             status: "error",
             label: 'Failed'
-          });
+          }).subscribe();
         },
       });
   }

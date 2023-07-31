@@ -52,7 +52,7 @@ export class MetamaskBrightIdService {
         return from((window as any).ethereum.request({ method: 'eth_requestAccounts' })
             .then((accounts: string[]) => accounts[0])) as Observable<string>;
     }
-    
+
     async loadNetwork() {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const network = await provider.getNetwork();
@@ -91,14 +91,14 @@ export class MetamaskBrightIdService {
                                 error: err => {
                                     this.alertService.open("Failed to load web3 network", {
                                         status: "error"
-                                    })
+                                    }).subscribe();
                                 }
                             })
                     },
                     error: err => {
                         this.alertService.open("Failed to load web3 accounts", {
                             status: "error"
-                        })
+                        }).subscribe();
                     }
                 })
         })
@@ -132,7 +132,7 @@ export class MetamaskBrightIdService {
             this.alertService.open("Please install metamask extension", {
                 label: 'MetaMask is not installed',
                 status: "error",
-            })
+            }).subscribe();
             return false;
         }
     }
@@ -209,7 +209,7 @@ export class MetamaskBrightIdService {
                     this.alertService.open("The verification process failed", {
                         label: 'You are not Verified',
                         status: "error",
-                    })
+                    }).subscribe();
                 }
             });
     }
