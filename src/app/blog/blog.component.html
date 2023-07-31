@@ -1,7 +1,8 @@
 <div class="blog-list">
-  <div class="blog-item flex flex-column border-round-3xl" *ngFor="let blog of blogs" (click)="viewBlogDetail(blog.id)">
-    <img [src]="blog.imageUrl" alt="Blog Image">
-    <h3>{{ blog.title }}</h3>
-    <p>{{ blog.content }}</p>
-  </div>
+    <div class="blog-item flex flex-column border-round-3xl p-3" *ngFor="let blog of blogs"
+         (click)="viewBlogDetail(blog.id)">
+        <img [src]="blog.imageUrl" alt="Blog Image">
+        <h3>{{ blog.title }}</h3>
+        <p class="blog-content">{{ trim(blog.content) }}</p>
+    </div>
 </div>
