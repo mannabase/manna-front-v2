@@ -71,3 +71,12 @@
     align-items: center;
   }
 }
+
+
+.more-button {
+  width: 10em;
+  --tui-secondary-hover: var(--tui-primary);
+  ::ng-deep .t-wrapper {
+    color: white !important;
+  }
+}

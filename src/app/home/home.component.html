@@ -17,7 +17,7 @@
         </div>
         <div class="button-get-started">
           <button class="manna-button" (click)="openClaimDialog()">
-              Claim Manna
+            Claim Manna
           </button>
         </div>
         <div class="button-learn-more pt-1">
@@ -51,23 +51,19 @@
         <div class="col-12 md:col-6 lg:col-5 ">
           <div class=" p-3">
             <div class="flex justify-content-between mb-3">
-              <div>
+              <div class="flex flex-column gap-2">
                 <div class="py-1">
-                  <a class="my-button">
+                  <a tuiLink>
                     MANNA ECOSYSTEM
-                    <i class="pi pi-arrow-right"></i>
+                    <tui-svg src="tuiIconArrowRight" style="color: var(--tui-primary)"></tui-svg>
                   </a>
                 </div>
-                <div class=" block text-4xl font-medium col-8">Build a global network powerd by the community</div>
-                <div class=" block text-lg font-light col-8">A community powerd global ecosystem using the principles of
+                <div class="text-4xl font-medium line-height-2">Build a global network powered by the community</div>
+                <div class="text-base font-light">A community powered global ecosystem using the principles of
                   UBI to make it open and accessible to all
                 </div>
               </div>
             </div>
-            <a class="my-button">
-              Get Started
-              <i class="pi pi-arrow-up-right"></i>
-            </a>
           </div>
         </div>
         <div
@@ -75,54 +71,43 @@
           <img src="../../assets/images/manna-people.png" class="col-12">
         </div>
       </div>
-      <div class="grid justify-content-center md:px-6 lg:px-10 gap-4">
-        <div
-          class="grid shadow-2  border-round-3xl bg-cover col-12 md:col-6 lg:col-5"
-          style="background-image: url('../../assets/images/governed_background.png');">
-          <div class="col-10">
-            <div class="block text-4xl font-medium">
-              Build a global network powerd by the community
-            </div>
-            <div class="block text-lg font-light">
-              A community powerd global ecosystem using the principles of UBI to make it open and accessible to all
-            </div>
+
+      <div class="flex flex-row flex-wrap gap-4 align-items-center justify-content-center">
+
+        <div class="shadow-2 border-round-3xl bg-cover flex flex-column gap-2 p-3"
+             style="background-image: url('../../assets/images/governed_background.png');max-width: 50%">
+          <div class="text-4xl font-medium line-height-2">
+            Build a global network powered by the community
           </div>
-          <div class="grid align-self-end">
-            <div class="col-8 align-self-end">
-              <a class="my-button">
-                Get Started
-                <i class="pi pi-arrow-up-right"></i>
-              </a>
-            </div>
-            <div class="col-4">
-              <img src="../../assets/images/governed_manna_logo.png" alt="manna" style="width:80%">
-            </div>
+          <div class="text-lg font-light">
+            A community powered global ecosystem using the principles of UBI to make it open and accessible to all
           </div>
+          <div class="flex flex-row justify-content-end w-full">
+            <img src="../../assets/images/governed_manna_logo.png" alt="manna" style="max-width: 10em">
+          </div>
+          <button tuiButton style="width: 10em" size="s" appearance="flat">
+            Get Started
+            <tui-svg src="tuiIconArrowUpRight" style="color: var(--tui-primary)"></tui-svg>
+          </button>
         </div>
-        <div class="grid col-12 md:col-6 lg:col-5 row-gap-2 p-0">
-          <div class="col-12">
-            <app-info-box
-              title="Governed Forum"
-              body="Participate in discussion and proposals for future update and decisions with tha Manna cummunity">
-            </app-info-box>
-          </div>
-          <div class="col-12">
-            <app-info-box
-              title="Verified Unique People"
-              body="Partipicate directly or delegate to active members in the community.All verified Manna users have a voice. ">
-            </app-info-box>
-          </div>
-          <div class="col-12">
-            <app-info-box
-              title="Governance DAO"
-              body="Vote on important proposals and view vote history on past proposals.">
-            </app-info-box>
-          </div>
+
+        <div class="flex flex-column align-content-evenly h-full gap-3 sm:max-w-full" style="max-width: 50%">
+          <app-info-box
+            class="flex-grow-1 max-h-full"
+            title="Governed Forum"
+            body="Participate in discussion and proposals for future update and decisions with tha Manna cummunity">
+          </app-info-box>
+          <app-info-box
+            title="Verified Unique People"
+            body="Participate directly or delegate to active members in the community.All verified Manna users have a voice. ">
+          </app-info-box>
+          <app-info-box
+            title="Governance DAO"
+            body="Vote on important proposals and view vote history on past proposals.">
+          </app-info-box>
         </div>
       </div>
-      <!-- <div class="grid justify-content-center py-5 md:px-6 lg:px-10 gap-4">
-        <h2>DEVELOPERS</h2>
-      </div> -->
+
       <div class="grid justify-content-center m-0 py-5 md:px-6 lg:px-10 gap-4">
         <div class="grid col-12 md:col-6 lg:col-7 ">
           <div class="shadow-2 p-3 border-3 border-round-3xl bg-cover pt-5"
@@ -132,10 +117,10 @@
               started
             </div>
             <div class="grid">
-              <div class="flex align-items-start col-7 ">
-                <a class="my-button pl-2">
+              <div class="flex align-items-start col-7 pl-3">
+                <a tuiLink>
                   Read more
-                  <i class="pi pi-arrow-up-right"></i>
+                  <tui-svg src="tuiIconArrowUpRight" style="color: var(--tui-primary)"></tui-svg>
                 </a>
               </div>
               <div class="col-4">
@@ -149,7 +134,7 @@
               style="background-image: url('../../assets/images/developer_background.png');">
               <a class="my-button">
                 Governed Foum
-                <i class="pi pi-arrow-right"></i>
+                <tui-svg src="tuiIconArrowRight"></tui-svg>
               </a>
             </div>
             <div
@@ -158,7 +143,7 @@
               <div class="mb-3">
                 <a class="my-button">
                   Governed Foum
-                  <i class="pi pi-arrow-right"></i>
+                  <tui-svg src="tuiIconArrowRight"></tui-svg>
                 </a>
               </div>
             </div>
@@ -179,10 +164,10 @@
               <div class="text-lg font-light col-10 px-3">
                 Get paid to build the future of money. Manna Governance offers
               </div>
-              <a class="my-button m-4 pb-3">
+              <button tuiButton class="more-button" size="s" appearance="flat" >
                 Read more
-                <i class="pi pi-arrow-up-right"></i>
-              </a>
+                <tui-svg src="tuiIconArrowUpRight"></tui-svg>
+              </button>
             </div>
           </div>
         </div>
@@ -213,11 +198,6 @@
                 </div>
               </div>
               <div class="footer-link">
-                <!-- <button class="footer-link" styleClass="p-button-link px-0">
-                  <p class="button-get-started-text my-0">
-                    Dashboard
-                  </p>
-                </button> -->
                 <a class="my-button footer-link">
                   Dashboard
                 </a>

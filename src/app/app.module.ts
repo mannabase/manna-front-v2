@@ -1,11 +1,11 @@
 import {NgDompurifySanitizer} from "@tinkoff/ng-dompurify";
 import {
-  TUI_SANITIZER,
-  TuiAlertModule,
-  TuiButtonModule,
-  TuiDialogModule,
-  TuiLinkModule,
-  TuiRootModule
+    TUI_SANITIZER,
+    TuiAlertModule,
+    TuiButtonModule,
+    TuiDialogModule,
+    TuiLinkModule,
+    TuiRootModule, TuiSvgModule
 } from "@taiga-ui/core";
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
@@ -63,6 +63,7 @@ import { ClaimMannaComponent } from './claim-dialog/claim-manna/claim-manna.comp
         TuiButtonModule,
         TuiLinkModule,
         TuiStepperModule,
+        TuiSvgModule,
     ],
   providers: [MetamaskBrightIdService, MannaService, UserService,
     {
