@@ -31,6 +31,7 @@
     "@types/node": "^20.2.5",
     "angular-svg-icon": "^16.0.0",
     "angularx-qrcode": "^16.0.0",
+    "brightid_sdk_v6": "^2.0.1",
     "dompurify": "2.2.9",
     "ethers": "^5.0.0",
     "ngx-resize-observer": "^2.5.2",

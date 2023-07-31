@@ -45,6 +45,21 @@ export class MetamaskConnectionComponent implements OnInit {
     }
 
     connectMetamask() {
-
+        this.metamaskBrightIdService.connect()
+            .subscribe({
+                next: account => {
+                    this.alertService.open("Connected to account: " + account, {
+                        status: "success"
+                    });
+                    this.nextStep.emit()
+                    this.state = MetamaskState.CONNECTED;
+                },
+                error: err => {
+                    this.alertService.open("Failed to connect Metamask", {
+                        status: "error"
+                    });
+                    this.state = MetamaskState.NOT_CONNECTED;
+                }
+            });
     }
 }

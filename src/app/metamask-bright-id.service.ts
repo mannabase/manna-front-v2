@@ -48,7 +48,11 @@ export class MetamaskBrightIdService {
         this.serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/';
         this.mannaService.setServerUrl(this.serverUrl);
     }
-
+    connect(): Observable<string> {
+        return from((window as any).ethereum.request({ method: 'eth_requestAccounts' })
+            .then((accounts: string[]) => accounts[0])) as Observable<string>;
+    }
+    
     async loadNetwork() {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const network = await provider.getNetwork();
@@ -216,14 +220,14 @@ export class MetamaskBrightIdService {
             params: [
                 {
                     chainId: '0xa4b1',
-                    chainName: 'Arbitrum One',
-                    rpcUrls: ['https://arbitrum-mainnet.infura.io'],
+                    chainName: 'Arbitrum',
                     nativeCurrency: {
                         name: 'Ethereum',
                         symbol: 'ETH',
                         decimals: 18,
                     },
-                    blockExplorerUrls: ['https://explorer.arbitrum.io'],
+                    rpcUrls: ["https://arb1.arbitrum.io/rpc"],
+                    blockExplorerUrls: ["https://arbiscan.io/"],
                 },
             ],
         }));
