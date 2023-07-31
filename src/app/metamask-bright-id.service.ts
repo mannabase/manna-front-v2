@@ -1,6 +1,6 @@
 import {Inject, Injectable, Injector} from '@angular/core';
 import {ethers} from 'ethers';
-import {BehaviorSubject, firstValueFrom, from, Observable, of, switchMap} from 'rxjs';
+import {BehaviorSubject, firstValueFrom, from, map, Observable, of, switchMap} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {VerificationDialogComponent} from "./verification-dialog/verification-dialog.component";
@@ -8,7 +8,7 @@ import {MannaService} from "./manna.service";
 import {UserClaimingState, UserService} from "./user.service";
 import {TuiAlertService, TuiDialogService} from "@taiga-ui/core";
 import {PolymorpheusComponent} from "@tinkoff/ng-polymorpheus";
-import {mannaChainId} from "./config";
+import {chainConfig, mannaChainId, serverUrl} from "./config";
 
 declare let ethereum: any;
 
@@ -22,15 +22,15 @@ export enum VerificationStatus {
 export enum MetamaskState {
     NOT_INSTALLED = "NOT_INSTALLED",
     NOT_CONNECTED = "NOT_CONNECTED",
-    WRONG_CHAIN = "WRONG_CHAIN",
     CONNECTED = "CONNECTED",
+    WRONG_CHAIN = "WRONG_CHAIN",
+    READY = "READY",
 }
 
 @Injectable({
     providedIn: 'root'
 })
 export class MetamaskBrightIdService {
-    serverUrl: string;
     network$ = new BehaviorSubject<ethers.providers.Network | null>(null);
     account$ = new BehaviorSubject<string>('');
     verificationStatus$ = new BehaviorSubject<VerificationStatus | null>(null);
@@ -45,12 +45,13 @@ export class MetamaskBrightIdService {
         readonly userService: UserService,
         readonly injector: Injector
     ) {
-        this.serverUrl = 'https://mannatest.hedgeforhumanity.org/backend/';
-        this.mannaService.setServerUrl(this.serverUrl);
     }
+
     connect(): Observable<string> {
-        return from((window as any).ethereum.request({ method: 'eth_requestAccounts' })
-            .then((accounts: string[]) => accounts[0])) as Observable<string>;
+        return from((window as any).ethereum.request({method: 'eth_requestAccounts'}))
+            .pipe(
+                map((accounts: any) => accounts[0])
+            );
     }
 
     async loadNetwork() {
@@ -78,12 +79,13 @@ export class MetamaskBrightIdService {
                             subscriber.next(MetamaskState.NOT_CONNECTED);
                             return;
                         }
+                        subscriber.next(MetamaskState.CONNECTED);
                         const provider = new ethers.providers.Web3Provider(ethereum);
                         from(provider.getNetwork())
                             .subscribe({
                                 next: network => {
                                     if (network.chainId == mannaChainId) {
-                                        subscriber.next(MetamaskState.CONNECTED);
+                                        subscriber.next(MetamaskState.READY);
                                     } else {
                                         subscriber.next(MetamaskState.WRONG_CHAIN)
                                     }
@@ -195,12 +197,12 @@ export class MetamaskBrightIdService {
 
 
     getVerificationStatus(walletAddress: string): Observable<any> {
-        return this.http.get<string>(this.serverUrl + `brightId/isLinked/${walletAddress}`);
+        return this.http.get<string>(serverUrl + `brightId/isLinked/${walletAddress}`);
     }
 
     checkBrightIdStatus(walletAddress: string) {
         this.http
-            .get<string>(this.serverUrl + `brightId/verifications/${walletAddress}`)
+            .get<string>(serverUrl + `brightId/verifications/${walletAddress}`)
             .subscribe({
                 next: (response: any) => {
                     this.checkBrightIdStatus$.next(response.data);
@@ -215,22 +217,7 @@ export class MetamaskBrightIdService {
     }
 
     switchToMannaChain(): Observable<any> {
-        return from(ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-                {
-                    chainId: '0xa4b1',
-                    chainName: 'Arbitrum',
-                    nativeCurrency: {
-                        name: 'Ethereum',
-                        symbol: 'ETH',
-                        decimals: 18,
-                    },
-                    rpcUrls: ["https://arb1.arbitrum.io/rpc"],
-                    blockExplorerUrls: ["https://arbiscan.io/"],
-                },
-            ],
-        }));
+        return from(ethereum.request(chainConfig));
     }
 
     async loadAccount(): Promise<void> {

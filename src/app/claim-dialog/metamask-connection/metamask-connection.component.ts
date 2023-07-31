@@ -19,10 +19,14 @@ export class MetamaskConnectionComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.updateState();
+    }
+
+    updateState() {
         this.metamaskBrightIdService.checkMetamaskState()
             .subscribe({
                 next: value => {
-                    if (value == MetamaskState.CONNECTED)
+                    if (value == MetamaskState.READY)
                         this.nextStep.emit();
                     this.state = value;
                 }
@@ -35,6 +39,8 @@ export class MetamaskConnectionComponent implements OnInit {
                 this.alertService.open("Chain Switched to " + mannaChainName, {
                     status: "success"
                 }).subscribe();
+                this.state = MetamaskState.READY;
+                this.nextStep.emit();
             },
             error: err => {
                 this.alertService.open("Failed to switch chain", {
@@ -51,8 +57,8 @@ export class MetamaskConnectionComponent implements OnInit {
                     this.alertService.open("Connected to account: " + account, {
                         status: "success"
                     }).subscribe();
-                    this.nextStep.emit()
                     this.state = MetamaskState.CONNECTED;
+                    this.updateState();
                 },
                 error: err => {
                     this.alertService.open("Failed to connect Metamask", {

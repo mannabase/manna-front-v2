@@ -1,53 +1,33 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {serverUrl} from "./config";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class MannaService {
-  private serverUrl!: string;
-  mannaWallet$ = new BehaviorSubject<string>('');
-  email: string = '';
 
-  constructor(
-    private http: HttpClient,
-  ) {
-  }
+    constructor(
+        private http: HttpClient,
+    ) {
+    }
 
-  setServerUrl(serverUrl: string) {
-    this.serverUrl = serverUrl;
-  }
+    getBalance(walletAddress: string) {
+        return of(8.2)
+        // return this.http.get<string>(serverUrl + `conversion/getBalance/${walletAddress}`);
+    }
 
-  getBalance(walletAddress: string) {
-    return of(8.2)
-    // return this.http.get<string>(this.serverUrl + `conversion/getBalance/${walletAddress}`);
-  }
+    mannaToClaim(walletAddress: string): Observable<string> {
+        return this.http.get<string>(serverUrl + `conversion/claimable/${walletAddress}`);
+    }
 
-  mannaWallet(walletAddress: string) {
-    return this.http.get<string>(this.serverUrl + `conversion/mannaWallet/${walletAddress}`);
-  }
+    requestClaim(walletAddress: string): void {
+        const payload = {mannaWallet$: walletAddress};
+        this.http.post<any>(serverUrl + '/manna/claim', payload);
+    }
 
-  sendEmail(email: string): Observable<any> {
-    const payload = {email: email};
-    return this.http.post<any>(this.serverUrl + 'conversion/requestMailCode', payload);
-  }
-
-  sendCode(email: string): Observable<any> {
-    const payload = {email: email};
-    return this.http.post<any>(this.serverUrl + '/conversion/submitMailCode', payload);
-  }
-
-  mannaToClaim(walletAddress: string): Observable<string> {
-    return this.http.get<string>(this.serverUrl + `conversion/claimable/${walletAddress}`);
-  }
-
-  requestClaim(walletAddress: string): void {
-    const payload = {mannaWallet$: walletAddress};
-    this.http.post<any>(this.serverUrl + '/manna/claim', payload);
-  }
-
-  claim(): Observable<any> {
-    return of("HAHA")
-  }
+    claim(): Observable<any> {
+        return of("HAHA")
+    }
 }
