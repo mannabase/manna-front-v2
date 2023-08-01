@@ -89,6 +89,48 @@ export class ContractService {
                 .subscribe();
         }
     }
+    verifyMe(): Observable<void | null> {
+        if (!this.verifyMeLoading) {
+            this.verifyMeLoading = true;
+
+            return this.metamaskBrightIdService.checkBrightIdState().pipe(
+                switchMap((verificationStatus: brightIdState) => {
+                    if (verificationStatus === brightIdState.VERIFIED && this.metamaskBrightIdService.brightIdVerifiedData) {
+                        const userAddress = this.getAddress();
+
+                        return from(
+                            this.mannaBrightIDContract['verify'](
+                                [userAddress],
+                                this.metamaskBrightIdService.brightIdVerifiedData.timestamp,
+                                this.metamaskBrightIdService.brightIdVerifiedData.sig.v,
+                                `0x${this.metamaskBrightIdService.brightIdVerifiedData.sig.r}`,
+                                `0x${this.metamaskBrightIdService.brightIdVerifiedData.sig.s}`
+                            )
+                        ).pipe(
+                            switchMap((transactionResponse: any) =>
+                                from((transactionResponse as providers.TransactionResponse).wait())
+                            ),
+
+                            map(() => null),
+                            tap(() => {
+                                this.verifyMeLoading = false;
+                                this.metamaskBrightIdService.loadBalance();
+                            }),
+                        );
+                    } else {
+                        this.verifyMeLoading = false;
+                        return of(null);
+                    }
+                }),
+                catchError((err: any) => {
+                    console.error(err.message);
+                    this.verifyMeLoading = false;
+                    return of(null);
+                })
+            );
+        }
+        return of(null);
+    }
     registerMe(): void {
         if (!this.registerMeLoading) {
             this.registerMeLoading = true;
