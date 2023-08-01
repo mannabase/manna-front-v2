@@ -1,5 +1,5 @@
-<div class="flex flex-column  gap-2 ">
-    <tui-stepper [activeItemIndex]="currentStep" class="steper-header">
+<div class="flex flex-column gap-2 align-items-center">
+    <tui-stepper [activeItemIndex]="currentStep">
         <button tuiStep [stepState]="currentStep > 0 ? 'pass' : 'normal'" [disabled]="currentStep != 0">
             Metamask
         </button>
@@ -11,7 +11,7 @@
         </button>
     </tui-stepper>
 
-    <div class="stepper-body" style="display: flex;">
+    <div class="p-3">
         <app-metamask-connection *ngIf="currentStep == 0" (nextStep)="currentStep  = currentStep + 1">
 
         </app-metamask-connection>

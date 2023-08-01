@@ -1,9 +1,11 @@
-<qrcode *ngIf="qrCodeValue" [qrdata]="qrCodeValue" class="qrcode" ></qrcode>
+<div class="flex flex-column align-items-center">
+    <p *ngIf="state && qrCodeValue">Almost there! Scan the QR code below using your BrightID app to verify your
+        identity</p>
+    <qrcode *ngIf="qrCodeValue" [qrdata]="qrCodeValue" class="qrcode"></qrcode>
 
-<button tuiButton [disabled]="loading" (click)="checkVerification()">
-    <tui-loader *ngIf="loading">loadin..</tui-loader>
-    <ng-container *ngIf="!loading">{{state === brightIdState.VERIFIED ? 'Next' : 'Check Verification'}}</ng-container>
-</button>
-<button tuiButton *ngIf="state === brightIdState.UNIQUE_VERIFIED" (click)="onVerify()">Verify</button>
-<p *ngIf="state && !qrCodeValue">Please click 'Check Verification' button to check your verification status.</p>
-
+    <p *ngIf="state && !qrCodeValue">Please click 'Check Verification' button to check your verification status</p>
+    <button tuiButton (click)="checkVerification()" size="m" [showLoader]="loading">
+        {{state == brightIdState.VERIFIED ? 'Next' : 'Check Verification'}}
+    </button>
+    <button tuiButton *ngIf="state == brightIdState.UNIQUE_VERIFIED" (click)="onVerify()" size="m">Verify</button>
+</div>

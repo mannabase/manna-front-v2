@@ -3,7 +3,7 @@ import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { catchError, switchMap, tap , map } from 'rxjs/operators';
 import { ethers, providers } from 'ethers';
 import { MannaBrightID, ClaimManna, Manna } from './ABI';
-import { MetamaskBrightIdService,brightIdState} from './metamask-bright-id.service';
+import { MetamaskBrightIdService,BrightIdState} from './metamask-bright-id.service';
 import {mannaBrightIDContractAddress, claimMannaContractAddress, mannaContractAddress} from "./config";
 
 
@@ -20,18 +20,18 @@ export class ContractService {
     private mannaContract: ethers.Contract;
     verifyMeLoading: boolean = false;
     registerMeLoading: boolean = false;
-    
+
 
     private contractDataSubject = new BehaviorSubject<{
         isVerified: boolean | null,
         isRegistered: boolean | null,
         toClaim: ethers.BigNumber,
-        balance: ethers.BigNumber 
+        balance: ethers.BigNumber
     }>({
         isVerified: null,
         isRegistered: null,
         toClaim: ethers.BigNumber.from(0),
-        balance: ethers.BigNumber.from(0), 
+        balance: ethers.BigNumber.from(0),
     });
 
     contractData$ = this.contractDataSubject.asObservable();
@@ -72,7 +72,7 @@ export class ContractService {
 
     claimManna(): void {
         const toClaim = ethers.BigNumber.from(this.contractData.toClaim);
-    
+
         if (!toClaim.isZero()) {
             from(this.claimMannaContract['claim']())
                 .pipe(
@@ -94,8 +94,8 @@ export class ContractService {
             this.verifyMeLoading = true;
 
             return this.metamaskBrightIdService.checkBrightIdState().pipe(
-                switchMap((verificationStatus: brightIdState) => {
-                    if (verificationStatus === brightIdState.VERIFIED && this.metamaskBrightIdService.brightIdVerifiedData) {
+                switchMap((verificationStatus: BrightIdState) => {
+                    if (verificationStatus === BrightIdState.VERIFIED && this.metamaskBrightIdService.brightIdVerifiedData) {
                         const userAddress = this.getAddress();
 
                         return from(
@@ -134,7 +134,7 @@ export class ContractService {
     registerMe(): void {
         if (!this.registerMeLoading) {
             this.registerMeLoading = true;
-    
+
             from(this.claimMannaContract['register']())
                 .pipe(
                     switchMap((transaction: any) => from((transaction as ethers.ContractTransaction).wait())),
@@ -151,7 +151,7 @@ export class ContractService {
                 .subscribe();
         }
     }
-    
+
     loadInfo(): void {
         from(this.mannaContract['balanceOf'](this.getAddress()) as Promise<ethers.BigNumber>)
             .pipe(
@@ -163,12 +163,12 @@ export class ContractService {
                     return of(null);
                 })
             ).subscribe();
-    
+
         from(this.claimMannaContract['isVerified'](this.getAddress()) as Promise<boolean>)
             .pipe(
                 tap((isVerified: boolean) => {
                     this.setContractIsVerified(isVerified);
-    
+
                     if (isVerified) {
                         from(this.claimMannaContract['isRegistered'](this.getAddress()) as Promise<boolean>)
                             .pipe(
@@ -180,7 +180,7 @@ export class ContractService {
                                     return of(null);
                                 })
                             ).subscribe();
-    
+
                         from(this.claimMannaContract['toClaim'](this.getAddress()) as Promise<ethers.BigNumber>)
                             .pipe(
                                 tap((toClaim: ethers.BigNumber) => {
@@ -199,10 +199,10 @@ export class ContractService {
                 })
             ).subscribe();
     }
-    
-    
-    
-    
+
+
+
+
     getAddress() {
         return this.signer.getAddress();
       }

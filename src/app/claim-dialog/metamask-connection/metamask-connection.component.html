@@ -1,9 +1,11 @@
-<span class="pb-3">Connect to Metamasak and Arbirtum</span>
+<div class="flex flex-column gap-3 justify-content-center align-items-center w-full">
+    <span>Let's get you started! Please connect your Metamask wallet by clicking the button below</span>
 
-<div *ngIf="state == MetamaskState.WRONG_CHAIN">
-    <button tuiButton (click)="switchChain()" size="m">Switch chain to {{mannaChain}}</button>
-</div>
+    <div *ngIf="state == MetamaskState.WRONG_CHAIN">
+        <button tuiButton (click)="switchChain()" size="m">Switch chain to {{mannaChain}}</button>
+    </div>
 
-<div *ngIf="state == MetamaskState.NOT_CONNECTED">
-    <button tuiButton (click)="connectMetamask()" size="m">Connect to Metamask</button>
+    <div *ngIf="state == MetamaskState.NOT_CONNECTED">
+        <button tuiButton (click)="connectMetamask()" size="m">Connect to Metamask</button>
+    </div>
 </div>
