@@ -6,10 +6,8 @@ import {HttpClient} from '@angular/common/http';
 import {MannaService} from "./manna.service";
 import { UserService} from "./user.service";
 import {TuiAlertService, TuiDialogService} from "@taiga-ui/core";
-import {PolymorpheusComponent} from "@tinkoff/ng-polymorpheus";
 import {chainConfig, mannaChainId, serverUrl} from "./config";
 import { userVerificationStatus } from 'brightid_sdk_v6';
-import { MannaBrightID,ClaimManna,Manna } from './ABI';
 
 
 
@@ -40,11 +38,7 @@ export class MetamaskBrightIdService {
     account$ = new BehaviorSubject<string>('');
     balance$ = new BehaviorSubject<ethers.BigNumber | null>(null);
     qrcodeValue: string = '';
-    private provider: ethers.providers.Web3Provider;
-    private signer: ethers.providers.JsonRpcSigner;
-    private mannaBrightIDContract: ethers.Contract;
-    private verifyMeLoading: boolean = false;
-    private brightIdVerifiedData: any = null;
+    public brightIdVerifiedData: any = null;
 
     constructor(
         private http: HttpClient,
@@ -53,12 +47,7 @@ export class MetamaskBrightIdService {
         readonly mannaService: MannaService,
         readonly userService: UserService,
         readonly injector: Injector,
-    ) {
-        this.provider = new ethers.providers.Web3Provider(ethereum);
-        this.signer = this.provider.getSigner();
-        const mannaBrightIDContractAddress = '0x3AF27879b3627654a96Ed6DeDB6003Cc90272877';
-        this.mannaBrightIDContract = new ethers.Contract(mannaBrightIDContractAddress, MannaBrightID, this.signer);
-    }
+    ) {}
     connect(): Observable<string> {
         return from((window as any).ethereum.request({method: 'eth_requestAccounts'}))
             .pipe(
@@ -133,63 +122,12 @@ export class MetamaskBrightIdService {
             })
         );
     }
-    
-    verifyMe(): Observable<void | null> {
-        if (!this.verifyMeLoading) {
-            this.verifyMeLoading = true;
-    
-            return this.checkBrightIdState().pipe(
-                switchMap(verificationStatus => {
-                    if (verificationStatus === brightIdState.VERIFIED && this.brightIdVerifiedData) {
-                        const userAddress = this.account$.value;
-    
-                        return from(
-                            this.mannaBrightIDContract['verify'](
-                                [userAddress],
-                                this.brightIdVerifiedData.timestamp,
-                                this.brightIdVerifiedData.sig.v,
-                                `0x${this.brightIdVerifiedData.sig.r}`,
-                                `0x${this.brightIdVerifiedData.sig.s}`
-                            )
-                        ).pipe(
-                            map((response: any) => response as providers.TransactionResponse),
-                            switchMap((transactionResponse: providers.TransactionResponse) =>
-                                from(transactionResponse.wait()).pipe(
-                                    map(() => null),
-                                )
-                            ),
-                            tap(() => {
-                                this.verifyMeLoading = false;
-                                this.loadBalance();
-                            }),
-                        );
-                    } else {
-                        this.verifyMeLoading = false;
-                        return of(null);
-                    }
-                }),
-                catchError(err => {
-                    console.error(err.message);
-                    this.verifyMeLoading = false;
-                    return of(null);
-                })
-            );
-        }
-        return of(null);
-    }
-    
-    
-    
-    
-    
-    
-    
-
+      
     switchToMannaChain(): Observable<any> {
         return from(ethereum.request(chainConfig));
     }
 
-
+    
     async loadBalance() {
         if (this.account$.value) {
             const provider = new ethers.providers.Web3Provider(ethereum);

@@ -1,1 +1,11 @@
-<p>claim-manna works!</p>
+<div *ngIf="contractService.contractData$ | async as contractData">
+    <div *ngIf="contractData.isRegistered; else register">
+      <button (click)="claimManna(contractData.toClaim)">Claim Manna</button>
+      <p>You can claim {{ contractData.toClaim.toString() }} manna</p>
+    </div>
+    <ng-template #register>
+      <button (click)="registerMe()">Register</button>
+    </ng-template>
+  </div>
+  <p *ngIf="successMessage">Successfully claimed {{ successMessage }} manna!</p>
+  

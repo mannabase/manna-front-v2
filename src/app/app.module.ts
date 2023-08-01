@@ -29,6 +29,7 @@ import {WalletComponent} from './account/wallet/wallet.component';
 import {UserAccountComponent} from './account/user-account/user-account.component';
 import {BlogDetailComponent} from './blog/blog-detail/blog-detail.component';
 import {MetamaskBrightIdService} from './metamask-bright-id.service';
+import {ContractService} from './contract.service';
 import {MannaService} from './manna.service';
 import {UserService} from './user.service';
 import {NgxResizeObserverModule} from 'ngx-resize-observer';
@@ -67,7 +68,7 @@ import { ClaimMannaComponent } from './claim-dialog/claim-manna/claim-manna.comp
         TuiSvgModule,
         TuiLoaderModule
     ],
-  providers: [MetamaskBrightIdService, MannaService, UserService,
+  providers: [MetamaskBrightIdService, MannaService, UserService,ContractService,
     {
       provide: TUI_SANITIZER,
       useClass: NgDompurifySanitizer
