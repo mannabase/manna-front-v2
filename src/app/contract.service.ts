@@ -26,10 +26,12 @@ export class ContractService {
         isVerified: boolean | null,
         isRegistered: boolean | null,
         toClaim: ethers.BigNumber,
+        balance: ethers.BigNumber 
     }>({
         isVerified: null,
         isRegistered: null,
         toClaim: ethers.BigNumber.from(0),
+        balance: ethers.BigNumber.from(0), 
     });
 
     contractData$ = this.contractDataSubject.asObservable();
@@ -61,6 +63,10 @@ export class ContractService {
 
     setContractToClaim(toClaim: ethers.BigNumber) {
         const data = { ...this.contractData, toClaim };
+        this.contractDataSubject.next(data);
+    }
+    setContractBalance(balance: ethers.BigNumber) {
+        const data = { ...this.contractData, balance };
         this.contractDataSubject.next(data);
     }
 
@@ -148,7 +154,7 @@ export class ContractService {
     }
     loadInfo(): void {
         this.mannaContract['balanceOf'](this.getAddress()).then((balance: ethers.BigNumber) => {
-            // Set the balance in your state here
+            this.setContractBalance(balance);
         });
     
         this.claimMannaContract['isVerified'](this.getAddress()).then((isVerified: boolean ) => {
