@@ -74,106 +74,93 @@ export class ContractService {
         const toClaim = ethers.BigNumber.from(this.contractData.toClaim);
     
         if (!toClaim.isZero()) {
-            this.claimMannaContract['claim']()
-                .then((res: ethers.ContractTransaction) => {
-                    return res.wait();
-                })
-                .then(() => {
-                    this.loadInfo();
-                    this.setContractToClaim(ethers.BigNumber.from(0));
-                })
-                .catch((err: unknown) => {
-                    console.error((err as Error).message);
-                });
-        }
-    }
-    verifyMe(): Observable<void | null> {
-        if (!this.verifyMeLoading) {
-            this.verifyMeLoading = true;
-    
-            return this.metamaskBrightIdService.checkBrightIdState().pipe(
-                switchMap((verificationStatus: brightIdState) => {
-                    if (verificationStatus === brightIdState.VERIFIED && this.metamaskBrightIdService.brightIdVerifiedData) {
-                        const userAddress = this.getAddress();
-    
-                        return from(
-                            this.mannaBrightIDContract['verify'](
-                                [userAddress],
-                                this.metamaskBrightIdService.brightIdVerifiedData.timestamp,
-                                this.metamaskBrightIdService.brightIdVerifiedData.sig.v,
-                                `0x${this.metamaskBrightIdService.brightIdVerifiedData.sig.r}`,
-                                `0x${this.metamaskBrightIdService.brightIdVerifiedData.sig.s}`
-                            )
-                        ).pipe(
-                            switchMap((transactionResponse: any) =>
-                                from((transactionResponse as providers.TransactionResponse).wait())
-                            ),
-
-                            map(() => null),
-                            tap(() => {
-                                this.verifyMeLoading = false;
-                                this.metamaskBrightIdService.loadBalance();
-                            }),
-                        );
-                    } else {
-                        this.verifyMeLoading = false;
+            from(this.claimMannaContract['claim']())
+                .pipe(
+                    switchMap((res: any) => from((res as ethers.ContractTransaction).wait())),
+                    tap(() => {
+                        this.loadInfo();
+                        this.setContractToClaim(ethers.BigNumber.from(0));
+                    }),
+                    catchError((err: unknown) => {
+                        console.error((err as Error).message);
                         return of(null);
-                    }
-                }),
-                catchError((err: any) => {
-                    console.error(err.message);
-                    this.verifyMeLoading = false;
-                    return of(null);
-                })
-            );
+                    })
+                )
+                .subscribe();
         }
-        return of(null);
     }
-    
     registerMe(): void {
         if (!this.registerMeLoading) {
             this.registerMeLoading = true;
-            
-            this.claimMannaContract['register']
-                .then((transaction:any) => {
-                    transaction.wait()
-                        .then(() => {
-                            this.registerMeLoading = false;
-                            this.loadInfo();
-                        })
-                        .catch((err:any) => {
-                            this.registerMeLoading = false;
-                            console.error(err.message);
-                        });
-                })
-                .catch((err:any) => {
-                    this.registerMeLoading = false;
-                    console.error(err.message);
-                });
+    
+            from(this.claimMannaContract['register']())
+                .pipe(
+                    switchMap((transaction: any) => from((transaction as ethers.ContractTransaction).wait())),
+                    tap(() => {
+                        this.registerMeLoading = false;
+                        this.loadInfo();
+                    }),
+                    catchError((err: any) => {
+                        this.registerMeLoading = false;
+                        console.error(err.message);
+                        return of(null);
+                    })
+                )
+                .subscribe();
         }
     }
+    
     loadInfo(): void {
-        this.mannaContract['balanceOf'](this.getAddress()).then((balance: ethers.BigNumber) => {
-            this.setContractBalance(balance);
-        });
+        from(this.mannaContract['balanceOf'](this.getAddress()) as Promise<ethers.BigNumber>)
+            .pipe(
+                tap((balance: ethers.BigNumber) => {
+                    this.setContractBalance(balance);
+                }),
+                catchError((err: unknown) => {
+                    console.error((err as Error).message);
+                    return of(null);
+                })
+            ).subscribe();
     
-        this.claimMannaContract['isVerified'](this.getAddress()).then((isVerified: boolean ) => {
-            if (isVerified) {
-                this.setContractIsVerified(true);
+        from(this.claimMannaContract['isVerified'](this.getAddress()) as Promise<boolean>)
+            .pipe(
+                tap((isVerified: boolean) => {
+                    this.setContractIsVerified(isVerified);
     
-                this.claimMannaContract['isRegistered'](this.getAddress()).then((isRegistered: boolean) => {
-                    this.setContractIsRegistered(isRegistered);
-                });
+                    if (isVerified) {
+                        from(this.claimMannaContract['isRegistered'](this.getAddress()) as Promise<boolean>)
+                            .pipe(
+                                tap((isRegistered: boolean) => {
+                                    this.setContractIsRegistered(isRegistered);
+                                }),
+                                catchError((err: unknown) => {
+                                    console.error((err as Error).message);
+                                    return of(null);
+                                })
+                            ).subscribe();
     
-                this.claimMannaContract['toClaim'](this.getAddress()).then((result: ethers.BigNumber) => {
-                    this.setContractToClaim(result);
-                });
-    
-            } else {
-                this.setContractIsVerified(false);
-            }
-        });
+                        from(this.claimMannaContract['toClaim'](this.getAddress()) as Promise<ethers.BigNumber>)
+                            .pipe(
+                                tap((toClaim: ethers.BigNumber) => {
+                                    this.setContractToClaim(toClaim);
+                                }),
+                                catchError((err: unknown) => {
+                                    console.error((err as Error).message);
+                                    return of(null);
+                                })
+                            ).subscribe();
+                    }
+                }),
+                catchError((err: unknown) => {
+                    console.error((err as Error).message);
+                    return of(null);
+                })
+            ).subscribe();
     }
+    
+    
+    
+    
     getAddress() {
         return this.signer.getAddress();
       }
