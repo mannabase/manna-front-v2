@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit,HostListener } from '@angular/core';
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
 import {MetamaskBrightIdService} from '../metamask-bright-id.service';
@@ -16,6 +16,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   displaySideBar: boolean = false;
   accountSubscription: Subscription = new Subscription();
   showBurgerMenu: boolean = false;
+
+  public isScrolled = false;
+
+  @HostListener('window:scroll', [])
+  onScroll(): void {
+    const scrolled = window.scrollY || document.documentElement.scrollTop;
+    if (scrolled > 10) {
+      this.isScrolled = true;
+    } else {
+      this.isScrolled = false;
+    }
+  }
 
   constructor(
     private router: Router,

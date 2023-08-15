@@ -1,112 +1,243 @@
+@import "../../variables";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+}
+
+.blocks {
+    width: 60%;
+    text-align: center;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+}
+.full-height {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding-bottom: 60px 0px !important;
+  }
 .image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
 }
-
 .image-logo {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 50%;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 1) 0%, rgba(250, 129, 136, 1) 13%);
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+    background: linear-gradient(
+        120deg,
+        $image-logo-start 0%,
+        $image-logo-end 13%
+    );
+    &--footer{
+        width: 1.5rem;
+        height: 1.5rem;
+    }
 }
-
 .text-daily-manna {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    &--description{
+        color: var(--surface-300);
+    }
+}
+.boxes-container {
+    display: flex;
+    justify-content: space-between;
 }
 
-.button-get-started {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  min-width: 150px;
+.info-box {
+    width: calc(33.33% - 20px);
+    margin: 10px;
+    border-radius: 12px;
+    padding: 3px;
+    background: linear-gradient(
+        120deg,
+        $gradient-border-end 0%,
+        $gradient-border-end 13%
+    );
+}
+.gradiant-border {
+    border-radius: 10px;
+    position: relative;
+    background: $background-color;
+    padding: 10px;
 }
 
-.button-get-started-text {
-  color: white;
+.box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 }
 
-.button-learn-more {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.box-image {
+    width: 45px;
+    height: 50px;
+    border-radius: 4px;
 }
 
-.card-border-explain {
-  color: linear-gradient(120deg, rgba(255, 255, 255, 1) 0%, rgba(250, 129, 136, 1) 13%);
+h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+.link-card {
+    display: flex;
+    justify-content: start;
+}
+.ecosystem {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    text-align: start;
+}
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+
+    &--items {
+        flex: 1;
+        margin: 10px;
+        display: flex;
+        &--item1 {
+            width: 30% !important;
+            align-items: start;
+            justify-content: start;
+            padding-top: 10px;
+            display: flex;
+        }
+        
+        &--item2 {
+            width: 45% !important;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+    }
 }
 
+
+.community {
+    width: 50%;
+    box-shadow: 2px;
+    border-radius: 20px;
+    background-image: url("../../assets/images/governed_background.png");
+    background-size: cover;
+    display: flex-column;
+    gap: 2px;
+    padding: 20px;
+    text-align: start;
+}
+.community-boxes {
+    margin-top: 20px;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+}
+.community-box {
+    margin: 10px;
+    border-radius: 12px;
+    padding: 3px;
+    background: linear-gradient(
+        120deg,
+        $gradient-border-end 0%,
+        $gradient-border-end 13%
+    );
+}
+.developers {
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    flex-direction: column;
+    height: max-content;
+    gap: 10px;
+}
+.developer {
+    position: relative;
+    border: 20px;
+    border-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    background-image: url("../../assets/images/developer_main_background.png");
+    background-size: cover;
+    display: flex-column;
+    padding: 50px 20px 50px 20px;
+    text-align: start;
+    min-height: 200px;
+    &--img {
+        text-align: end;
+        position: absolute; 
+        right: 0;
+        bottom: 0;
+        width: 20%
+    }
+}
+.under-developer-container {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+.under-developer {
+    width: 48%;
+    box-shadow: 2px;
+    border: 20px;
+    border-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    background-image: url("../../assets/images/developer_background.png");
+    background-size: cover;
+    display: flex-column;
+    gap: 2px;
+    padding: 20px;
+    text-align: start;
+}
+.funding {
+    width: 30%;
+    box-shadow: 2px;
+    border: 20px;
+    border-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    background-image: url("../../assets/images/manna_grant_background.png");
+    background-size: cover;
+    display: flex-column;
+    gap: 2px;
+    padding: 0px 20px 20px 0px;
+    text-align: start;
+}
 .footer-links {
-  display: block;
-  flex-direction: column;
-}
-
-.footer-link {
-  padding-bottom: 1rem
-}
-
-// Styles for tablets
-@media only screen and (max-width: 960px) {
-  .text-daily-manna {
-    font-size: x-large;
-  }
-  
-  .footer-link {
     display: flex;
-    justify-content: center;
-  }
-  
-  .manna-text-footer {
-    text-align: center
-  }
-  
-  .footer-title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .p-grid {
     flex-direction: column;
+    gap: 5px;
   }
-  
-  .p-col-12.p-md-6.p-lg-4 {
-    width: 100%;
-  }
-}
 
-// Styles for mobile
-@media only screen and (max-width: 480px) {
-  .text-daily-manna {
-    font-size: large;
-  }
-  
-  .footer-link {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .manna-text-footer {
-    text-align: center
-  }
-  
-  .footer-title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .p-grid {
-    flex-direction: column;
-  }
-  
-  .p-col-12.p-md-6.p-lg-4 {
-    width: 100%;
-  }
+@media #{$tablet} {
+    .blocks {
+        width: 80%;
+    }
+    .text-daily-manna {
+        font-size: x-large;
+    }
+    .flex-item {
+        flex-basis: 100%;
+    }
+}
+@media #{$mobile} {
+    .blocks {
+        width: 100%;
+    }
+    .text-daily-manna {
+        font-size: large;
+    }
+    .flex-item {
+        flex-basis: 100%;
+    }
 }

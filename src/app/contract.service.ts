@@ -11,7 +11,7 @@ import {mannaBrightIDContractAddress, claimMannaContractAddress, mannaContractAd
 declare let ethereum: any;
 @Injectable({
     providedIn: 'root',
-  })
+})
 export class ContractService {
     private provider: ethers.providers.Web3Provider;
     private signer: ethers.providers.JsonRpcSigner;
@@ -91,21 +91,21 @@ export class ContractService {
     }
     verifyMe(): Observable<void | null> {
         if (!this.verifyMeLoading) {
-            this.verifyMeLoading = true;
+        this.verifyMeLoading = true;
 
-            return this.metamaskBrightIdService.checkBrightIdState().pipe(
-                switchMap((verificationStatus: BrightIdState) => {
+        return this.metamaskBrightIdService.checkBrightIdState().pipe(
+            switchMap((verificationStatus: BrightIdState) => {
                     if (verificationStatus === BrightIdState.VERIFIED && this.metamaskBrightIdService.brightIdVerifiedData) {
-                        const userAddress = this.getAddress();
+                    const userAddress = this.getAddress();
 
-                        return from(
-                            this.mannaBrightIDContract['verify'](
-                                [userAddress],
+                    return from(
+                        this.mannaBrightIDContract['verify'](
+                            [userAddress],
                                 this.metamaskBrightIdService.brightIdVerifiedData.timestamp,
                                 this.metamaskBrightIdService.brightIdVerifiedData.sig.v,
-                                `0x${this.metamaskBrightIdService.brightIdVerifiedData.sig.r}`,
-                                `0x${this.metamaskBrightIdService.brightIdVerifiedData.sig.s}`
-                            )
+                            `0x${this.metamaskBrightIdService.brightIdVerifiedData.sig.r}`,
+                            `0x${this.metamaskBrightIdService.brightIdVerifiedData.sig.s}`
+                        )
                         ).pipe(
                             switchMap((transactionResponse: any) =>
                                 from((transactionResponse as providers.TransactionResponse).wait())
@@ -116,40 +116,40 @@ export class ContractService {
                                 this.verifyMeLoading = false;
                                 this.metamaskBrightIdService.loadBalance();
                             }),
-                        );
-                    } else {
-                        this.verifyMeLoading = false;
-                        return of(null);
-                    }
-                }),
-                catchError((err: any) => {
-                    console.error(err.message);
+                    );
+                } else {
                     this.verifyMeLoading = false;
                     return of(null);
-                })
-            );
-        }
+                }
+            }),
+            catchError((err: any) => {
+                    console.error(err.message);
+                this.verifyMeLoading = false;
+                    return of(null);
+            })
+        );
+    }
         return of(null);
     }
     registerMe(): void {
         if (!this.registerMeLoading) {
-            this.registerMeLoading = true;
+        this.registerMeLoading = true;
 
-            from(this.claimMannaContract['register']())
-                .pipe(
+        from(this.claimMannaContract['register']())
+            .pipe(
                     switchMap((transaction: any) => from((transaction as ethers.ContractTransaction).wait())),
-                    tap(() => {
-                        this.registerMeLoading = false;
-                        this.loadInfo();
-                    }),
-                    catchError((err: any) => {
-                        this.registerMeLoading = false;
-                        console.error(err.message);
-                        return of(null);
-                    })
-                )
-                .subscribe();
-        }
+                tap(() => {
+                    this.registerMeLoading = false;
+                    this.loadInfo();
+                }),
+                catchError((err: any) => {
+                    this.registerMeLoading = false;
+                    console.error(err.message);
+                    return of(null);
+                })
+            )
+            .subscribe();
+    }
     }
 
     loadInfo(): void {

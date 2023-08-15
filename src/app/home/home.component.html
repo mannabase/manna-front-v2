@@ -1,266 +1,236 @@
-<!-- bename khoda -->
-<div class="p-grid mt-4">
-  <div class="p-col-12 p-md-6 p-lg-4">
-    <div class="card ">
-      <div>
-        <div class="image-container">
-          <img src="../../assets/images/Manna_logo_copy 7.png" alt="Image" class="image-logo"/>
+<!-- bename khoda  -->
+<div class="container">
+    <div class="blocks full-height">
+        <div class="image-container mb-5">
+            <img
+                src="../../assets/images/Manna_logo_copy 7.png"
+                alt="Image"
+                class="image-logo"
+            />
         </div>
-        <div>
-          <p class="text-daily-manna m-0">Claim your daily manna </p>
+        <h1 class="text-daily-manna mt-5 mb-0">Claim your daily manna</h1>
+        <h1 class="text-daily-manna m-0">and join the future of money</h1>
+        <p class="text-daily-manna--description text-lg mb-4">
+            Get 1 manna a day and use it for what you love.
+        </p>
+        <div class="button-get-started mb-2">
+            <button class="manna-button" (click)="openClaimDialog()">
+                Claim Manna
+            </button>
         </div>
-        <div>
-          <p class="text-daily-manna m-0">and join the future of money</p>
+        <div class="button-learn-more pt-1 pb-5">
+            <a class="white-link">
+                Learn more
+                <i class="fa-solid fa-circle-down"></i>
+            </a>
         </div>
-        <div>
-          <p class="text-daily-manna text-600 text-lg">Get 1 manna a day and use it for what you love.</p>
-        </div>
-        <div class="button-get-started">
-          <button class="manna-button" (click)="openClaimDialog()">
-            Claim Manna
-          </button>
-        </div>
-        <div class="button-learn-more pt-1">
-          <a class="my-button">
-            Learn more
-            <i class="fa-solid fa-circle-down"></i>
-          </a>
-        </div>
-      </div>
-      <div class="flex flex-row flex-wrap align-items-center justify-content-center gap-4 pt-3">
-        <app-intro-card
-          title="Get Verified"
-          icon="../../assets/images/verified.png"
-          body="All manna user are verified while presrving user privacy. Making a network of uniqe, real accounts"
-          link="Get Verified">
-        </app-intro-card>
-        <app-intro-card
-          title="Earn"
-          icon="../../assets/images/earn_manna_logoes.png"
-          body="Get manna everyday.  Everyone in the world  can join and earn daily manna. Get manna  everyday."
-          link="Earn Now">
-        </app-intro-card>
-        <app-intro-card
-          title="Spend"
-          icon="../../assets/images/spend.png"
-          body="Use manna for what you love.Trade it in the marketplace, giv it to those in need,or stake for rewards."
-          link="Start Spending">
-        </app-intro-card>
-      </div>
-      <div class="grid justify-content-center m-0 py-5 md:px-6 lg:px-10">
-        <div class="col-12 md:col-6 lg:col-5 ">
-          <div class=" p-3">
-            <div class="flex justify-content-between mb-3">
-              <div class="flex flex-column gap-2">
-                <div class="py-1">
-                  <a tuiLink>
-                    MANNA ECOSYSTEM
-                    <tui-svg src="tuiIconArrowRight" style="color: var(--tui-primary)"></tui-svg>
-                  </a>
-                </div>
-                <div class="text-4xl font-medium line-height-2">Build a global network powered by the community</div>
-                <div class="text-base font-light">A community powered global ecosystem using the principles of
-                  UBI to make it open and accessible to all
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="flex align-items-stretch col-12 md:col-6 lg:col-5">
-          <img src="../../assets/images/manna-people.png" class="col-12">
-        </div>
-      </div>
-
-      <div class="flex flex-row flex-wrap gap-4 align-items-center justify-content-center">
-
-        <div class="shadow-2 border-round-3xl bg-cover flex flex-column gap-2 p-3"
-             style="background-image: url('../../assets/images/governed_background.png');max-width: 40%">
-          <div class="text-4xl font-medium line-height-2">
-            Build a global network powered by the community
-          </div>
-          <div class="text-lg font-light" style="max-width: 80%">
-            A community powered global ecosystem using the principles of UBI to make it open and accessible to all
-          </div>
-          <div class="flex flex-row justify-content-end w-full">
-            <img src="../../assets/images/governed_manna_logo.png" alt="manna" style="max-width: 10em">
-          </div>
-          <button tuiButton style="width: 10em" size="s" appearance="flat">
-            Get Started
-            <tui-svg src="tuiIconArrowUpRight" style="color: var(--tui-primary)"></tui-svg>
-          </button>
-        </div>
-
-        <div class="flex flex-column align-content-evenly h-full gap-3 sm:max-w-full" style="max-width: 40%">
-          <app-info-box
-            class="flex-grow-1 max-h-full"
-            title="Governed Forum"
-            body="Participate in discussion and proposals for future update and decisions with tha Manna cummunity">
-          </app-info-box>
-          <app-info-box
-            title="Verified Unique People"
-            body="Participate directly or delegate to active members in the community.All verified Manna users have a voice. ">
-          </app-info-box>
-          <app-info-box
-            title="Governance DAO"
-            body="Vote on important proposals and view vote history on past proposals.">
-          </app-info-box>
-        </div>
-      </div>
-
-      <div class="grid justify-content-center m-0 py-5 md:px-6 lg:px-10 gap-4">
-        <div class="grid col-12 md:col-6 lg:col-7 ">
-          <div class="shadow-2 p-3 border-3 border-round-3xl bg-cover pt-5"
-               style="background-image: url('../../assets/images/developer_main_background.png');">
-            <div class=" block text-4xl font-medium col-10 mt-5">Help build the Manna ecosystem</div>
-            <div class=" block text-lg font-light col-10">Build apps, tools, and more in the manna ecosystem. Get
-              started
-            </div>
-            <div class="grid">
-              <div class="flex align-items-start col-7 pl-3">
-                <a tuiLink>
-                  Read more
-                  <tui-svg src="tuiIconArrowUpRight" style="color: var(--tui-primary)"></tui-svg>
-                </a>
-              </div>
-              <div class="col-4">
-                <img src="../../assets/images/developer_squere.png" alt="manna" style="width:100%">
-              </div>
-            </div>
-          </div>
-          <div class="grid mt-1 col-12 p-0 mx-0">
-            <div
-              class="col shadow-2 p-3 border-round-3xl border-3 bg-cover mr-1"
-              style="background-image: url('../../assets/images/developer_background.png');">
-              <a class="my-button">
-                Governed Foum
-                <tui-svg src="tuiIconArrowRight"></tui-svg>
-              </a>
-            </div>
-            <div
-              class="col shadow-2 p-3 border-round-3xl border-3 bg-cover "
-              style="background-image: url('../../assets/images/developer_background.png');">
-              <div class="mb-3">
-                <a class="my-button">
-                  Governed Foum
-                  <tui-svg src="tuiIconArrowRight"></tui-svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="grid col-12 md:col-6 lg:col-3">
-          <div class="surface-card shadow-2 border-round-3xl border-3 bg-cover"
-               style="background-image: url('../../assets/images/manna_grant_background.png');">
-            <div>
-              <div class=" -mt-3">
-                <img src="../../assets/images/multi_manna_for_funding.png" width="100%">
-              </div>
-              <div class="p-3">
-                <h2 class="m-0">
-                  Apply for funding from Manna Grants Program
-                </h2>
-              </div>
-              <div class="text-lg font-light col-10 px-3">
-                Get paid to build the future of money. Manna Governance offers
-              </div>
-              <button tuiButton class="more-button" size="s" appearance="flat" >
-                Read more
-                <tui-svg src="tuiIconArrowUpRight"></tui-svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="py-5 md:px-6 lg:px-12">
-        <div class="grid flex justify-content-center">
-          <div class="col-12 md:col-6 lg:col-4 ">
-            <div class="p-3">
-              <div class="align-center">
-                <div class="manna-text-footer">
-                  <img src="../../assets/images/Manna_logo_footer.png" style="width:1.5rem;" class="image-logo mr-2">
-                  <span class="text-900 font-medium text-xl">mannabase</span>
-                </div>
-              </div>
-              <div class="flex justify-content-center align-center">
-                <p class="manna-text-footer">
-                  Mannabase is the hub for Manna. Manna is a digital taken that eveeryone in the workd can claim
-                  1 per day.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 md:col-6 lg:col-2 ">
-            <div class="p-3">
-              <div class="flex justify-content-between align-center mb-3">
-                <div class="flex align-center footer-title">
-                  <span class="text-900 font-medium text-xl underline">EXPLORE</span>
-                </div>
-              </div>
-              <div class="footer-link">
-                <a class="my-button footer-link">
-                  Dashboard
-                </a>
-              </div>
-              <div class="footer-link">
-                <a class="my-button footer-link">
-                  Open App
-                </a>
-              </div>
-              <div class="footer-link">
-                <a class="my-button footer-link">
-                  Aboat
-                </a>
-              </div>
-              <div class="footer-link">
-                <a class="my-button footer-link">
-                  FAQ
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 md:col-6 lg:col-2 ">
-            <div class="p-3">
-              <div class="flex justify-content-between align-center mb-3">
-                <span class="text-900 font-medium text-xl underline">SOCIALS</span>
-              </div>
-              <div class="footer-link">
-                <a class="my-button footer-link">
-                  Twitter
-                </a>
-              </div>
-              <div class="footer-link">
-                <a class="my-button footer-link">
-                  Medium
-                </a>
-              </div>
-              <div class="footer-link">
-                <a class="my-button footer-link">
-                  Disacord
-                </a>
-              </div>
-              <div class="footer-link">
-                <a class="my-button footer-link">
-                  Telegram
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 md:col-6 lg:col-2 ">
-            <div class="p-3">
-              <div class="footer-title mb-3">
-                <span class="text-900 font-medium text-xl underline">SOCIALS</span>
-              </div>
-              <div>
-                <a class="my-button footer-link">
-                  team@headeforhumanity.org
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+    <div class="blocks">
+        <div class="boxes-container">
+            <div class="info-box" *ngFor="let box of boxes">
+                <div class="gradiant-border">
+                    <div class="box-header">
+                        <h3>{{ box.title }}</h3>
+                        <img
+                            [src]="box.imagePath"
+                            alt="{{ box.title }}"
+                            class="box-image"
+                        />
+                    </div>
+                    <p class="link-card">{{ box.description }}</p>
+                    <a tuiLink icon="tuiIconArrowRight" class="link-card">
+                        {{ box.link }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="blocks">
+        <div class="flex-container">
+            <div class="flex-container--items--item1">
+                <div class="ecosystem">
+                    <a tuiLink>
+                        MANNA ECOSYSTEM
+                        <tui-svg
+                            src="tuiIconArrowRight"
+                            style="color: var(--tui-primary)"
+                        ></tui-svg>
+                    </a>
+                    <div class="text-4xl font-medium line-height-2">
+                        Build a global network powered by the community
+                    </div>
+                    <div class="text-base font-light">
+                        A community powered global ecosystem using the
+                        principles of UBI to make it open and accessible to all
+                    </div>
+                </div>
+            </div>
+            <div class="flex-container--items--item2">
+                <img
+                    src="../../assets/images/manna-people.png"
+                    alt="Manna People"
+                    style="width: 100%"
+                />
+            </div>
+        </div>
+    </div>
+    <div class="blocks">
+        <div class="flex-container">
+            <div class="community">
+                <div class="text-4xl font-medium line-height-2">
+                    Build a global network powered by the community
+                </div>
+                <div class="text-lg font-light" style="max-width: 80%">
+                    A community powered global ecosystem using the principles of
+                    UBI to make it open and accessible to all
+                </div>
+                <div class="flex flex-row justify-content-end w-full">
+                    <img
+                        src="../../assets/images/governed_manna_logo.png"
+                        alt="manna"
+                        style="max-width: 10em"
+                    />
+                </div>
+                <button
+                    tuiButton
+                    style="width: 10em"
+                    size="s"
+                    appearance="flat"
+                >
+                    Get Started
+                    <tui-svg
+                        src="tuiIconArrowUpRight"
+                        style="color: var(--tui-primary)"
+                    ></tui-svg>
+                </button>
+            </div>
+            <div class="community-boxes">
+                <div class="community-box" *ngFor="let box of communityBoxes">
+                    <div class="gradiant-border">
+                        <div class="box-header">
+                            <a
+                                tuiLink
+                                icon="tuiIconArrowRight"
+                                class="link-card"
+                            >
+                                {{ box.link }}
+                            </a>
+                        </div>
+                        <p class="link-card">{{ box.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="blocks">
+        <div class="flex-container">
+            <div class="developers">
+                <div class="developer">
+                    <h1 class="font-medium mt-5">
+                        Help build the Manna ecosystem
+                    </h1>
+                    <h3 class="text-lg font-light mt-5">
+                        Build apps, tools, and more in the manna ecosystem. Get
+                        started
+                    </h3>
+                    <a tuiLink class="mt-5">
+                        Read more
+                        <tui-svg
+                            src="tuiIconArrowUpRight"
+                            style="color: var(--tui-primary)"
+                        ></tui-svg>
+                    </a>
+                    <img
+                        src="../../assets/images/developer_squere.png"
+                        alt="manna"
+                        class="developer--img"
+                    />
+                </div>
+                <div class="under-developer-container">
+                    <div class="under-developer">
+                        <a class="white-link">
+                            Governed Foum
+                            <tui-svg src="tuiIconArrowRight"></tui-svg>
+                        </a>
+                    </div>
+                    <div class="under-developer">
+                        <div class="mb-3">
+                            <a class="white-link">
+                                Governed Foum
+                                <tui-svg src="tuiIconArrowRight"></tui-svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="funding">
+                <div class="fundinig">
+                    <div>
+                        <div class="-mt-3">
+                            <img
+                                src="../../assets/images/multi_manna_for_funding.png"
+                                width="100%"
+                            />
+                        </div>
+                        <div class="p-3">
+                            <h2 class="m-0">
+                                Apply for funding from Manna Grants Program
+                            </h2>
+                        </div>
+                        <div class="text-lg font-light col-10 px-3">
+                            Get paid to build the future of money. Manna
+                            Governance offers
+                        </div>
+                        <button
+                            tuiButton
+                            class="more-button"
+                            size="s"
+                            appearance="flat"
+                        >
+                            Read more
+                            <tui-svg src="tuiIconArrowUpRight"></tui-svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="py-5 md:px-6 lg:px-12 flex justify-content-center">
+        <div class="col-12 md:col-6 lg:col-4 p-3">
+            <div class="flex">
+                <img
+                    src="../../assets/images/Manna_logo_footer.png"
+                    class="image-logo image-logo--footer mr-2"
+                />
+                <p class="text-900 font-medium text-xl mt-0">mannabase</p>
+            </div>
+            <p class="manna-text-footer">
+                Mannabase is the hub for Manna. Manna is a digital taken that
+                eveeryone in the workd can claim 1 per day.
+            </p>
+        </div>
+        <div class="col-12 md:col-6 lg:col-2 p-3">
+            <p class="text-900 font-medium text-xl underline mt-0">EXPLORE</p>
+            <div class="footer-links">
+                <a tuiLink> Dashboard </a>
+                <a tuiLink> Open App </a>
+                <a tuiLink> Aboat </a>
+                <a tuiLink> FAQ </a>
+                <a></a>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-2 p-3">
+            <p class="text-900 font-medium text-xl underline mt-0">SOCIALS</p>
+            <div class="footer-links">
+                <a tuiLink> Twitter </a>
+                <a tuiLink> Medium </a>
+                <a tuiLink> Disacord </a>
+                <a tuiLink> Telegram </a>
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-2 p-3">
+            <p class="text-900 font-medium text-xl underline mt-0">SOCIALS</p>
+            <a tuiLink> team@headeforhumanity.org </a>
+        </div>
+    </div>
 </div>
-

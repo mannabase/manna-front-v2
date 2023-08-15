@@ -1,5 +1,5 @@
 <div class="my-header flex flex-row justify-content-between align-items-center p-2"
-     [ngClass]="{ 'black-background': isAccountPage }" (onResize)="handleResize($event)">
+     [ngClass]="{ 'black-background': isAccountPage, 'scrolled': isScrolled }" (onResize)="handleResize($event)">
   <div class="flex flex-row gap-2 align-items-center">
     <button tuiIconButton *ngIf="showBurgerMenu" icon="tuiIconMenu" appearance="flat" size="s"
             (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">

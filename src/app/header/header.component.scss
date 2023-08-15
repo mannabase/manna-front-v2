@@ -1,12 +1,18 @@
+@import "../../variables";
+
 .my-header {
-  background-color: #383838;
+  background-color: $background-color;
 }
 
 .black-background {
   background: rgb(0, 0, 0);
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 300px, rgba(56, 56, 56, 1) 300px);
 }
-
+.scrolled {
+  background-color: $background-color-header-scrolled; 
+  backdrop-filter: blur(4px);
+  transition: background-color 0.3s ease;
+}
 .button-header {
   color: aliceblue;
 }
