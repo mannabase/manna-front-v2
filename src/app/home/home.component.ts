@@ -27,19 +27,19 @@ export class HomeComponent implements OnInit {
     boxes = [
         {
             title: 'Get Verified',
-            description: 'Some information about Box 1',
+            description: 'All manna user are verified while presrving user privacy. Making a network of uniqe, real accounts',
             link: 'Get Verified',
             imagePath: '../../assets/images/verified.png',
         },
         {
             title: 'Earn',
-            description: 'Some information about Box 2',
+            description: 'Get manna everyday.  Everyone in the world  can join and earn daily manna. Get manna  everyday.',
             link: 'Earn',
             imagePath: '../../assets/images/earn_manna_logoes.png',
         },
         {
             title: 'Spend',
-            description: 'Some information about Box 3',
+            description: 'Use manna for what you love.Trade it in the marketplace, giv it to those in need,or stake for rewards.',
             link: 'Spend',
             imagePath: '../../assets/images/spend.png',
         },

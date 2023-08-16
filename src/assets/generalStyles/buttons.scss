@@ -13,21 +13,4 @@
   color: $links-color-main-hover;
 }
 
-.manna-button {
-  justify-content: center;
-  background-image: url('../images/get_stared_background.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: white;
-  padding: 8px 16px;
-  font-size: 16px;
-  cursor: pointer;
-  border: 5px white;
-  border-radius: var(--manna-border-radius);
-  min-width: 150px;
 
-  :disabled {
-    background-image: None;
-    background-color: gray;
-  }
-}

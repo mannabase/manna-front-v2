@@ -1,29 +1,27 @@
 <!-- bename khoda  -->
 <div class="container">
     <div class="blocks full-height">
-        <div class="image-container mb-5">
+        <!-- <div class="image-container mb-5">
             <img
                 src="../../assets/images/Manna_logo_copy 7.png"
                 alt="Image"
                 class="image-logo"
             />
-        </div>
+        </div> -->
         <h1 class="text-daily-manna mt-5 mb-0">Claim your daily manna</h1>
         <h1 class="text-daily-manna m-0">and join the future of money</h1>
-        <p class="text-daily-manna--description text-lg mb-4">
+        <!-- <p class="text-daily-manna--description text-lg mb-4">
             Get 1 manna a day and use it for what you love.
-        </p>
-        <div class="button-get-started mb-2">
-            <button class="manna-button" (click)="openClaimDialog()">
-                Claim Manna
-            </button>
-        </div>
-        <div class="button-learn-more pt-1 pb-5">
+        </p> -->
+        <button class="manna-button m-5" (click)="openClaimDialog()">
+            <h3>Claim Manna</h3>
+        </button>
+        <!-- <div class="button-learn-more pt-1 pb-5">
             <a class="white-link">
                 Learn more
                 <i class="fa-solid fa-circle-down"></i>
             </a>
-        </div>
+        </div> -->
     </div>
     <div class="blocks">
         <div class="boxes-container">
@@ -37,7 +35,7 @@
                             class="box-image"
                         />
                     </div>
-                    <p class="link-card">{{ box.description }}</p>
+                    <p class="card-discription">{{ box.description }}</p>
                     <a tuiLink icon="tuiIconArrowRight" class="link-card">
                         {{ box.link }}
                     </a>
@@ -74,15 +72,15 @@
             </div>
         </div>
     </div>
-    <div class="blocks">
+    <div class="blocks community--show">
         <div class="flex-container">
             <div class="community">
                 <div class="text-4xl font-medium line-height-2">
-                    Build a global network powered by the community
+                    GOVERNED BY THE COMMUNITY
                 </div>
                 <div class="text-lg font-light" style="max-width: 80%">
-                    A community powered global ecosystem using the principles of
-                    UBI to make it open and accessible to all
+                    Manna is managed by a global community of manna token
+                    holders and delegates.
                 </div>
                 <div class="flex flex-row justify-content-end w-full">
                     <img
@@ -104,8 +102,11 @@
                     ></tui-svg>
                 </button>
             </div>
-            <div class="community-boxes">
-                <div class="community-box" *ngFor="let box of communityBoxes">
+            <div class="community--boxes">
+                <div
+                    class="community--boxes--box"
+                    *ngFor="let box of communityBoxes"
+                >
                     <div class="gradiant-border">
                         <div class="box-header">
                             <a
@@ -121,6 +122,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="blocks pb-0">
+        <h2 class="flex mb-0">DEVELOPERS</h2>
     </div>
     <div class="blocks">
         <div class="flex-container">
@@ -154,12 +158,10 @@
                         </a>
                     </div>
                     <div class="under-developer">
-                        <div class="mb-3">
-                            <a class="white-link">
-                                Governed Foum
-                                <tui-svg src="tuiIconArrowRight"></tui-svg>
-                            </a>
-                        </div>
+                        <a class="white-link">
+                            Governed Foum
+                            <tui-svg src="tuiIconArrowRight"></tui-svg>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -195,42 +197,50 @@
             </div>
         </div>
     </div>
-    <div class="py-5 md:px-6 lg:px-12 flex justify-content-center">
-        <div class="col-12 md:col-6 lg:col-4 p-3">
-            <div class="flex">
-                <img
-                    src="../../assets/images/Manna_logo_footer.png"
-                    class="image-logo image-logo--footer mr-2"
-                />
-                <p class="text-900 font-medium text-xl mt-0">mannabase</p>
+    <div class="blocks">
+        <div class="flex-container">
+            <div class="col-12 md:col-6 lg:col-4 p-3">
+                <div class="flex">
+                    <img
+                        src="../../assets/images/Manna_logo_footer.png"
+                        class="image-logo image-logo--footer mr-2"
+                    />
+                    <p class="text-900 font-medium text-xl mt-0">mannabase</p>
+                </div>
+                <p class="manna-text-footer">
+                    Mannabase is the hub for Manna. Manna is a digital taken
+                    that eveeryone in the workd can claim 1 per day.
+                </p>
             </div>
-            <p class="manna-text-footer">
-                Mannabase is the hub for Manna. Manna is a digital taken that
-                eveeryone in the workd can claim 1 per day.
-            </p>
-        </div>
-        <div class="col-12 md:col-6 lg:col-2 p-3">
-            <p class="text-900 font-medium text-xl underline mt-0">EXPLORE</p>
-            <div class="footer-links">
-                <a tuiLink> Dashboard </a>
-                <a tuiLink> Open App </a>
-                <a tuiLink> Aboat </a>
-                <a tuiLink> FAQ </a>
-                <a></a>
+            <div class="col-12 md:col-6 lg:col-2 p-3">
+                <p class="text-900 font-medium text-xl underline mt-0">
+                    EXPLORE
+                </p>
+                <div class="footer-links">
+                    <a tuiLink> Dashboard </a>
+                    <a tuiLink> Open App </a>
+                    <a tuiLink> Aboat </a>
+                    <a tuiLink> FAQ </a>
+                    <a></a>
+                </div>
             </div>
-        </div>
-        <div class="col-12 md:col-6 lg:col-2 p-3">
-            <p class="text-900 font-medium text-xl underline mt-0">SOCIALS</p>
-            <div class="footer-links">
-                <a tuiLink> Twitter </a>
-                <a tuiLink> Medium </a>
-                <a tuiLink> Disacord </a>
-                <a tuiLink> Telegram </a>
+            <div class="col-12 md:col-6 lg:col-2 p-3">
+                <p class="text-900 font-medium text-xl underline mt-0">
+                    SOCIALS
+                </p>
+                <div class="footer-links">
+                    <a tuiLink> Twitter </a>
+                    <a tuiLink> Medium </a>
+                    <a tuiLink> Disacord </a>
+                    <a tuiLink> Telegram </a>
+                </div>
             </div>
-        </div>
-        <div class="col-12 md:col-6 lg:col-2 p-3">
-            <p class="text-900 font-medium text-xl underline mt-0">SOCIALS</p>
-            <a tuiLink> team@headeforhumanity.org </a>
+            <div class="col-12 md:col-6 lg:col-2 p-3">
+                <p class="text-900 font-medium text-xl underline mt-0">
+                    SOCIALS
+                </p>
+                <a tuiLink> team@headeforhumanity.org </a>
+            </div>
         </div>
     </div>
 </div>

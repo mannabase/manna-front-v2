@@ -3,10 +3,19 @@ $tablet: "screen and (min-width: 768px) and (max-width: 1024px)";
 $tui-desktop: "screen and (min-width: 1025px)";
 $background-color: #383838;
 $background-color-header-scrolled: rgba(25, 27, 31, 0.9);
-$gradient-border-start: rgba(248,111,100,1);
-$gradient-border-end: rgba(253,164,190,1);
-$image-logo-start:rgba(255, 255, 255, 1);
+$gradient-border-start: rgba(248, 111, 100, 1);
+$gradient-border-end: rgba(253, 164, 190, 1);
+$image-logo-start: rgba(255, 255, 255, 1);
 $image-logo-end: rgba(250, 129, 136, 1);
-$links-color-main:#FA8188;
-$links-color-main-hover:#FA6062;
-$links-color-white:#ffffff;
+$links-color-main: #fa8188;
+$links-color-main-hover: #fa6062;
+$links-color-white: #ffffff;
+$border-white: ffffff;
+
+//images
+$get-started-button-background: url("../src/assets/images/get_stared_background.png");
+$developer-main-background: url("../../assets/images/developer_main_background.png");
+$developer-under-background: url("../../assets/images/developer_background.png");
+//sizes
+$manna-border-radius: 2rem;
+$header-height:65px;
