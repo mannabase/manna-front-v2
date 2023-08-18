@@ -29,6 +29,32 @@
             </div>
         </div>
     </div>
+    <!-- for mobile version -->
+    <div class="blocks full-height-mobile">
+        <div class="image-container mb-5">
+            <img
+                src="../../assets/images/Manna_logo_copy 7.png"
+                alt="Image"
+                class="image-logo"
+            />
+        </div>
+        <h1 class="text-daily-manna mt-5 mb-0">Claim your daily manna</h1>
+        <h1 class="text-daily-manna m-0">and join the future of money</h1>
+        <p class="text-daily-manna--description text-lg mb-4">
+            Get 1 manna a day and use it for what you love.
+        </p>
+        <div class="button-get-started mb-2">
+            <button class="manna-button-mobile" (click)="openClaimDialog()">
+                Get Started
+            </button>
+        </div>
+        <div class="button-learn-more pt-1 pb-5">
+            <a class="white-link">
+                Learn more
+                <i class="fa-solid fa-circle-down"></i>
+            </a>
+        </div>
+    </div>
     <div class="blocks">
         <div class="boxes-container">
             <div class="info-box" *ngFor="let box of boxes">
@@ -67,6 +93,15 @@
                         A community powered global ecosystem using the
                         principles of UBI to make it open and accessible to all
                     </div>
+                    <div class="outer-gradiant-border-links mt-5">
+                        <a class="gradiant-border-links" tuiLink>
+                            Get Started
+                            <tui-svg
+                                src="tuiIconArrowUpRight"
+                                style="color: var(--tui-primary)"
+                            ></tui-svg>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="flex-container--items--item2">
@@ -95,18 +130,15 @@
                         style="max-width: 10em"
                     />
                 </div>
-                <button
-                    tuiButton
-                    style="width: 10em"
-                    size="s"
-                    appearance="flat"
-                >
-                    Get Started
-                    <tui-svg
-                        src="tuiIconArrowUpRight"
-                        style="color: var(--tui-primary)"
-                    ></tui-svg>
-                </button>
+                <div class="outer-gradiant-border-links mt-5">
+                    <a class="gradiant-border-links" tuiLink>
+                        Get Started
+                        <tui-svg
+                            src="tuiIconArrowUpRight"
+                            style="color: var(--tui-primary)"
+                        ></tui-svg>
+                    </a>
+                </div>
             </div>
             <div class="community--boxes">
                 <div
@@ -143,13 +175,15 @@
                         Build apps, tools, and more in the manna ecosystem. Get
                         started
                     </h3>
-                    <a tuiLink class="mt-5">
-                        Read more
-                        <tui-svg
-                            src="tuiIconArrowUpRight"
-                            style="color: var(--tui-primary)"
-                        ></tui-svg>
-                    </a>
+                    <div class="outer-gradiant-border-links mt-5">
+                        <a class="gradiant-border-links" tuiLink>
+                            Read more
+                            <tui-svg
+                                src="tuiIconArrowUpRight"
+                                style="color: var(--tui-primary)"
+                            ></tui-svg>
+                        </a>
+                    </div>
                     <img
                         src="../../assets/images/developer_squere.png"
                         alt="manna"
@@ -189,15 +223,12 @@
                             Get paid to build the future of money. Manna
                             Governance offers
                         </div>
-                        <button
-                            tuiButton
-                            class="more-button"
-                            size="s"
-                            appearance="flat"
-                        >
-                            Read more
-                            <tui-svg src="tuiIconArrowUpRight"></tui-svg>
-                        </button>
+                            <a class="funding--read-more" tuiLink>
+                                Read more
+                                <tui-svg
+                                    src="tuiIconArrowUpRight"
+                                ></tui-svg>
+                            </a>
                     </div>
                 </div>
             </div>
@@ -249,6 +280,7 @@
             </div>
         </div>
     </div>
+    <!-- footer for mobile version -->
     <div class="footer-mobile">
         <img
             src="../../assets/images/Manna_logo_footer.png"
