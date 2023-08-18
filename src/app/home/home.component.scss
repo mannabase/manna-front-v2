@@ -346,7 +346,12 @@ h3 {
         display: flex;
     }
     .text-daily-manna {
+        justify-content: center;
+        align-items: center;
         font-size: 30px;
+        &--description {
+            text-align: center;
+        }
     }
     .flex-item {
         flex-basis: 100%;
@@ -361,9 +366,11 @@ h3 {
             &--item1 {
                 width: 100%;
                 margin-bottom: 20px;
+                min-width: 0px;
             }
             &--item2 {
                 width: 100%;
+                min-width: 0px;
             }
         }
     }
@@ -381,9 +388,10 @@ h3 {
         flex-direction: column;
         row-gap: 5px;
         margin-bottom: 30px;
+        width: 90%;
     }
     .under-developer {
-        width: 93%;
+        width: 100%;
         background-image: $developer-main-background;
         margin-bottom: 10px;
     }
@@ -395,7 +403,7 @@ h3 {
     }
     .footer-mobile {
         display: flex;
-    } 
+    }
 }
 @media #{$mobile} {
     .blocks {
@@ -408,7 +416,13 @@ h3 {
         display: flex;
     }
     .text-daily-manna {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
         font-size: 30px;
+        &--description {
+            text-align: center;
+        }
     }
     .flex-item {
         flex-basis: 100%;
@@ -423,9 +437,11 @@ h3 {
             &--item1 {
                 width: 100%;
                 margin-bottom: 20px;
+                min-width: 0px;
             }
             &--item2 {
                 width: 100%;
+                min-width: 0px;
             }
         }
     }
@@ -441,11 +457,13 @@ h3 {
     .under-developer-container {
         display: flex;
         flex-direction: column;
+        justify-items: center;
         row-gap: 5px;
         margin-bottom: 30px;
+        width: 85%;
     }
     .under-developer {
-        width: 93%;
+        width: 100%;
         background-image: $developer-main-background;
         margin-bottom: 10px;
     }
