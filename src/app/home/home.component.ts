@@ -11,6 +11,9 @@ import { ClaimDialogComponent } from '../claim-dialog/claim-dialog.component';
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+    ballonsHomePage: string = '../../assets/images/ballons.png';
+    erthHomePage: string = '../../assets/images/erth.png'
+
     buttonMessageMap = new Map<UserClaimingState, string>([
         [UserClaimingState.ZERO, 'Connect Metamask'],
         [UserClaimingState.METAMASK_CONNECTED, 'Change to ID Chain'],

@@ -10,7 +10,6 @@
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 300px, rgba(56, 56, 56, 1) 300px);
 }
 .scrolled {
-  margin-top: 1px ;
   background-color: $background-color-header-scrolled; 
   backdrop-filter: blur(4px);
   transition: background-color 0.3s ease;

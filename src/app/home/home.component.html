@@ -1,27 +1,33 @@
 <!-- bename khoda  -->
 <div class="container">
     <div class="blocks full-height">
-        <!-- <div class="image-container mb-5">
-            <img
-                src="../../assets/images/Manna_logo_copy 7.png"
-                alt="Image"
-                class="image-logo"
-            />
-        </div> -->
-        <h1 class="text-daily-manna mt-5 mb-0">Claim your daily manna</h1>
-        <h1 class="text-daily-manna m-0">and join the future of money</h1>
-        <!-- <p class="text-daily-manna--description text-lg mb-4">
-            Get 1 manna a day and use it for what you love.
-        </p> -->
-        <button class="manna-button m-5" (click)="openClaimDialog()">
-            <h3>Claim Manna</h3>
-        </button>
-        <!-- <div class="button-learn-more pt-1 pb-5">
-            <a class="white-link">
-                Learn more
-                <i class="fa-solid fa-circle-down"></i>
-            </a>
-        </div> -->
+        <div class="full-height--main">
+            <div class="full-height--main--part1">
+                <div class="flex justify-content-center">
+                    <img
+                        class="full-height--main--part1--ballons"
+                        [src]="ballonsHomePage"
+                        alt="manna"
+                    />
+                </div>
+                <h1 class="text-daily-manna mt-5 mb-0">
+                    Claim your daily manna
+                </h1>
+                <h1 class="text-daily-manna m-0">
+                    and join the future of money
+                </h1>
+                <button class="manna-button m-2" (click)="openClaimDialog()">
+                    <h3>Get Started</h3>
+                </button>
+            </div>
+            <div class="full-height--main--part2">
+                <img
+                    class="full-height--main--part2--earth"
+                    [src]="erthHomePage"
+                    alt=""
+                />
+            </div>
+        </div>
     </div>
     <div class="blocks">
         <div class="boxes-container">
@@ -197,7 +203,7 @@
             </div>
         </div>
     </div>
-    <div class="blocks">
+    <div class="blocks footer-desktop">
         <div class="flex-container">
             <div class="col-12 md:col-6 lg:col-4 p-3">
                 <div class="flex">
@@ -242,5 +248,20 @@
                 <a tuiLink> team@headeforhumanity.org </a>
             </div>
         </div>
+    </div>
+    <div class="footer-mobile">
+        <img
+            src="../../assets/images/Manna_logo_footer.png"
+            class="image-logo image-logo--footer mr-2"
+        />
+        <p class="text-900 font-medium text-xl mt-0">mannabase</p>
+        <div class="flex gap-3">
+            <i class="fa-brands fa-twitter fa-2xl"></i>
+            <i class="fa-brands fa-github fa-2xl"></i>
+            <i class="fa-solid fa-m fa-2xl"></i>
+            <i class="fa-brands fa-telegram fa-2xl"></i>
+            <i class="fa-brands fa-discord fa-2xl"></i>
+        </div>
+        <a tuiLink class="mt-5 mb-5"> team@headeforhumanity.org </a>
     </div>
 </div>
