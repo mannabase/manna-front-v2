@@ -1,9 +1,9 @@
 <!-- bename khoda  -->
 <div class="container">
-    <div class="blocks full-height">
+    <div class="blocks full-height mt-1">
         <div class="full-height--main">
             <div class="full-height--main--part1">
-                <div class="flex justify-content-center">
+                <div class="flex justify-content-center mb-5">
                     <img
                         class="full-height--main--part1--ballons"
                         [src]="ballonsHomePage"
@@ -13,10 +13,10 @@
                 <h1 class="text-daily-manna mt-5 mb-0">
                     Claim your daily manna
                 </h1>
-                <h1 class="text-daily-manna m-0">
+                <h1 class="text-daily-manna my-2">
                     and join the future of money
                 </h1>
-                <button class="manna-button m-2" (click)="openClaimDialog()">
+                <button class="manna-button mt-4" (click)="openClaimDialog()">
                     <h3>Get Started</h3>
                 </button>
             </div>
@@ -78,35 +78,37 @@
     <div class="blocks">
         <div class="flex-container">
             <div class="flex-container--items--item1">
-                <div class="ecosystem">
-                    <a tuiLink>
+                <a tuiLink class="mb-3">
+                    <h5 class="p-0 m-0">
                         MANNA ECOSYSTEM
                         <tui-svg
                             src="tuiIconArrowRight"
                             style="color: var(--tui-primary)"
                         ></tui-svg>
-                    </a>
-                    <div class="text-4xl font-medium line-height-2">
-                        Build a global network powered by the community
-                    </div>
-                    <div class="text-base font-light">
-                        A community powered global ecosystem using the
-                        principles of UBI to make it open and accessible to all
-                    </div>
-                    <div class="outer-gradiant-border-links mt-5">
-                        <a class="gradiant-border-links" tuiLink>
+                    </h5>
+                </a>
+                <div class="text-4xl font-medium line-height-2 mb-3">
+                    Build a global network powered by the community
+                </div>
+                <div class="text-lg font-light mb-3">
+                    A community powered global ecosystem using the principles of
+                    UBI to make it open and accessible to all
+                </div>
+                <div class="outer-gradiant-border-links mt-3">
+                    <a class="gradiant-border-links" tuiLink>
+                        <p class="m-0">
                             Get Started
                             <tui-svg
                                 src="tuiIconArrowUpRight"
                                 style="color: var(--tui-primary)"
                             ></tui-svg>
-                        </a>
-                    </div>
+                        </p>
+                    </a>
                 </div>
             </div>
             <div class="flex-container--items--item2">
                 <img
-                    src="../../assets/images/manna-people.png"
+                    src="../../assets/images/manna-people.webp"
                     alt="Manna People"
                     style="width: 100%"
                 />
@@ -114,14 +116,15 @@
         </div>
     </div>
     <div class="blocks community--show">
-        <div class="flex-container">
-            <div class="community">
-                <div class="text-4xl font-medium line-height-2">
-                    GOVERNED BY THE COMMUNITY
+        <div class="community">
+            <div class="community--govern">
+                <div
+                    class="community--govern--allHumans"
+                >
+                    For all Humans
                 </div>
                 <div class="text-lg font-light" style="max-width: 80%">
-                    Manna is managed by a global community of manna token
-                    holders and delegates.
+                    Manna is built to be accessible to every person.
                 </div>
                 <div class="flex flex-row justify-content-end w-full">
                     <img
@@ -141,10 +144,7 @@
                 </div>
             </div>
             <div class="community--boxes">
-                <div
-                    class="community--boxes--box"
-                    *ngFor="let box of communityBoxes"
-                >
+                <div class="community--boxes--box">
                     <div class="gradiant-border">
                         <div class="box-header">
                             <a
@@ -152,19 +152,56 @@
                                 icon="tuiIconArrowRight"
                                 class="link-card"
                             >
-                                {{ box.link }}
+                                1-Per-Day
                             </a>
                         </div>
-                        <p class="link-card">{{ box.description }}</p>
+                        <p class="link-card">
+                            Every person can claim 1 manna per day. You can
+                            start claiming
+                        </p>
+                    </div>
+                </div>
+                <div class="community--boxes--box">
+                    <div class="gradiant-border">
+                        <div class="box-header">
+                            <a
+                                tuiLink
+                                icon="tuiIconArrowRight"
+                                class="link-card"
+                            >
+                                Get Verified
+                            </a>
+                        </div>
+                        <p class="link-card">
+                            Manna uses decentralized and data preserving
+                            identity methods to prove uniquess.
+                        </p>
+                    </div>
+                </div>
+                <div class="community--boxes--box">
+                    <div class="gradiant-border">
+                        <div class="box-header">
+                            <a
+                                tuiLink
+                                icon="tuiIconArrowRight"
+                                class="link-card"
+                            >
+                                Built On Optimism
+                            </a>
+                        </div>
+                        <p class="link-card">
+                            Manna is built on Optimism allowing low cost
+                            transactions and access to the Ethereum ecosystem.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="blocks pb-0">
+    <!-- <div class="blocks pb-0">
         <h2 class="flex mb-0">DEVELOPERS</h2>
-    </div>
-    <div class="blocks">
+    </div> -->
+    <!-- <div class="blocks">
         <div class="flex-container">
             <div class="developers">
                 <div class="developer">
@@ -223,17 +260,15 @@
                             Get paid to build the future of money. Manna
                             Governance offers
                         </div>
-                            <a class="funding--read-more" tuiLink>
-                                Read more
-                                <tui-svg
-                                    src="tuiIconArrowUpRight"
-                                ></tui-svg>
-                            </a>
+                        <a class="funding--read-more" tuiLink>
+                            Read more
+                            <tui-svg src="tuiIconArrowUpRight"></tui-svg>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="blocks footer-desktop">
         <div class="flex-container">
             <div class="col-12 md:col-6 lg:col-4 p-3">
@@ -242,11 +277,11 @@
                         src="../../assets/images/Manna_logo_footer.png"
                         class="image-logo image-logo--footer mr-2"
                     />
-                    <p class="text-900 font-medium text-xl mt-0">mannabase</p>
+                    <p class="mannabase-footer">mannabase</p>
                 </div>
                 <p class="manna-text-footer">
-                    Mannabase is the hub for Manna. Manna is a digital taken
-                    that eveeryone in the workd can claim 1 per day.
+                    mannabase Mannabase is the hub for Manna. Manna is a digital
+                    token that everyonein the world can claim
                 </p>
             </div>
             <div class="col-12 md:col-6 lg:col-2 p-3">
@@ -256,8 +291,8 @@
                 <div class="footer-links">
                     <a tuiLink> Dashboard </a>
                     <a tuiLink> Open App </a>
-                    <a tuiLink> Aboat </a>
-                    <a tuiLink> FAQ </a>
+                    <!-- <a tuiLink> Aboat </a>
+                    <a tuiLink> FAQ </a> -->
                     <a></a>
                 </div>
             </div>
@@ -268,8 +303,8 @@
                 <div class="footer-links">
                     <a tuiLink> Twitter </a>
                     <a tuiLink> Medium </a>
-                    <a tuiLink> Disacord </a>
-                    <a tuiLink> Telegram </a>
+                    <!-- <a tuiLink> Disacord </a>
+                    <a tuiLink> Telegram </a> -->
                 </div>
             </div>
             <div class="col-12 md:col-6 lg:col-2 p-3">

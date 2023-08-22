@@ -13,19 +13,21 @@
     padding: 1em;
     display: flex;
     flex-direction: column;
+    margin-top: 60px;
 }
 .full-height {
     display: flex;
     justify-content: end;
-    align-items: start;
     height: calc(100vh - 120px);
     padding-bottom: 60px 0px !important;
     &--main {
         display: flex;
-        align-items: end;
+        align-items: center;
+        justify-content: space-between;
         &--part1 {
-            width: 60%;
+            width: 50%;
             display: flex;
+            align-self: end;
             flex-direction: column;
             &--ballons {
                 display: flex;
@@ -36,9 +38,10 @@
         &--part2 {
             width: 40%;
             display: flex;
+            align-self: center;
             align-items: end;
             &--earth {
-                width: 95%;
+                height: 85vh;
             }
         }
     }
@@ -104,15 +107,15 @@
         $image-logo-end 13%
     );
     &--footer {
-        width: 3rem;
-        height: 3rem;
+        width: 2rem;
+        height: 2rem;
     }
 }
 .text-daily-manna {
     display: flex;
     justify-content: start;
     align-items: start;
-    font-size: 40px;
+    font-size: 35px;
     &--description {
         color: var(--surface-300);
         padding: 10px;
@@ -162,11 +165,12 @@
     );
 }
 .gradiant-border-links {
-    border-radius: 200px;
+    border-radius: 20px;
     position: relative;
     background: $background-color;
     padding: 7px;
     text-align: start;
+    padding: 4px 15px 4px 20px;
 }
 .gradiant-border {
     border-radius: 10px;
@@ -205,6 +209,7 @@ h3 {
     flex-direction: column;
     justify-content: start;
     text-align: start;
+    align-items: stretch;
 }
 .flex-container {
     display: flex;
@@ -217,11 +222,12 @@ h3 {
         display: flex;
         &--item1 {
             width: 30%;
-            min-width: 400px;
-            align-items: start;
+            align-items: stretch;
             justify-content: start;
-            padding-top: 10px;
+            padding: 20px 5px 30px 5px;
             display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         &--item2 {
@@ -235,22 +241,36 @@ h3 {
 }
 
 .community {
-    width: 50%;
-    box-shadow: 2px;
-    border-radius: 20px;
-    background-image: url("../../assets/images/governed_background.png");
-    background-size: cover;
-    display: flex-column;
-    gap: 2px;
-    padding: 20px;
-    text-align: start;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    &--govern {
+        width: 30%;
+        box-shadow: 2px;
+        border-radius: 20px;
+        background-image: url("../../assets/images/governed_background.png");
+        background-size: cover;
+        display: flex-column;
+        gap: 2px;
+        padding: 20px;
+        text-align: start;
+        &--allHumans{
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: $gradient-border-start;
+        }
+    }
     &--boxes {
-        margin-top: 20px;
+        // margin-top: 20px;
         width: 45%;
+        align-items: stretch;
+        justify-content: start;
+        padding: 20px 5px 30px 5px;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         &--box {
-            margin: 10px;
+            // margin: 10px;
             border-radius: 12px;
             padding: 3px;
             background: linear-gradient(
@@ -321,6 +341,10 @@ h3 {
         margin: 15px 0px 0px 15px;
         padding: 5px;
     }
+}
+.mannabase-footer {
+    align-self: center;
+    margin: 0px;
 }
 .footer-links {
     display: flex;
