@@ -1,21 +1,43 @@
 <div class="container">
-  <div class="tabs">
-    <div class="tab" [class.active]="selectedTab === 'Account'" (click)="changeTab('Account')">
-      <img src="../../assets/images/sidepanel_wallet.png" [class.active]="selectedTab === 'Account'" class="tab-image">
-      <span class="tab__text">Wallet</span>
+    <div class="tabs">
+        <div
+            class="tab"
+            [class.active]="selectedTab === 'Account'"
+            (click)="changeTab('Account')"
+        >
+            <div class="tab-width">
+                <img
+                    src="../../assets/images/sidepanel_wallet.png"
+                    [class.active]="selectedTab === 'Account'"
+                    class="tab-image"
+                />
+                <span class="tab__text">Wallet</span>
+            </div>
+        </div>
+        <div
+            class="tab"
+            [class.active]="selectedTab === 'Wallet'"
+            (click)="changeTab('Wallet')"
+        >
+            <div class="tab-width">
+                <img
+                    src="../../assets/images/sidepanel_accont.png"
+                    class="tab-image"
+                />
+                <span
+                    class="tab__text"
+                    [class.active]="selectedTab === 'Wallet'"
+                    >Account</span
+                >
+            </div>
+        </div>
     </div>
-    <div class="tab" [class.active]="selectedTab === 'Wallet'" (click)="changeTab('Wallet')">
-      <img src="../../assets/images/sidepanel_accont.png" class="tab-image">
-      <span class="tab__text" [class.active]="selectedTab === 'Wallet'">Account</span>
+    <div class="tabPage p-2">
+        <div *ngIf="selectedTab === 'Account'" class="page">
+            <app-wallet class="flex justify-content-center"></app-wallet>
+        </div>
+        <div *ngIf="selectedTab === 'Wallet'" class="page">
+            <app-user-account></app-user-account>
+        </div>
     </div>
-  </div>
-  <div class="tabPage p-2">
-    <div *ngIf="selectedTab === 'Account'" class="page">
-      <app-wallet class="flex justify-content-center"></app-wallet>
-    </div>
-    <div *ngIf="selectedTab === 'Wallet'" class="page">
-      <app-user-account></app-user-account>
-    </div>
-  </div>
 </div>
-

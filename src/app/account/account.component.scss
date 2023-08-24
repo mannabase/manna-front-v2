@@ -18,22 +18,6 @@
   height: 100vh;
 }
 
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-}
-
-.card-text {
-  color: #282828;
-  margin: 0;
-  font-weight: 800;
-}
-
-.collection-scroll {
-  overflow: auto;
-  height: 600px;
-}
 
 .container {
   display: flex;
@@ -58,13 +42,21 @@
 .tab.active {
   background-color: #383838;
   border-radius: var(--manna-border-radius);
+  border-radius: 20px;
 }
 
 .tab:hover{
-  background-color: #212121;
+  background-color: #797777;
   border-radius: var(--manna-border-radius);
+  border-radius: 20px;
 }
+.tab-width{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 150px;
 
+}
 .tab__text {
   font-size: large;
   font-weight: 700;

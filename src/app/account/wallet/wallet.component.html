@@ -1,23 +1,27 @@
-<div class="col-12 md:col-6 lg:col-7 shadow-2 py-3 pt-5 border-3 border-round-3xl bg-cover ">
-  <span class="text-4xl font-medium">Manna Wallet</span>
-  <hr/>
-  <div class="flex justify-content-evenly align-items-center text-lg font-light fluid">
-    <div class="flex align-items-center">
-      <img src="../../assets/images/manna_logo.png" class="image-logo mr-2">
-      <span class="text-900 font-medium text-xl">manna</span>
+<div class="wallet">
+    <h4 class="m-0">Manna Wallet</h4>
+    <hr class="gray-line" />
+    <div class="balance">
+        <div class="balance--logo">
+            <img
+                src="../../assets/images/manna_logo.png"
+                class="image-logo mr-2"
+            />
+            <span class="manna-text">manna</span>
+        </div>
+        <div class="ml-4">
+            <!-- <h2 class="m-0">{{ balance }}</h2> -->
+            456.56
+        </div>
     </div>
-    <div>
-      <h2 class="m-0">{{ balance }}</h2>
+    <hr class="gray-line" />
+    <div class="claimble">
+        <p class="claimble--daily">Daily Manna:</p>
+        <p class="claimble--available">7 available</p>
     </div>
-  </div>
-  <hr/>
-  <div class="flex justify-content-center">
-    <p>Daily Manna:</p>
-    <p>7 available</p>
-  </div>
-  <div class="button-get-started">
-    <button class="manna-button" (click)="openClaimDialog()">
-      Claim
-    </button>
-  </div>
+    <div class="button-container">
+        <button class="button" (click)="openClaimDialog()">
+          CLAIM
+        </button>
+    </div>
 </div>

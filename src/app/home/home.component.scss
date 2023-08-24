@@ -25,21 +25,21 @@
         align-items: center;
         justify-content: space-between;
         &--part1 {
-            width: 50%;
+            width: 40%;
             display: flex;
-            align-self: end;
+            // justify-content: flex-end;
             flex-direction: column;
+            height: 100%;
             &--ballons {
-                display: flex;
-                justify-self: center;
-                width: 50%;
+                margin-bottom: auto;
+                width: 80%;
             }
         }
         &--part2 {
-            width: 40%;
+            width: 60%;
             display: flex;
             align-self: center;
-            align-items: end;
+            justify-content: end;
             &--earth {
                 height: 85vh;
             }
@@ -263,9 +263,8 @@ h3 {
     &--boxes {
         // margin-top: 20px;
         width: 45%;
-        align-items: stretch;
         justify-content: start;
-        padding: 20px 5px 30px 5px;
+        padding: 0px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -273,6 +272,7 @@ h3 {
             // margin: 10px;
             border-radius: 12px;
             padding: 3px;
+            // height: auto;
             background: linear-gradient(
                 120deg,
                 $gradient-border-end 0%,

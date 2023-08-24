@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
 import {TuiAlertService} from "@taiga-ui/core";
 
+
 class Card {
   name?: string;
   image?: string;
