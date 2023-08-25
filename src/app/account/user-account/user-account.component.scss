@@ -37,7 +37,10 @@
   height: 600px;
 }
 
-.my-account {
+.copy{
+  display: flex;
+  cursor: pointer;
+  column-gap: 10px;
 }
 
 .wallet-address {

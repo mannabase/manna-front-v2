@@ -1,12 +1,14 @@
 <div class="my-account border-round-3xl border-3 flex flex-column gap-3 p-3">
     <span class="text-4xl font-medium">My Account</span>
-    <tui-svg src="tuiIconCopyLarge"></tui-svg>
     <div class="wallet-address flex flex-row gap-2 border-round-3xl p-3">
         <h4 class="m-0 mr-4">My Wallet Address:</h4>
-        <p class="m-0" [(ngModel)]="walletAddress">0x394b4j494nn4j49494jd03b</p>
-        <tui-svg src="tuiIconCopyLarge"></tui-svg>
+        <ng-container>
+            <a class="copy" (click)="copyToClipboard()"
+                ><p class="m-0">{{ walletAddress }}</p>
+                <tui-svg src="tuiIconCopyLarge"></tui-svg
+            ></a>
+        </ng-container>
     </div>
-    
 </div>
 <!--<div class="border-round-3xl border-3 pb-2">-->
 <!--  <h2 class="p-3">MY TRANSACTIONS</h2>-->

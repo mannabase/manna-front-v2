@@ -58,8 +58,8 @@
     </div>
     <div class="blocks">
         <div class="boxes-container">
-            <div class="info-box" *ngFor="let box of boxes">
-                <div class="gradiant-border">
+            <div class="outer-gradiant-border-box" *ngFor="let box of boxes">
+                <div class="gradiant-border-box">
                     <div class="box-header">
                         <h3>{{ box.title }}</h3>
                         <img
@@ -69,7 +69,7 @@
                         />
                     </div>
                     <p class="card-discription">{{ box.description }}</p>
-                    <a tuiLink icon="tuiIconArrowRight" class="link-card">
+                    <a tuiLink icon="tuiIconArrowRight" class="link-card-main">
                         {{ box.link }}
                     </a>
                 </div>
@@ -119,11 +119,7 @@
     <div class="blocks community--show">
         <div class="community">
             <div class="community--govern">
-                <div
-                    class="community--govern--allHumans"
-                >
-                    For all Humans
-                </div>
+                <div class="community--govern--allHumans">For all Humans</div>
                 <div class="text-lg font-light" style="max-width: 80%">
                     Manna is built to be accessible to every person.
                 </div>
@@ -146,7 +142,7 @@
             </div>
             <div class="community--boxes">
                 <div class="community--boxes--box">
-                    <div class="gradiant-border">
+                    <div class="gradiant-border-box">
                         <div class="box-header">
                             <a
                                 tuiLink
@@ -163,7 +159,7 @@
                     </div>
                 </div>
                 <div class="community--boxes--box">
-                    <div class="gradiant-border">
+                    <div class="gradiant-border-box">
                         <div class="box-header">
                             <a
                                 tuiLink
@@ -180,7 +176,7 @@
                     </div>
                 </div>
                 <div class="community--boxes--box">
-                    <div class="gradiant-border">
+                    <div class="gradiant-border-box">
                         <div class="box-header">
                             <a
                                 tuiLink
@@ -280,8 +276,11 @@
                     />
                     <p class="mannabase-footer">mannabase</p>
                 </div>
-                <p class="manna-text-footer">
-                    mannabase Mannabase is the hub for Manna. Manna is a digital
+                <p class="manna-text-footer mb-0">
+                    Mannabase is the hub for Manna.
+                </p>
+                <p class="m-0">
+                    Manna is a digital
                     token that everyonein the world can claim
                 </p>
             </div>

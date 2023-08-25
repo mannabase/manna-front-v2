@@ -138,20 +138,27 @@
     display: none;
 }
 
-.info-box {
+.outer-gradiant-border-box{
     width: calc(33.33% - 20px);
     min-width: 300px;
     margin: 10px;
     border-radius: 12px;
-    padding: 3px;
+    padding: 5px;
     background: linear-gradient(
-        120deg,
-        $gradient-border-start 0%,
-        $gradient-border-end 13%
+        180deg,
+        $gradient-border-box-start 50%,
+        $gradient-border-box-end 100%
     );
     &:last-child {
         margin-right: 0;
     }
+}
+.gradiant-border-box {
+    border-radius: 10px;
+    position: relative;
+    background: $background-color;
+    padding: 10px;
+    text-align: start;
 }
 .outer-gradiant-border-links {
     display: flex;
@@ -159,9 +166,9 @@
     border-radius: 20px;
     padding: 3px;
     background: linear-gradient(
-        120deg,
-        $gradient-border-start 0%,
-        $gradient-border-end 13%
+        90deg,
+        $gradient-border-start 50%,
+        $gradient-border-end 100%
     );
 }
 .gradiant-border-links {
@@ -172,13 +179,7 @@
     text-align: start;
     padding: 4px 15px 4px 20px;
 }
-.gradiant-border {
-    border-radius: 10px;
-    position: relative;
-    background: $background-color;
-    padding: 10px;
-    text-align: start;
-}
+
 
 .box-header {
     display: flex;
@@ -203,6 +204,11 @@ h3 {
 .link-card {
     display: flex;
     justify-content: start;
+}
+.link-card-main {
+    display: flex;
+    justify-content: start;
+    color:$links-color-main ;
 }
 .ecosystem {
     display: flex;
@@ -245,7 +251,7 @@ h3 {
     justify-content: space-between;
     flex-wrap: wrap;
     &--govern {
-        width: 30%;
+        width: 40%;
         box-shadow: 2px;
         border-radius: 20px;
         background-image: url("../../assets/images/governed_background.png");
@@ -274,9 +280,9 @@ h3 {
             padding: 3px;
             // height: auto;
             background: linear-gradient(
-                120deg,
-                $gradient-border-end 0%,
-                $gradient-border-end 13%
+                180deg,
+                $gradient-border-box-start 50%,
+                $gradient-border-box-end 100%
             );
         }
     }
