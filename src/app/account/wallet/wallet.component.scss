@@ -122,3 +122,15 @@
   padding: 0;
   min-width: 150px;
 }
+
+@media #{$tablet} {
+  .wallet{
+    min-width: 0px;
+  }
+}
+@media #{$mobile} {
+  .wallet{
+    min-width: 0px;
+  }
+}
+

@@ -33,7 +33,9 @@
   padding: 10px 20px 10px 20px;
   margin-right: 10px;
   // width: 400px;
-  background:  linear-gradient(90deg, rgba(248,111,100,1) 50%, rgba(252,83,146,1) 100%);
+  background:  linear-gradient(90deg,
+  $gradient-wallet-header-start 50%,
+  $gradient-wallet-header-end 100%);
   padding: auto;
 }
 
@@ -100,9 +102,6 @@
 .side-bar {
   background-color: #383838;
 }
-.wallet-address{
-
-}
 @media #{$tablet} {
   .black-background{
     background: rgb(0, 0, 0);
@@ -111,5 +110,8 @@
 @media #{$mobile} {
   .black-background{
     background: rgb(0, 0, 0);
+  }
+  .logo-container {
+    display: none;
   }
 }
