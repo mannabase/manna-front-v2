@@ -28,10 +28,12 @@
 }
 
 .wallet-header {
-  background-size: contain;
-  background-repeat: no-repeat;
+  border: 2px dashed white;
+  border-radius: 20px;
+  padding: 10px 20px 10px 20px;
+  margin-right: 10px;
   // width: 400px;
-  background-image: url('../../assets/images/wallet_button.webp');
+  background:  linear-gradient(90deg, rgba(248,111,100,1) 50%, rgba(252,83,146,1) 100%);
   padding: auto;
 }
 
@@ -98,7 +100,9 @@
 .side-bar {
   background-color: #383838;
 }
+.wallet-address{
 
+}
 @media #{$tablet} {
   .black-background{
     background: rgb(0, 0, 0);

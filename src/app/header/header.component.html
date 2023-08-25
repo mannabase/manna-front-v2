@@ -43,7 +43,7 @@
       </ul>
     </nav>
 
-    <div class="manna-button" *ngIf="walletAddress">
+    <div class="wallet-header" *ngIf="walletAddress">
       {{ walletAddress | slice:0:6 }}...{{ walletAddress | slice:-4 }}
     </div>
   </div>
