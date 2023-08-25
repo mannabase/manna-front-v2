@@ -72,9 +72,9 @@ export class MarketplaceComponent {
       },
     ];
     this.cards = [
-      {name: 'GNOMER #234', image: "../../assets/images/marketplace_sample1.png", price: 30},
-      {name: 'SPRING WATER', image: "../../assets/images/marketplace_sample2.png", price: 30},
-      {name: 'GNOMER #1234', image: "../../assets/images/marketplace_sample3.png", price: 30},
+      {name: 'GNOMER #234', image: "../../assets/images/marketplace_sample1.webp", price: 30},
+      {name: 'SPRING WATER', image: "../../assets/images/marketplace_sample2.webp", price: 30},
+      {name: 'GNOMER #1234', image: "../../assets/images/marketplace_sample3.webp", price: 30},
     ];
   }
 }

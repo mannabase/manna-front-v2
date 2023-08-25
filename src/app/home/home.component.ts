@@ -11,8 +11,8 @@ import { ClaimDialogComponent } from '../claim-dialog/claim-dialog.component';
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-    ballonsHomePage: string = '../../assets/images/ballons.png';
-    erthHomePage: string = '../../assets/images/erth.png'
+    ballonsHomePage: string = '../../assets/images/ballons.webp';
+    erthHomePage: string = '../../assets/images/erth.webp'
 
     buttonMessageMap = new Map<UserClaimingState, string>([
         [UserClaimingState.ZERO, 'Connect Metamask'],
@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
             title: 'Get Verified',
             description: 'All manna user are verified while presrving user privacy. Making a network of uniqe, real accounts',
             link: 'Get Verified',
-            imagePath: '../../assets/images/verified.png',
+            imagePath: '../../assets/images/verified.webp',
         },
         {
             title: 'Earn',
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
             title: 'Spend',
             description: 'Use manna for what you love.Trade it in the marketplace, giv it to those in need,or stake for rewards.',
             link: 'Spend',
-            imagePath: '../../assets/images/spend.png',
+            imagePath: '../../assets/images/spend.webp',
         },
     ];
     communityBoxes = [
