@@ -1,4 +1,8 @@
 @import "../../variables";
+.page{
+    display: flex;
+    justify-content: center;
+}
 
 .blog-container{
     width: 70%;
@@ -21,8 +25,9 @@
 
 .blog-list {
     display: grid;
+    grid-auto-rows: auto;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 24px;
+    gap: 8px;
     justify-self: center;
 }
 
@@ -59,3 +64,15 @@
     border-radius: 0 0 24px 0;
     padding: 24px;
 }
+
+@media #{$tablet} {
+    .blog-list{
+        grid-template-columns: 1fr;
+    }
+  }
+  @media #{$mobile} {
+    .blog-list{
+        grid-template-columns: 1fr;
+        row-gap: 20px;
+    }
+  }
