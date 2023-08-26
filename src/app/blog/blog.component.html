@@ -1,8 +1,37 @@
-<div class="blog-list">
-    <div class="blog-item flex flex-column border-round-3xl p-3" *ngFor="let blog of blogs"
-         (click)="viewBlogDetail(blog.id)">
-        <img [src]="blog.imageUrl" alt="Blog Image">
-        <h3>{{ blog.title }}</h3>
-        <p class="blog-content">{{ trim(blog.content) }}</p>
+<div class="flex justify-content-center">
+    <div class="blog-container">
+        <h2>Updates, stories, and announcements from Manna</h2>
+        <div *ngIf="lastBlog" class="last-blog">
+            <img
+                class="blog-image"
+                [src]="lastBlog.imageUrl"
+                alt="Blog Image"
+            />
+            <div class="blog-description">
+                <h3>{{ lastBlog.title }}</h3>
+                <p>{{ lastBlog.date }}</p>
+                <hr />
+                <p class="blog-content">{{ trim(lastBlog.content) }}</p>
+            </div>
+        </div>
+        <div class="blog-list">
+            <div
+                class="blog-item"
+                *ngFor="let blog of otherBlogs"
+                (click)="viewBlogDetail(blog.id)"
+            >
+                <img
+                    class="blog-image"
+                    [src]="blog.imageUrl"
+                    alt="Blog Image"
+                />
+                <div class="blog-description">
+                    <h3>{{ blog.title }}</h3>
+                    <p>{{ blog.date }}</p>
+                    <hr />
+                    <p class="blog-content">{{ trim(blog.content) }}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
