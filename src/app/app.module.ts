@@ -43,10 +43,11 @@ import { TuiLoaderModule } from '@taiga-ui/core';
 import { MetamaskConnectionComponent } from './claim-dialog/metamask-connection/metamask-connection.component';
 import { VerificationComponent } from './claim-dialog/verification/verification.component';
 import { ClaimMannaComponent } from './claim-dialog/claim-manna/claim-manna.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent,
-    AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, VerificationComponent, ClaimMannaComponent],
+    AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, VerificationComponent, ClaimMannaComponent, FooterComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
