@@ -1,4 +1,10 @@
 <div class="flex flex-column gap-3 justify-content-center align-items-center w-full">
+    <span *ngIf="state == MetamaskState.NOT_INSTALLED">
+        Metamask extension is not installed. Please install it to continue.
+    </span>
+    <div *ngIf="state == MetamaskState.NOT_INSTALLED">
+        <button tuiButton (click)="installMetamask()" size="m">Install Metamask</button>
+    </div>
     <span *ngIf="state == MetamaskState.NOT_CONNECTED">
         Let's get you started! Please connect your Metamask wallet by clicking the button below
     </span>

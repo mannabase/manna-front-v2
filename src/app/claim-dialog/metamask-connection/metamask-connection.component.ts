@@ -1,31 +1,45 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {MetamaskBrightIdService, MetamaskState} from "../../metamask-bright-id.service";
-import {mannaChainName} from "../../config";
-import {TuiAlertService} from "@taiga-ui/core";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { MetamaskBrightIdService, MetamaskState } from "../../metamask-bright-id.service";
+import { mannaChainName } from "../../config";
+import { TuiAlertService } from "@taiga-ui/core";
 
 @Component({
-    selector: 'app-metamask-connection',
-    templateUrl: './metamask-connection.component.html',
-    styleUrls: ['./metamask-connection.component.scss']
+  selector: 'app-metamask-connection',
+  templateUrl: './metamask-connection.component.html',
+  styleUrls: ['./metamask-connection.component.scss']
 })
 export class MetamaskConnectionComponent implements OnInit {
-    @Output() nextStep = new EventEmitter<any>();
-    state = MetamaskState.NOT_CONNECTED;
-    MetamaskState = MetamaskState;
-    mannaChain = mannaChainName;
+  @Output() nextStep = new EventEmitter<any>();
+  state = MetamaskState.NOT_CONNECTED;
+  MetamaskState = MetamaskState;
+  mannaChain = mannaChainName;
 
-    constructor(readonly metamaskBrightIdService: MetamaskBrightIdService,
-                readonly alertService: TuiAlertService) {
+  constructor(
+    readonly metamaskBrightIdService: MetamaskBrightIdService,
+    readonly alertService: TuiAlertService
+  ) {}
+
+  ngOnInit() {
+    if (typeof window.ethereum === 'undefined') {
+      this.alertService.open("Metamask extension is not installed. Please install it to continue.", {
+        status: "error"
+      }).subscribe();
+      console.log('Metamask State :','NOT_INSTALLED')
+      this.state = MetamaskState.NOT_INSTALLED;
+    } else {
+      this.updateState();
+      console.log('Metamask State :','INSTALLED')
     }
-
-    ngOnInit() {
-        this.updateState();
-    }
-
+  }
+  installMetamask() {
+    const metamaskDownloadLink = 'https://metamask.io/download/';
+    window.open(metamaskDownloadLink, '_blank');
+  }
     updateState() {
         this.metamaskBrightIdService.checkMetamaskState()
             .subscribe({
                 next: value => {
+                    console.log("Metamask state:", value);
                     if (value == MetamaskState.READY)
                         this.nextStep.emit();
                     this.state = value;
