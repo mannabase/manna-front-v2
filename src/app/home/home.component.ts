@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
             title: 'Get Verified',
             description: 'All manna user are verified while presrving user privacy. Making a network of uniqe, real accounts',
             link: 'Get Verified',
-            imagePath: '../../assets/images/verified.webp',
+            imagePath: '../../assets/images/verified.png',
         },
         {
             title: 'Earn',
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
             title: 'Spend',
             description: 'Use manna for what you love.Trade it in the marketplace, giv it to those in need,or stake for rewards.',
             link: 'Spend',
-            imagePath: '../../assets/images/spend.webp',
+            imagePath: '../../assets/images/spend.png',
         },
     ];
     communityBoxes = [

@@ -3,7 +3,8 @@
     <div class="blocks full-height mt-1">
         <div class="full-height--main">
             <div class="full-height--main--part1">
-                <div class="flex justify-content-center mb-5">
+                <img class="full-height--main--part1--mannas" src="../../assets/images/mainPage-side-image.webp" alt="">
+                <!-- <div class="flex justify-content-center mb-5">
                     <img
                         class="full-height--main--part1--ballons"
                         [src]="ballonsHomePage"
@@ -19,14 +20,41 @@
                 </h1>
                 <button class="manna-button mt-4" (click)="openClaimDialog()">
                     <h3>Get Started</h3>
-                </button>
+                </button> -->
             </div>
             <div class="full-height--main--part2">
-                <img
+                <div class="flex-grow-1"></div>
+                <h1 class="text-daily-manna mt-5 mb-0">
+                    CLAIM YOUR DAILY
+                </h1>
+                <h1 class="text-daily-manna my-2">
+                    MANNA AND JOIN THE
+                </h1>
+                <h1 class="text-daily-manna my-2">
+                    FUTURE OF MONEY.
+                </h1>
+                <div class="manna-button-box mt-4">
+                    <button class="manna-button" (click)="openClaimDialog()">
+                        <h3>Get Started</h3>
+                    </button>
+                    <div class="outer-gradiant-border-links">
+                        <a class="gradiant-border-links" tuiLink>
+                            <p class="m-0">
+                                Learn More
+                                <tui-svg
+                                    src="tuiIconArrowUpRight"
+                                    style="color: var(--tui-primary)"
+                                ></tui-svg>
+                            </p>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- <img
                     class="full-height--main--part2--earth"
                     [src]="erthHomePage"
                     alt="earth"
-                />
+                /> -->
             </div>
         </div>
     </div>
@@ -61,12 +89,12 @@
             <div class="outer-gradiant-border-box" *ngFor="let box of boxes">
                 <div class="gradiant-border-box">
                     <div class="box-header">
-                        <h3>{{ box.title }}</h3>
                         <img
                             [src]="box.imagePath"
                             alt="{{ box.title }}"
                             class="box-image"
                         />
+                        <h3>{{ box.title }}</h3>
                     </div>
                     <p class="card-discription">{{ box.description }}</p>
                     <a tuiLink icon="tuiIconArrowRight" class="link-card-main">
@@ -109,7 +137,7 @@
             </div>
             <div class="flex-container--items--item2">
                 <img
-                    src="../../assets/images/manna-people.webp"
+                    src="../../assets/images/world.png"
                     alt="Manna People"
                     style="width: 100%"
                 />
@@ -119,40 +147,29 @@
     <div class="blocks community--show">
         <div class="community">
             <div class="community--govern">
-                <div class="community--govern--allHumans">For all Humans</div>
-                <div class="text-lg font-light" style="max-width: 80%">
-                    Manna is built to be accessible to every person.
-                </div>
-                <div class="flex flex-row justify-content-end w-full">
-                    <img
-                        src="../../assets/images/governed_manna_logo.webp"
-                        alt="manna"
-                        style="max-width: 10em"
-                    />
-                </div>
-                <div class="outer-gradiant-border-links mt-5">
-                    <a class="gradiant-border-links" tuiLink>
-                        Get Started
-                        <tui-svg
-                            src="tuiIconArrowUpRight"
-                            style="color: var(--tui-primary)"
-                        ></tui-svg>
-                    </a>
-                </div>
+                <h3 class="community--govern--allHumans">For all Humans</h3>
+                <p class="text-lg font-light m-0">
+                    Manna is built to be accessible
+                </p>
+                <p class="text-lg font-light mt-0 mb-1">
+                    to every person.
+                </p>
+                <button class="manna-button">
+                    <p class="m-0">Get Started</p>
+                </button>
             </div>
             <div class="community--boxes">
                 <div class="community--boxes--box">
-                    <div class="gradiant-border-box">
-                        <div class="box-header">
-                            <a
-                                tuiLink
-                                icon="tuiIconArrowRight"
-                                class="link-card"
-                            >
-                                1-Per-Day
-                            </a>
-                        </div>
-                        <p class="link-card">
+                    <img src="../../assets/images/onePerDay.png" alt="onePerDay">
+                    <div
+                    >
+                        <a
+                            tuiLink
+                            icon="tuiIconArrowRight"
+                        >
+                            1-Per-Day
+                        </a>
+                        <p >
                             Every person can claim 1 manna per day. You can
                             start claiming
                         </p>
@@ -194,7 +211,9 @@
                 </div>
             </div>
         </div>
+        <img src="../../assets/images/humanity-manna-logo.png" alt="manna" class="community--image">
     </div>
+    
     <!-- <div class="blocks pb-0">
         <h2 class="flex mb-0">DEVELOPERS</h2>
     </div> -->

@@ -1,4 +1,4 @@
-<div class="my-header flex flex-row justify-content-between align-items-center p-2"
+<div class="my-header flex flex-row justify-content-around align-items-center p-2"
      [ngClass]="{ 'black-background': isAccountPage, 'scrolled': isScrolled }" (onResize)="handleResize($event)">
   <div class="flex flex-row gap-2 align-items-center">
     <button tuiIconButton *ngIf="showBurgerMenu" icon="tuiIconMenu" appearance="flat" size="s"
@@ -20,12 +20,11 @@
 
     </button>
     <div class="logo-container">
-      <img src="../../assets/images/header_manna_logo.png" class="logo-header">
+      <img src="../../assets/images/governed_manna_logo.webp" class="logo-header">
     </div>
-    <h2 class="font-light m-0">mannabase</h2>
+    <h2 class="font-light m-0 pb-2">mannabase</h2>
   </div>
   <div class="flex flex-row gap-2 align-items-center">
-
     <nav class="menu-bar" *ngIf="!showBurgerMenu">
       <ul class="menu-list" [ngClass]="{ 'show-menu': showBurgerMenu }">
         <ng-container *ngFor="let item of menuItems">
@@ -35,18 +34,16 @@
               {{ item.label }}
             </a>
           </li>
-          <li class="menu-item" *ngIf="item.icon">
-            <a [routerLink]="item.routerLink" [routerLinkActive]="['active']"
-               [routerLinkActiveOptions]="{ exact: true }">
-              <i class="{{ item.icon }}"></i>
-            </a>
-          </li>
         </ng-container>
       </ul>
     </nav>
-
-    <div class="wallet-header" *ngIf="walletAddress">
-      {{ walletAddress | slice:0:6 }}...{{ walletAddress | slice:-4 }}
-    </div>
   </div>
+  <button class="account-button">
+    <p class="m-2">Account
+      <i class="fa-regular fa-user ml-2" ></i>
+    </p>
+</button>
+  <!-- <div class="wallet-header flex flex-row" *ngIf="walletAddress">
+    {{ walletAddress | slice:0:6 }}...{{ walletAddress | slice:-4 }}
+  </div> -->
 </div>

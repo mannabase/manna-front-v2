@@ -1,9 +1,11 @@
 $mobile: "screen and (max-width: 767px)";
 $tablet: "screen and (min-width: 768px) and (max-width: 1024px)";
 $tui-desktop: "screen and (min-width: 1025px)";
-$background-color: #383838;
+$text-color: #9b9b9b;
+$background-color: #191b1f;
 $background-wallet-color: #282828;
 $background-color-header-scrolled: rgba(25, 27, 31, 0.9);
+$border-color: #d05168;
 $gradient-border-start: #f86f64;
 $gradient-border-end: #fc5392;
 $gradient-border-box-start:#ffb2bd;
@@ -13,21 +15,22 @@ $gradient-wallet-header-end:#fc5392;
 $image-logo-start: rgba(255, 255, 255, 1);
 $image-logo-end: rgba(250, 129, 136, 1);
 $links-color-main: #fb6081;
-$links-color-main-hover: #fa6062;
+$links-color-main-hover: #fbb8d5;
 $links-color-white: #ffffff;
 $border-white: ffffff;
 $blog-descpription-color:rgba(255, 255, 255, 0.6);
 $background-blog-color: #282828;
 $width-of-mainPage-desktop:90%;
 $width-of-mainPage-tablet:95%;
-$width-of-mainPage-mobile:95%;
+$width-of-mainPage-mobile:92%;
 
 //images
-$get-started-button-background: url("../src/assets/images/get_stared_background.webp");
+$get-started-button-background:linear-gradient(180deg, #f96d69, #fa5d82);
 $developer-main-background: url("../../assets/images/developer_main_background.png");
 $developer-under-background: url("../../assets/images/developer_background.webp");
+$background-main-image:url("./assets/images/background-main-image.webp");
 // $ballons-home-page:url("./assets/images/");
-$background-color-boxes:#282828;
+$background-color-boxes: #282828;
 //sizes
-$manna-border-radius: 2rem;
+$manna-border-radius: 10px;
 $header-height:65px;

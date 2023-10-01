@@ -1,7 +1,15 @@
-<div class="flex flex-column align-items-center">
-    <div class="blog-item flex flex-column p-3">
-        <img [src]="blog.imageUrl" alt="Blog Image">
-        <h3>{{ blog.title }}</h3>
-        <p>{{ blog.content }}</p>
+
+<div class="blog-detail">
+    <div class="blog-detail-header">
+        <h2>{{ selectedBlog.title }}</h2>
+        <p>{{ selectedBlog.date }}</p>
+    </div>
+    <img
+        class="blog-detail-image"
+        [src]="selectedBlog.imageUrl"
+        alt="Blog Image"
+    />
+    <div class="blog-detail-content">
+        {{ selectedBlog.content }}
     </div>
 </div>

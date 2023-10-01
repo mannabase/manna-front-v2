@@ -23,23 +23,23 @@
     &--main {
         display: flex;
         align-items: center;
-        justify-content: space-between;
         &--part1 {
-            width: 40%;
+            width: 30%;
             display: flex;
-            // justify-content: flex-end;
-            flex-direction: column;
-            height: 100%;
-            &--ballons {
-                margin-bottom: auto;
-                width: 80%;
+            align-self: end;
+            justify-content: start;
+            height: 100vh;
+            &--mannas {
+                align-self:end ;
+                height: 85vh;
             }
         }
         &--part2 {
-            width: 60%;
+            width: 50%;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-self: center;
-            justify-content: end;
             &--earth {
                 height: 85vh;
             }
@@ -50,11 +50,17 @@
     display: none;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    // height: 90vh;
+    height: calc(100vh - 120px);
     padding-bottom: 60px 0px !important;
 }
+.manna-button-box{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+}
 .manna-button {
-    justify-content: start;
     background-image: $get-started-button-background;
     background-size: cover;
     background-repeat: no-repeat;
@@ -62,7 +68,7 @@
     padding: 8px 24px;
     font-size: 16px;
     cursor: pointer;
-    border: 5px solid white;
+    border: 0px;
     border-radius: $manna-border-radius;
     max-width: 200px;
     min-width: 150px;
@@ -113,7 +119,7 @@
 }
 .text-daily-manna {
     display: flex;
-    justify-content: start;
+    justify-content: center;
     align-items: start;
     font-size: 35px;
     &--description {
@@ -144,11 +150,6 @@
     margin: 10px;
     border-radius: 12px;
     padding: 5px;
-    background: linear-gradient(
-        180deg,
-        $gradient-border-box-start 50%,
-        $gradient-border-box-end 100%
-    );
     &:last-child {
         margin-right: 0;
     }
@@ -156,42 +157,35 @@
 .gradiant-border-box {
     border-radius: 10px;
     position: relative;
-    background: $background-color;
     padding: 10px;
     text-align: start;
 }
 .outer-gradiant-border-links {
     display: flex;
     width: fit-content;
-    border-radius: 20px;
+    border-radius: $manna-border-radius;
     padding: 3px;
-    background: linear-gradient(
-        90deg,
-        $gradient-border-start 50%,
-        $gradient-border-end 100%
-    );
+    background-image: $get-started-button-background;
 }
 .gradiant-border-links {
-    border-radius: 20px;
     position: relative;
-    background: $background-color;
-    padding: 7px;
+    border-radius: $manna-border-radius;
+    padding: 8px 24px;
     text-align: start;
-    padding: 4px 15px 4px 20px;
+    background: $background-color;
 }
 
 
 .box-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
+    
 }
 
 .box-image {
-    width: 45px;
-    height: 50px;
-    border-radius: 4px;
+    border-radius: 15px;
 }
 
 h3 {
@@ -199,7 +193,7 @@ h3 {
     font-size: 1.2rem;
 }
 .card-discription {
-    height: 60px;
+    height: 50px;
 }
 .link-card {
     display: flex;
@@ -221,6 +215,8 @@ h3 {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    height: calc(100vh - 120px);
+        align-items: center;
 
     &--items {
         flex: 1;
@@ -228,20 +224,22 @@ h3 {
         display: flex;
         &--item1 {
             width: 30%;
-            align-items: stretch;
+            height: 150px;
             justify-content: start;
             padding: 20px 5px 30px 5px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            margin-top: -50px;
         }
 
         &--item2 {
-            width: 45%;
+            width: 55%;
             min-width: 500px;
             align-items: center;
             justify-content: center;
             display: flex;
+            margin-right: -5%
         }
     }
 }
@@ -251,19 +249,19 @@ h3 {
     justify-content: space-between;
     flex-wrap: wrap;
     &--govern {
-        width: 40%;
-        box-shadow: 2px;
-        border-radius: 20px;
-        background-image: url("../../assets/images/governed_background.webp");
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        width: 50%;
+        border: 1px solid $border-color;
+        border-radius: 10px;
+        background-image: url("../../assets/images/forAllHumans.png");
         background-size: cover;
-        display: flex-column;
-        gap: 2px;
         padding: 20px;
-        text-align: start;
         &--allHumans{
             font-size: 40px;
-            margin-bottom: 20px;
-            color: $gradient-border-start;
+            color: white;
+            font-weight:bold;
         }
     }
     &--boxes {
@@ -274,17 +272,32 @@ h3 {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        gap: 5px;
+        z-index: 10;
         &--box {
-            // margin: 10px;
+            display: flex;
+            flex-direction: row;
+            border: 2px solid $border-color;
             border-radius: 12px;
             padding: 3px;
-            // height: auto;
-            background: linear-gradient(
-                180deg,
-                $gradient-border-box-start 50%,
-                $gradient-border-box-end 100%
-            );
+            background:rgba(240, 155, 182, 0.823);; 
+            backdrop-filter: blur(4px);
+            transition: $border-color 0.3s ease;
+            &--image{
+                width: 50px;
+            }
         }
+    }
+    &--image{
+        position: absolute;
+        display: flex;
+        align-self: end;
+        justify-self: end;
+        width: 15rem;
+        height: 20rem;
+        margin-right: -5%;
+        margin-top: 100px;
+        z-index: 0;
     }
 }
 .developers {
