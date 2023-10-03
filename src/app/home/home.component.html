@@ -4,57 +4,33 @@
         <div class="full-height--main">
             <div class="full-height--main--part1">
                 <img class="full-height--main--part1--mannas" src="../../assets/images/mainPage-side-image.webp" alt="">
-                <!-- <div class="flex justify-content-center mb-5">
-                    <img
-                        class="full-height--main--part1--ballons"
-                        [src]="ballonsHomePage"
-                        alt="manna"
-                    />
-                </div>
-                <div class="flex-grow-1"></div>
-                <h1 class="text-daily-manna mt-5 mb-0">
-                    Claim your daily manna
-                </h1>
-                <h1 class="text-daily-manna my-2">
-                    and join the future of money
-                </h1>
-                <button class="manna-button mt-4" (click)="openClaimDialog()">
-                    <h3>Get Started</h3>
-                </button> -->
+                <img class="full-height--main--part1--mannas--mobile" src="../../assets/images/mainPage-side-image-mobile.png" alt="">
             </div>
             <div class="full-height--main--part2">
                 <div class="flex-grow-1"></div>
-                <h1 class="text-daily-manna mt-5 mb-0">
+                <div class="text-daily-manna mt-5 mb-0">
                     CLAIM YOUR DAILY
-                </h1>
-                <h1 class="text-daily-manna my-2">
+                </div>
+                <div class="text-daily-manna my-1">
                     MANNA AND JOIN THE
-                </h1>
-                <h1 class="text-daily-manna my-2">
+                </div>
+                <h3 class="text-daily-manna future mt-1 mb-5">
                     FUTURE OF MONEY.
-                </h1>
+                </h3>
                 <div class="manna-button-box mt-4">
                     <button class="manna-button" (click)="openClaimDialog()">
-                        <h3>Get Started</h3>
+                        <p class="m-0">Get Started <tui-svg
+                            src="tuiIconArrowRight"
+                        ></tui-svg></p>
                     </button>
                     <div class="outer-gradiant-border-links">
                         <a class="gradiant-border-links" tuiLink>
-                            <p class="m-0">
+                            <p class="gradiant-border-links--text m-0">
                                 Learn More
-                                <tui-svg
-                                    src="tuiIconArrowUpRight"
-                                    style="color: var(--tui-primary)"
-                                ></tui-svg>
                             </p>
                         </a>
                     </div>
                 </div>
-                
-                <!-- <img
-                    class="full-height--main--part2--earth"
-                    [src]="erthHomePage"
-                    alt="earth"
-                /> -->
             </div>
         </div>
     </div>
@@ -73,8 +49,10 @@
             Get 1 manna a day and use it for what you love.
         </p>
         <div class="button-get-started mb-2">
-            <button class="manna-button-mobile" (click)="openClaimDialog()">
-                Get Started
+            <button class="manna-button" (click)="openClaimDialog()">
+                <p class="m-0">Get Started <tui-svg
+                    src="tuiIconArrowRight"
+                ></tui-svg></p>
             </button>
         </div>
         <div class="button-learn-more pt-1 pb-5">
@@ -96,7 +74,7 @@
                         />
                         <h3>{{ box.title }}</h3>
                     </div>
-                    <p class="card-discription">{{ box.description }}</p>
+                    <p class="card-discription text">{{ box.description }}</p>
                     <a tuiLink icon="tuiIconArrowRight" class="link-card-main">
                         {{ box.link }}
                     </a>
@@ -106,7 +84,7 @@
     </div>
     <div class="blocks">
         <div class="flex-container">
-            <div class="flex-container--items--item1">
+            <div class="flex-container--item1">
                 <a tuiLink class="mb-3">
                     <h5 class="p-0 m-0">
                         MANNA ECOSYSTEM
@@ -116,30 +94,31 @@
                         ></tui-svg>
                     </h5>
                 </a>
-                <div class="text-4xl font-medium line-height-2 mb-3">
+                <div class="title mb-3">
                     Build a global network powered by the community
                 </div>
-                <div class="text-lg font-light mb-3">
+                <p class="text mb-3">
                     A community powered global ecosystem using the principles of
                     UBI to make it open and accessible to all
-                </div>
-                <div class="outer-gradiant-border-links mt-3">
-                    <a class="gradiant-border-links" tuiLink>
-                        <p class="m-0">
-                            Get Started
-                            <tui-svg
-                                src="tuiIconArrowUpRight"
-                                style="color: var(--tui-primary)"
-                            ></tui-svg>
-                        </p>
-                    </a>
-                </div>
+                </p>
+                <button class="manna-button mt-3" (click)="openClaimDialog()">
+                    <p class="m-0">Get Started 
+                        <tui-svg
+                        src="tuiIconArrowRight"
+                    ></tui-svg>
+                </p>
+                </button>
             </div>
-            <div class="flex-container--items--item2">
+            <div class="flex-container--item2">
                 <img
                     src="../../assets/images/world.png"
-                    alt="Manna People"
-                    style="width: 100%"
+                    alt="world"
+                    class="flex-container--item2--desktop"
+                />
+                <img
+                    src="../../assets/images/world-mobile.png"
+                    alt="world"
+                    class="flex-container--item2--mobile"
                 />
             </div>
         </div>
@@ -148,70 +127,81 @@
         <div class="community">
             <div class="community--govern">
                 <h3 class="community--govern--allHumans">For all Humans</h3>
-                <p class="text-lg font-light m-0">
+                <p class="text">
                     Manna is built to be accessible
                 </p>
-                <p class="text-lg font-light mt-0 mb-1">
+                <p class="text mb-1">
                     to every person.
                 </p>
-                <button class="manna-button">
-                    <p class="m-0">Get Started</p>
+                <button class="manna-button" (click)="openClaimDialog()">
+                    <p class="text">Get Started 
+                        <tui-svg
+                        src="tuiIconArrowRight"
+                    ></tui-svg>
+                </p>
                 </button>
             </div>
             <div class="community--boxes">
                 <div class="community--boxes--box">
-                    <img src="../../assets/images/onePerDay.png" alt="onePerDay">
+                    <img src="../../assets/images/onePerDay.png" alt="onePerDay" class="community--boxes--box--image">
                     <div
                     >
                         <a
                             tuiLink
                             icon="tuiIconArrowRight"
+                            class="community--boxes--box--title" 
                         >
                             1-Per-Day
                         </a>
-                        <p >
-                            Every person can claim 1 manna per day. You can
-                            start claiming
+                        <p class="text">
+                            Every person can claim 1 manna 
+                        </p>
+                        <p class="text">
+                            per day. You can start claiming
                         </p>
                     </div>
                 </div>
                 <div class="community--boxes--box">
-                    <div class="gradiant-border-box">
-                        <div class="box-header">
-                            <a
-                                tuiLink
-                                icon="tuiIconArrowRight"
-                                class="link-card"
-                            >
-                                Get Verified
-                            </a>
-                        </div>
-                        <p class="link-card">
+                    <img src="../../assets/images/human-verified.png" alt="onePerDay" class="community--boxes--box--image">
+                    <div
+                    >
+                        <a
+                            tuiLink
+                            icon="tuiIconArrowRight"
+                            class="community--boxes--box--title" 
+                        >
+                        Get Verified
+                        </a>
+                        <p class="text">
                             Manna uses decentralized and data preserving
+                        </p>
+                        <p class="text">
                             identity methods to prove uniquess.
                         </p>
                     </div>
                 </div>
                 <div class="community--boxes--box">
-                    <div class="gradiant-border-box">
-                        <div class="box-header">
-                            <a
-                                tuiLink
-                                icon="tuiIconArrowRight"
-                                class="link-card"
-                            >
-                                Built On Optimism
-                            </a>
-                        </div>
-                        <p class="link-card">
+                    <img src="../../assets/images/optimism.png" alt="onePerDay" class="community--boxes--box--image">
+                    <div
+                    >
+                        <a
+                            tuiLink
+                            icon="tuiIconArrowRight"
+                            class="community--boxes--box--title" 
+                        >
+                        Built On Optimism
+                        </a>
+                        <p class="text">
                             Manna is built on Optimism allowing low cost
+                        </p>
+                        <p class="text">
                             transactions and access to the Ethereum ecosystem.
                         </p>
                     </div>
                 </div>
             </div>
         </div>
-        <img src="../../assets/images/humanity-manna-logo.png" alt="manna" class="community--image">
+        <!-- <img src="../../assets/images/humanity-manna-logo.png" alt="manna" class="community--image"> -->
     </div>
     
     <!-- <div class="blocks pb-0">

@@ -2,8 +2,8 @@
 
 
 .footer-desktop {
-    width: $width-of-mainPage-desktop;
-    padding: 1em;
+    width: 100%;
+    padding: 1em 0em 1em 0em; 
     display: flex;
     flex-direction: column;
     margin-top: 60px;
@@ -12,18 +12,20 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    width: $width-of-mainPage-desktop;
+}
+.line{
+    width: 100%;
+    color: #422d36 !important;
+}
+.copyRight{
+    display: flex;
+    justify-content: center;
+    font-size:smaller;
 }
 .image-logo {
-    width: 2rem;
+    width: 1.5rem;
     height: 2rem;
-    object-fit: contain;
-    border-radius: 50%;
-    background: linear-gradient(
-        120deg,
-        $image-logo-start 0%,
-        $image-logo-end 13%
-    );
-        
 }
 .mannabase-footer {
     align-self: center;
