@@ -1,7 +1,7 @@
-<div class="my-header flex flex-row justify-content-around align-items-center p-2"
+<div class="my-header p-2"
      [ngClass]="{ 'black-background': isAccountPage, 'scrolled': isScrolled }" (onResize)="handleResize($event)">
-  <div class="flex flex-row gap-2 align-items-center">
-    <button tuiIconButton *ngIf="showBurgerMenu" icon="tuiIconMenu" appearance="flat" size="s"
+  <div class="flex align-items-center justify-content-center">
+    <button class="hambergur" tuiIconButton *ngIf="showBurgerMenu" icon="tuiIconMenu" appearance="flat" size="s"
             (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">
 
       <div *tuiSidebar="displaySideBar; direction: 'left'" class="h-full">
@@ -17,14 +17,13 @@
           </div>
         </div>
       </div>
-
     </button>
-    <div class="logo-container">
+    <div class="mannabase">
       <img src="../../assets/images/governed_manna_logo.webp" class="logo-header">
+      <h4 class="font-light m-0">mannabase</h4>
     </div>
-    <h2 class="font-light m-0 pb-2">mannabase</h2>
   </div>
-  <div class="flex flex-row gap-2 align-items-center">
+  <div class="flex flex-row gap-5 justify-content-start align-items-center">
     <nav class="menu-bar" *ngIf="!showBurgerMenu">
       <ul class="menu-list" [ngClass]="{ 'show-menu': showBurgerMenu }">
         <ng-container *ngFor="let item of menuItems">
@@ -38,11 +37,11 @@
       </ul>
     </nav>
   </div>
-  <button class="account-button">
+  <button [routerLink]="['/account']" class="account-button">
     <p class="m-2">Account
       <i class="fa-regular fa-user ml-2" ></i>
     </p>
-</button>
+  </button>
   <!-- <div class="wallet-header flex flex-row" *ngIf="walletAddress">
     {{ walletAddress | slice:0:6 }}...{{ walletAddress | slice:-4 }}
   </div> -->

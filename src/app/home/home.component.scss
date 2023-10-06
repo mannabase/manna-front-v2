@@ -1,4 +1,4 @@
-@import "../../variables";
+@import "../../variables";-image
 .text{
     font-size: $text-font-size-desktop;
     margin: 0px;
@@ -12,6 +12,7 @@
     align-items: center;
     justify-content: center;
     gap: 1em;
+    
 }
 
 .blocks {
@@ -84,7 +85,7 @@
     cursor: pointer;
     border: 0px;
     border-radius: $manna-border-radius;
-    width: 150px;
+    width: 170px;
 
     :disabled {
         background-image: None;
@@ -188,7 +189,7 @@ h3 {
     font-size: 1.2rem;
 }
 .card-discription {
-    height: 50px;
+    height: 60px;
 }
 .link-card {
     display: flex;
@@ -369,79 +370,9 @@ h3 {
 
 
 @media #{$tablet} {
-    .blocks {
-        width: $width-of-mainPage-tablet;
-    }
-    // .full-height {
-    //     display: none;
-    // }
-    // .full-height-mobile {
-    //     display: flex;
-    // }
-    .text-daily-manna {
-        justify-content: center;
-        align-items: center;
-        font-size: 20px;
-        &--description {
-            text-align: center;
-        }
-    }
-    .flex-item {
-        flex-basis: 100%;
-    }
-    .info-box {
-        width: 100%;
-        flex-direction: row;
-    }
-    .flex-container {
-        padding: 0px 20px 0px 20px;
-        &--items {
-            &--item1 {
-                width: 100%;
-                margin-bottom: 20px;
-                min-width: 0px;
-            }
-            &--item2 {
-                width: 100%;
-                min-width: 0px;
-            }
-        }
-    }
-    .community--show {
-        flex-direction: column;
-        align-items: center;
-    }
-    .developers {
-        width: 100%;
-    }
-    .developer {
-        min-height: none;
-    }
-    .under-developer-container {
-        display: flex;
-        flex-direction: column;
-        row-gap: 5px;
-        margin-bottom: 30px;
-        width: 90%;
-    }
-    .under-developer {
-        width: 100%;
-        background-image: $developer-main-background;
-        margin-bottom: 10px;
-    }
-    .funding {
-        width: 100%;
-    }
-    .footer-desktop {
-        display: none;
-    }
-    .footer-mobile {
-        display: flex;
-    }
-}
-@media #{$mobile} {
     .text{
         font-size: $text-font-size-mobile;
+        margin: 0px;
     }
     .title{
         font-size: $title-font-size-mobile;
@@ -455,9 +386,9 @@ h3 {
             &--mobile{
                 display: flex;
                 height: 80vh;
-                width: 50%;
+                width: 60%;
                 position: absolute;
-                align-self:end ;
+                align-self:center ;
                 margin-left: -5%;
             }
 
@@ -490,6 +421,9 @@ h3 {
         width: 100%;
         flex-direction: row;
     }
+    .card-discription {
+        height: auto;
+    }
     .flex-container {
         display: flex;
         flex-direction: column;
@@ -507,6 +441,7 @@ h3 {
                 justify-content: end;
                 min-width: 0px;
                 margin-right: -10%;
+                margin-top: -80px;
                 position: relative;
                 &--desktop{
                     display: none;
@@ -558,6 +493,185 @@ h3 {
                     font-size:$text-font-size-mobile ;
                 }
             }
+        }
+        &--image{
+            position: absolute;
+            display: flex;
+            align-self: end;
+            justify-self: end;
+            width: 9rem;
+            height: 12rem;
+            margin-right: -4%;
+            margin-top: 400px;
+            z-index: 0;
+        }
+    }
+    .developers {
+        width: 100%;
+    }
+    .developer {
+        min-height: none;
+    }
+    .under-developer-container {
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        row-gap: 5px;
+        margin-bottom: 30px;
+        width: 85%;
+    }
+    .under-developer {
+        width: 100%;
+        background-image: $developer-main-background;
+        margin-bottom: 10px;
+    }
+    .funding {
+        width: 100%;
+    }
+    .footer-desktop {
+        display: none;
+    }
+    .footer-mobile {
+        display: flex;
+    }
+}
+@media #{$mobile} {
+    .text{
+        font-size: $text-font-size-mobile;
+        margin: 0px;
+    }
+    .title{
+        font-size: $title-font-size-mobile;
+    }
+    .blocks {
+        width: $width-of-mainPage-mobile;
+    }
+    .full-height--main--part1{
+        &--mannas{
+            display: none;
+            &--mobile{
+                display: flex;
+                height: 80vh;
+                width: 60%;
+                position: absolute;
+                align-self:center ;
+                margin-left: -5%;
+            }
+
+        }
+    }
+    .text-daily-manna {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 20px;
+        &--description {
+            text-align: center;
+        }
+    }
+    .manna-button{
+        width: 120px;
+        padding: 5px 5px;
+        font-size: 14px;
+    }
+    .gradiant-border-links{
+        padding: 5px 10px;
+        &--text{
+            font-size: 14px;
+        }
+    }
+    .flex-item {
+        flex-basis: 100%;
+    }
+    .info-box {
+        width: 100%;
+        flex-direction: row;
+    }
+    .card-discription {
+        height: auto;
+    }
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: end;
+        height: auto;
+        
+            &--item1 {
+                width: 100%;
+                margin-bottom: 100px;
+                min-width: 0px;
+            }
+            &--item2 {
+                width: 80%;
+                align-items: end;
+                justify-content: end;
+                min-width: 0px;
+                margin-right: -10%;
+                margin-top: -80px;
+                position: relative;
+                
+                &--desktop{
+                    display: none;
+                }
+                &--mobile{
+                    display: flex;
+                }
+            }
+    }
+    .boxes-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .box-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+    }
+    .community {
+        flex-direction: column;
+        align-items: center;
+        column-gap: 10px;
+        &--govern {
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            width: 90%;
+            margin-bottom: 50px;
+            height: 200px;
+            background-image: url("../../assets/images/forAllHumans-mobile.png");
+            &--allHumans{
+                font-size: 20px;
+                color: white;
+                font-weight:bold;
+            }
+        }
+        &--boxes {
+            width: 100%;
+            &--box {
+                padding: 10px;
+                &--image{
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 5px;
+                    margin-right: 10px;
+                }
+                &--title{
+                    color: $border-color;
+                    font-size:$text-font-size-mobile ;
+                }
+            }
+        }
+        &--image{
+            position: absolute;
+            display: flex;
+            align-self: end;
+            justify-self: end;
+            width: 9rem;
+            height: 12rem;
+            margin-right: -4%;
+            margin-top: 400px;
+            z-index: 0;
         }
     }
     .developers {

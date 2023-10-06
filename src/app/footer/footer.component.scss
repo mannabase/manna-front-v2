@@ -1,6 +1,9 @@
 @import "../../variables";
 
-
+.text{
+    font-size: $text-font-size-desktop;
+    margin: 0px;
+}
 .footer-desktop {
     width: 100%;
     padding: 1em 0em 1em 0em; 
@@ -49,30 +52,44 @@
 
 
 @media #{$tablet} {
-    .blocks {
-        width: $width-of-mainPage-tablet;
+    .text{
+        font-size: $text-font-size-mobile;
     }
-    .flex-container {
-        padding: 0px 20px 0px 20px;
-    }
-    .footer-desktop {
-        display: none;
-    }
-    .footer-mobile {
-        display: flex;
-    }
-}
-@media #{$mobile} {
     .blocks {
         width: $width-of-mainPage-mobile;
     }
     .flex-container {
         padding: 0px 20px 0px 20px;
     }
-    .footer-desktop {
-        display: none;
+    .footer-mobile {
+        display: flex;
+    }
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        flex-wrap: wrap;
+        width: $width-of-mainPage-desktop;
+    }
+}
+@media #{$mobile} {
+    .text{
+        font-size: $text-font-size-mobile;
+    }
+    .blocks {
+        width: $width-of-mainPage-mobile;
+    }
+    .flex-container {
+        padding: 0px 20px 0px 20px;
     }
     .footer-mobile {
         display: flex;
+    }
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        flex-wrap: wrap;
+        width: $width-of-mainPage-desktop;
     }
 }

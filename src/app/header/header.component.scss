@@ -3,6 +3,15 @@
 .my-header {
   // background-color: $background-color;
   height: $header-height;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.mannabase{
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .black-background {
@@ -65,7 +74,7 @@
 .menu-item a {
   text-decoration: none;
   color: #fff;
-  padding: 8px;
+  padding:8px 16px 8px 16px;
   border-radius: var(--manna-border-radius);
 }
 
@@ -128,12 +137,27 @@
   .black-background{
     background: rgb(0, 0, 0);
   }
+  .account-button{
+    display: none;
+  }
+  .my-header {
+    // justify-content: start;
+  }
+  .mannabase{
+    margin-left:50%;
+  }
 }
 @media #{$mobile} {
   .black-background{
     background: rgb(0, 0, 0);
   }
-  .logo-container {
+  .account-button{
     display: none;
+  }
+  .my-header {
+    // justify-content: start;
+  }
+  .mannabase {
+    margin-left:50%;
   }
 }
