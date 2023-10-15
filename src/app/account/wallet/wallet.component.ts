@@ -14,6 +14,7 @@ import {ClaimDialogComponent} from "../../claim-dialog/claim-dialog.component";
 })
 export class WalletComponent implements OnInit {
   balance: string | null = null;
+  showWalletPage = false;
   buttonMessageMap = new Map<UserClaimingState, string>([
     [UserClaimingState.ZERO, 'Connect Metamask'],
     [UserClaimingState.METAMASK_CONNECTED, 'Change to ID Chain'],
@@ -46,5 +47,8 @@ export class WalletComponent implements OnInit {
 
       }
     })
+  }
+  toggleWalletPage() {
+    this.showWalletPage = !this.showWalletPage;
   }
 }

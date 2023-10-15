@@ -1,43 +1,62 @@
 <div class="container">
-    <div class="tabs">
-        <div
-            class="tab"
-            [class.active]="selectedTab === 'Account'"
-            (click)="changeTab('Account')"
-        >
-            <div class="tab-width">
-                <img
-                    src="../../assets/images/sidepanel_wallet.png"
-                    [class.active]="selectedTab === 'Account'"
-                    class="tab-image"
-                />
-                <span class="tab__text">Wallet</span>
-            </div>
+    <div class="sideBar">
+        <div class="logo">
+            <img
+                src="../../assets/images/governed_manna_logo.webp"
+                class="logo--image"
+            />
+            <p>mannabase</p>
         </div>
-        <div
-            class="tab"
-            [class.active]="selectedTab === 'Wallet'"
-            (click)="changeTab('Wallet')"
-        >
-            <div class="tab-width">
-                <img
-                    src="../../assets/images/sidepanel_accont.png"
-                    class="tab-image"
-                />
-                <span
-                    class="tab__text"
-                    [class.active]="selectedTab === 'Wallet'"
-                    >Account</span
-                >
+        <div class="account-wallet" *ngIf="walletAddress">
+            <img src="../../assets/images/accont_wallet-circle.svg" alt="" />
+            <p class="account-wallet--number">
+                {{ walletAddress | slice : 0 : 6 }}...{{
+                    walletAddress | slice : -4
+                }}
+            </p>
+            <tui-svg src="tuiIconChevronDown"></tui-svg>
+        </div>
+        <div class="user-info">
+            <img src="../../assets/images/accont-user-image.svg" alt="" />
+            <h5 class="mb-1">Aman</h5>
+            <p class="user-info--mannabase">mannabase</p>
+        </div>
+        <div class="tabs">
+            <div
+                class="tab active-line"
+                [class.active]="selectedTab === 'Account'"
+                (click)="changeTab('Account')"
+            >
+                <div class="tab-width">
+                    <img
+                        src="../../assets/images/account-wallet-icon.svg"
+                        [class.active]="selectedTab === 'Account'"
+                        class="tab-image"
+                    />
+                    <span class="tab__text">Wallet</span>
+                </div>
+            </div>
+            <div
+                class="tab active-line"
+                [class.active]="selectedTab === 'Wallet'"
+                (click)="changeTab('Wallet')"
+            >
+                <div class="tab-width">
+                    <img
+                        src="../../assets/images/account-account-icon.svg"
+                        class="tab-image"
+                    />
+                    <span
+                        class="tab__text"
+                        [class.active]="selectedTab === 'Wallet'"
+                        >Account</span
+                    >
+                </div>
             </div>
         </div>
     </div>
     <div class="tabPage">
-        <div *ngIf="selectedTab === 'Account'" class="page">
-            <app-wallet class="flex justify-content-center"></app-wallet>
-        </div>
-        <div *ngIf="selectedTab === 'Wallet'" class="page">
-            <app-user-account></app-user-account>
-        </div>
+        <app-wallet *ngIf="selectedTab === 'Account'" class="page"></app-wallet>
+        <app-user-account *ngIf="selectedTab === 'Wallet'" class="page"></app-user-account>
     </div>
 </div>

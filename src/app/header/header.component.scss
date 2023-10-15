@@ -14,9 +14,8 @@
   align-items: center;
 }
 
-.black-background {
-  background: rgb(0, 0, 0);
-  background: linear-gradient(90deg, rgba(0, 0, 0, 1) 300px, rgba(56, 56, 56, 1) 300px);
+.account {
+  display: none;
 }
 .scrolled {
   background-color: $background-color-header-scrolled; 

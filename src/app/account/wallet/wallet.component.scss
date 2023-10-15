@@ -1,136 +1,205 @@
 @import "../../../variables";
-
-.wallet{
-  min-width: 500px;
-  background-color: $background-color-boxes;
-  padding: 10px;
-  border: 5px solid white;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-}
-.balance{
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  &--logo{
+.wallet-container {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-  }
+    height: 100vh;
+    width: 100%;
+    position: relative;
 }
-.gray-line{
-  width: 100%;
-}
-.manna-text{
-  font-size: x-large;
-  font-weight: 900;
-}
-.image-logo {
-  width: 2rem;
-}
-.claimble{
-  display: flex;
-  justify-content: center;
-  column-gap: 10px;
-  margin-top: 20px;
-  &--daily{
-    font-weight: bold;
-  }
-  &--available{
-    margin-left: 10px;
-    margin-bottom: 2px;
-    color: gray;
-  }
+.wallet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.button-container{
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
+.mannabase {
+    font-size: 80px;
+    margin-bottom: 0px;
 }
-.button{
-  min-width: 300px;
-  background-image: $get-started-button-background;
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: white;
-  padding: 6px 36px;
-  font-size: 24px;
-  font-family: "Nexa Light"; //chek to why dont set the font style defaulte
-  cursor: pointer;
-  border: 2px solid white;
-  border-radius: $manna-border-radius;
-
-    :disabled {
-        background-image: None;
-        background-color: gray;
+.title {
+    display: flex;
+    gap: 20px;
+    font-size: 40px;
+    margin-bottom: 10px;
+    &--trade {
+        color: #fc568e;
+    }
+    &--create {
+        color: #f76871;
+    }
+}
+.buttun {
+    display: flex;
+    background-image: linear-gradient(91deg, #fc568e 0%, #f96971 100%);
+    border-radius: 12px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 70%;
+    cursor: pointer;
+    &--icon {
+        font-size: 20px;
+        font-weight: 500;
+    }
+    &--text {
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: 1px;
     }
 }
 
-.icon-image {
-  height: 30px;
-  margin-right: 1rem;
+.wallets {
+    &--welcome {
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        text-align: left;
+        margin-bottom: 60px;
+        &--text {
+            color: $gray-text;
+            margin: 0;
+            font-size: 18px;
+            font-weight: 900;
+        }
+        &--mannabase {
+            margin-top: 0;
+            font-size: 30px;
+            font-weight: 900;
+        }
+    }
+    &--options {
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(29, 29, 29, 0.45);
+        box-shadow: 0px 4px 50px #262626 inset;
+        border-radius: 4px;
+        padding: 40px 30px;
+        gap: 30px;
+        &--connect {
+            font-size: 36px;
+        }
+        &--buttuns {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 80%;
+            background-color: #2b2b2b;
+            padding: 20px;
+            border-radius: 5px;
+            gap: 20px;
+            cursor: pointer;
+            &--text {
+                font-size: 20px;
+                font-weight: 800;
+                letter-spacing: 1px;
+                flex-grow: 1;
+            }
+        }
+    }
 }
-
-.claim {
-  background-image: url('../../../assets/images/developer_background.webp');
+.panel {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    height: calc(100vh - 60px);
+    width: 100%;
+    &--welcome {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-content: start;
+        align-items: start;
+        text-align: left;
+        margin-bottom: 30px;
+        &--welcome {
+            margin-top: 0;
+            font-size: 30px;
+            font-weight: 900;
+        }
+        &--overview {
+            color: $gray-text;
+            margin: 0;
+            font-size: 15px;
+            font-weight: 900;
+        }
+    }
+    &--dashboard {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 20px;
+        position: relative;
+        &--balance {
+            width: 70%;
+            border-radius: 6px;
+            background-image: linear-gradient(
+                96deg,
+                #fc5590 2.79%,
+                #f96971 97.87%
+            );
+            padding: 40px;
+            &--amount {
+                display: flex;
+                flex-direction: column;
+                margin: 20px 0px;
+                &--text {
+                    font-size: 17px;
+                    font-weight: 600;
+                    margin-bottom: 5px;
+                }
+                &--number {
+                    display: flex;
+                    gap: 5px;
+                    align-items: center;
+                    &--manna {
+                        font-size: 40px;
+                        font-weight: 900;
+                    }
+                }
+            }
+            &--details {
+                display: flex;
+                margin: 40px 0px;
+                &--info {
+                    display: flex;
+                    min-width: 200px;
+                    gap: 10px;
+                    &--img {
+                        border-radius: 6px;
+                        background: rgba(255, 255, 255, 0.19);
+                        padding: 10px;
+                    }
+                }
+                &--amount {
+                }
+            }
+        }
+        &--daily {
+            width: 25%;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 115, 126, 0.62);
+            background: rgba(255, 255, 255, 0.11);
+        }
+    }
 }
-
-.button-get-started {
-  color: aliceblue;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-.tabes {
-  height: 100vh;
-}
-
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-}
-
-.card-text {
-  color: #282828;
-  margin: 0;
-  font-weight: 800;
-}
-
-.collection-scroll {
-  overflow: auto;
-  height: 600px;
-}
-
-.button-get-started-text {
-  color: white;
-}
-
-.button-get-started {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-.button-get-started {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  min-width: 150px;
-}
-
 @media #{$tablet} {
-  .wallet{
-    min-width: 0px;
-  }
+    .wallet {
+        min-width: 0px;
+    }
 }
 @media #{$mobile} {
-  .wallet{
-    min-width: 0px;
-  }
+    .wallet {
+        min-width: 0px;
+    }
 }
-

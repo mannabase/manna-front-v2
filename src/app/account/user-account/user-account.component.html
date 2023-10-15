@@ -1,47 +1,31 @@
-<div class="my-account ">
-    <span class="text-4xl font-medium">My Account</span>
-    <div class="wallet-address ">
-        <h4 class="m-0 mr-4">My Wallet Address:</h4>
-        <ng-container>
-            <a class="copy" (click)="copyToClipboard()"
-                ><p class="m-0">{{ walletAddress }}</p>
-                <tui-svg src="tuiIconCopyLarge"></tui-svg
-            ></a>
-        </ng-container>
-    </div>
-</div>
-<!--<div class="border-round-3xl border-3 pb-2">-->
-<!--  <h2 class="p-3">MY TRANSACTIONS</h2>-->
-<!--  <hr>-->
-<!--  <p-scroller class="mb-2" [items]="items" [itemSize]="50" scrollHeight="230px">-->
-<!--    <ng-template pTemplate="item" let-item let-options="options">-->
-<!--      <div class="flex align-items-center p-2" [ngClass]="{ 'surface-ground': options.odd }"-->
-<!--           style="height: 50px;">{{ item }}</div>-->
-<!--    </ng-template>-->
-<!--  </p-scroller>-->
-<!--</div>-->
-<!-- <div class="md:px-6 lg:px-8 border-3 border-round-3xl mt-3">
-  <div class=" block text-4xl font-medium col-10 mt-5">MY COLLECTION</div>
-      <hr/>
-      <div class="collection-scroll">
-        <div *ngIf="cards" class="cards gap-5">
-          <div *ngFor="let card of cards; let index = index" class="col-2" key="index">
-            <p-card class="grid p-0">
-              <ng-template pTemplate="header">
-                <img alt="Card" [src]="card.image">
-              </ng-template>
-              <p class="flex justify-content-center card-text text-base">
-                {{card.name}}
-              </p>
-              <ng-template pTemplate="footer">
-                <div>
-                  <p class="card-text text-xs">price</p>
-                  <p class="card-text text-xs">{{card.price}} manna</p>
-                </div>
-                  <p-button label="buy"></p-button>
-              </ng-template>
-            </p-card>
-          </div>
+<div class="account-container">
+  <div class="account--info">
+    <div class="account--info--account">Account</div>
+    <div class="account--info--text">overview</div>
+  </div>
+  <div class="account--humanity">
+      <div class="account--humanity--header">
+        <div >
+          <h3 class="mb-1">Proof of Humanity</h3>
+          <div class="account--humanity--header--text">We use Gitcoin Passport to verify you are a unique human. <img src="../../../assets/images/accunt-account-information.svg" alt="information"> </div>
+        </div>
+        <img src="../../../assets/images/accunt-account-fingerprint.png" alt="fingerprint" class="account--humanity--header--fingerprint">
+      </div>
+      <div class="account--humanity--passport">
+        <div class="account--humanity--passport--connect-buttun">
+          Connect
+        </div>
+        <div class="account--humanity--passport--passport">
+          <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport--gitcoin">
+          <p class="m-0">Passport</p>
         </div>
       </div>
-</div> -->
+  </div>
+  <div class="account--email">
+    <div class="account--email--title">Email Newsletter</div> 
+    <div class="account--email--box">
+      <input type="email" class="account--email--box--input" placeholder="Enter your email" />
+      <button class="account--email--box--update">Update</button>
+    </div>
+  </div>
+</div>

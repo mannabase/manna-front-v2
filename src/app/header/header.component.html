@@ -1,5 +1,5 @@
 <div class="my-header p-2"
-     [ngClass]="{ 'black-background': isAccountPage, 'scrolled': isScrolled }" (onResize)="handleResize($event)">
+     [ngClass]="{ 'account': isAccountPage, 'scrolled': isScrolled }" (onResize)="handleResize($event)">
   <div class="flex align-items-center justify-content-center">
     <button class="hambergur" tuiIconButton *ngIf="showBurgerMenu" icon="tuiIconMenu" appearance="flat" size="s"
             (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">

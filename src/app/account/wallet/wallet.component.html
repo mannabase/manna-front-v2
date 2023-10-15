@@ -1,27 +1,104 @@
-<div class="wallet">
-    <h4 class="m-0">Manna Wallet</h4>
-    <hr class="gray-line" />
-    <div class="balance">
-        <div class="balance--logo">
+<!-- <div class="wallet-container" *ngIf="!showWalletPage">
+    <div class="wallet">
+        <img
+            src="../../../assets/images/accont-wallet-manna-main-logo.svg"
+            alt="logo"
+        />
+        <h1 class="mannabase">Mannabase</h1>
+        <div class="title">
+            <h4 class="title--trade mt-0">Trade.</h4>
+            <h4 class="title--create mt-0">Create.</h4>
+            <h4 class="mt-0">Market Make.</h4>
+        </div>
+        <div class="buttun" (click)="toggleWalletPage()">
             <img
-                src="../../assets/images/manna_logo.png"
-                class="image-logo mr-2"
+                src="../../../assets/images/account-wallet-buttun-icon.svg"
+                alt="wallet"
+                class="buttun--icon"
             />
-            <span class="manna-text">manna</span>
-        </div>
-        <div class="ml-4">
-            <!-- <h2 class="m-0">{{ balance }}</h2> -->
-            456.56
+            <span class="buttun--text">Connect Wallet</span>
         </div>
     </div>
-    <hr class="gray-line" />
-    <div class="claimble">
-        <p class="claimble--daily">Daily Manna:</p>
-        <p class="claimble--available">7 available</p>
+</div> -->
+
+<!-- show connect wallet buttuns -->
+
+<!-- <div class="wallet-container" *ngIf="showWalletPage">
+    <div class="wallets--welcome">
+        <div class="wallets--welcome--text">Welcome to</div>
+        <div class="wallets--welcome--mannabase">mannabase</div>
     </div>
-    <div class="button-container">
-        <button class="button" (click)="openClaimDialog()">
-          CLAIM
-        </button>
+    <div class="wallets--options">
+        <h2 class="wallets--options--connect">Connect Wallet</h2>
+        <div class="wallets--options--buttuns">
+            <img
+                src="../../../assets/images/account-wallet-metamask-icon.svg"
+                alt="metaMask"
+            />
+            <span class="wallets--options--buttuns--text">Metamask</span>
+            <tui-svg src="tuiIconChevronRight"></tui-svg>
+        </div>
+        <div class="wallets--options--buttuns">
+            <img
+                src="../../../assets/images/account-wallet-gitCoin-icon.svg"
+                alt="metaMask"
+            />
+            <span class="wallets--options--buttuns--text">Gitcoin Passport</span>
+            <tui-svg src="tuiIconChevronRight"></tui-svg>
+        </div>
+    </div>
+</div> -->
+
+<div class="panel">
+    <div class="panel--welcome">
+        <div class="panel--welcome--welcome">Welcome Back</div>
+        <div class="panel--welcome--overview">Overview</div>
+    </div>
+    <div class="panel--dashboard">
+        <div class="panel--dashboard--balance">
+            <div class="panel--dashboard--balance--amount" >
+                <div class="panel--dashboard--balance--amount--text" >Your balance is</div> 
+                <div class="panel--dashboard--balance--amount--number" >
+                    <img class="mb-1 mr-1" src="../../../assets/images/accont-wallet-panel-manna-logo.svg" alt="logo">
+                    <div class="panel--dashboard--balance--amount--number--manna">
+                        1234.00
+                    </div>
+                    <p class="mb-2">
+                        manna
+                    </p>
+                </div>
+            </div>
+            <div class="panel--dashboard--balance--details">
+                <div class="panel--dashboard--balance--details--info">
+                    <img src="../../../assets/images/accont-wallet-panel-inYourWallet.svg" alt="wallet" class="panel--dashboard--balance--details--info--img">
+                    <div>
+                        In your wallet
+                        <div>
+                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" alt="">
+                            1025.00
+                        </div>
+                    </div>
+                </div>
+                <div class="panel--dashboard--balance--details--info">
+                    <img src="../../../assets/images/accont-wallet-panel-inYourWallet.svg" alt="wallet" class="panel--dashboard--balance--details--info--img">
+                    <div>
+                        In your wallet
+                        <div>
+                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" alt="">
+                            1025.00
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel--dashboard--daily">
+            <div class="">
+
+            </div>
+        </div>
+
+    </div>
+    <div>
+
     </div>
 </div>
