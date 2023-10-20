@@ -1,162 +1,184 @@
 @import "../../variables";
 
 .my-header {
-  // background-color: $background-color;
-  height: $header-height;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
+    height: $header-height;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px  80px  8px  80px;
 }
-.mannabase{
-  display: flex;
-  gap: 5px;
-  align-items: center;
+.logo {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    &--image {
+        width: 32px;
+        height: 42px;
+    }
+    &--text {
+        font-size: 19px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-left: 10px;
+    }
 }
 
 .account {
-  display: none;
+    display: none;
 }
 .scrolled {
-  background-color: $background-color-header-scrolled; 
-  backdrop-filter: blur(4px);
-  transition: background-color 0.3s ease;
-  height: $header-height;
+    background-color: $background-color-header-scrolled;
+    backdrop-filter: blur(4px);
+    transition: background-color 0.3s ease;
+    height: $header-height;
 }
 .button-header {
-  color: aliceblue;
+    color: aliceblue;
 }
 
 .side-bar-menu {
-  ::ng-deep .p-menu {
-    width: 100%;
-    background: none;
-    border: none;
-  }
+    ::ng-deep .p-menu {
+        width: 100%;
+        background: none;
+        border: none;
+    }
 }
 
 .wallet-header {
-  border: 2px dashed white;
-  border-radius: 20px;
-  padding: 10px 20px 10px 20px;
-  margin-right: 10px;
-  // width: 400px;
-  background:  linear-gradient(90deg,
-  $gradient-wallet-header-start 50%,
-  $gradient-wallet-header-end 100%);
-  padding: auto;
-}
-
-.logo-header {
-  width: 1.5rem;
-  height: 2rem;
+    border: 2px dashed white;
+    border-radius: 20px;
+    padding: 10px 20px 10px 20px;
+    margin-right: 10px;
+    // width: 400px;
+    background: linear-gradient(
+        90deg,
+        $gradient-wallet-header-start 50%,
+        $gradient-wallet-header-end 100%
+    );
+    padding: auto;
 }
 
 .menu-bar {
-  padding: 10px;
-  display: flex;
-  align-items: center;
+    padding: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .menu-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
 }
 
 .menu-button {
-  margin-right: 20px;
-  font-size: 1.2em;
+    margin-right: 20px;
+    font-size: 1.2em;
 }
 
 .menu-item a {
-  text-decoration: none;
-  color: #fff;
-  padding:8px 16px 8px 16px;
-  border-radius: var(--manna-border-radius);
+    text-decoration: none;
+    color: $gray-text;
+    padding: 8px 16px 8px 16px;
+    margin-right: 30px;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 1px;
 }
 
 .menu-item a:hover {
-  color: #fbb8d5;
+    color: #fbb8d5;
+}
+.menu-item a.active {
+    color: white;
+}
+.menu-item a.active span {
+    position: relative;
 }
 
-.menu-item a.active {
-  color: rgb(241, 99, 151);
+.menu-item a.active span::before {
+    content: "";
+    position: absolute;
+    width: 99%;
+    height: 4px;
+    background-color: rgb(241, 99, 151);
+    border-radius: 2px;
+    bottom: -10px;
+    left: 0;
 }
 
 .menu-item i {
-  font-size: 24px;
+    font-size: 24px;
 }
 
-
 .hamburger-menu {
-  display: none;
-  cursor: pointer;
+    display: none;
+    cursor: pointer;
 }
 
 .side-bar-menu {
-  ::ng-deep .p-menu {
-    width: 100%;
-    background: none;
-    border: none;
-  }
+    ::ng-deep .p-menu {
+        width: 100%;
+        background: none;
+        border: none;
+    }
 
-  ::ng-deep .p-menuitem-link {
-    border-radius: var(--manna-border-radius);
-  }
+    ::ng-deep .p-menuitem-link {
+        border-radius: var(--manna-border-radius);
+    }
 }
 
 .side-bar {
-  background-color: #383838;
+    background-color: #383838;
 }
 .account-button {
-  justify-content: start;
-  background-image: $get-started-button-background;
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: white;
-  // padding: 8px 8px;
-  font-size: 16px;
-  cursor: pointer;
-  border: 0px;
-  border-radius: $manna-border-radius;
-  max-width: 200px;
-  min-width: 150px;
-
-  :disabled {
-      background-image: None;
-      background-color: gray;
-  }
-  :hover {
-    color: $links-color-main-hover;
-  }
+    justify-content: start;
+    background-image: $get-started-button-background;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+    padding: 18px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 0px;
+    border-radius: $manna-border-radius;
+    max-width: 200px;
+    min-width: 150px;
+    letter-spacing: 1px;
+    :disabled {
+        background-image: None;
+        background-color: gray;
+    }
+    :hover {
+        color: $links-color-main-hover;
+    }
 }
 @media #{$tablet} {
-  .black-background{
-    background: rgb(0, 0, 0);
-  }
-  .account-button{
-    display: none;
-  }
-  .my-header {
-    // justify-content: start;
-  }
-  .mannabase{
-    margin-left:50%;
-  }
+    .black-background {
+        background: rgb(0, 0, 0);
+    }
+    .account-button {
+        display: none;
+    }
+    .my-header {
+        // justify-content: start;
+    }
+    .mannabase {
+        margin-left: 50%;
+    }
 }
 @media #{$mobile} {
-  .black-background{
-    background: rgb(0, 0, 0);
-  }
-  .account-button{
-    display: none;
-  }
-  .my-header {
-    // justify-content: start;
-  }
-  .mannabase {
-    margin-left:50%;
-  }
+    .black-background {
+        background: rgb(0, 0, 0);
+    }
+    .account-button {
+        display: none;
+    }
+    .my-header {
+        // justify-content: start;
+    }
+    .mannabase {
+        margin-left: 50%;
+    }
 }

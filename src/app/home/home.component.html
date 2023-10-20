@@ -17,17 +17,17 @@
                 <h3 class="text-daily-manna future mt-1 mb-5">
                     FUTURE OF MONEY.
                 </h3>
-                <div class="manna-button-box mt-4">
-                    <button class="manna-button" (click)="openClaimDialog()">
-                        <p class="m-0">Get Started <tui-svg
+                <div class="getStart mt-4">
+                    <button class="getStart--button" (click)="openClaimDialog()">
+                        Get Started 
+                        <tui-svg
                             src="tuiIconArrowRight"
-                        ></tui-svg></p>
+                            class="getStart--button--icon"
+                        ></tui-svg>
                     </button>
-                    <div class="outer-gradiant-border-links">
-                        <a class="gradiant-border-links" tuiLink>
-                            <p class="gradiant-border-links--text m-0">
+                    <div class="getStart--learnMore">
+                        <a class="getStart--learnMore--link" tuiLink>
                                 Learn More
-                            </p>
                         </a>
                     </div>
                 </div>
@@ -63,62 +63,63 @@
         </div>
     </div>
     <div class="blocks">
-        <div class="boxes-container">
-            <div class="outer-gradiant-border-box" *ngFor="let box of boxes">
-                <div class="gradiant-border-box">
-                    <div class="box-header">
+        <div class="boxes">
+            <div class="boxes--item" *ngFor="let box of boxes">
+                    <div class="boxes--item--header">
                         <img
                             [src]="box.imagePath"
                             alt="{{ box.title }}"
-                            class="box-image"
+                            class="boxes--item--header--image"
                         />
-                        <h3>{{ box.title }}</h3>
+                        <div class="boxes--item--header--title">{{ box.title }}</div>
                     </div>
-                    <p class="card-discription text">{{ box.description }}</p>
-                    <a tuiLink icon="tuiIconArrowRight" class="link-card-main">
+                    <p class="boxes--item--discription">{{ box.description }}</p>
+                    <a tuiLink icon="tuiIconArrowRight" class="boxes--item--link">
                         {{ box.link }}
                     </a>
-                </div>
             </div>
         </div>
     </div>
     <div class="blocks">
-        <div class="flex-container">
-            <div class="flex-container--item1">
+        <div class="ecosystem">
+            <div class="ecosystem--item1">
                 <a tuiLink class="mb-3">
-                    <h5 class="p-0 m-0">
+                    <div class="ecosystem--item1--link">
                         MANNA ECOSYSTEM
                         <tui-svg
                             src="tuiIconArrowRight"
                             style="color: var(--tui-primary)"
                         ></tui-svg>
-                    </h5>
+                    </div>
                 </a>
-                <div class="title mb-3">
-                    Build a global network powered by the community
+                <div class="ecosystem--item1--title mb-0">
+                    Build a global network
                 </div>
-                <p class="text mb-3">
+                <div class="ecosystem--item1--title mt-0 mb-3">
+                    powered by the community
+                </div>
+                <p class="ecosystem--item1--description mb-5">
                     A community powered global ecosystem using the principles of
                     UBI to make it open and accessible to all
                 </p>
-                <button class="manna-button mt-3" (click)="openClaimDialog()">
-                    <p class="m-0">Get Started 
-                        <tui-svg
+                <button class="getStart--button" (click)="openClaimDialog()">
+                    Get Started 
+                    <tui-svg
                         src="tuiIconArrowRight"
+                        class="getStart--button--icon"
                     ></tui-svg>
-                </p>
                 </button>
             </div>
-            <div class="flex-container--item2">
+            <div class="ecosystem--item2">
                 <img
                     src="../../assets/images/world.png"
                     alt="world"
-                    class="flex-container--item2--desktop"
+                    class="ecosystem--item2--desktop"
                 />
                 <img
                     src="../../assets/images/world-mobile.png"
                     alt="world"
-                    class="flex-container--item2--mobile"
+                    class="ecosystem--item2--mobile"
                 />
             </div>
         </div>
@@ -126,19 +127,19 @@
     <div class="blocks community--show">
         <div class="community">
             <div class="community--govern">
-                <h3 class="community--govern--allHumans">For all Humans</h3>
-                <p class="text">
+                <h3 class="community--govern--allHumans">For All Humans</h3>
+                <p class="community--govern--description mt-1">
                     Manna is built to be accessible
                 </p>
-                <p class="text mb-1">
+                <p class="community--govern--description mb-2">
                     to every person.
                 </p>
-                <button class="manna-button" (click)="openClaimDialog()">
-                    <p class="text">Get Started 
-                        <tui-svg
+                <button class="getStart--button" (click)="openClaimDialog()">
+                    Get Started 
+                    <tui-svg
                         src="tuiIconArrowRight"
+                        class="getStart--button--icon"
                     ></tui-svg>
-                </p>
                 </button>
             </div>
             <div class="community--boxes">
@@ -208,7 +209,7 @@
         <h2 class="flex mb-0">DEVELOPERS</h2>
     </div> -->
     <!-- <div class="blocks">
-        <div class="flex-container">
+        <div class="ecosystem">
             <div class="developers">
                 <div class="developer">
                     <h1 class="font-medium mt-5">

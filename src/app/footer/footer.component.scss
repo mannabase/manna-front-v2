@@ -3,6 +3,7 @@
 .text{
     font-size: $text-font-size-desktop;
     margin: 0px;
+    color: $gray-text;
 }
 .footer-desktop {
     width: 100%;
@@ -17,22 +18,28 @@
     flex-wrap: wrap;
     width: $width-of-mainPage-desktop;
 }
-.line{
+.line {
     width: 100%;
-    color: #422d36 !important;
+    border-color: #040303 ;
 }
 .copyRight{
     display: flex;
     justify-content: center;
     font-size:smaller;
+    color: $gray-text;
+    margin: 0px;
 }
 .image-logo {
-    width: 1.5rem;
-    height: 2rem;
+    width: 30px;
+    height: 40px;
+    margin-right:10px;
 }
 .mannabase-footer {
     align-self: center;
     margin: 0px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
 .footer-links {
     display: flex;

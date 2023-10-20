@@ -1,4 +1,4 @@
-<!-- <div class="wallet-container" *ngIf="!showWalletPage">
+<div class="wallet-container" *ngIf="!showWalletPage && !showPanel">
     <div class="wallet">
         <img
             src="../../../assets/images/accont-wallet-manna-main-logo.svg"
@@ -19,18 +19,18 @@
             <span class="buttun--text">Connect Wallet</span>
         </div>
     </div>
-</div> -->
+</div>
 
 <!-- show connect wallet buttuns -->
 
-<!-- <div class="wallet-container" *ngIf="showWalletPage">
+<div class="wallet-container" *ngIf="showWalletPage && !showPanel">
     <div class="wallets--welcome">
         <div class="wallets--welcome--text">Welcome to</div>
         <div class="wallets--welcome--mannabase">mannabase</div>
     </div>
     <div class="wallets--options">
         <h2 class="wallets--options--connect">Connect Wallet</h2>
-        <div class="wallets--options--buttuns">
+        <div class="wallets--options--buttuns" (click)="openMetamaskExtension()">
             <img
                 src="../../../assets/images/account-wallet-metamask-icon.svg"
                 alt="metaMask"
@@ -41,15 +41,15 @@
         <div class="wallets--options--buttuns">
             <img
                 src="../../../assets/images/account-wallet-gitCoin-icon.svg"
-                alt="metaMask"
+                alt="gitcoin"
             />
             <span class="wallets--options--buttuns--text">Gitcoin Passport</span>
             <tui-svg src="tuiIconChevronRight"></tui-svg>
         </div>
     </div>
-</div> -->
+</div>
 
-<div class="panel">
+<div class="panel" *ngIf="showPanel">
     <div class="panel--welcome">
         <div class="panel--welcome--welcome">Welcome Back</div>
         <div class="panel--welcome--overview">Overview</div>
@@ -92,8 +92,15 @@
             </div>
         </div>
         <div class="panel--dashboard--daily">
-            <div class="">
-
+            <div class="panel--dashboard--daily--header">
+                <img src="../../../assets/images/accont-wallet-panel-stars.svg" alt="star" class="panel--dashboard--daily--header--star">
+                <div class="panel--dashboard--daily--header--reward">Daily Reward</div>
+                <div class="panel--dashboard--daily--header--number">53.75839028</div>
+            </div>
+            <div class="panel--dashboard--daily--claim">
+                <div class="panel--dashboard--daily--claim--text">This transaction will claim all earning & </div> 
+                <div class="panel--dashboard--daily--claim--text mb-3">credit them to your wallet</div>
+                <div tuiAction class="panel--dashboard--daily--claim--buttun" (click)="Claim('Claim')">Cliam</div>
             </div>
         </div>
 

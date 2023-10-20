@@ -1,4 +1,26 @@
 @import "../../variables";
+.banner {
+    position: sticky;
+    top: 0;
+    background-color: #38dca0;
+    color: white;
+    padding:10px 20px 10px 20px;
+    text-align: center;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &--close-button {
+        font-size: 50px;
+        cursor: pointer;
+    }
+    &--text {
+        flex-grow: 1;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+    }
+}
 
 .container {
     display: flex;
