@@ -1,10 +1,7 @@
 <div class="container">
     <div class="sideBar">
-        <div class="logo">
-            <img
-                src="../../assets/images/governed_manna_logo.webp"
-                class="logo--image"
-            />
+        <div routerLink="/" class="logo">
+            <img src="../../assets/images/governed_manna_logo.webp" class="logo--image" />
             <p>mannabase</p>
         </div>
         <div class="account-wallet" *ngIf="walletAddress">
@@ -55,6 +52,22 @@
             </div>
         </div>
     </div>
+    <!-- mobile hamburger menu -->
+    <button class="hambergur" tuiIconButton icon="tuiIconMenu" appearance="flat" size="s"
+            (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">
+      <div *tuiSidebar="displaySideBar; direction: 'left'" class="h-full">
+        <div class="side-bar flex flex-column w-full h-full">
+          <span class="text-lg p-3 text-600">Menu</span>
+          <div class="flex flex-column">
+              <a tuiLink class="w-full p-2 pl-3" (click)="toggleSideBar(false)" (click)="changeTab('Account')" [class.active]="selectedTab === 'Wallet'"> Wallet
+              </a>
+              <a tuiLink class="w-full p-2 pl-3"
+                  (click)="toggleSideBar(false)" (click)="changeTab('Wallet')" [class.active]="selectedTab === 'Account'">Account
+              </a>
+          </div>
+        </div>
+      </div>
+    </button>
     <div class="tabPage">
         <app-wallet *ngIf="selectedTab === 'Account'" class="page"></app-wallet>
         <app-user-account  *ngIf="selectedTab === 'Wallet'" class="page"></app-user-account>
