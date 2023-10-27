@@ -53,18 +53,50 @@
         </div>
     </div>
     <!-- mobile hamburger menu -->
-    <button class="hambergur" tuiIconButton icon="tuiIconMenu" appearance="flat" size="s"
+    <button class="hambergur" tuiIconButton icon="tuiIconMenu" appearance="flat" size="m"
             (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">
-      <div *tuiSidebar="displaySideBar; direction: 'left'" class="h-full">
-        <div class="side-bar flex flex-column w-full h-full">
-          <span class="text-lg p-3 text-600">Menu</span>
-          <div class="flex flex-column">
-              <a tuiLink class="w-full p-2 pl-3" (click)="toggleSideBar(false)" (click)="changeTab('Account')" [class.active]="selectedTab === 'Wallet'"> Wallet
-              </a>
-              <a tuiLink class="w-full p-2 pl-3"
-                  (click)="toggleSideBar(false)" (click)="changeTab('Wallet')" [class.active]="selectedTab === 'Account'">Account
-              </a>
-          </div>
+      <div *tuiSidebar="displaySideBar; direction: 'left'" 
+        class="flex flex-column align-item-center w-full h-ful" 
+        style="background-color: #393939;">
+        <div routerLink="/" class="hambergur--logo">
+            <img src="../../assets/images/governed_manna_logo.webp" 
+            class="hambergur--logo--image" />
+            <p class="hambergur--logo--text">mannabase</p>
+        </div>
+          <div class="tabs">
+            <div
+                class="tab"
+                [class.active]="selectedTab === 'Account'"
+                (click)="changeTab('Account')"
+                (click)="toggleSideBar(false)"
+            >
+                <div class="tab-width">
+                    <img
+                        src="../../assets/images/account-wallet-icon.svg"
+                        [class.active]="selectedTab === 'Account'"
+                        class="tab-image"
+                    />
+                    <span class="tab__text">Wallet</span>
+                </div>
+            </div>
+            <div
+                class="tab"
+                [class.active]="selectedTab === 'Wallet'"
+                (click)="changeTab('Wallet')"
+                (click)="toggleSideBar(false)"
+            >
+                <div class="tab-width">
+                    <img
+                        src="../../assets/images/account-account-icon.svg"
+                        class="tab-image"
+                    />
+                    <span
+                        class="tab__text"
+                        [class.active]="selectedTab === 'Wallet'"
+                        >Account</span
+                    >
+                </div>
+            </div>
         </div>
       </div>
     </button>

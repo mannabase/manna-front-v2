@@ -1,21 +1,21 @@
 <div class="wallet-container" *ngIf="!showWalletPage && !showPanel">
-    <div class="wallet">
+    <div class="intro">
         <img
             src="../../../assets/images/accont-wallet-manna-main-logo.svg"
             alt="logo"
-            class="wallet--logo"
+            class="intro--logo"
         />
-        <h1 class="wallet--mannabase">Mannabase</h1>
-        <div class="wallet--title">
-            <h4 class="wallet--title--trade mt-0">Trade.</h4>
-            <h4 class="wallet--title--create mt-0">Create.</h4>
-            <h4 class="wallet--title--market mt-0">Market Make.</h4>
+        <h1 class="intro--mannabase">Mannabase</h1>
+        <div class="intro--title">
+            <h4 class="intro--title--trade mt-0">Trade.</h4>
+            <h4 class="intro--title--create mt-0">Create.</h4>
+            <h4 class="intro--title--market mt-0">Market Make.</h4>
         </div>
-        <div class="wallet--buttun" (click)="toggleWalletPage()">
+        <div class="intro--buttun" (click)="toggleWalletPage()">
             <img
                 src="../../../assets/images/account-wallet-buttun-icon.svg"
                 alt="wallet"
-                class="wallet--buttun--icon"
+                class="intro--buttun--icon"
             />
             <span class="wallet--buttun--text">Connect Wallet</span>
         </div>
@@ -35,6 +35,7 @@
             <img
                 src="../../../assets/images/account-wallet-metamask-icon.svg"
                 alt="metaMask"
+                class="wallets--options--buttuns--icon"
             />
             <span class="wallets--options--buttuns--text">Metamask</span>
             <tui-svg src="tuiIconChevronRight"></tui-svg>
@@ -43,6 +44,7 @@
             <img
                 src="../../../assets/images/account-wallet-gitCoin-icon.svg"
                 alt="gitcoin"
+                class="wallets--options--buttuns--icon"
             />
             <span class="wallets--options--buttuns--text">Gitcoin Passport</span>
             <tui-svg src="tuiIconChevronRight"></tui-svg>

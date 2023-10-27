@@ -8,7 +8,7 @@
     width: 100%;
     position: relative;
 }
-.wallet {
+.intro {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -57,8 +57,8 @@
 .wallets {
     &--welcome {
         position: absolute;
-        top: 50px;
-        left: 50px;
+        top: 100px;
+        left: 100px;
         display: flex;
         flex-direction: column;
         justify-content: start;
@@ -88,6 +88,7 @@
         border-radius: 4px;
         padding: 40px 30px;
         gap: 30px;
+        margin-bottom: -150px;
         &--connect {
             font-size: 36px;
         }
@@ -251,12 +252,12 @@
     }
 }
 @media #{$tablet} {
-    .wallet {
+    .intro {
         min-width: 0px;
     }
 }
 @media #{$mobile} {
-    .wallet {
+    .intro {
         min-width: 0px;
         &--logo {
             width: 20%;
@@ -294,6 +295,28 @@
             &--text {
                 font-size: 12px;
                 font-weight: 800;
+            }
+        }
+    }
+    .wallets{
+        &--welcome{
+            display: none;
+        }
+        &--options{
+            width: 70%;
+            margin-bottom: 0px;
+            &--connect{
+                font-size: 20px;
+            }
+            font-size: 20px;
+            &--buttuns{
+                width: 100%;
+                &--icon{
+                    width: 25px;
+                }
+                &--text{
+                    font-size: 15px;
+                }
             }
         }
     }

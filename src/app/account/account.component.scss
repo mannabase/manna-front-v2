@@ -21,21 +21,51 @@
         font-weight: 600;
     }
 }
-.hamburger-menu {
+.hambergur {
     display: none;
-    cursor: pointer;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    width: 30px;
-    height: 25px;
-    background-color: transparent;
-    border: none;
-    &--bar {
-        width: 30px;
-        height: 3px;
-        background-color: white;
-        transition: 0.4s;
+    &--logo {
+        display: flex;
+        padding: 24px;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255, 255, 255, 0.05);
+        &--image {
+            width: 30px;
+            height: 40px;
+        }
+        &--text {
+            font-size: 16px;
+            font-weight: 800;
+        }
+    }
+    &--tabs {
+        display: flex;
+        flex-direction: column;
+        &--tab {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            color: #f2f2f2;
+            margin: 20px 20px 20px 30px;
+            &--image {
+                height: 30px;
+                margin-right: 1rem;
+                color: #282828;
+            }
+        }
+        &--tab.active {
+            background-color: #df486b42;
+            border-radius: var(--manna-border-radius);
+            border-radius: 5px;
+            position: relative;
+        }
+        &--tab:hover {
+            background-color: #df486bbb;
+            border-radius: 5px;
+        }
     }
 }
 .hamburger-menu.open .bar:nth-child(1) {
@@ -181,7 +211,7 @@
 }
 
 .page {
-    height: calc(100vh - 60px);
+    height: calc(100vh - 200px);
     width: 100%;
     display: flex;
     align-items: center;
@@ -205,7 +235,7 @@
     }
 }
 @media #{$mobile} {
-    .hamburger-menu {
+    .hambergur {
         display: flex;
     }
     .container {
@@ -216,9 +246,12 @@
     }
 
     .tabs {
+        min-width: 0px;
         width: 100%;
     }
-
+    .tab-width {
+        width: 100px;
+    }
     .content {
         padding-top: 20px;
     }

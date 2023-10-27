@@ -11,8 +11,8 @@
 .account {
     &--info {
         position: absolute;
-        top: 50px;
-        left: 50px;
+        top: 100px;
+        left: 100px;
         display: flex;
         flex-direction: column;
         justify-content: start;
@@ -53,10 +53,19 @@
             &--text {
                 font-size: 10px;
                 color: $gray-text;
+                &--icon{
+                    color: gray;
+                }
             }
             &--fingerprint {
                 width: 60px;
                 height: 60px;
+            }
+            &--fingerprint-mobile {
+                display: none;
+                width: 180px;
+                height: 180px;
+                margin: 20px 0px;
             }
             &--connect-buttun {
                 background-color: #d9d9d92f;
@@ -89,6 +98,31 @@
                 height: 30px;
             }
         }
+        &--passport-mobile {
+            display: none;
+            width: 100%;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            &--connect-buttun {
+                background-color: #d9d9d92f;
+                padding: 5px 15px;
+                border-radius: 5px;
+            }
+            &--passport {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                &--text{
+                    font-weight: 500;
+                    margin: 0px;
+                }
+            }
+            &--gitcoin {
+                width: 15px;
+                height: 15px;
+            }
+        }
     }
     &--email {
         width: 40%;
@@ -99,6 +133,7 @@
         border-radius: 6px;
         padding: 20px 30px;
         gap: 10px;
+        margin-bottom: -150px;
         &--title {
             font-size: 15px;
             font-style: normal;
@@ -144,4 +179,52 @@
 @media #{$tablet} {
 }
 @media #{$mobile} {
+    .account {
+        align-items: start;
+        &--info {
+            display: none;
+        }
+        &--humanity {
+            width: 90%;
+            height: 400px;
+            padding: 20px 10px;
+            align-items: center;
+            &--header {
+                flex-direction: column;
+                &--text {
+                    font-size: 15px;
+                    margin-bottom: 20px;
+                    &--icon{
+                        display: none;
+                    }
+                }
+                &--fingerprint {
+                    display: none;
+                }
+                &--fingerprint-mobile {
+                    display: flex;
+                    margin-bottom: 50px;
+                }
+            }
+            &--passport {
+                display: none;
+            }
+            &--passport-mobile {
+                display: flex;
+            }
+        }
+        &--email {
+            width:85%;
+            margin-bottom: 0px;
+            padding: 20px;
+            &--box{
+                width: 100%;
+                padding: 2px 2px 2px 15px;
+                &--update {
+                    width: 80px;
+                    height: 35px;
+                }
+            }
+        }
+    }
 }
