@@ -53,7 +53,8 @@
         </div>
     </div>
     <!-- mobile hamburger menu -->
-    <button class="hambergur" tuiIconButton icon="tuiIconMenu" appearance="flat" size="m"
+    <div style="width: 393px; height: 81px; background: rgba(255, 255, 255, 0.05)">
+        <button class="hambergur" tuiIconButton icon="tuiIconMenu" appearance="flat" size="m"
             (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">
       <div *tuiSidebar="displaySideBar; direction: 'left'" 
         class="flex flex-column align-item-center w-full h-ful" 
@@ -100,6 +101,9 @@
         </div>
       </div>
     </button>
+    </div>
+
+    
     <div class="tabPage">
         <app-wallet *ngIf="selectedTab === 'Account'" class="page"></app-wallet>
         <app-user-account  *ngIf="selectedTab === 'Wallet'" class="page"></app-user-account>

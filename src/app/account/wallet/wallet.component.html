@@ -60,13 +60,13 @@
     <div class="panel--dashboard">
         <div class="panel--dashboard--balance">
             <div class="panel--dashboard--balance--amount" >
-                <div class="panel--dashboard--balance--amount--text" >Your balance is</div> 
+                <div class="panel--dashboard--balance--amount--text" >Current Balance</div> 
                 <div class="panel--dashboard--balance--amount--number" >
-                    <img class="mb-1 mr-1" src="../../../assets/images/accont-wallet-panel-manna-logo.svg" alt="logo">
-                    <div class="panel--dashboard--balance--amount--number--manna">
+                    <img class="panel--dashboard--balance--amount--number--logo" src="../../../assets/images/accont-wallet-panel-manna-logo.svg" alt="logo">
+                    <div class="panel--dashboard--balance--amount--number--count">
                         1234.00
                     </div>
-                    <p class="mb-2">
+                    <p class="panel--dashboard--balance--amount--number--manna">
                         manna
                     </p>
                 </div>
@@ -74,23 +74,35 @@
             <div class="panel--dashboard--balance--details">
                 <div class="panel--dashboard--balance--details--info">
                     <img src="../../../assets/images/accont-wallet-panel-inYourWallet.svg" alt="wallet" class="panel--dashboard--balance--details--info--img">
-                    <div>
+                    <div class="panel--dashboard--balance--details--info--text">
                         In your wallet
-                        <div>
-                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" alt="">
-                            1025.00
+                        <div class="flex align-items-center">
+                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" 
+                            alt=""
+                            class="panel--dashboard--balance--details--info--text--img">
+                            <div class="panel--dashboard--balance--details--info--text--num">1025.00</div> 
                         </div>
                     </div>
                 </div>
                 <div class="panel--dashboard--balance--details--info">
                     <img src="../../../assets/images/accont-wallet-panel-inYourWallet.svg" alt="wallet" class="panel--dashboard--balance--details--info--img">
-                    <div>
-                        In your wallet
-                        <div>
-                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" alt="">
-                            1025.00
+                    <div class="panel--dashboard--balance--details--info--text">
+                        In Mannabase
+                        <div class="flex align-items-center">
+                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" 
+                            alt=""
+                            class="panel--dashboard--balance--details--info--text--img">
+                            <div class="panel--dashboard--balance--details--info--text--num">209.00</div> 
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="panel--dashboard--buttons">
+                <div class="panel--dashboard--buttons--withdraw">
+                    Withdraw
+                </div>
+                <div class="panel--dashboard--buttons--daily">
+                    Daily Reward
                 </div>
             </div>
         </div>
@@ -101,8 +113,7 @@
                 <div class="panel--dashboard--daily--header--number">53.75839028</div>
             </div>
             <div class="panel--dashboard--daily--claim">
-                <div class="panel--dashboard--daily--claim--text">This transaction will claim all earning & </div> 
-                <div class="panel--dashboard--daily--claim--text mb-3">credit them to your wallet</div>
+                <div class="panel--dashboard--daily--claim--text mb-3">This transaction will claim all earning & credit them to your wallet</div>
                 <div tuiAction class="panel--dashboard--daily--claim--buttun" (click)="Claim('Claim')">Cliam</div>
             </div>
         </div>
