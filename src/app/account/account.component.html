@@ -53,10 +53,10 @@
         </div>
     </div>
     <!-- mobile hamburger menu -->
-    <div style="width: 393px; height: 81px; background: rgba(255, 255, 255, 0.05)">
+    <div style="width: 393px; height: 81px; background: rgba(255, 255, 255, 0.05)" class="hambergur">
         <button class="hambergur" tuiIconButton icon="tuiIconMenu" appearance="flat" size="m"
             (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">
-      <div *tuiSidebar="displaySideBar; direction: 'left'" 
+            <div *tuiSidebar="displaySideBar; direction: 'left'" 
         class="flex flex-column align-item-center w-full h-ful" 
         style="background-color: #393939;">
         <div routerLink="/" class="hambergur--logo">
@@ -99,8 +99,8 @@
                 </div>
             </div>
         </div>
-      </div>
-    </button>
+            </div>
+        </button>
     </div>
 
     

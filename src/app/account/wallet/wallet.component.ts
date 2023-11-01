@@ -5,7 +5,7 @@ import {
     OnInit,
     ChangeDetectionStrategy,
     Input,
-    ChangeDetectorRef 
+    ChangeDetectorRef,
 } from '@angular/core';
 import {
     MetamaskBrightIdService,
@@ -14,7 +14,12 @@ import {
 import { UserClaimingState, UserService } from '../../user.service';
 import { ethers } from 'ethers';
 import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
-
+interface Transaction {
+    type: 'withdraw' | 'receive';
+    date: Date;
+    amount: number;
+    result: 'complete' | 'canceled' | 'pending';
+}
 @Component({
     selector: 'app-wallet',
     templateUrl: './wallet.component.html',
@@ -33,6 +38,38 @@ export class WalletComponent implements OnInit {
         [UserClaimingState.VERIFIED, 'Enter email'],
         [UserClaimingState.READY, 'Claim'],
     ]);
+    sortColumn: keyof Transaction | null = null;
+    sortDirection: number = 1;
+    transactions: Transaction[] = [
+        {
+            type: 'withdraw',
+            date: new Date('2023-10-01'),
+            amount: 100,
+            result: 'complete',
+        },
+        {
+            type: 'receive',
+            date: new Date('2023-10-10'),
+            amount: 50,
+            result: 'pending',
+        },
+        {
+            type: 'withdraw',
+            date: new Date('2023-10-01'),
+            amount: 100,
+            result: 'complete',
+        },
+        {
+            type: 'receive',
+            date: new Date('2023-10-10'),
+            amount: 50,
+            result: 'pending',
+        },
+    ];
+    filteredTransactions: Transaction[] = this.transactions; 
+
+    dateFilter: 'today' | 'week' | 'month' | 'all' = 'all';
+    typeFilter: 'withdraw' | 'receive' | 'all' = 'all';
 
     constructor(
         readonly metamaskBrightIdService: MetamaskBrightIdService,
@@ -52,16 +89,16 @@ export class WalletComponent implements OnInit {
         this.metamaskBrightIdService.loadBalance();
 
         this.metamaskBrightIdService
-        .checkMetamaskState()
-        .subscribe((metamaskState) => {
-            if (metamaskState === MetamaskState.CONNECTED) {
-                this.state = MetamaskState.READY;
-                this.showPanel = true;
-                this.cdRef.detectChanges();
-            } else {
-                this.state = metamaskState;
-            }
-        });
+            .checkMetamaskState()
+            .subscribe((metamaskState) => {
+                if (metamaskState === MetamaskState.CONNECTED) {
+                    this.state = MetamaskState.READY;
+                    this.showPanel = true;
+                    this.cdRef.detectChanges();
+                } else {
+                    this.state = metamaskState;
+                }
+            });
     }
 
     updateState() {
@@ -99,7 +136,7 @@ export class WalletComponent implements OnInit {
                     }
                 )
                 .subscribe();
-            window.open('https://metamask.io/'); // Open Metamask official page
+            window.open('https://metamask.io/');
             return;
         }
 
@@ -111,12 +148,10 @@ export class WalletComponent implements OnInit {
                     })
                     .subscribe();
                 this.showPanel = true;
-                // Check the Metamask state again
                 this.updateState();
             },
             error: (err) => {
                 if (err.message === 'Metamask is not on the correct chain') {
-                    // Prompt the user to switch to the correct chain
                     this.alertService
                         .open(
                             'Please switch to the correct chain in Metamask',
@@ -127,7 +162,6 @@ export class WalletComponent implements OnInit {
                         .subscribe();
                     this.state = MetamaskState.WRONG_CHAIN;
                 } else {
-                    // Handle other errors
                     this.alertService
                         .open('Failed to connect Metamask', {
                             status: 'error',
@@ -136,6 +170,42 @@ export class WalletComponent implements OnInit {
                     this.state = MetamaskState.NOT_CONNECTED;
                 }
             },
+        });
+    }
+    sortData(column: keyof Transaction): void {
+        if (this.sortColumn === column) {
+            this.sortDirection *= -1;
+        } else {
+            this.sortColumn = column;
+            this.sortDirection = 1;
+        }
+
+        this.transactions.sort((a, b) => {
+            return (a[column] < b[column] ? -1 : 1) * this.sortDirection;
+        });
+    }
+    filterTransactions(): void {
+        const today = new Date();
+        const oneWeekAgo = new Date(today);
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+        const oneMonthAgo = new Date(today);
+        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+        this.filteredTransactions = this.transactions.filter((transaction) => {
+            const isDateValid =
+                (this.dateFilter === 'today' &&
+                    transaction.date.toDateString() === today.toDateString()) ||
+                (this.dateFilter === 'week' &&
+                    transaction.date >= oneWeekAgo) ||
+                (this.dateFilter === 'month' &&
+                    transaction.date >= oneMonthAgo) ||
+                this.dateFilter === 'all';
+
+            const isTypeValid =
+                this.typeFilter === 'all' ||
+                transaction.type === this.typeFilter;
+
+            return isDateValid && isTypeValid;
         });
     }
 }
