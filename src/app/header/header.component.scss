@@ -1,6 +1,6 @@
 @import "../../variables";
 
-.my-header {
+.container {
     height: $header-height;
     display: flex;
     flex-direction: row;
@@ -8,21 +8,30 @@
     align-items: center;
     padding: 8px  80px  8px  80px;
 }
-.logo {
+.logo{
     display: flex;
-    gap: 5px;
     align-items: center;
-    cursor: pointer;
-    &--image {
-        width: 32px;
-        height: 42px;
+    justify-content: space-between;
+    &--hambergur{
+        position: absolute;
+        left: 0;
     }
-    &--text {
-        font-size: 19px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        margin-left: 10px;
+    &--logo {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        cursor: pointer;
+        &--image {
+            width: 22px;
+            height: 32px;
+        }
+        &--text {
+            font-size: 19px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
     }
+    
 }
 
 .account {
@@ -182,4 +191,25 @@
     .mannabase {
         margin-left: 50%;
     }
+    .logo{
+        &--logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            cursor: pointer;
+            &--image {
+                width: 22px;
+                height: 32px;
+            }
+            &--text {
+                font-size: 19px;
+                font-weight: 600;
+                letter-spacing: 1px;
+            }
+        }  
+    }
+
 }

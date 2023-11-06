@@ -58,8 +58,8 @@
 .wallets {
     &--welcome {
         position: absolute;
-        top: 100px;
-        left: 100px;
+        top: 50px;
+        left: 50px;
         display: flex;
         flex-direction: column;
         justify-content: start;
@@ -510,6 +510,9 @@
             &--buttons {
                 display: flex;
             }
+        }
+        &--transactions{
+            display: none;
         }
     }
 }

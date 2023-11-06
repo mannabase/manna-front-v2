@@ -28,7 +28,7 @@
         align-items: center;
         &--part1 {
             // width: 25%;
-            height: 100vh;
+            height: 90vh;
             display: flex;
             align-self: end;
             justify-content: start;
@@ -43,6 +43,11 @@
                 margin-left: -5%;
                 &--mobile {
                     display: none;
+                    height: 15%;
+                    width: 38%;
+                    position: absolute;
+                    align-self: center;
+                    margin-left: -5%;
                 }
             }
         }
@@ -63,7 +68,6 @@
     display: none;
     justify-content: center;
     align-items: center;
-    // height: 90vh;
     height: calc(100vh - 120px);
     padding-bottom: 60px 0px !important;
 }
@@ -552,11 +556,6 @@
             display: none;
             &--mobile {
                 display: flex;
-                height: 80vh;
-                width: 60%;
-                position: absolute;
-                align-self: center;
-                margin-left: -5%;
             }
         }
     }

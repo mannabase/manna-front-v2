@@ -14,6 +14,11 @@ import {
 import { UserClaimingState, UserService } from '../../user.service';
 import { ethers } from 'ethers';
 import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
+import {TuiMobileDialogService} from '@taiga-ui/addon-mobile';
+import {switchMap} from 'rxjs/operators';
+import {TUI_IS_IOS} from '@taiga-ui/cdk';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { DailyRewardDialogComponent } from './daily-reward-dialog/daily-reward-dialog.component';
 interface Transaction {
     type: 'withdraw' | 'receive';
     date: Date;
@@ -24,6 +29,12 @@ interface Transaction {
     selector: 'app-wallet',
     templateUrl: './wallet.component.html',
     styleUrls: ['./wallet.component.scss'],
+    providers: [
+        {
+            provide: TUI_IS_IOS,
+            useValue: false,
+        },
+    ],
 })
 export class WalletComponent implements OnInit {
     balance: string | null = null;
@@ -78,7 +89,9 @@ export class WalletComponent implements OnInit {
         readonly userService: UserService,
         readonly alertService: TuiAlertService,
         private readonly alerts: TuiAlertService,
-        private cdRef: ChangeDetectorRef
+        private cdRef: ChangeDetectorRef,
+        @Inject(TuiMobileDialogService)
+        private readonly dialogs: TuiMobileDialogService,
     ) {}
 
     ngOnInit() {
@@ -172,6 +185,32 @@ export class WalletComponent implements OnInit {
             },
         });
     }
+    show(): void {
+        // const actions = ['No thanks', 'Remind me later', 'Rate now'];
+ 
+        this.dialogs
+            .open(
+                new PolymorpheusComponent(DailyRewardDialogComponent, this.injector),
+                // {
+                //     dismissible: true,
+                // }
+            )
+            // .pipe(switchMap(index => this.alerts.open(`Selected: ${actions[index]}`)))
+            .subscribe();
+    }
+    // show() {
+    //     this.dialogService
+    //         .open<number>(
+    //             new PolymorpheusComponent(DailyRewardDialogComponent, this.injector),
+    //             {
+    //                 dismissible: true,
+    //             }
+    //         )
+    //         .subscribe({
+    //             next: (value) => {},
+    //         });
+    // }
+    
     sortData(column: keyof Transaction): void {
         if (this.sortColumn === column) {
             this.sortDirection *= -1;

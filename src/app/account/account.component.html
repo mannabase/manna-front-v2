@@ -53,55 +53,84 @@
         </div>
     </div>
     <!-- mobile hamburger menu -->
-    <div style="width: 393px; height: 81px; background: rgba(255, 255, 255, 0.05)" class="hambergur">
-        <button class="hambergur" tuiIconButton icon="tuiIconMenu" appearance="flat" size="m"
+    <div class="header-mobile">
+        <button class="hambergur" tuiIconButton icon="tuiIconMenu" appearance="flat" size="s"
             (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">
             <div *tuiSidebar="displaySideBar; direction: 'left'" 
-        class="flex flex-column align-item-center w-full h-ful" 
-        style="background-color: #393939;">
-        <div routerLink="/" class="hambergur--logo">
-            <img src="../../assets/images/governed_manna_logo.webp" 
-            class="hambergur--logo--image" />
-            <p class="hambergur--logo--text">mannabase</p>
-        </div>
-          <div class="tabs">
-            <div
-                class="tab"
-                [class.active]="selectedTab === 'Account'"
-                (click)="changeTab('Account')"
-                (click)="toggleSideBar(false)"
-            >
-                <div class="tab-width">
-                    <img
-                        src="../../assets/images/account-wallet-icon.svg"
-                        [class.active]="selectedTab === 'Account'"
-                        class="tab-image"
-                    />
-                    <span class="tab__text">Wallet</span>
+                class="hambergur--container" >
+                <div routerLink="/" class="hambergur--logo">
+                    <img src="../../assets/images/governed_manna_logo.webp" 
+                        class="hambergur--logo--image" />
+                        <p class="hambergur--logo--text">mannabase</p>
                 </div>
-            </div>
-            <div
-                class="tab"
-                [class.active]="selectedTab === 'Wallet'"
-                (click)="changeTab('Wallet')"
-                (click)="toggleSideBar(false)"
-            >
-                <div class="tab-width">
-                    <img
+                <div class="tabs">
+                    <div class="hambergur--tabs--tab"  *ngIf="walletAddress">
+                        <div class="hambergur--tabs--tab--address">
+                            <img src="../../assets/images/accont_wallet-circle.svg" alt="" class="tab-image"/>
+                            <p class="m-0">
+                                {{ walletAddress | slice : 0 : 6 }}...{{
+                                 walletAddress | slice : -4
+                                }}
+                            </p>
+                        </div>
+                        <tui-svg src="tuiIconChevronDown"></tui-svg>
+                    </div>
+                    <div
+                        class="tab"
+                        [class.active]="selectedTab === 'Account'"
+                        (click)="changeTab('Account')"
+                        (click)="toggleSideBar(false)"
+                    >
+                        <div class="tab-width">
+                            <img
+                                src="../../assets/images/account-wallet-icon.svg"
+                                [class.active]="selectedTab === 'Account'"
+                                class="tab-image"
+                            />
+                            <span class="tab__text">Wallet</span>
+                        </div>
+                    </div>
+                    <div
+                        class="tab"
+                        [class.active]="selectedTab === 'Wallet'"
+                        (click)="changeTab('Wallet')"
+                        (click)="toggleSideBar(false)"
+                    >
+                        <div class="tab-width">
+                            <img
                         src="../../assets/images/account-account-icon.svg"
                         class="tab-image"
-                    />
-                    <span
-                        class="tab__text"
-                        [class.active]="selectedTab === 'Wallet'"
-                        >Account</span
-                    >
+                            />
+                            <span
+                                class="tab__text"
+                                [class.active]="selectedTab === 'Wallet'"
+                                >Account</span
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="hambergur--user">
+                    <img class="hambergur--user--image" 
+                        src="../../assets/images/accont-user-image.svg">
+                    <div class="hambergur--user--feature">
+                        <div class="hambergur--user--feature--name">
+                            Aman
+                        </div>
+                        <div class="hambergur--user--feature--email">
+                            9394lay@gmail.com
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-            </div>
         </button>
+        <div class="header-mobile--title">
+            {{ selectedTab === 'Account' ? 'Wallet' : 'Account' }}
+        </div>
+        <img src="../../assets/images/accont-header-search.svg" alt="searh"
+            class="header-mobile--search"
+        >
     </div>
+        
 
     
     <div class="tabPage">

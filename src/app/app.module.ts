@@ -44,10 +44,11 @@ import { MetamaskConnectionComponent } from './claim-dialog/metamask-connection/
 import { VerificationComponent } from './claim-dialog/verification/verification.component';
 import { ClaimMannaComponent } from './claim-dialog/claim-manna/claim-manna.component';
 import { FooterComponent } from './footer/footer.component';
-
+import {TuiMobileDialogModule} from '@taiga-ui/addon-mobile';
+import { DailyRewardDialogComponent } from './account/wallet/daily-reward-dialog/daily-reward-dialog.component';
 @NgModule({
   declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent,
-    AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, VerificationComponent, ClaimMannaComponent, FooterComponent],
+    AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, VerificationComponent, ClaimMannaComponent, FooterComponent, DailyRewardDialogComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -60,6 +61,7 @@ import { FooterComponent } from './footer/footer.component';
         ReactiveFormsModule,
         TuiRootModule,
         TuiDialogModule,
+        TuiMobileDialogModule,
         TuiAlertModule,
         TuiSidebarModule,
         TuiActiveZoneModule,

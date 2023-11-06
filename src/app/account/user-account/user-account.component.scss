@@ -11,8 +11,8 @@
 .account {
     &--info {
         position: absolute;
-        top: 100px;
-        left: 100px;
+        top: 50px;
+        left: 50px;
         display: flex;
         flex-direction: column;
         justify-content: start;
@@ -179,6 +179,9 @@
 @media #{$tablet} {
 }
 @media #{$mobile} {
+    .account-container {
+        justify-content: start;
+    }
     .account {
         align-items: start;
         &--info {
@@ -188,7 +191,7 @@
             width: 90%;
             height: 400px;
             padding: 20px 10px;
-            align-items: center;
+            align-items: start;
             &--header {
                 flex-direction: column;
                 &--text {
