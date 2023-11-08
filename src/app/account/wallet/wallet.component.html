@@ -31,13 +31,22 @@
     </div>
     <div class="wallets--options">
         <h2 class="wallets--options--connect">Connect Wallet</h2>
-        <div class="wallets--options--buttuns" (click)="openMetamaskExtension()">
+        <div class="wallets--options--buttuns" (click)="openMetamaskExtension()" *ngIf="state != MetamaskState.WRONG_CHAIN">
             <img
                 src="../../../assets/images/account-wallet-metamask-icon.svg"
                 alt="metaMask"
                 class="wallets--options--buttuns--icon"
             />
             <span class="wallets--options--buttuns--text">Metamask</span>
+            <tui-svg src="tuiIconChevronRight"></tui-svg>
+        </div>
+        <div class="wallets--options--buttuns" (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN">
+            <img
+                src="../../../assets/images/account-wallet-Arbitrum.svg"
+                alt="Arbitrum"
+                class="wallets--options--buttuns--icon"
+            />
+            <span class="wallets--options--buttuns--text">Arbitrum</span>
             <tui-svg src="tuiIconChevronRight"></tui-svg>
         </div>
         <div class="wallets--options--buttuns">

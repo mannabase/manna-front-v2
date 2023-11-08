@@ -14,11 +14,12 @@ import {
 import { UserClaimingState, UserService } from '../../user.service';
 import { ethers } from 'ethers';
 import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
-import {TuiMobileDialogService} from '@taiga-ui/addon-mobile';
-import {switchMap} from 'rxjs/operators';
-import {TUI_IS_IOS} from '@taiga-ui/cdk';
+import { TuiMobileDialogService } from '@taiga-ui/addon-mobile';
+import { switchMap } from 'rxjs/operators';
+import { TUI_IS_IOS } from '@taiga-ui/cdk';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { DailyRewardDialogComponent } from './daily-reward-dialog/daily-reward-dialog.component';
+import { mannaChainName } from "../../config";
 interface Transaction {
     type: 'withdraw' | 'receive';
     date: Date;
@@ -42,6 +43,8 @@ export class WalletComponent implements OnInit {
     showPanel = false;
     state = MetamaskState.NOT_CONNECTED;
     @Input() showBanner: boolean = false;
+    MetamaskState = MetamaskState;
+    mannaChain = mannaChainName;
     buttonMessageMap = new Map<UserClaimingState, string>([
         [UserClaimingState.ZERO, 'Connect Metamask'],
         [UserClaimingState.METAMASK_CONNECTED, 'Change to ID Chain'],
@@ -77,7 +80,7 @@ export class WalletComponent implements OnInit {
             result: 'pending',
         },
     ];
-    filteredTransactions: Transaction[] = this.transactions; 
+    filteredTransactions: Transaction[] = this.transactions;
 
     dateFilter: 'today' | 'week' | 'month' | 'all' = 'all';
     typeFilter: 'withdraw' | 'receive' | 'all' = 'all';
@@ -91,7 +94,7 @@ export class WalletComponent implements OnInit {
         private readonly alerts: TuiAlertService,
         private cdRef: ChangeDetectorRef,
         @Inject(TuiMobileDialogService)
-        private readonly dialogs: TuiMobileDialogService,
+        private readonly dialogs: TuiMobileDialogService
     ) {}
 
     ngOnInit() {
@@ -100,18 +103,6 @@ export class WalletComponent implements OnInit {
         });
 
         this.metamaskBrightIdService.loadBalance();
-
-        this.metamaskBrightIdService
-            .checkMetamaskState()
-            .subscribe((metamaskState) => {
-                if (metamaskState === MetamaskState.CONNECTED) {
-                    this.state = MetamaskState.READY;
-                    this.showPanel = true;
-                    this.cdRef.detectChanges();
-                } else {
-                    this.state = metamaskState;
-                }
-            });
     }
 
     updateState() {
@@ -154,43 +145,46 @@ export class WalletComponent implements OnInit {
         }
 
         this.metamaskBrightIdService.connect().subscribe({
-            next: (account) => {
-                this.alertService
-                    .open('Connected to account: ' + account, {
-                        status: 'success',
-                    })
-                    .subscribe();
-                this.showPanel = true;
+            next: account => {
+                this.alertService.open("Connected to account: " + account, {
+                    status: "success"
+                }).subscribe();
+                this.state = MetamaskState.CONNECTED;
                 this.updateState();
             },
             error: (err) => {
-                if (err.message === 'Metamask is not on the correct chain') {
-                    this.alertService
-                        .open(
-                            'Please switch to the correct chain in Metamask',
-                            {
-                                status: 'warning',
-                            }
-                        )
-                        .subscribe();
-                    this.state = MetamaskState.WRONG_CHAIN;
-                } else {
-                    this.alertService
-                        .open('Failed to connect Metamask', {
-                            status: 'error',
-                        })
-                        .subscribe();
-                    this.state = MetamaskState.NOT_CONNECTED;
-                }
+                this.alertService.open("Failed to connect Metamask", {
+                    status: "error"
+                }).subscribe();
+                this.state = MetamaskState.NOT_CONNECTED;
+            }
+        });
+    }
+    switchChain() {
+        this.metamaskBrightIdService.switchToMannaChain().subscribe({
+            next: value => {
+                this.alertService.open("Chain Switched to " + mannaChainName, {
+                    status: "success"
+                }).subscribe();
+                this.state = MetamaskState.READY;
+                this.showPanel = true;
             },
+            error: err => {
+                this.alertService.open("Failed to switch chain", {
+                    status: "error"
+                }).subscribe();
+            }
         });
     }
     show(): void {
         // const actions = ['No thanks', 'Remind me later', 'Rate now'];
- 
+
         this.dialogs
             .open(
-                new PolymorpheusComponent(DailyRewardDialogComponent, this.injector),
+                new PolymorpheusComponent(
+                    DailyRewardDialogComponent,
+                    this.injector
+                )
                 // {
                 //     dismissible: true,
                 // }
@@ -198,19 +192,7 @@ export class WalletComponent implements OnInit {
             // .pipe(switchMap(index => this.alerts.open(`Selected: ${actions[index]}`)))
             .subscribe();
     }
-    // show() {
-    //     this.dialogService
-    //         .open<number>(
-    //             new PolymorpheusComponent(DailyRewardDialogComponent, this.injector),
-    //             {
-    //                 dismissible: true,
-    //             }
-    //         )
-    //         .subscribe({
-    //             next: (value) => {},
-    //         });
-    // }
-    
+
     sortData(column: keyof Transaction): void {
         if (this.sortColumn === column) {
             this.sortDirection *= -1;
