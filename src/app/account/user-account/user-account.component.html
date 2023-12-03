@@ -18,8 +18,11 @@
         class="account--humanity--header--fingerprint-mobile">
       </div>
       <div class="account--humanity--passport">
-        <div class="account--humanity--passport--connect-buttun">
-          Connect
+        <div *ngIf="loader" class="loader-overlay">
+          <div class="loader"></div>
+      </div>
+        <div class="account--humanity--passport--connect-buttun" (click)="onConnect()">
+          {{ buttonText }}
         </div>
         <div class="account--humanity--passport--passport">
           <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport--gitcoin">

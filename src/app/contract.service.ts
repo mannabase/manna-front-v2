@@ -4,7 +4,7 @@ import { catchError, switchMap, tap , map } from 'rxjs/operators';
 import { ethers, providers } from 'ethers';
 import { MannaBrightID, ClaimManna, Manna } from './ABI';
 import { MetamaskBrightIdService,BrightIdState} from './metamask-bright-id.service';
-import {mannaBrightIDContractAddress, claimMannaContractAddress, mannaContractAddress} from "./config";
+import {mannaBrightIDContractAddress, claimMannaContractAddress, mannaContractAddress ,SignatureVerifier} from "./config";
 
 
 
