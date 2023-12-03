@@ -21,9 +21,31 @@
         <div *ngIf="loader" class="loader-overlay">
           <div class="loader"></div>
       </div>
-        <div class="account--humanity--passport--connect-buttun" (click)="onConnect()">
-          {{ buttonText }}
+      <div class="account--humanity--passport--connect-buttun" *ngIf="userScore == null" (click)="onConnect()">
+        {{ buttonText }}
+      </div>
+      <div class="account--humanity--passport--score" 
+        *ngIf="userScore !== null" 
+        [ngClass]="{'green-tick': isScoreGreaterThan25}">
+        <div class="flex gap-1">
+          <div class="account--humanity--passport--score--text">
+            Your Score: 
+          </div>
+          <div class="account--humanity--passport--score--num">
+            {{ userScore }}
+          </div>
+          <img class="account--humanity--passport--score--icon" 
+            src="../../../assets/images/account-account-green-Check.svg">
         </div>
+        <div class="flex gap-1">
+          <div class="account--humanity--passport--thresold--text">
+            Score Threshold:  
+          </div>
+          <div class="account--humanity--passport--thresold--num">
+            25
+          </div>
+        </div>
+      </div>
         <div class="account--humanity--passport--passport">
           <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport--gitcoin">
           <p class="m-0">Passport</p>

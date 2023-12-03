@@ -89,6 +89,45 @@
                 border-radius: 5px;
                 cursor:pointer;
             }
+            &--connect-buttun {
+                background-color: #d9d9d92f;
+                padding: 10px 30px 10px 30px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            &--score{
+                background-color: #d9d9d92f;
+                padding: 10px 30px 10px 30px;
+                border-radius: 5px;
+                margin-bottom: 5px;
+                &--text{
+                    font-size: 15px;
+                    font-weight: 800;
+                }
+                &--num{
+                    color: #7AD178;
+                    font-size: 15px;
+                    font-weight: 800;
+                }
+                &--icon{
+                    margin-top: -4px;
+                }
+            }
+            &--thresold{
+                background-color: #d9d9d92f;
+                padding: 10px 30px 10px 30px;
+                border-radius: 5px;
+                &--text{
+                    font-size: 9px;
+                    font-weight: 800;
+                    color: #d9d9d988;
+                }
+                &--num{
+                    color: #F05387;
+                    font-size: 9px;
+                    font-weight: 800;
+                }
+            }
             &--passport {
                 display: flex;
                 align-items: center;
