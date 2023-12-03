@@ -1,4 +1,4 @@
-<div class="wallet-container" *ngIf="!showWalletPage && !showPanel">
+<div class="wallet-container" *ngIf="!showWalletPage && !showPanel && !connectedToMetamask">
     <div class="intro">
         <img
             src="../../../assets/images/accont-wallet-manna-main-logo.svg"
@@ -24,7 +24,7 @@
 
 <!-- show connect wallet buttuns -->
 
-<div class="wallet-container" *ngIf="showWalletPage && !showPanel">
+<div class="wallet-container" *ngIf="showWalletPage && !showPanel && !connectedToMetamask">
     <div class="wallets--welcome">
         <div class="wallets--welcome--text">Welcome to</div>
         <div class="wallets--welcome--mannabase">mannabase</div>
@@ -61,7 +61,7 @@
     </div>
 </div>
 
-<div class="panel" *ngIf="showPanel">
+<div class="panel" *ngIf="showPanel || connectedToMetamask">
     <div class="panel--welcome">
         <div class="panel--welcome--welcome">Welcome Back</div>
         <div class="panel--welcome--overview">Overview</div>

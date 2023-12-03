@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { MetamaskBrightIdService } from 'src/app/metamask-bright-id.service';
 import { TuiAlertService } from '@taiga-ui/core';
 import { Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UserScoreService } from '../../user-score.service';
 
 declare let window: any;
 
@@ -29,10 +30,13 @@ export class UserAccountComponent implements OnInit, OnDestroy {
   private readonly SCORE_STORAGE_KEY = 'userScore';
   private readonly SCORE_EXPIRATION_KEY = 'scoreExpiration';
 
+  @Output() userScoreAvailable: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor(
     readonly alertService: TuiAlertService,
     private metamaskService: MetamaskBrightIdService,
     private http: HttpClient,
+    private userScoreService: UserScoreService, 
   ) {}
 
   ngOnInit() {
@@ -40,7 +44,9 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     this.userScore = this.getUserScoreFromStorage();
     const storedScore = this.getUserScoreFromStorage();
     const expirationTimestamp = this.getScoreExpirationFromStorage();
-
+    if (this.userScore !== null && this.userScore >= 0) {
+      this.userScoreService.userScore = this.userScore;
+    }
     this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
       this.walletAddress = address;
     });
@@ -58,6 +64,11 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     } else {
       // Otherwise, fetch the score from the server
       this.refreshUserScore();
+    }
+    if (this.userScore !== null && this.userScore >= 0) {
+      this.userScoreAvailable.emit(true); // Notify the parent that the user has a score
+    } else {
+      this.userScoreAvailable.emit(false); // Notify the parent that the user doesn't have a score
     }
   }
 
@@ -103,7 +114,6 @@ export class UserAccountComponent implements OnInit, OnDestroy {
       this.loader = false;
     }
   }
-
   private updateButtonText(accounts: string[]) {
     this.buttonText = accounts.length > 0 ? 'Check Score' : 'Connect';
   }
@@ -139,6 +149,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
 
         // Store user score in localStorage
         this.storeUserScoreInStorage(score);
+        this.userScoreService.userScore = score;
       }
     } catch (error) {
       console.error('Error sending data to server:', error);

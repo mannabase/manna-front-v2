@@ -56,34 +56,35 @@ export class WalletComponent implements OnInit {
     sortDirection: number = 1;
     transactions: Transaction[] = [
         {
-            type: 'withdraw',
-            date: new Date('2023-10-01'),
-            amount: 100,
-            result: 'complete',
+            type: 'receive',
+            date: new Date('2023-12-04'),
+            amount: 50,
+            result: 'pending',
         },
         {
             type: 'receive',
-            date: new Date('2023-10-10'),
+            date: new Date('2023-12-02'),
             amount: 50,
             result: 'pending',
         },
         {
             type: 'withdraw',
-            date: new Date('2023-10-01'),
+            date: new Date('2023-12-01'),
             amount: 100,
             result: 'complete',
         },
         {
-            type: 'receive',
-            date: new Date('2023-10-10'),
-            amount: 50,
-            result: 'pending',
+            type: 'withdraw',
+            date: new Date('2023-10-14'),
+            amount: 100,
+            result: 'complete',
         },
     ];
     filteredTransactions: Transaction[] = this.transactions;
 
     dateFilter: 'today' | 'week' | 'month' | 'all' = 'all';
     typeFilter: 'withdraw' | 'receive' | 'all' = 'all';
+    connectedToMetamask: boolean = false;
 
     constructor(
         readonly metamaskBrightIdService: MetamaskBrightIdService,
@@ -101,29 +102,31 @@ export class WalletComponent implements OnInit {
         this.metamaskBrightIdService.balance$.subscribe((balance) => {
             this.balance = balance ? ethers.utils.formatEther(balance) : null;
         });
-
+    
         this.metamaskBrightIdService.loadBalance();
+        this.updateState();
     }
 
     updateState() {
-        this.metamaskBrightIdService.checkMetamaskState().subscribe({
-            next: (value) => {
-                console.log('Metamask state:', value);
-                if (value === MetamaskState.READY) {
-                    this.state = value;
-                    this.showPanel = true;
-                } else if (
-                    value === MetamaskState.NOT_CONNECTED ||
-                    value === MetamaskState.NOT_INSTALLED
-                ) {
-                    this.state = value;
-                    this.showPanel = false;
-                } else {
-                    this.state = value;
-                }
-            },
-        });
-    }
+    this.metamaskBrightIdService.checkMetamaskState().subscribe({
+        next: (value) => {
+            console.log('Metamask state:', value);
+            if (value === MetamaskState.READY) {
+                this.state = value;
+                this.connectedToMetamask = true; // Set connectedToMetamask to true
+            } else if (
+                value === MetamaskState.NOT_CONNECTED ||
+                value === MetamaskState.NOT_INSTALLED
+            ) {
+                this.state = value;
+                this.connectedToMetamask = false; // Set connectedToMetamask to false
+            } else {
+                this.state = value;
+                this.connectedToMetamask = false; // Set connectedToMetamask to false
+            }
+        },
+    });
+}
     toggleWalletPage() {
         this.showWalletPage = !this.showWalletPage;
     }
