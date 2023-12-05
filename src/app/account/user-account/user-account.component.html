@@ -21,7 +21,7 @@
         <div *ngIf="loader" class="loader-overlay">
           <div class="loader"></div>
       </div>
-      <div *ngIf="showScore; else checkVerifyButton">
+      <div *ngIf="showScore">
         <div class="account--humanity--passport--score">
           <div class="flex gap-1">
             <div class="account--humanity--passport--score--text">
@@ -42,11 +42,18 @@
           </div>
         </div>
       </div>
-      <ng-template #checkVerifyButton>
-        <div class="account--humanity--passport--connect-buttun" (click)="onSign()">
-          {{ buttonText }}
-        </div>
-      </ng-template>
+      <div class="account--humanity--passport--connect-buttun" 
+        (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED && !showScore">
+          Connect
+      </div>
+      <div class="account--humanity--passport--connect-buttun" 
+        (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN && !showScore">
+          Arbitrum
+      </div>
+      <div class="account--humanity--passport--connect-buttun" 
+        (click)="onSign()" *ngIf="state == MetamaskState.READY && !showScore">
+          Check Verification
+      </div>
       
         <div class="account--humanity--passport--passport">
           <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport--gitcoin">

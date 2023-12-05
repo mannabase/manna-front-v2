@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
-import { MetamaskBrightIdService } from 'src/app/metamask-bright-id.service';
+import {
+  MetamaskBrightIdService,MetamaskState,} from 'src/app/metamask-bright-id.service';
 import { TuiAlertService } from '@taiga-ui/core';
 import { Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserScoreService } from '../../user-score.service';
-import { serverUrl } from '../../config';
-import { MetamaskState } from '../../metamask-bright-id.service';
+import { serverUrl,mannaChainName } from '../../config';
 
 declare let window: any;
 
@@ -28,9 +28,13 @@ export class UserAccountComponent implements OnInit, OnDestroy {
   loader: boolean = false;
   userScore: number | null = null;
   isScoreGreaterThan25: boolean = false;
-  showScore: boolean = false; // Added property to control score visibility
+  showScore: boolean = false;
+  state = MetamaskState.NOT_CONNECTED;
+  MetamaskState = MetamaskState; 
   private readonly SCORE_STORAGE_KEY = 'userScore';
   private readonly SCORE_EXPIRATION_KEY = 'scoreExpiration';
+  connectedToMetamask: boolean = false;
+  mannaChain = mannaChainName;
 
   @Output() userScoreAvailable: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -39,65 +43,32 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     private metamaskService: MetamaskBrightIdService,
     private http: HttpClient,
     private userScoreService: UserScoreService,
+    readonly metamaskBrightIdService: MetamaskBrightIdService,
   ) {}
 
   ngOnInit() {
-    // Check for stored user score on component initialization
-    this.userScore = this.getUserScoreFromStorage();
     const storedScore = this.getUserScoreFromStorage();
     const expirationTimestamp = this.getScoreExpirationFromStorage();
-
-    // Check Metamask state before subscribing to the account$
-    this.metamaskService.checkMetamaskState().subscribe((metamaskState) => {
-      switch (metamaskState) {
-        case MetamaskState.CONNECTED:
-          this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
-            this.walletAddress = address;
-          });
-
-          if (window.ethereum) {
-            window.ethereum.on('accountsChanged', (accounts: string[]) => {
-              this.updateButtonText(accounts);
-            });
-          } else {
-            console.error('Metamask not detected.');
-          }
-
-          // Continue with the existing logic to check for stored score and fetch if needed
-          if (storedScore && expirationTimestamp && expirationTimestamp > Date.now()) {
-            this.userScore = storedScore;
-          } else {
-            this.refreshUserScore();
-          }
-
-          if (this.userScore !== null && this.userScore >= 0) {
-            this.showScore = true;
-            this.userScoreAvailable.emit(true); // Notify the parent that the user has a score
-          } else {
-            this.showScore = false;
-            this.userScoreAvailable.emit(false); // Notify the parent that the user doesn't have a score
-          }
-          break;
-
-        case MetamaskState.NOT_CONNECTED:
-          // Metamask is not connected, hide the score
-          this.showScore = false;
-          this.buttonText = 'Connect';
-          break;
-
-        case MetamaskState.READY:
-          // Metamask is ready, but we want to hide the score
-          this.showScore = false;
-          this.userScoreAvailable.emit(false);
-          break;
-
-        default:
-          // Handle other Metamask states if needed
-          break;
+  
+    // Check if there's a stored score and it's not expired
+    if (storedScore !== null && expirationTimestamp && expirationTimestamp > Date.now()) {
+      this.userScore = storedScore;
+      this.showScore = true;
+    } else {
+      this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
+        this.walletAddress = address;
+      });
+  
+      this.updateState();
+  
+      if (this.state === MetamaskState.READY) {
+        this.refreshUserScore();
+      } else {
+        // Metamask is not ready, hide the score
+        this.showScore = false;
       }
-    });
+    }
   }
-
   ngOnDestroy() {
     this.accountSubscription.unsubscribe();
   }
@@ -107,8 +78,6 @@ export class UserAccountComponent implements OnInit, OnDestroy {
 
     try {
       const msg = `Verification request\naddress: ${this.walletAddress}\ntimestamp: ${timeStamp}`;
-
-      // Use the new signMessage method
       this.metamaskService.signMessage(msg).subscribe((sign: string) => {
         console.log('Signature:', sign);
         console.log('Timestamp:', timeStamp);
@@ -128,16 +97,77 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.error('Error connecting or sending data to server:', error);
     } finally {
-      // Hide loader after data is sent or on error
       this.loader = false;
     }
   }
+  updateState() {
+    this.metamaskBrightIdService.checkMetamaskState().subscribe({
+        next: (value) => {
+            console.log('Metamask state:', value);
+            if (value === MetamaskState.READY) {
+                this.state = value;
+                this.connectedToMetamask = true; 
+            } else if (
+                value === MetamaskState.NOT_CONNECTED ||
+                value === MetamaskState.NOT_INSTALLED
+            ) {
+                this.state = value;
+                this.connectedToMetamask = false;
+            } else {
+                this.state = value;
+                this.connectedToMetamask = false;
+            }
+        },
+    });
+}
+  openMetamaskExtension() {
+    if (typeof window.ethereum === 'undefined') {
+      this.alertService
+        .open(
+          'Metamask is not installed. Please install Metamask and try again.',
+          {
+            status: 'error',
+          }
+        )
+        .subscribe();
+      window.open('https://metamask.io/');
+      return;
+    }
 
-
-  private updateButtonText(accounts: string[]) {
-    this.buttonText = accounts.length > 0 ? 'Check Score' : 'Connect';
+    this.metamaskBrightIdService.connect().subscribe({
+      next: account => {
+        this.alertService.open("Connected to account: " + account, {
+          status: "success"
+        }).subscribe();
+        this.state = MetamaskState.CONNECTED;
+        this.updateState();
+      },
+      error: (err) => {
+        this.alertService.open("Failed to connect Metamask", {
+          status: "error"
+        }).subscribe();
+        this.state = MetamaskState.NOT_CONNECTED;
+        this.updateState();
+      }
+    });
   }
 
+  switchChain() {
+    this.metamaskBrightIdService.switchToMannaChain().subscribe({
+      next: value => {
+        this.alertService.open("Chain Switched to " + mannaChainName, {
+          status: "success"
+        }).subscribe();
+        this.state = MetamaskState.READY;
+        this.updateState();
+      },
+      error: err => {
+        this.alertService.open("Failed to switch chain", {
+          status: "error"
+        }).subscribe();
+      }
+    });
+  }
   async sendToServer(data: any, path: string, headers: HttpHeaders) {
     const url = `${serverUrl}${path}`;
     try {
@@ -156,6 +186,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         this.storeUserScoreInStorage(score);
         this.userScoreService.userScore = score;
         this.showScore = true;
+        console.log('showScore',this.showScore)
       }
     } catch (error) {
       console.error('Error sending data to server:', error);

@@ -3,7 +3,6 @@ import {
     Injector,
     Inject,
     OnInit,
-    ChangeDetectionStrategy,
     Input,
     ChangeDetectorRef,
 } from '@angular/core';
@@ -180,8 +179,6 @@ export class WalletComponent implements OnInit {
         });
     }
     show(): void {
-        // const actions = ['No thanks', 'Remind me later', 'Rate now'];
-
         this.dialogs
             .open(
                 new PolymorpheusComponent(
