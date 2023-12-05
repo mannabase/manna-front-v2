@@ -21,7 +21,6 @@ import {IntroCardComponent} from './home/intro-card/intro-card.component';
 import {HeaderComponent} from './header/header.component';
 import {MarketplaceComponent} from './marketplace/marketplace.component';
 import {AboutComponent} from './about/about.component';
-import {DashboardComponent} from './dashboard/dashboard.component';
 import {BlogComponent} from './blog/blog.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AccountComponent} from './account/account.component';
@@ -48,7 +47,7 @@ import {TuiMobileDialogModule} from '@taiga-ui/addon-mobile';
 import { DailyRewardDialogComponent } from './account/wallet/daily-reward-dialog/daily-reward-dialog.component';
 @NgModule({
   declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent,
-    AboutComponent, DashboardComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, VerificationComponent, ClaimMannaComponent, FooterComponent, DailyRewardDialogComponent],
+    AboutComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, VerificationComponent, ClaimMannaComponent, FooterComponent, DailyRewardDialogComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,

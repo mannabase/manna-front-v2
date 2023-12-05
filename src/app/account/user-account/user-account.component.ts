@@ -4,6 +4,7 @@ import { TuiAlertService } from '@taiga-ui/core';
 import { Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserScoreService } from '../../user-score.service';
+import {serverUrl} from '../../config';
 
 declare let window: any;
 
@@ -104,7 +105,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
           user: from[0],
           timestamp: timeStamp,
         },
-        'https://mannatest.hedgeforhumanity.org/backend/signing/gitcoinPassportScore',
+        'signing/gitcoinPassportScore',
         headers
       );
     } catch (error) {
@@ -118,7 +119,8 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     this.buttonText = accounts.length > 0 ? 'Check Score' : 'Connect';
   }
 
-  async sendToServer(data: any, url: string, headers: HttpHeaders) {
+  async sendToServer(data: any, path: string, headers: HttpHeaders) {
+    const url = `${serverUrl}${path}`;
     try {
       data.user = data.user.toLowerCase();
 

@@ -4,7 +4,6 @@ import {HomeComponent} from './home/home.component';
 import {MarketplaceComponent} from "./marketplace/marketplace.component";
 import {AboutComponent} from "./about/about.component";
 import {BlogComponent} from "./blog/blog.component";
-import {DashboardComponent} from "./dashboard/dashboard.component";
 import {AccountComponent} from './account/account.component';
 import {BlogDetailComponent} from './blog/blog-detail/blog-detail.component';
 
@@ -24,10 +23,6 @@ const routes: Routes = [
   {
     path: 'blog',
     component: BlogComponent,
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
   },
   {
     path: 'account',

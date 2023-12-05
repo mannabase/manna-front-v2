@@ -113,16 +113,16 @@ export class WalletComponent implements OnInit {
             console.log('Metamask state:', value);
             if (value === MetamaskState.READY) {
                 this.state = value;
-                this.connectedToMetamask = true; // Set connectedToMetamask to true
+                this.connectedToMetamask = true; 
             } else if (
                 value === MetamaskState.NOT_CONNECTED ||
                 value === MetamaskState.NOT_INSTALLED
             ) {
                 this.state = value;
-                this.connectedToMetamask = false; // Set connectedToMetamask to false
+                this.connectedToMetamask = false;
             } else {
                 this.state = value;
-                this.connectedToMetamask = false; // Set connectedToMetamask to false
+                this.connectedToMetamask = false;
             }
         },
     });
