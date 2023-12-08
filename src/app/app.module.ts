@@ -45,6 +45,7 @@ import { ClaimMannaComponent } from './claim-dialog/claim-manna/claim-manna.comp
 import { FooterComponent } from './footer/footer.component';
 import {TuiMobileDialogModule} from '@taiga-ui/addon-mobile';
 import { DailyRewardDialogComponent } from './account/wallet/daily-reward-dialog/daily-reward-dialog.component';
+import {TuiAccordionModule} from '@taiga-ui/kit';
 @NgModule({
   declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent,
     AboutComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, VerificationComponent, ClaimMannaComponent, FooterComponent, DailyRewardDialogComponent],
@@ -68,7 +69,8 @@ import { DailyRewardDialogComponent } from './account/wallet/daily-reward-dialog
         TuiLinkModule,
         TuiStepperModule,
         TuiSvgModule,
-        TuiLoaderModule
+        TuiAccordionModule,
+        TuiLoaderModule,
     ],
   providers: [MetamaskBrightIdService, MannaService, UserService,ContractService,
     {

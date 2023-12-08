@@ -1,0 +1,19 @@
+@mixin gradient-border{
+    display: flex;
+    width: fit-content;
+    border-radius: calc($manna-border-radius + 2px);
+    padding: 2px;
+    background-image: $get-started-button-background;
+    border: none;
+  }
+  @mixin gradient-border-inner{
+    position: relative;
+    padding: 12px 20px;
+    border-radius: $manna-border-radius;
+    background: $background-color;
+    text-align: start;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  
