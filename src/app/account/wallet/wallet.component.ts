@@ -1,30 +1,21 @@
-import {
-    Component,
-    Injector,
-    Inject,
-    OnInit,
-    Input,
-    ChangeDetectorRef,
-} from '@angular/core';
-import {
-    MetamaskBrightIdService,
-    MetamaskState,
-} from 'src/app/metamask-bright-id.service';
-import { UserClaimingState, UserService } from '../../user.service';
-import { ethers } from 'ethers';
-import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
-import { TuiMobileDialogService } from '@taiga-ui/addon-mobile';
-import { switchMap } from 'rxjs/operators';
-import { TUI_IS_IOS } from '@taiga-ui/cdk';
-import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { DailyRewardDialogComponent } from './daily-reward-dialog/daily-reward-dialog.component';
-import { mannaChainName } from "../../config";
+import {ChangeDetectorRef, Component, Inject, Injector, Input, OnInit} from '@angular/core'
+import {MetamaskBrightIdService, MetamaskState} from 'src/app/metamask-bright-id.service'
+import {UserClaimingState, UserService} from '../../user.service'
+import {ethers} from 'ethers'
+import {TuiAlertService, TuiDialogService} from '@taiga-ui/core'
+import {TuiMobileDialogService} from '@taiga-ui/addon-mobile'
+import {TUI_IS_IOS} from '@taiga-ui/cdk'
+import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus'
+import {DailyRewardDialogComponent} from './daily-reward-dialog/daily-reward-dialog.component'
+import {mannaChainName} from "../../config"
+
 interface Transaction {
     type: 'withdraw' | 'receive';
     date: Date;
     amount: number;
     result: 'complete' | 'canceled' | 'pending';
 }
+
 @Component({
     selector: 'app-wallet',
     templateUrl: './wallet.component.html',
@@ -37,22 +28,22 @@ interface Transaction {
     ],
 })
 export class WalletComponent implements OnInit {
-    balance: string | null = null;
-    showWalletPage = false;
-    showPanel = false;
-    state = MetamaskState.NOT_CONNECTED;
-    @Input() showBanner: boolean = false;
-    MetamaskState = MetamaskState;
-    mannaChain = mannaChainName;
+    balance: string | null = null
+    showWalletPage = false
+    showPanel = false
+    state = MetamaskState.NOT_CONNECTED
+    @Input() showBanner: boolean = false
+    MetamaskState = MetamaskState
+    mannaChain = mannaChainName
     buttonMessageMap = new Map<UserClaimingState, string>([
         [UserClaimingState.ZERO, 'Connect Metamask'],
         [UserClaimingState.METAMASK_CONNECTED, 'Change to ID Chain'],
         [UserClaimingState.CORRECT_CHAIN, 'Verify'],
         [UserClaimingState.VERIFIED, 'Enter email'],
         [UserClaimingState.READY, 'Claim'],
-    ]);
-    sortColumn: keyof Transaction | null = null;
-    sortDirection: number = 1;
+    ])
+    sortColumn: keyof Transaction | null = null
+    sortDirection: number = 1
     transactions: Transaction[] = [
         {
             type: 'receive',
@@ -78,12 +69,12 @@ export class WalletComponent implements OnInit {
             amount: 100,
             result: 'complete',
         },
-    ];
-    filteredTransactions: Transaction[] = this.transactions;
+    ]
+    filteredTransactions: Transaction[] = this.transactions
 
-    dateFilter: 'today' | 'week' | 'month' | 'all' = 'all';
-    typeFilter: 'withdraw' | 'receive' | 'all' = 'all';
-    connectedToMetamask: boolean = false;
+    dateFilter: 'today' | 'week' | 'month' | 'all' = 'all'
+    typeFilter: 'withdraw' | 'receive' | 'all' = 'all'
+    connectedToMetamask: boolean = false
 
     constructor(
         readonly metamaskBrightIdService: MetamaskBrightIdService,
@@ -94,44 +85,48 @@ export class WalletComponent implements OnInit {
         private readonly alerts: TuiAlertService,
         private cdRef: ChangeDetectorRef,
         @Inject(TuiMobileDialogService)
-        private readonly dialogs: TuiMobileDialogService
-    ) {}
+        private readonly dialogs: TuiMobileDialogService,
+    ) {
+    }
 
     ngOnInit() {
         this.metamaskBrightIdService.balance$.subscribe((balance) => {
-            this.balance = balance ? ethers.utils.formatEther(balance) : null;
-        });
-    
-        this.metamaskBrightIdService.loadBalance();
-        this.updateState();
+            this.balance = balance ? ethers.formatEther(balance) : null
+        })
+
+        this.metamaskBrightIdService.loadBalance()
+        this.updateState()
     }
 
     updateState() {
-    this.metamaskBrightIdService.checkMetamaskState().subscribe({
-        next: (value) => {
-            console.log('Metamask state:', value);
-            if (value === MetamaskState.READY) {
-                this.state = value;
-                this.connectedToMetamask = true; 
-            } else if (
-                value === MetamaskState.NOT_CONNECTED ||
-                value === MetamaskState.NOT_INSTALLED
-            ) {
-                this.state = value;
-                this.connectedToMetamask = false;
-            } else {
-                this.state = value;
-                this.connectedToMetamask = false;
-            }
-        },
-    });
-}
+        this.metamaskBrightIdService.checkMetamaskState().subscribe({
+            next: (value) => {
+                console.log('Metamask state:', value)
+                if (value === MetamaskState.READY) {
+                    this.state = value
+                    this.connectedToMetamask = true
+                } else if (
+                    value === MetamaskState.NOT_CONNECTED ||
+                    value === MetamaskState.NOT_INSTALLED
+                ) {
+                    this.state = value
+                    this.connectedToMetamask = false
+                } else {
+                    this.state = value
+                    this.connectedToMetamask = false
+                }
+            },
+        })
+    }
+
     toggleWalletPage() {
-        this.showWalletPage = !this.showWalletPage;
+        this.showWalletPage = !this.showWalletPage
     }
+
     Claim(result: string): void {
-        this.alerts.open(result).subscribe();
+        this.alerts.open(result).subscribe()
     }
+
     openMetamaskExtension() {
         if (typeof window.ethereum === 'undefined') {
             this.alertService
@@ -139,78 +134,81 @@ export class WalletComponent implements OnInit {
                     'Metamask is not installed. Please install Metamask and try again.',
                     {
                         status: 'error',
-                    }
+                    },
                 )
-                .subscribe();
-            window.open('https://metamask.io/');
-            return;
+                .subscribe()
+            window.open('https://metamask.io/')
+            return
         }
 
         this.metamaskBrightIdService.connect().subscribe({
             next: account => {
                 this.alertService.open("Connected to account: " + account, {
-                    status: "success"
-                }).subscribe();
-                this.state = MetamaskState.CONNECTED;
-                this.updateState();
+                    status: "success",
+                }).subscribe()
+                this.state = MetamaskState.CONNECTED
+                this.updateState()
             },
             error: (err) => {
                 this.alertService.open("Failed to connect Metamask", {
-                    status: "error"
-                }).subscribe();
-                this.state = MetamaskState.NOT_CONNECTED;
-            }
-        });
+                    status: "error",
+                }).subscribe()
+                this.state = MetamaskState.NOT_CONNECTED
+            },
+        })
     }
+
     switchChain() {
         this.metamaskBrightIdService.switchToMannaChain().subscribe({
             next: value => {
                 this.alertService.open("Chain Switched to " + mannaChainName, {
-                    status: "success"
-                }).subscribe();
-                this.state = MetamaskState.READY;
-                this.showPanel = true;
+                    status: "success",
+                }).subscribe()
+                this.state = MetamaskState.READY
+                this.showPanel = true
             },
             error: err => {
                 this.alertService.open("Failed to switch chain", {
-                    status: "error"
-                }).subscribe();
-            }
-        });
+                    status: "error",
+                }).subscribe()
+            },
+        })
     }
+
     show(): void {
         this.dialogs
             .open(
                 new PolymorpheusComponent(
                     DailyRewardDialogComponent,
-                    this.injector
-                )
+                    this.injector,
+                ),
                 // {
                 //     dismissible: true,
                 // }
             )
             // .pipe(switchMap(index => this.alerts.open(`Selected: ${actions[index]}`)))
-            .subscribe();
+            .subscribe()
     }
 
     sortData(column: keyof Transaction): void {
         if (this.sortColumn === column) {
-            this.sortDirection *= -1;
+            this.sortDirection *= -1
         } else {
-            this.sortColumn = column;
-            this.sortDirection = 1;
+            this.sortColumn = column
+            this.sortDirection = 1
         }
 
         this.transactions.sort((a, b) => {
-            return (a[column] < b[column] ? -1 : 1) * this.sortDirection;
-        });
+            return (a[column] < b[column] ? -1 : 1) * this.sortDirection
+        })
     }
+
     filterTransactions(): void {
-        const today = new Date();
-        const oneWeekAgo = new Date(today);
-        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-        const oneMonthAgo = new Date(today);
-        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+        const today = new Date()
+        const oneWeekAgo = new Date(today)
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
+        const oneMonthAgo = new Date(today)
+        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
 
         this.filteredTransactions = this.transactions.filter((transaction) => {
             const isDateValid =
@@ -220,13 +218,13 @@ export class WalletComponent implements OnInit {
                     transaction.date >= oneWeekAgo) ||
                 (this.dateFilter === 'month' &&
                     transaction.date >= oneMonthAgo) ||
-                this.dateFilter === 'all';
+                this.dateFilter === 'all'
 
             const isTypeValid =
                 this.typeFilter === 'all' ||
-                transaction.type === this.typeFilter;
+                transaction.type === this.typeFilter
 
-            return isDateValid && isTypeValid;
-        });
+            return isDateValid && isTypeValid
+        })
     }
 }

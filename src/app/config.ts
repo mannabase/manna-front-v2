@@ -1,4 +1,4 @@
-export let mannaChainId: number = 42161
+export let mannaChainId: bigint = 42161n
 export let mannaChainName: string = "Arbitrum"
 
 export let chainConfig = {

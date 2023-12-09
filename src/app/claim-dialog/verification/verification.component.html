@@ -1,7 +1,7 @@
 <div class="flex flex-column align-items-center">
     <p *ngIf="state && qrCodeValue">Almost there! Scan the QR code below using your BrightID app to verify your
         identity</p>
-    <qrcode *ngIf="qrCodeValue" [qrdata]="qrCodeValue" class="qrcode"></qrcode>
+<!--    <qrcode *ngIf="qrCodeValue" [qrdata]="qrCodeValue" class="qrcode"></qrcode>-->
 
     <p *ngIf="state && !qrCodeValue">Please click 'Check Verification' button to check your verification status</p>
     <button tuiButton (click)="checkVerification()" size="m" [showLoader]="loading">

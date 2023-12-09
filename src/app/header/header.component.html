@@ -1,5 +1,5 @@
 <div class="container"
-     [ngClass]="{ 'account': isAccountPage, 'scrolled': isScrolled }" (onResize)="handleResize($event)">
+     [ngClass]="{ 'account': isAccountPage, 'scrolled': isScrolled }" >
   <div class="logo">
     <button class="logo--hambergur" tuiIconButton *ngIf="showBurgerMenu" icon="tuiIconMenu" appearance="flat" size="s"
             (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">
