@@ -1,4 +1,5 @@
 @import "../../variables";
+@import '../../assets/generalStyles/mixins.scss'; 
 .text {
     font-size: $text-font-size-desktop;
     margin: 0px;
@@ -99,20 +100,10 @@
         }
     }
     &--learnMore {
-        display: flex;
-        width: fit-content;
-        border-radius: calc($manna-border-radius + 2px);
-        padding: 2px;
-        background-image: $get-started-button-background;
+        @include gradient-border;
         &--link {
-            position: relative;
-            border-radius: $manna-border-radius;
-            padding: 12px 20px;
-            text-align: start;
-            background: $background-color;
+            @include gradient-border-inner;
             color: #f96d69;
-            font-size: 16px;
-            letter-spacing: 1px;
         }
     }
 }

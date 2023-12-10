@@ -1,7 +1,7 @@
-<div *ngIf="contractService.contractData$ | async as contractData">
-    <div *ngIf="contractData.isRegistered; else register">
-        <button (click)="claimManna(contractData.toClaim)">Claim Manna</button>
-        <p>You can claim {{ contractData.toClaim.toString() }} manna</p>
+<div>
+    <div>
+        <button>Claim Manna</button>
+        <p>You can claim manna</p>
     </div>
     <ng-template #register>
         <button (click)="registerMe()">Register</button>

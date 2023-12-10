@@ -30,7 +30,6 @@ import {WalletComponent} from './account/wallet/wallet.component'
 import {UserAccountComponent} from './account/user-account/user-account.component'
 import {BlogDetailComponent} from './blog/blog-detail/blog-detail.component'
 import {MetamaskBrightIdService} from './metamask-bright-id.service'
-import {ContractService} from './contract.service'
 import {MannaService} from './manna.service'
 import {UserService} from './user.service'
 import {VerificationDialogComponent} from './verification-dialog/verification-dialog.component'
@@ -39,14 +38,14 @@ import {TuiActiveZoneModule} from '@taiga-ui/cdk'
 import {ClaimDialogComponent} from './claim-dialog/claim-dialog.component'
 import {TuiStepperModule} from "@taiga-ui/kit"
 import {MetamaskConnectionComponent} from './claim-dialog/metamask-connection/metamask-connection.component'
-import {VerificationComponent} from './claim-dialog/verification/verification.component'
 import {ClaimMannaComponent} from './claim-dialog/claim-manna/claim-manna.component'
 import {FooterComponent} from './footer/footer.component'
 import {DailyRewardDialogComponent} from './account/wallet/daily-reward-dialog/daily-reward-dialog.component'
+import {TuiAccordionModule} from '@taiga-ui/kit';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent,
-    AboutComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, VerificationComponent, ClaimMannaComponent, FooterComponent, DailyRewardDialogComponent],
+    AboutComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, ClaimMannaComponent, FooterComponent, DailyRewardDialogComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -65,9 +64,10 @@ import {DailyRewardDialogComponent} from './account/wallet/daily-reward-dialog/d
         TuiLinkModule,
         TuiStepperModule,
         TuiSvgModule,
-        TuiLoaderModule
+        TuiLoaderModule,
+        TuiAccordionModule
     ],
-  providers: [MetamaskBrightIdService, MannaService, UserService,ContractService,
+  providers: [MetamaskBrightIdService, MannaService, UserService,
     {
       provide: TUI_SANITIZER,
       useClass: NgDompurifySanitizer

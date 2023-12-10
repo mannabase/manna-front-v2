@@ -1,0 +1,39 @@
+@import "../../variables";
+@import '../../assets/generalStyles/mixins.scss'; 
+
+.about{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &--intro{
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 80%;
+        &--text{
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            gap: 20px;
+            &--description{
+                font-size: 20px;
+            }
+            &--learn{
+                @include gradient-border;
+                margin-top: 20px;
+                &--inner{
+                    @include gradient-border-inner;
+                    color: white;
+                }
+            }
+        }
+        &--logo{
+            width: 200px;
+        }
+    }
+    &--Accordion{
+        width: 600px;
+    }
+}
+    

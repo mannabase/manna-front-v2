@@ -15,9 +15,9 @@
         <app-metamask-connection *ngIf="currentStep == 0" (nextStep)="currentStep  = currentStep + 1">
 
         </app-metamask-connection>
-        <app-verification *ngIf="currentStep == 1" (nextStep)="currentStep  = currentStep + 1">
+        <!-- <app-verification *ngIf="currentStep == 1" (nextStep)="currentStep  = currentStep + 1">
 
-        </app-verification>
+        </app-verification> -->
         <app-claim-manna *ngIf="currentStep == 2">
 
         </app-claim-manna>
