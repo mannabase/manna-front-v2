@@ -211,3 +211,38 @@
 //         return this.signer.getAddress()
 //     }
 // }
+import { Injectable } from '@angular/core';
+import { ethers, JsonRpcProvider, BigNumberish, Fragment, JsonFragment } from 'ethers';
+import { chainConfig, mannaContractAddress, mannaContractABI } from './config';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ContractService {
+  private provider: JsonRpcProvider;
+  private contract: ethers.Contract;
+
+  constructor() {
+    this.provider = new ethers.JsonRpcProvider(chainConfig.params[0].rpcUrls[0]);
+    this.contract = new ethers.Contract(
+      mannaContractAddress,
+      mannaContractABI as Array<string | Fragment | JsonFragment>,
+      this.provider
+    );
+  }
+
+  async getBalance(address: string): Promise<string> {
+    try {
+      const balance: BigNumberish = await this.contract['balanceOf'](address); 
+      return ethers.formatUnits(balance, 18);
+    } catch (error) {
+      console.error('Error fetching balance:', error);
+      throw error;
+    }
+  }
+}
+
+
+
+
+

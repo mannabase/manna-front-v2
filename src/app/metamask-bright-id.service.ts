@@ -58,7 +58,7 @@ export class MetamaskBrightIdService {
                     }
                     this.account$.next(account[0])
                     subscriber.next(MetamaskState.CONNECTED)
-                    const provider = new ethers.JsonRpcProvider(ethereum)
+                    const provider = new ethers.BrowserProvider(ethereum)
                     from(provider.getNetwork()).subscribe({
                         next: (network) => {
                             if (network.chainId == mannaChainId) {
@@ -90,7 +90,7 @@ export class MetamaskBrightIdService {
 
     async loadBalance() {
         if (this.account$.value) {
-            const provider = new ethers.JsonRpcProvider(ethereum)
+            const provider = new ethers.BrowserProvider(ethereum)
             this.balance$.next(0n)
         } else {
             this.balance$.next(null)
