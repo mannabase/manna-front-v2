@@ -231,10 +231,10 @@ export class ContractService {
     );
   }
 
-  async getBalance(address: string): Promise<string> {
+  async balanceOf(walletAddress: string): Promise<string> {
     try {
-      const balance: BigNumberish = await this.contract['balanceOf'](address); 
-      return ethers.formatUnits(balance, 18);
+      const balance = await this.contract['balanceOf'](walletAddress);
+      return ethers.formatEther(balance); 
     } catch (error) {
       console.error('Error fetching balance:', error);
       throw error;

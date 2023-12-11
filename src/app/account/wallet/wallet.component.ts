@@ -7,7 +7,9 @@ import {TuiMobileDialogService} from '@taiga-ui/addon-mobile'
 import {TUI_IS_IOS} from '@taiga-ui/cdk'
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus'
 import {DailyRewardDialogComponent} from './daily-reward-dialog/daily-reward-dialog.component'
-import {mannaChainName} from "../../config"
+import {mannaChainName ,mannaContractAddress} from "../../config"
+import { ContractService } from '../../contract.service';
+import { Subscription } from 'rxjs';
 
 interface Transaction {
     type: 'withdraw' | 'receive';
@@ -35,6 +37,8 @@ export class WalletComponent implements OnInit {
     @Input() showBanner: boolean = false
     MetamaskState = MetamaskState
     mannaChain = mannaChainName
+    walletAddress: string | null = null
+    private accountSubscription: Subscription | undefined;
     buttonMessageMap = new Map<UserClaimingState, string>([
         [UserClaimingState.ZERO, 'Connect Metamask'],
         [UserClaimingState.METAMASK_CONNECTED, 'Change to ID Chain'],
@@ -44,6 +48,7 @@ export class WalletComponent implements OnInit {
     ])
     sortColumn: keyof Transaction | null = null
     sortDirection: number = 1
+    
     transactions: Transaction[] = [
         {
             type: 'receive',
@@ -75,6 +80,7 @@ export class WalletComponent implements OnInit {
     dateFilter: 'today' | 'week' | 'month' | 'all' = 'all'
     typeFilter: 'withdraw' | 'receive' | 'all' = 'all'
     connectedToMetamask: boolean = false
+    
 
     constructor(
         readonly metamaskBrightIdService: MetamaskBrightIdService,
@@ -86,17 +92,29 @@ export class WalletComponent implements OnInit {
         private cdRef: ChangeDetectorRef,
         @Inject(TuiMobileDialogService)
         private readonly dialogs: TuiMobileDialogService,
+        private readonly contractService: ContractService,
     ) {
     }
 
     ngOnInit() {
-        this.metamaskBrightIdService.balance$.subscribe((balance) => {
-            this.balance = balance ? ethers.formatEther(balance) : null
-        })
-
-        this.metamaskBrightIdService.loadBalance()
-        this.updateState()
-    }
+        this.updateState();
+        this.subscribeToAccount();
+        this.fetchContractBalance();
+      }
+    ngOnDestroy() {
+        if (this.accountSubscription) {
+          this.accountSubscription.unsubscribe();
+        }
+      }
+      private subscribeToAccount() {
+        this.accountSubscription = this.metamaskBrightIdService.account$.subscribe((address) => {
+          this.walletAddress = address;
+          console.log('Wallet address updated:', address);
+          if (address) {
+            this.fetchContractBalance();
+          }
+        });
+      }
 
     updateState() {
         this.metamaskBrightIdService.checkMetamaskState().subscribe({
@@ -122,6 +140,22 @@ export class WalletComponent implements OnInit {
     toggleWalletPage() {
         this.showWalletPage = !this.showWalletPage
     }
+    async fetchContractBalance() {
+        try {
+          if (!this.walletAddress) {
+            console.error('Wallet address not available');
+            return;
+          }
+        
+          console.log('Sending wallet address to contract:', this.walletAddress);
+          const contractBalance = await this.contractService.balanceOf(this.walletAddress);
+          console.log('Contract response - Balance:', contractBalance);
+        
+          this.balance = contractBalance;
+        } catch (error) {
+          console.error('Error fetching contract balance:', error);
+        }
+      }
 
     Claim(result: string): void {
         this.alerts.open(result).subscribe()
