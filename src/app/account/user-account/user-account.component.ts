@@ -149,30 +149,30 @@ export class UserAccountComponent implements OnInit, OnDestroy {
               },
             });
           }
-          private async refreshUserScore(): Promise<void> {
+          private refreshUserScore() {
             if (!this.walletAddress) {
-                console.log('No wallet address available for fetching user score.');
-                return;
+              console.log('No wallet address available for fetching user score.');
+              return;
             }
-    
+          
             console.log('Fetching user score for address:', this.walletAddress);
-            try {
-                const userScore = await this.contractService.getUserScore(this.walletAddress);
+            this.contractService.getUserScore(this.walletAddress).subscribe(
+              userScore => {
                 console.log('User score fetched:', userScore);
                 this.userScore = userScore;
                 this.isScoreGreaterThan25 = userScore > 25;
                 this.showScore = true;
                 this.userScoreAvailable.emit(true);
-            } catch (error) {
-                console.error('Error fetching score from contract:', error);
-            }
-        }
-        private async fetchScoreThreshold(): Promise<void> {
-            try {
-              const threshold = await this.contractService.getScoreThreshold();
-              this.scoreThreshold = threshold;
-            } catch (error) {
-              console.error('Error fetching score threshold:', error);
-            }
+              },
+              error => console.error('Error fetching score from contract:', error)
+            );
           }
+          
+          private fetchScoreThreshold() {
+            this.contractService.getScoreThreshold().subscribe(
+              threshold => this.scoreThreshold = threshold,
+              error => console.error('Error fetching score threshold:', error)
+            );
+          }
+          
     }

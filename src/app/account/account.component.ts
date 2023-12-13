@@ -36,18 +36,19 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
+    this.accountSubscription = this.metamaskService.account$.subscribe(address => {
       this.walletAddress = address;
-    });
-
-    this.contractService.balanceOf(this.walletAddress || '').then((userScore) => {
-      this.userScore = Number(userScore);
-      this.verifyService.setVerificationState(this.userScore || 0);
-      this.verifyService.verificationState$.subscribe((state: VerifyState) => {
-        this.showBanner = state === VerifyState.VERIFIED;
-      });
+      if (address) {
+        this.contractService.balanceOf(address).subscribe(userScore => {
+          this.userScore = Number(userScore);
+          this.verifyService.verificationState$.subscribe(state => {
+            this.showBanner = state === VerifyState.VERIFIED;
+          });
+        }, error => console.error('Error fetching user score:', error));
+      }
     });
   }
+  
 
   ngOnDestroy() {
     this.accountSubscription?.unsubscribe();

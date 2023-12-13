@@ -134,21 +134,21 @@ export class WalletComponent implements OnInit {
     toggleWalletPage() {
         this.showWalletPage = !this.showWalletPage
     }
-    async fetchContractBalance() {
-        try {
-          if (!this.walletAddress) {
-            console.error('Wallet address not available');
-            return;
-          }
-      
-          console.log('Sending wallet address to contract:', this.walletAddress);
-          const contractBalance = await this.contractService.balanceOf(this.walletAddress);
-          console.log('Contract response - Balance:', contractBalance);
-      
-          this.balance = contractBalance;
-        } catch (error) {
-          console.error('Error fetching contract balance:', error);
+    private fetchContractBalance() {
+        if (!this.walletAddress) {
+          console.error('Wallet address not available');
+          return;
         }
+      
+        console.log('Sending wallet address to contract:', this.walletAddress);
+        this.contractService.balanceOf(this.walletAddress).subscribe(
+          contractBalance => {
+            console.log('Contract response - Balance:', contractBalance);
+            this.balance = contractBalance;
+            this.cdRef.detectChanges();
+          },
+          error => console.error('Error fetching contract balance:', error)
+        );
       }
       
 

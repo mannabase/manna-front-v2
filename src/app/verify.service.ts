@@ -1,6 +1,7 @@
-// verify.service.ts
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { ContractService } from './contract.service';
 
 export enum VerifyState {
   NOT_VERIFIED = 'NOT_VERIFIED',
@@ -14,9 +15,17 @@ export class VerifyService {
   private verificationStateSubject = new BehaviorSubject<VerifyState>(VerifyState.NOT_VERIFIED);
   verificationState$ = this.verificationStateSubject.asObservable();
 
-  setVerificationState(score: number): void {
-    const threshold = 50; 
-    const newState = score >= threshold ? VerifyState.VERIFIED : VerifyState.NOT_VERIFIED;
-    this.verificationStateSubject.next(newState);
+  constructor(private contractService: ContractService) {}
+
+  verifyUser(userAddress: string) {
+    this.contractService.getUserScore(userAddress).pipe(
+      switchMap(userScore => this.contractService.getScoreThreshold().pipe(
+        map(threshold => userScore >= threshold ? VerifyState.VERIFIED : VerifyState.NOT_VERIFIED)
+      )),
+      catchError(error => {
+        console.error('Error during user verification:', error);
+        return of(VerifyState.NOT_VERIFIED); // Default to not verified in case of error
+      })
+    ).subscribe(newState => this.verificationStateSubject.next(newState));
   }
 }

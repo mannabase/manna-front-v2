@@ -212,9 +212,10 @@
 //     }
 // }
 import { Injectable } from '@angular/core';
-import { ethers, JsonRpcProvider, BigNumberish, Fragment, JsonFragment } from 'ethers';
+import { ethers, JsonRpcProvider, Fragment, JsonFragment } from 'ethers';
+import { from, Observable } from 'rxjs';
 import { chainConfig, mannaContractAddress, mannaContractABI, claimMannaContractAddress, claimMannaContractABI } from './config';
-import { MetamaskBrightIdService } from './metamask-bright-id.service'; 
+import { MetamaskBrightIdService } from './metamask-bright-id.service';
 
 @Injectable({
   providedIn: 'root',
@@ -239,72 +240,45 @@ export class ContractService {
     );
     this.initializeContracts();
   }
-  private async initializeContracts(): Promise<void> {
-    this.metamaskService.account$.subscribe(async (walletAddress) => {
-        if (walletAddress) {
-            const signer = await this.provider.getSigner(walletAddress);
-            this.mannaContract = new ethers.Contract(
-                mannaContractAddress,
-                mannaContractABI,
-                signer 
-            );
 
-            this.claimMannaContract = new ethers.Contract(
-                claimMannaContractAddress,
-                claimMannaContractABI,
-                signer 
-            );
-        }
+  private initializeContracts(): void {
+    this.metamaskService.account$.subscribe((walletAddress) => {
+      if (walletAddress) {
+        this.provider.getSigner(walletAddress).then(signer => {
+          this.mannaContract = new ethers.Contract(
+              mannaContractAddress,
+              mannaContractABI,
+              signer
+          );
+
+          this.claimMannaContract = new ethers.Contract(
+              claimMannaContractAddress,
+              claimMannaContractABI,
+              signer
+          );
+        });
+      }
     });
+  }
+
+  balanceOf(walletAddress: string): Observable<string> {
+    return from(this.mannaContract['balanceOf'](walletAddress).then(balance => ethers.formatEther(balance)));
+  }
+
+  getUserScore(userAddress: string): Observable<number> {
+    return from(this.claimMannaContract['userScores'](userAddress).then(userScores => parseInt(userScores.toString())));
+  }
+
+  getScoreThreshold(): Observable<number> {
+    return from(this.claimMannaContract['scoreThreshold']().then(threshold => parseInt(threshold.toString())));
+  }
+
+  claimManna(): Observable<void> {
+    return from(this.claimMannaContract['claim']().then(claimTx => claimTx.wait()));
+  }
+
+  submitScore(score: number, userAddress: string): Observable<void> {
+    return from(this.claimMannaContract['submitScore'](score, userAddress).then(submitScoreTx => submitScoreTx.wait()));
+  }
 }
 
-  async balanceOf(walletAddress: string): Promise<string> {
-    try {
-      const balance = await this.mannaContract['balanceOf'](walletAddress);
-      return ethers.formatEther(balance); 
-    } catch (error) {
-      console.error('Error fetching balance:', error);
-      throw error;
-    }
-  }
-  async getUserScore(userAddress: string): Promise<number> {
-    try {
-      const userScores = await this.claimMannaContract['userScores'](userAddress);
-      return parseInt(userScores.toString());
-    } catch (error) {
-      console.error('Error fetching user score:', error);
-      throw error;
-    }
-  }
-  async getScoreThreshold(): Promise<number> {
-    try {
-      const threshold = await this.claimMannaContract['scoreThreshold']();
-      return parseInt(threshold.toString());
-    } catch (error) {
-      console.error('Error fetching score threshold:', error);
-      throw error;
-    }
-  }
-
-  async claimManna(): Promise<void> {
-    try {
-      const claimTx = await this.claimMannaContract['claim']();
-      await claimTx.wait();
-      console.log('Claim successful');
-    } catch (error) {
-      console.error('Error claiming Manna:', error);
-      throw error;
-    }
-  }
-
-  async submitScore(score: number, userAddress: string): Promise<void> {
-    try {
-      const submitScoreTx = await this.claimMannaContract['submitScore'](score, userAddress);
-      await submitScoreTx.wait();
-      console.log('Score submitted successfully');
-    } catch (error) {
-      console.error('Error submitting score:', error);
-      throw error;
-    }
-  }
-}
