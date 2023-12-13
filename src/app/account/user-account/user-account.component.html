@@ -37,7 +37,7 @@
               Score Threshold:
             </div>
             <div class="account--humanity--passport--thresold--num">
-              25
+              {{ scoreThreshold || 'loading...' }}
             </div>
           </div>
         </div>
@@ -52,7 +52,7 @@
       </div>
       <div class="account--humanity--passport--connect-buttun" 
         (click)="onSign()" *ngIf="state == MetamaskState.READY && !showScore">
-          Check Verification
+          Check Score
       </div>
       
         <div class="account--humanity--passport--passport">

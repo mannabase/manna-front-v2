@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, Inject, Injector, Input, OnInit} from '@angular/core'
 import {MetamaskBrightIdService, MetamaskState} from 'src/app/metamask-bright-id.service'
-import {UserClaimingState, UserService} from '../../user.service'
+import {VerifyState, VerifyService} from '../../verify.service'
 import {ethers} from 'ethers'
 import {TuiAlertService, TuiDialogService} from '@taiga-ui/core'
 import {TuiMobileDialogService} from '@taiga-ui/addon-mobile'
@@ -39,13 +39,6 @@ export class WalletComponent implements OnInit {
     mannaChain = mannaChainName
     walletAddress: string | null = null
     private accountSubscription: Subscription | undefined;
-    buttonMessageMap = new Map<UserClaimingState, string>([
-        [UserClaimingState.ZERO, 'Connect Metamask'],
-        [UserClaimingState.METAMASK_CONNECTED, 'Change to ID Chain'],
-        [UserClaimingState.CORRECT_CHAIN, 'Verify'],
-        [UserClaimingState.VERIFIED, 'Enter email'],
-        [UserClaimingState.READY, 'Claim'],
-    ])
     sortColumn: keyof Transaction | null = null
     sortDirection: number = 1
     
@@ -86,7 +79,7 @@ export class WalletComponent implements OnInit {
         readonly metamaskBrightIdService: MetamaskBrightIdService,
         readonly dialogService: TuiDialogService,
         readonly injector: Injector,
-        readonly userService: UserService,
+        readonly verifyService: VerifyService,
         readonly alertService: TuiAlertService,
         private readonly alerts: TuiAlertService,
         private cdRef: ChangeDetectorRef,
@@ -107,14 +100,15 @@ export class WalletComponent implements OnInit {
         }
       }
       private subscribeToAccount() {
-        this.accountSubscription = this.metamaskBrightIdService.account$.subscribe((address) => {
+        this.accountSubscription = this.metamaskBrightIdService.account$.subscribe(async (address) => {
           this.walletAddress = address;
           console.log('Wallet address updated:', address);
           if (address) {
-            this.fetchContractBalance();
+            await this.fetchContractBalance(); 
           }
         });
       }
+      
 
     updateState() {
         this.metamaskBrightIdService.checkMetamaskState().subscribe({
@@ -146,16 +140,17 @@ export class WalletComponent implements OnInit {
             console.error('Wallet address not available');
             return;
           }
-        
+      
           console.log('Sending wallet address to contract:', this.walletAddress);
           const contractBalance = await this.contractService.balanceOf(this.walletAddress);
           console.log('Contract response - Balance:', contractBalance);
-        
+      
           this.balance = contractBalance;
         } catch (error) {
           console.error('Error fetching contract balance:', error);
         }
       }
+      
 
     Claim(result: string): void {
         this.alerts.open(result).subscribe()

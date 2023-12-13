@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
-import { MetamaskBrightIdService } from 'src/app/metamask-bright-id.service';
-import { UserClaimingState, UserService } from 'src/app/user.service';
+import { MetamaskBrightIdService ,MetamaskState} from 'src/app/metamask-bright-id.service';
+import { VerifyState, VerifyService } from 'src/app/verify.service';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { ClaimDialogComponent } from '../claim-dialog/claim-dialog.component';
 
@@ -13,13 +13,6 @@ import { ClaimDialogComponent } from '../claim-dialog/claim-dialog.component';
 export class HomeComponent implements OnInit {
     ballonsHomePage: string = '../../assets/images/ballons.webp';
     erthHomePage: string = '../../assets/images/erth.webp'
-
-    buttonMessageMap = new Map<UserClaimingState, string>([
-        [UserClaimingState.ZERO, 'Connect Metamask'],
-        [UserClaimingState.METAMASK_CONNECTED, 'Change to ID Chain'],
-        [UserClaimingState.CORRECT_CHAIN, 'Verify'],
-        [UserClaimingState.VERIFIED, 'Claim'],
-    ]);
 
     constructor(
         readonly metamaskBrightIdService: MetamaskBrightIdService,

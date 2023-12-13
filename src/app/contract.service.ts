@@ -213,36 +213,98 @@
 // }
 import { Injectable } from '@angular/core';
 import { ethers, JsonRpcProvider, BigNumberish, Fragment, JsonFragment } from 'ethers';
-import { chainConfig, mannaContractAddress, mannaContractABI } from './config';
+import { chainConfig, mannaContractAddress, mannaContractABI, claimMannaContractAddress, claimMannaContractABI } from './config';
+import { MetamaskBrightIdService } from './metamask-bright-id.service'; 
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContractService {
   private provider: JsonRpcProvider;
-  private contract: ethers.Contract;
+  private mannaContract: ethers.Contract;
+  private claimMannaContract: ethers.Contract;
 
-  constructor() {
+  constructor(private metamaskService: MetamaskBrightIdService) {
     this.provider = new ethers.JsonRpcProvider(chainConfig.params[0].rpcUrls[0]);
-    this.contract = new ethers.Contract(
+    this.mannaContract = new ethers.Contract(
       mannaContractAddress,
       mannaContractABI as Array<string | Fragment | JsonFragment>,
       this.provider
     );
+
+    this.claimMannaContract = new ethers.Contract(
+      claimMannaContractAddress,
+      claimMannaContractABI as Array<string | Fragment | JsonFragment>,
+      this.provider
+    );
+    this.initializeContracts();
   }
+  private async initializeContracts(): Promise<void> {
+    this.metamaskService.account$.subscribe(async (walletAddress) => {
+        if (walletAddress) {
+            const signer = await this.provider.getSigner(walletAddress);
+            this.mannaContract = new ethers.Contract(
+                mannaContractAddress,
+                mannaContractABI,
+                signer 
+            );
+
+            this.claimMannaContract = new ethers.Contract(
+                claimMannaContractAddress,
+                claimMannaContractABI,
+                signer 
+            );
+        }
+    });
+}
 
   async balanceOf(walletAddress: string): Promise<string> {
     try {
-      const balance = await this.contract['balanceOf'](walletAddress);
+      const balance = await this.mannaContract['balanceOf'](walletAddress);
       return ethers.formatEther(balance); 
     } catch (error) {
       console.error('Error fetching balance:', error);
       throw error;
     }
   }
+  async getUserScore(userAddress: string): Promise<number> {
+    try {
+      const userScores = await this.claimMannaContract['userScores'](userAddress);
+      return parseInt(userScores.toString());
+    } catch (error) {
+      console.error('Error fetching user score:', error);
+      throw error;
+    }
+  }
+  async getScoreThreshold(): Promise<number> {
+    try {
+      const threshold = await this.claimMannaContract['scoreThreshold']();
+      return parseInt(threshold.toString());
+    } catch (error) {
+      console.error('Error fetching score threshold:', error);
+      throw error;
+    }
+  }
+
+  async claimManna(): Promise<void> {
+    try {
+      const claimTx = await this.claimMannaContract['claim']();
+      await claimTx.wait();
+      console.log('Claim successful');
+    } catch (error) {
+      console.error('Error claiming Manna:', error);
+      throw error;
+    }
+  }
+
+  async submitScore(score: number, userAddress: string): Promise<void> {
+    try {
+      const submitScoreTx = await this.claimMannaContract['submitScore'](score, userAddress);
+      await submitScoreTx.wait();
+      console.log('Score submitted successfully');
+    } catch (error) {
+      console.error('Error submitting score:', error);
+      throw error;
+    }
+  }
 }
-
-
-
-
-

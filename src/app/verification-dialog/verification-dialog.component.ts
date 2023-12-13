@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {MetamaskBrightIdService} from 'src/app/metamask-bright-id.service';
-import {UserClaimingState, UserService} from 'src/app/user.service';
+import {VerifyState, VerifyService} from 'src/app/verify.service';
 import {TuiAlertService} from "@taiga-ui/core";
 
 @Component({
@@ -14,7 +14,7 @@ export class VerificationDialogComponent {
   isLoadingQRCode: boolean = false;
 
   constructor(public metamaskBrightIdService: MetamaskBrightIdService,
-              public userService: UserService,
+              public verifyService: VerifyService,
               private alertService: TuiAlertService) {
   }
 
