@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { mannaChainName, serverUrl } from '../../config';
 import { ContractService } from '../../contract.service';
+import { MannaService } from '../../manna.service'; 
 
 @Component({
     selector: 'app-user-account',
@@ -32,7 +33,8 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         private metamaskService: MetamaskBrightIdService,
         private http: HttpClient,
         readonly metamaskBrightIdService: MetamaskBrightIdService,
-        private contractService: ContractService
+        private contractService: ContractService,
+        private mannaService: MannaService 
     ) {
         this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
             this.walletAddress = address;
@@ -51,33 +53,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         this.accountSubscription.unsubscribe();
     }
 
-        async onSign() {
-            const timeStamp = Math.floor(Number(Date.now().toString()) / 1000)
-
-            try {
-                const msg = `Verification request\naddress: ${this.walletAddress}\ntimestamp: ${timeStamp}`
-                this.metamaskService.signMessage(msg).subscribe((sign: string) => {
-                    console.log('Signature:', sign)
-                    console.log('Timestamp:', timeStamp)
-                    this.buttonText = 'Check Score'
-                    const headers = new HttpHeaders({'Content-Type': 'application/json'})
-                    this.loader = true
-                    // this.sendToServer(
-                    //     {
-                    //         signature: sign,
-                    //         user: this.walletAddress,
-                    //         timestamp: timeStamp,
-                    //     },
-                    //     'signing/gitcoinPassportScore',
-                    //     headers,
-                    // )
-                })
-            } catch (error) {
-                console.error('Error connecting or sending data to server:', error)
-            } finally {
-                this.loader = false
-            }
-        }
+        
 
         updateState() {
             this.metamaskBrightIdService.checkMetamaskState().subscribe({
@@ -174,5 +150,46 @@ export class UserAccountComponent implements OnInit, OnDestroy {
               error => console.error('Error fetching score threshold:', error)
             );
           }
+          updateUserScore() {
+            if (!this.walletAddress) {
+                console.log('No wallet address available.');
+                return;
+            }
+            this.loader = true;
+    
+            const timestamp = Math.floor(Date.now() / 1000);
+    
+            this.metamaskService.signUserMessage().subscribe(
+                signature => {
+                    this.mannaService.sendSignature(this.walletAddress!, signature, timestamp).subscribe(
+                        serverResponse => {
+                            this.contractService.submitUserScore(this.walletAddress!, serverResponse).subscribe(
+                                () => {
+                                    console.log('Score updated successfully.');
+                                    this.refreshUserScore(); // Refresh the user score
+                                    this.loader = false;
+                                    this.alertService.open('Score updated successfully.', { status: 'success', label: 'Success' }).subscribe();
+                                },
+                                error => {
+                                    console.error('Error submitting score to contract:', error);
+                                    this.loader = false;
+                                    this.alertService.open('Failed to update score.', { status: 'error', label: 'Error' }).subscribe();
+                                }
+                            );
+                        },
+                        error => {
+                            console.error('Error sending signature to server:', error);
+                            this.loader = false;
+                            this.alertService.open('Failed to send signature to server.', { status: 'error', label: 'Error' }).subscribe();
+                        }
+                    );
+                },
+                error => {
+                    console.error('Error signing message:', error);
+                    this.loader = false;
+                    this.alertService.open('Failed to sign message.', { status: 'error', label: 'Error' }).subscribe();
+                }
+            );
+        }
           
     }

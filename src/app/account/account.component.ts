@@ -14,8 +14,8 @@ export class AccountComponent implements OnInit, OnDestroy {
   walletAddress: string | null = null;
   accountSubscription: Subscription = new Subscription();
   displaySideBar: boolean = false;
-  showBanner: boolean = true;
-  userScore: number | null = null;
+  showBanner: boolean = true; 
+  isVerified: boolean = false;
 
   constructor(
     private metamaskService: MetamaskBrightIdService,
@@ -39,12 +39,10 @@ export class AccountComponent implements OnInit, OnDestroy {
     this.accountSubscription = this.metamaskService.account$.subscribe(address => {
       this.walletAddress = address;
       if (address) {
-        this.contractService.balanceOf(address).subscribe(userScore => {
-          this.userScore = Number(userScore);
-          this.verifyService.verificationState$.subscribe(state => {
-            this.showBanner = state === VerifyState.VERIFIED;
-          });
-        }, error => console.error('Error fetching user score:', error));
+        this.verifyService.verificationState$.subscribe(state => {
+          this.isVerified = state === VerifyState.VERIFIED;
+          this.showBanner = !this.isVerified; // Show banner if not verified
+        });
       }
     });
   }

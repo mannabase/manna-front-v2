@@ -213,9 +213,11 @@
 // }
 import { Injectable } from '@angular/core';
 import { ethers, JsonRpcProvider, Fragment, JsonFragment } from 'ethers';
-import { from, Observable } from 'rxjs';
+import { from, Observable,throwError } from 'rxjs';
 import { chainConfig, mannaContractAddress, mannaContractABI, claimMannaContractAddress, claimMannaContractABI } from './config';
 import { MetamaskBrightIdService } from './metamask-bright-id.service';
+import { TuiAlertService } from '@taiga-ui/core';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -225,7 +227,10 @@ export class ContractService {
   private mannaContract: ethers.Contract;
   private claimMannaContract: ethers.Contract;
 
-  constructor(private metamaskService: MetamaskBrightIdService) {
+  constructor(
+    private metamaskService: MetamaskBrightIdService,
+    private alertService: TuiAlertService
+    ) {
     this.provider = new ethers.JsonRpcProvider(chainConfig.params[0].rpcUrls[0]);
     this.mannaContract = new ethers.Contract(
       mannaContractAddress,
@@ -280,5 +285,21 @@ export class ContractService {
   submitScore(score: number, userAddress: string): Observable<void> {
     return from(this.claimMannaContract['submitScore'](score, userAddress).then(submitScoreTx => submitScoreTx.wait()));
   }
+  submitUserScore(walletAddress: string, scoreData: any): Observable<void> {
+    if (!scoreData.signature) {
+      console.error('No signature in score data');
+      return throwError('No signature in score data');
+  }
+    return from(this.claimMannaContract['submitScore'](
+        scoreData.score, walletAddress, scoreData.signature.v, scoreData.signature.r, scoreData.signature.s
+    ).then(tx => tx.wait())).pipe(
+        tap(() => this.alertService.open('Score submitted successfully.', { status: 'success', label: 'Success' }).subscribe()),
+        catchError(error => {
+            console.error('Error submitting score to contract:', error);
+            this.alertService.open('Failed to submit score.', { status: 'error', label: 'Error' }).subscribe();
+            return throwError(error);
+        })
+    );
+}
 }
 

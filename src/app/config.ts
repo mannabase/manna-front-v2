@@ -1,4 +1,4 @@
-export let mannaChainId: bigint = 42161n
+export let mannaChainId: bigint = 5n
 export let mannaChainName: string = "Goerli"
 
 export let chainConfig = {

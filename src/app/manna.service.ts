@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {throwError, Observable, of} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import { tap, catchError } from 'rxjs/operators';
+import { TuiAlertService } from '@taiga-ui/core';
 import {serverUrl} from "./config";
 
 @Injectable({
@@ -10,6 +12,7 @@ export class MannaService {
 
     constructor(
         private http: HttpClient,
+        private alertService: TuiAlertService
     ) {
     }
 
@@ -29,5 +32,16 @@ export class MannaService {
 
     claim(): Observable<any> {
         return of("HAHA")
+    }
+    sendSignature(walletAddress: string, signature: string, timestamp: number): Observable<any> {
+        const payload = { timestamp, signature, user: walletAddress };
+        return this.http.post<any>(`${serverUrl}signing/gitcoinPassportScore`, payload).pipe(
+            tap(() => this.alertService.open('Signature sent to server successfully.', { status: 'success', label: 'Success' }).subscribe()),
+            catchError(error => {
+                console.error('Error sending signature to server:', error);
+                this.alertService.open('Failed to send signature to server.', { status: 'error', label: 'Error' }).subscribe();
+                return throwError(error);
+            })
+        );
     }
 }

@@ -18,10 +18,10 @@
         class="account--humanity--header--fingerprint-mobile">
       </div>
       <div class="account--humanity--passport">
-        <div *ngIf="loader" class="loader-overlay">
+        <!-- <div *ngIf="loader" class="loader-overlay">
           <div class="loader"></div>
-      </div>
-      <div *ngIf="showScore">
+      </div> -->
+      <div class="account--humanity--passport--container" *ngIf="showScore">
         <div class="account--humanity--passport--score">
           <div class="flex gap-1">
             <div class="account--humanity--passport--score--text">
@@ -41,6 +41,14 @@
             </div>
           </div>
         </div>
+        <div class="account--humanity--passport--update" (click)="updateUserScore()">
+          <ng-container *ngIf="loader; else updateScoreText">
+              <span>Loading...</span>
+          </ng-container>
+          <ng-template #updateScoreText>
+              Update Score
+          </ng-template>
+        </div>
       </div>
       <div class="account--humanity--passport--connect-buttun" 
         (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED && !showScore">
@@ -51,7 +59,7 @@
           Arbitrum
       </div>
       <div class="account--humanity--passport--connect-buttun" 
-        (click)="onSign()" *ngIf="state == MetamaskState.READY && !showScore">
+        *ngIf="state == MetamaskState.READY && !showScore">
           Check Score
       </div>
       

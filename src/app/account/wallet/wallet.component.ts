@@ -100,56 +100,46 @@ export class WalletComponent implements OnInit {
         }
       }
       private subscribeToAccount() {
-        this.accountSubscription = this.metamaskBrightIdService.account$.subscribe(async (address) => {
-          this.walletAddress = address;
-          console.log('Wallet address updated:', address);
-          if (address) {
-            await this.fetchContractBalance(); 
-          }
+        this.accountSubscription = this.metamaskBrightIdService.account$.subscribe(address => {
+            this.walletAddress = address;
+            if (address) {
+                this.fetchContractBalance();
+                this.refreshUserScore();
+            } else {
+                console.log('Waiting for wallet address...');
+            }
         });
-      }
-      
-
-    updateState() {
-        this.metamaskBrightIdService.checkMetamaskState().subscribe({
-            next: (value) => {
-                console.log('Metamask state:', value)
-                if (value === MetamaskState.READY) {
-                    this.state = value
-                    this.connectedToMetamask = true
-                } else if (
-                    value === MetamaskState.NOT_CONNECTED ||
-                    value === MetamaskState.NOT_INSTALLED
-                ) {
-                    this.state = value
-                    this.connectedToMetamask = false
-                } else {
-                    this.state = value
-                    this.connectedToMetamask = false
-                }
-            },
-        })
+    }
+    private updateState() {
+        this.metamaskBrightIdService.checkMetamaskState().subscribe(state => {
+            this.state = state;
+            this.showPanel = state === MetamaskState.READY;
+            this.showWalletPage = state !== MetamaskState.READY && state !== MetamaskState.NOT_CONNECTED;
+            this.cdRef.detectChanges();
+        });
     }
 
     toggleWalletPage() {
         this.showWalletPage = !this.showWalletPage
     }
     private fetchContractBalance() {
-        if (!this.walletAddress) {
-          console.error('Wallet address not available');
-          return;
+        if (this.walletAddress) {
+            this.contractService.balanceOf(this.walletAddress).subscribe(
+                contractBalance => {
+                    this.balance = contractBalance;
+                    this.cdRef.detectChanges();
+                },
+                error => console.error('Error fetching contract balance:', error)
+            );
         }
-      
-        console.log('Sending wallet address to contract:', this.walletAddress);
-        this.contractService.balanceOf(this.walletAddress).subscribe(
-          contractBalance => {
-            console.log('Contract response - Balance:', contractBalance);
-            this.balance = contractBalance;
-            this.cdRef.detectChanges();
-          },
-          error => console.error('Error fetching contract balance:', error)
-        );
-      }
+    }
+    private refreshUserScore() {
+        if (this.walletAddress) {
+            
+        } else {
+            console.error('No wallet address available for fetching user score.');
+        }
+    }
       
 
     Claim(result: string): void {
@@ -217,7 +207,7 @@ export class WalletComponent implements OnInit {
             )
             // .pipe(switchMap(index => this.alerts.open(`Selected: ${actions[index]}`)))
             .subscribe()
-    }
+    }   
 
     sortData(column: keyof Transaction): void {
         if (this.sortColumn === column) {

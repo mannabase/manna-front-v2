@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { ethers } from 'ethers';
 import { BehaviorSubject, from, Observable, throwError } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
 import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
 import { chainConfig, mannaChainId } from './config';
 
@@ -36,8 +36,20 @@ export class MetamaskBrightIdService {
     private readonly alertService: TuiAlertService,
     private readonly dialogService: TuiDialogService,
     private readonly injector: Injector
-  ) {}
-
+  ) {
+    this.initializeAccountListener();
+  }
+  private initializeAccountListener() {
+    if (window.ethereum) {
+        window.ethereum.on('accountsChanged', (accounts: string[]) => {
+            if (accounts.length > 0) {
+                this.account$.next(accounts[0]);
+            } else {
+                this.account$.next('');
+            }
+        });
+    }
+}
   connect(): Observable<string> {
     return from((window as any).ethereum.request({ method: 'eth_requestAccounts' })).pipe(
       map((accounts: any) => {
@@ -60,38 +72,43 @@ export class MetamaskBrightIdService {
   }
 
   checkMetamaskState(): Observable<MetamaskState> {
-    return new Observable((subscriber) => {
+    return new Observable(subscriber => {
       if (typeof ethereum === 'undefined') {
         subscriber.next(MetamaskState.NOT_INSTALLED);
         subscriber.complete();
         return;
       }
-
       const provider = new ethers.BrowserProvider(ethereum);
-
-      from(provider.getNetwork()).subscribe({
-        next: (network) => {
-          if (network.chainId === mannaChainId) {
-            if (this.chainSwitched) {
+      provider.listAccounts().then(accounts => {
+        if (accounts.length === 0) {
+          subscriber.next(MetamaskState.NOT_CONNECTED);
+          subscriber.complete();
+        } else {
+          provider.getNetwork().then(network => {
+            if (network.chainId === mannaChainId) {
               subscriber.next(MetamaskState.READY);
-              this.chainSwitched = false;
             } else {
-              subscriber.next(MetamaskState.CONNECTED);
+              subscriber.next(MetamaskState.WRONG_CHAIN);
             }
-          } else {
-            subscriber.next(MetamaskState.WRONG_CHAIN);
-          }
-          subscriber.complete();
-        },
-        error: (err) => {
-          this.alertService.open('Failed to load web3 network', {
-            status: 'error',
+            subscriber.complete();
+          }).catch(err => {
+            console.error('Error getting network:', err);
+            this.alertService.open('Failed to load web3 network', {
+              status: 'error',
+            });
+            subscriber.complete();
           });
-          subscriber.complete();
-        },
+        }
+      }).catch(err => {
+        console.error('Error listing accounts:', err);
+        this.alertService.open('Failed to check MetaMask accounts', {
+          status: 'error',
+        });
+        subscriber.complete();
       });
     });
   }
+  
 
   async loadBalance() {
     if (this.account$.value) {
@@ -109,4 +126,23 @@ export class MetamaskBrightIdService {
       params: [message, this.account$.value],
     }) as Promise<string>);
   }
+  signUserMessage(): Observable<string> {
+    const timestamp = Math.floor(Date.now() / 1000);
+    const address = this.account$.value;
+    const message = `Verification request\naddress: ${address}\ntimestamp: ${timestamp}`;
+
+    console.log('Requesting signature for message:', message);
+
+    return this.signMessage(message).pipe(
+      tap(signature => {
+        console.log('Message signed:', signature);
+        this.alertService.open('Message successfully signed.', { status: 'success', label: 'Success' }).subscribe();
+      }),
+      catchError(error => {
+        console.error('Error signing message:', error);
+        this.alertService.open('Failed to sign the message. Please try again.', { status: 'error', label: 'Error' }).subscribe();
+        return throwError(error);
+      })
+    );
+  } 
 }
