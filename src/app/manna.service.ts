@@ -36,7 +36,10 @@ export class MannaService {
     sendSignature(walletAddress: string, signature: string, timestamp: number): Observable<any> {
         const payload = { timestamp, signature, user: walletAddress };
         return this.http.post<any>(`${serverUrl}signing/gitcoinPassportScore`, payload).pipe(
-            tap(() => this.alertService.open('Signature sent to server successfully.', { status: 'success', label: 'Success' }).subscribe()),
+            tap(response => {
+                console.log('Data received from server:', response); 
+                this.alertService.open('Signature sent to server successfully.', { status: 'success', label: 'Success' }).subscribe();
+            }),
             catchError(error => {
                 console.error('Error sending signature to server:', error);
                 this.alertService.open('Failed to send signature to server.', { status: 'error', label: 'Error' }).subscribe();
