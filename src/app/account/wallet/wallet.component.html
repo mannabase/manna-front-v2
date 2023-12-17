@@ -123,7 +123,12 @@
             </div>
             <div class="panel--dashboard--daily--claim">
                 <div class="panel--dashboard--daily--claim--text mb-3">This transaction will claim all earning & credit them to your wallet</div>
-                <div tuiAction class="panel--dashboard--daily--claim--buttun" (click)="Claim('Claim')">Cliam</div>
+                <div tuiAction class="panel--dashboard--daily--claim--buttun" (click)="claimDailyReward()">
+                    <span *ngIf="!claimDailyLoader">Claim</span>
+                    <span *ngIf="claimDailyLoader">
+                        Loading...
+                    </span>
+                </div>
             </div>
         </div>
     </div>

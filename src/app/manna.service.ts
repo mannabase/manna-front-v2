@@ -47,4 +47,18 @@ export class MannaService {
             })
         );
     }
+    sendCheckIn(walletAddress: string, signature: string, timestamp: number): Observable<any> {
+        const payload = { timestamp, signature, user: walletAddress };
+        return this.http.post<any>(`${serverUrl}/signing/checkin`, payload).pipe(
+            tap(response => {
+                console.log('Check-in data sent to server:', response); 
+                this.alertService.open('Check-in successful.', { status: 'success', label: 'Success' }).subscribe();
+            }),
+            catchError(error => {
+                console.error('Error sending check-in data to server:', error);
+                this.alertService.open('Failed to send check-in data.', { status: 'error', label: 'Error' }).subscribe();
+                return throwError(error);
+            })
+        );
+    }
 }

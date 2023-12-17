@@ -75,34 +75,34 @@ export class ContractService {
   submitScore(score: number, userAddress: string): Observable<void> {
     return from(this.claimMannaContract['submitScore'](score, userAddress).then(submitScoreTx => submitScoreTx.wait()));
   }
-  submitUserScore(walletAddress: string, scoreData: any): Observable<void> {
+  submitUserScore(address: string, scoreData: any): Observable<void> {
     if (!scoreData.signature) {
-        console.error('No signature in score data');
-        return throwError('No signature in score data');
+      console.error('No signature in score data');
+      return throwError('No signature in score data');
     }
     console.log('Data sent for score submission:', {
-        score: scoreData.score, 
-        walletAddress, 
-        v: parseInt(scoreData.signature.v, 10), // Convert v to number
-        r: scoreData.signature.r, 
-        s: scoreData.signature.s
+      score: scoreData.score, 
+      address, 
+      v: scoreData.signature.v, // Keep 'v' as it is, assuming it's already a string or number
+      r: scoreData.signature.r.startsWith('0x') ? scoreData.signature.r : '0x' + scoreData.signature.r, 
+      s: scoreData.signature.s.startsWith('0x') ? scoreData.signature.s : '0x' + scoreData.signature.s
     });
 
     return from(this.claimMannaContract['submitScore'](
-        scoreData.score, 
-        walletAddress, 
-        parseInt(scoreData.signature.v, 10), // Convert v to number
-        scoreData.signature.r, 
-        scoreData.signature.s
+      scoreData.score, 
+      address,  
+      scoreData.signature.v, // Keep 'v' as it is
+      scoreData.signature.r.startsWith('0x') ? scoreData.signature.r : '0x' + scoreData.signature.r, 
+      scoreData.signature.s.startsWith('0x') ? scoreData.signature.s : '0x' + scoreData.signature.s
     ).then(tx => tx.wait())).pipe(
-        tap(() => this.alertService.open('Score submitted successfully.', { status: 'success', label: 'Success' }).subscribe()),
-        catchError(error => {
-            console.error('Error submitting score to contract:', error);
-            this.alertService.open('Failed to submit score.', { status: 'error', label: 'Error' }).subscribe();
-            return throwError(error);
-        })
+      tap(() => this.alertService.open('Score submitted successfully.', { status: 'success', label: 'Success' }).subscribe()),
+      catchError(error => {
+        console.error('Error submitting score to contract:', error);
+        this.alertService.open('Failed to submit score.', { status: 'error', label: 'Error' }).subscribe();
+        return throwError(error);
+      })
     );
-}
+  }
 
 
 }

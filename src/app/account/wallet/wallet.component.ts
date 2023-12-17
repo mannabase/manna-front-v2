@@ -10,6 +10,7 @@ import {DailyRewardDialogComponent} from './daily-reward-dialog/daily-reward-dia
 import {mannaChainName ,mannaContractAddress} from "../../config"
 import { ContractService } from '../../contract.service';
 import { Subscription } from 'rxjs';
+import { MannaService } from '../../manna.service';
 
 interface Transaction {
     type: 'withdraw' | 'receive';
@@ -41,6 +42,7 @@ export class WalletComponent implements OnInit {
     private accountSubscription: Subscription | undefined;
     sortColumn: keyof Transaction | null = null
     sortDirection: number = 1
+    claimDailyLoader:boolean =false
     
     transactions: Transaction[] = [
         {
@@ -86,6 +88,7 @@ export class WalletComponent implements OnInit {
         @Inject(TuiMobileDialogService)
         private readonly dialogs: TuiMobileDialogService,
         private readonly contractService: ContractService,
+        private mannaService: MannaService,
     ) {
     }
 
@@ -141,9 +144,37 @@ export class WalletComponent implements OnInit {
         }
     }
       
+    claimDailyReward(): void {
+        this.claimDailyLoader=true;
 
-    Claim(result: string): void {
-        this.alerts.open(result).subscribe()
+        if (!this.walletAddress) {
+            this.alertService.open("Please connect to a wallet first.", { status: 'warning' }).subscribe();
+            this.claimDailyLoader=false;
+            return;
+        }
+        const timestamp = Math.floor(Date.now() / 1000);
+        const message = `Check-in\naddress: ${this.walletAddress}\ntimestamp: ${timestamp}`;
+        this.metamaskBrightIdService.signMessage(message).subscribe(
+            signature => {
+                this.mannaService.sendCheckIn(this.walletAddress as string, signature, timestamp).subscribe(
+                    serverResponse => {
+                        console.log('Claim sent to server:', serverResponse);
+                        this.alertService.open("Claim in mannabase is successful!", { status: 'success' }).subscribe();
+                        this.claimDailyLoader=false;
+                    },
+                    error => {
+                        console.error('Error sending Claim to server:', error);
+                        this.alertService.open("Failed to Claim. Please try again.", { status: 'error' }).subscribe();
+                        this.claimDailyLoader=false;
+                    }
+                );
+            },
+            error => {
+                console.error('Error signing Claim message:', error);
+                this.alertService.open("Failed to sign the Claim message. Please try again.", { status: 'error' }).subscribe();
+                this.claimDailyLoader=false;
+            }
+        );
     }
 
     openMetamaskExtension() {
