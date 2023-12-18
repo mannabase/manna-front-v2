@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   handleResize() {
-    this.showBurgerMenu = window.innerWidth <= 768;
+    this.showBurgerMenu = window.innerWidth <= 1024;
   }
 
   toggleSideBar(b: boolean) {
