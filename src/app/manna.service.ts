@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {throwError, Observable, of} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
 import { TuiAlertService } from '@taiga-ui/core';
 import {serverUrl} from "./config";
@@ -61,4 +61,22 @@ export class MannaService {
             })
         );
     }
+sendClaimWithSig(walletAddress: string, signature: string, timestamp: number): Observable<any> {
+    const params = new HttpParams()
+      .set('user', walletAddress)
+      .set('signature', signature)
+      .set('timestamp', timestamp.toString());
+
+    return this.http.get<any>(`${serverUrl}/signing/checkin`, { params }).pipe(
+      tap(response => {
+        console.log('Check-in signatures received:', response);
+        this.alertService.open('Signatures fetched successfully.', { status: 'success', label: 'Success' }).subscribe();
+      }),
+      catchError(error => {
+        console.error('Error fetching check-in signatures:', error);
+        this.alertService.open('Failed to fetch signatures.', { status: 'error', label: 'Error' }).subscribe();
+        return throwError(error);
+      })
+    );
+  }
 }

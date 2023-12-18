@@ -83,4 +83,14 @@ export class ContractService {
       })
     );
   }
+  claimWithSigsContract(data: any): Observable<void> {
+    return from(this.claimMannaContract!['claimWithSigs'](data).then(tx => tx.wait())).pipe(
+        tap(() => this.alertService.open('Claim processed successfully.', { status: 'success', label: 'Success' }).subscribe()),
+        catchError(error => {
+            console.error('Error processing claim on contract:', error);
+            this.alertService.open('Failed to process claim on contract.', { status: 'error', label: 'Error' }).subscribe();
+            return throwError(error);
+        })
+    );
+}
 }

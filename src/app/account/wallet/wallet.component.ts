@@ -176,6 +176,45 @@ export class WalletComponent implements OnInit {
             }
         );
     }
+    claimWithSigs(): void {
+        this.claimDailyLoader = true;
+    
+        if (!this.walletAddress) {
+            this.alertService.open("Please connect to a wallet first.", { status: 'warning' }).subscribe();
+            this.claimDailyLoader = false;
+            return;
+        }
+    
+        const timestamp = Math.floor(Date.now() / 1000);
+        const message = `Request for check-in signatures\naddress: ${this.walletAddress}\ntimestamp: ${timestamp}`;
+    
+        this.metamaskBrightIdService.signMessage(message).subscribe(
+            signature => {
+                this.mannaService.sendClaimWithSig(this.walletAddress as string, signature, timestamp).subscribe(
+                    serverResponse => {
+                        this.contractService.claimWithSigsContract(serverResponse.data).subscribe(
+                            () => {
+                                console.log('Claim successful on smart contract');
+                                this.alertService.open('Claim successful.', { status: 'success' }).subscribe();
+                            },
+                            contractError => {
+                                console.error('Error claiming on smart contract:', contractError);
+                                this.alertService.open('Failed to claim on smart contract.', { status: 'error' }).subscribe();
+                            }
+                        );
+                    },
+                    serverError => {
+                        console.error('Error sending claim request to server:', serverError);
+                        this.alertService.open('Failed to send claim request.', { status: 'error' }).subscribe();
+                    }
+                );
+            },
+            signError => {
+                console.error('Error signing message:', signError);
+                this.alertService.open('Failed to sign the claim message.', { status: 'error' }).subscribe();
+            }
+        ).add(() => this.claimDailyLoader = false); // Always turn off loader after process
+    }
 
     openMetamaskExtension() {
         if (typeof window.ethereum === 'undefined') {
