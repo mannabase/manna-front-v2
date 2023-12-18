@@ -1,4 +1,5 @@
 @import "../../../variables";
+
 .wallet-container {
     display: flex;
     flex-direction: column;
@@ -205,6 +206,12 @@
                         }
                     }
                 }
+                // &--witdraw{
+
+                // }
+                &--spacer{
+                    flex-grow: 1;
+                }
             }
         }
         &--daily {
@@ -275,6 +282,7 @@
             &--withdraw {
                 display: flex;
                 justify-content: center;
+                align-items: center;
                 width: 70px;
                 border: 1px white solid;
                 border-radius: 6px;
@@ -282,7 +290,8 @@
                 padding: 10px;
                 font-size: 13px;
                 font-weight: 600;
-                cursor: alias;
+                cursor: pointer;
+                background: none;
             }
             &--daily {
                 display: flex;

@@ -168,30 +168,64 @@
     .black-background {
         background: rgb(0, 0, 0);
     }
-    .account-button {
-        display: none;
-    }
+    
     .my-header {
         // justify-content: start;
     }
     .mannabase {
         margin-left: 50%;
+    }
+    .menu-bar{
+        display: none;
+    }
+    .account-button {
+        display: none;
+    }
+    .logo{
+        &--hambergur{
+            display: block;
+        }
+        &--logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            cursor: pointer;
+            &--image {
+                width: 22px;
+                height: 32px;
+            }
+            &--text {
+                font-size: 19px;
+                font-weight: 600;
+                letter-spacing: 1px;
+            }
+        }  
     }
 }
 @media #{$mobile} {
     .black-background {
         background: rgb(0, 0, 0);
     }
-    .account-button {
-        display: none;
-    }
+    
     .my-header {
         // justify-content: start;
     }
     .mannabase {
         margin-left: 50%;
     }
+    .menu-bar{
+        display: none;
+    }
+    .account-button {
+        display: none;
+    }
     .logo{
+        &--hambergur{
+            display: block;
+        }
         &--logo {
             position: absolute;
             left: 50%;

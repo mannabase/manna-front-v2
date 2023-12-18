@@ -1,7 +1,7 @@
 <div class="container"
      [ngClass]="{ 'account': isAccountPage, 'scrolled': isScrolled }" >
   <div class="logo">
-    <button class="logo--hambergur" tuiIconButton *ngIf="showBurgerMenu" icon="tuiIconMenu" appearance="flat" size="s"
+    <button class="logo--hambergur" tuiIconButton *ngIf="showBurgerMenu" icon="tuiIconMenu" appearance="flat" size="l"
             (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">
       <div *tuiSidebar="displaySideBar; direction: 'left'" class="h-full">
         <div class="side-bar flex flex-column w-full h-full">

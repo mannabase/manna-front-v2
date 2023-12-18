@@ -50,14 +50,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.accountSubscription = this.metamaskService.account$.subscribe(address => {
       this.walletAddress = address;
     });
+    this.handleResize();
+    window.addEventListener('resize', this.handleResize.bind(this));
   }
 
   ngOnDestroy() {
     this.accountSubscription?.unsubscribe();
+    window.removeEventListener('resize', this.handleResize.bind(this));
   }
 
-  handleResize(event: ResizeObserverEntry) {
-    this.showBurgerMenu = event.borderBoxSize[0].inlineSize <= 1024
+  handleResize() {
+    this.showBurgerMenu = window.innerWidth <= 768;
   }
 
   toggleSideBar(b: boolean) {
