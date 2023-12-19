@@ -51,12 +51,10 @@ export class MannaService {
         const payload = { timestamp, signature, user: walletAddress };
         return this.http.post<any>(`${serverUrl}/signing/checkin`, payload).pipe(
             tap(response => {
-                console.log('Check-in data sent to server:', response); 
-                this.alertService.open('Check-in successful.', { status: 'success', label: 'Success' }).subscribe();
+                this.alertService.open("Claim in mannabase is successful!", { status: 'success' }).subscribe();
             }),
             catchError(error => {
-                console.error('Error sending check-in data to server:', error);
-                this.alertService.open('Failed to send check-in data.', { status: 'error', label: 'Error' }).subscribe();
+                this.alertService.open("Failed to Claim. Please try again.", { status: 'error' }).subscribe();
                 return throwError(error);
             })
         );
@@ -79,4 +77,20 @@ sendClaimWithSig(walletAddress: string, signature: string, timestamp: number): O
       })
     );
   }
+  getMannabaseBalance(walletAddress: string): Observable<any> {
+    return this.http.get<any>(`${serverUrl}/manna/balance/${walletAddress}`).pipe(
+        tap(response => {
+            if (response.status === 'ok') {
+                this.alertService.open(`Balance: ${response.balance}`, { status: 'success', label: 'mannabase' }).subscribe();
+            } else {
+                this.alertService.open(`Error: ${response.msg}`, { status: 'warning', label: 'Warning' }).subscribe();
+            }
+        }),
+        catchError(error => {
+            console.error('Error show Mannabase balance:', error);
+            this.alertService.open('Failed to show Mannabase balance.', { status: 'error', label: 'Error' }).subscribe();
+            return throwError(error);
+        })
+    );
+}
 }

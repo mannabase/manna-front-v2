@@ -43,6 +43,8 @@ export class WalletComponent implements OnInit {
     sortColumn: keyof Transaction | null = null
     sortDirection: number = 1
     claimDailyLoader:boolean =false
+    mannabaseBalance: number | null = null;
+    mannabaseBalanceMessage:string | null = null;
     
     transactions: Transaction[] = [
         {
@@ -96,6 +98,7 @@ export class WalletComponent implements OnInit {
         this.updateState();
         this.subscribeToAccount();
         this.fetchContractBalance();
+        this.fetchMannabaseBalance();
       }
     ngOnDestroy() {
         if (this.accountSubscription) {
@@ -136,6 +139,21 @@ export class WalletComponent implements OnInit {
             );
         }
     }
+    private fetchMannabaseBalance() {
+        if (this.walletAddress) {
+            this.mannaService.getMannabaseBalance(this.walletAddress).subscribe(
+                response => {
+                    if (response.status === 'ok') {
+                        this.mannabaseBalance = response.balance;
+                    } else {
+                        this.mannabaseBalanceMessage = response.msg;
+                    }
+                    this.cdRef.detectChanges();
+                },
+                error => console.error('Error fetching Mannabase balance:', error)
+            );
+        }
+    }
     private refreshUserScore() {
         if (this.walletAddress) {
             
@@ -145,36 +163,33 @@ export class WalletComponent implements OnInit {
     }
       
     claimDailyReward(): void {
-        this.claimDailyLoader=true;
+        this.claimDailyLoader = true;
+        this.mannabaseBalance = null;
 
         if (!this.walletAddress) {
             this.alertService.open("Please connect to a wallet first.", { status: 'warning' }).subscribe();
-            this.claimDailyLoader=false;
+            this.claimDailyLoader = false;
             return;
         }
+
         const timestamp = Math.floor(Date.now() / 1000);
         const message = `Check-in\naddress: ${this.walletAddress}\ntimestamp: ${timestamp}`;
+
         this.metamaskBrightIdService.signMessage(message).subscribe(
             signature => {
                 this.mannaService.sendCheckIn(this.walletAddress as string, signature, timestamp).subscribe(
                     serverResponse => {
-                        console.log('Claim sent to server:', serverResponse);
-                        this.alertService.open("Claim in mannabase is successful!", { status: 'success' }).subscribe();
-                        this.claimDailyLoader=false;
+                        this.fetchMannabaseBalance();
                     },
                     error => {
-                        console.error('Error sending Claim to server:', error);
                         this.alertService.open("Failed to Claim. Please try again.", { status: 'error' }).subscribe();
-                        this.claimDailyLoader=false;
                     }
                 );
             },
             error => {
-                console.error('Error signing Claim message:', error);
                 this.alertService.open("Failed to sign the Claim message. Please try again.", { status: 'error' }).subscribe();
-                this.claimDailyLoader=false;
             }
-        );
+        ).add(() => this.claimDailyLoader = false);
     }
     claimWithSigs(): void {
         this.claimDailyLoader = true;
