@@ -284,23 +284,11 @@
     background-color: #121212;
 }
 @media #{$tablet} {
-    .container {
-        flex-direction: column;
+    .banner{
+        &--text{
+            font-size: 15px;
+        }
     }
-
-    .tabs {
-        width: 100%;
-    }
-
-    .content {
-        padding-top: 20px;
-    }
-    .page {
-        min-width: 300px;
-        padding: 10px;
-    }
-}
-@media #{$mobile} {
     .header-mobile{
         display: flex;
     }
@@ -330,6 +318,42 @@
     .page {
         min-width: 300px;
         padding: 10px;
-        margin-top: 50px;
+    }
+}
+@media #{$mobile} {
+    .banner{
+        &--text{
+            font-size: 15px;
+        }
+    }
+    .header-mobile{
+        display: flex;
+    }
+    .hambergur {
+        display: flex;
+    }
+    .container {
+        flex-direction: column;
+    }
+    .sideBar {
+        display: none;
+    }
+
+    .tabs {
+        min-width: 0px;
+        width: 100%;
+    }
+    .tab-width {
+        width: 100px;
+    }
+    .content {
+        padding-top: 20px;
+    }
+    .tabPage {
+        height:100vh;
+    }
+    .page {
+        min-width: 300px;
+        padding:  10px;
     }
 }

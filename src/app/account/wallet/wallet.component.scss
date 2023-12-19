@@ -120,6 +120,7 @@
     padding: 30px;
     height: calc(100vh - 0px);
     width: 100%;
+    margin-top: 100px;
     overflow-y: hidden;
     &--welcome {
         display: flex;
@@ -209,9 +210,6 @@
                 // &--witdraw{
 
                 // }
-                &--spacer{
-                    flex-grow: 1;
-                }
             }
         }
         &--daily {
@@ -393,6 +391,9 @@
             }
         }
     }
+}
+.spacer{
+    flex-grow: 1;
 }
 
 @media #{$tablet} {

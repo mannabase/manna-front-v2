@@ -18,12 +18,9 @@
         class="account--humanity--header--fingerprint-mobile">
       </div>
       <div class="account--humanity--passport">
-        <!-- <div *ngIf="loader" class="loader-overlay">
-          <div class="loader"></div>
-      </div> -->
-      <div class="account--humanity--passport--container" *ngIf="showScore">
-        <div class="account--humanity--passport--score">
-          <div class="flex mb-1 gap-1">
+        <div class="account--humanity--passport--score" *ngIf="showScore">
+          <div class="account--humanity--passport--container">
+            <div class="flex mb-1 gap-1">
             <div class="account--humanity--passport--score--text">
               Your Score:
             </div>
@@ -32,58 +29,98 @@
                 {{ (userScore.score / 1000000) | number : '1.0-6' }}
             </div>
             <img *ngIf="isScoreGreaterThan25" class="account--humanity--passport--score--icon" src="../../../assets/images/account-account-green-Check.svg">
-          </div>
-          <div class="flex gap-1">
-            <div class="account--humanity--passport--thresold--text">
+            </div>
+            <div class="flex gap-1">
+              <div class="account--humanity--passport--thresold--text">
               Score Threshold:
-            </div>
-            <div class="account--humanity--passport--thresold--num">
+              </div>
+              <div class="account--humanity--passport--thresold--num">
               {{ scoreThreshold || 'loading...' }}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="account--humanity--passport--update" (click)="updateUserScore()">
+          <div class="account--humanity--passport--update" (click)="updateUserScore()">
           <ng-container *ngIf="loader; else updateScoreText">
               <span>Loading...</span>
           </ng-container>
           <ng-template #updateScoreText>
               Update Score
           </ng-template>
+          </div>
         </div>
-      </div>
-      <div class="account--humanity--passport--connect-buttun" 
+        <div class="account--humanity--passport--connect-buttun" 
         (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED && !showScore">
           Connect
-      </div>
-      <div class="account--humanity--passport--connect-buttun" 
+        </div>
+        <div class="account--humanity--passport--connect-buttun" 
         (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN && !showScore">
           Arbitrum
-      </div>
-      <div class="account--humanity--passport--connect-buttun" 
+        </div>
+        <div class="account--humanity--passport--connect-buttun" 
         *ngIf="state == MetamaskState.READY && !showScore">
           Check Score
-      </div>
-      
-        <div class="account--humanity--passport--passport">
+        </div>
+        <div class="account--humanity--passport--passport" (click)="openLinkInNewTab()">
           <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport--gitcoin">
           <p class="m-0">Passport</p>
         </div>
       </div>
       <div class="account--humanity--passport-mobile">
-        <div class="account--humanity--passport-mobile--passport">
+        <div class="account--humanity--passport-mobile--passport" (click)="openLinkInNewTab()">
           <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport--gitcoin">
           <p class="account--humanity--passport-mobile--passport--text">Passport</p>
         </div>
-        <div class="account--humanity--passport-mobile--connect-buttun">
+        <div class="spacer">
+        </div>
+        <div class="account--humanity--passport--update" (click)="updateUserScore()" *ngIf="showScore">
+          <ng-container *ngIf="loader; else updateScoreText">
+            <span>Loading...</span>
+          </ng-container>
+          <ng-template #updateScoreText>
+            <tui-svg src="tuiIconRotateCw"></tui-svg>
+          </ng-template>
+        </div>
+        <div class="account--humanity--passport-mobile--score" *ngIf="showScore">
+          <div class="account--humanity--passport-mobile--container">
+            <div class="flex mb-1 gap-1">
+              <div class="account--humanity--passport-mobile--score--text">
+              Your Score:
+              </div>
+              <div *ngIf="userScore" class="account--humanity--passport-mobile--score--num" 
+                [ngStyle]="{'color': isScoreGreaterThan25 ? 'green' : 'white'}">
+                {{ (userScore.score / 1000000) | number : '1.0-6' }}
+              </div>
+              <img *ngIf="isScoreGreaterThan25" class="account--humanity--passport-mobile--score--icon" src="../../../assets/images/account-account-green-Check.svg">
+            </div>
+            <div class="account--humanity--passport-mobile--thresold">
+              <div class="account--humanity--passport-mobile--thresold--text">
+                Score Threshold:
+              </div>
+              <div class="account--humanity--passport-mobile--thresold--num">
+                {{ scoreThreshold || 'loading...' }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="account--humanity--passport-mobile--connect-buttun"
+          (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED && !showScore">
           Connect
+        </div>
+        <div class="account--humanity--passport-mobile--connect-buttun" 
+        (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN && !showScore">
+          Arbitrum
+        </div>
+        <div class="account--humanity--passport-mobile--connect-buttun" 
+        *ngIf="state == MetamaskState.READY && !showScore">
+          Check Score
         </div>
       </div>
   </div>
-  <div class="account--email">
+  <!-- <div class="account--email">
     <div class="account--email--title">Email Newsletter</div> 
     <div class="account--email--box">
       <input type="email" class="account--email--box--input" placeholder="Enter your email" />
       <button class="account--email--box--update">Update</button>
     </div>
-  </div>
+  </div> -->
 </div>

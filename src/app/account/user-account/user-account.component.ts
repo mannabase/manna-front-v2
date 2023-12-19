@@ -181,4 +181,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
             }
         );
     }
+    openLinkInNewTab() {
+        window.open('https://passport.gitcoin.co', '_blank');
+    }
 }
