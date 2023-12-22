@@ -273,11 +273,26 @@
                 }
             }
         }
+        &--withdraw {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 70px;
+            border: 1px white solid;
+            border-radius: 6px;
+            color: white;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: none;
+        }
         &--buttons {
             display: none;
             justify-content: end;
             gap: 10px;
-            &--withdraw {
+            
+            &--withdraw-mobile{
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -399,6 +414,135 @@
 @media #{$tablet} {
     .intro {
         min-width: 0px;
+        &--logo {
+            width: 20%;
+            height: 20%;
+        }
+        &--mannabase {
+            font-size: 40px;
+            font-weight: 100;
+        }
+        &--title {
+            gap: 5px;
+            &--trade {
+                font-family: "Nexa Light" !important;
+                font-size: 20px;
+                font-weight: 700;
+            }
+            &--create {
+                font-family: "Nexa Light" !important;
+                font-size: 20px;
+                font-weight: 700;
+            }
+            &--market {
+                font-family: "Nexa Light" !important;
+                font-size: 20px;
+                font-weight: 700;
+            }
+        }
+        &--buttun {
+            gap: 10px;
+            padding: 15px 20px;
+            &--icon {
+                font-size: 12px;
+                font-weight: 800;
+            }
+            &--text {
+                font-size: 12px;
+                font-weight: 800;
+            }
+        }
+    }
+    .wallets {
+        &--welcome {
+            display: none;
+        }
+        &--options {
+            width: 70%;
+            margin-bottom: 0px;
+            &--connect {
+                font-size: 20px;
+            }
+            font-size: 20px;
+            &--buttuns {
+                width: 100%;
+                &--icon {
+                    width: 25px;
+                }
+                &--text {
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+    .panel {
+        padding: 10px;
+        &--welcome {
+            display: none;
+        }
+        &--dashboard {
+            &--balance {
+                padding: 10px;
+                width: 100%;
+                &--amount {
+                    &--text {
+                        font-size: 16px;
+                        font-weight: 600;
+                        margin-bottom: 5px;
+                    }
+                    &--number {
+                        &--logo {
+                            width: 25px;
+                            height: 25px;
+                        }
+                        &--count {
+                            font-size: 30px;
+                            font-weight: 900;
+                        }
+                    }
+                }
+                &--details {
+                    &--info {
+                        min-width: 150px;
+                        &--img {
+                            height: 20px;
+                        }
+                        &--text {
+                            font-size: 10px;
+
+                            &--img {
+                                margin-right: 5px;
+                                height: 13px;
+                            }
+                            &--num {
+                                font-size: 15px;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+                }
+                &--buttons{
+                    &--withdraw{
+                        display: none;
+                    }
+                    &--withdraw-mobile{
+                        display: flex;
+                    }
+                }
+            }
+            &--daily {
+                display: none;
+            }
+            &--withdraw{
+                display: none;
+            }
+            &--buttons {
+                display: flex;
+            }
+        }
+        &--transactions{
+            display: none;
+        }
     }
 }
 @media #{$mobile} {
@@ -511,8 +655,12 @@
                         }
                     }
                 }
+                
             }
             &--daily {
+                display: none;
+            }
+            &--withdraw{
                 display: none;
             }
             &--buttons {

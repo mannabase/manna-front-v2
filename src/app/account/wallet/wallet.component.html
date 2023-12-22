@@ -73,7 +73,7 @@
                 <div class="panel--dashboard--balance--amount--number" >
                     <img class="panel--dashboard--balance--amount--number--logo" src="../../../assets/images/accont-wallet-panel-manna-logo.svg" alt="logo">
                     <div class="panel--dashboard--balance--amount--number--count">
-                        {{ balance || 'Loading...' }}
+                            {{ balance !== null ? (balance | number:'1.0-2') : 'Loading...' }}                   
                     </div>
                     <p class="panel--dashboard--balance--amount--number--manna">
                         manna
@@ -87,7 +87,7 @@
                         In your wallet
                         <div class="flex align-items-center">
                             <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" 
-                            alt=""
+                            alt="wallet"
                             class="panel--dashboard--balance--details--info--text--img">
                             <div class="panel--dashboard--balance--details--info--text--num">1025.00</div> 
                         </div>
@@ -101,18 +101,20 @@
                             <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" 
                             alt=""
                             class="panel--dashboard--balance--details--info--text--img">
-                            <div class="panel--dashboard--balance--details--info--text--num">{{ mannabaseBalance !== null ? mannabaseBalance : 'Loading...' }}</div> 
+                            <div class="panel--dashboard--balance--details--info--text--num"> 
+                                {{ mannabaseBalance !== null ? mannabaseBalance : 'Loading...' }}
+                            </div> 
                         </div>
                     </div>
                 </div>
                 <div class="spacer">
                 </div>
-                <button (click)="claimWithSigs()" class="panel--dashboard--buttons--withdraw">
+                <button (click)="claimWithSigs()" class="panel--dashboard--withdraw">
                         Withdraw
                 </button>
             </div>
             <div class="panel--dashboard--buttons">
-                <div class="panel--dashboard--buttons--withdraw">
+                <div class="panel--dashboard--buttons--withdraw-mobile">
                     Withdraw
                 </div>
                 <div class="panel--dashboard--buttons--daily" (click)="show()">

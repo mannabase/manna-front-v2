@@ -41,7 +41,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       if (address) {
         this.verifyService.verificationState$.subscribe(state => {
           this.isVerified = state === VerifyState.VERIFIED;
-          this.showBanner = !this.isVerified; // Show banner if not verified
+          this.showBanner = !this.isVerified; 
         });
       }
     });

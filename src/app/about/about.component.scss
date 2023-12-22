@@ -1,5 +1,6 @@
 @import "../../variables";
 @import '../../assets/generalStyles/mixins.scss'; 
+@import "../../../node_modules/@taiga-ui/core/styles/taiga-ui-local.scss";
 
 .about{
     display: flex;
@@ -11,6 +12,7 @@
         align-items: center;
         justify-content: space-evenly;
         width: 80%;
+        margin: 100px 0px;
         &--text{
             display: flex;
             flex-direction: column;
@@ -34,6 +36,54 @@
     }
     &--Accordion{
         width: 600px;
+        gap: 20px;
     }
-}
-    
+} 
+
+.accordion {
+    width: 50%;
+    .accordion-item-wrapper {
+      border: 2px solid #b04c61;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      background: linear-gradient(98deg, rgba(0,0,0,1) 27%, rgba(176,76,97,1) 100%);
+      .accordion-item {
+        .accordion-title {
+          cursor: pointer;
+          padding: 10px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-top-left-radius: 6px;
+          border-top-right-radius: 6px;
+          margin: 10px;
+        }
+        .accordion-content {
+          padding: 20px;
+        }
+        .accordion-icon{
+            font-size: 20px;
+        }
+      }
+    }
+  }
+  .socials-header{
+    margin-top: 100px;
+  }
+  .socials{
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    justify-content: space-evenly;
+    margin-top: 40px;
+    margin-bottom: 100px;
+    &--item{
+        @include gradient-border;
+        &--icon{
+            @include gradient-border-inner;
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+
+  }

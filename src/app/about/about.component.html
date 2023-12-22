@@ -1,86 +1,64 @@
 <div class="about">
-    <div class="about--intro">
-        <div class="about--intro--text">
-            <h2>
-                ABOUT
-            </h2>
-            <span class="about--intro--text--description">
-                Manna is a digital currency distributed 1-per-day to every person.
-                The distribution model is based on the principles of universal basic income.
-            </span>
-            <span class="about--intro--text--description">
-                The value is equal to each human living one day.
-                The purpose of Manna is create the most accesible, widely distributed currency on earth.
-            </span>
-            <span class="about--intro--text--description">
-                Unlike currencies like USD, EURO, Bitcoin, and Gold, new value creation is distributed directly to the user base.
-                This stems from the understanding that users in an economy generate the value of its currency through their s hared belief and use.
-            </span>
-            <button class="about--intro--text--learn">
-                <a class="about--intro--text--learn--inner" tuiLink>
-                        Learn More
-                </a>
-            </button>
+  <div class="about--intro">
+      <div class="about--intro--text">
+          <h2>
+              ABOUT
+          </h2>
+          <span class="about--intro--text--description">
+              Manna is a digital currency distributed 1-per-day to every person.
+              The distribution model is based on the principles of universal basic income.
+          </span>
+          <span class="about--intro--text--description">
+              The value is equal to each human living one day.
+              The purpose of Manna is create the most accesible, widely distributed currency on earth.
+          </span>
+          <span class="about--intro--text--description">
+              Unlike currencies like USD, EURO, Bitcoin, and Gold, new value creation is distributed directly to the user base.
+              This stems from the understanding that users in an economy generate the value of its currency through their s hared belief and use.
+          </span>
+          <button class="about--intro--text--learn">
+              <a class="about--intro--text--learn--inner" tuiLink>
+                      Learn More
+              </a>
+          </button>
+      </div>
+      <img src="../../assets/images/about-mannaLogo.webp" 
+          alt="Manna-logo" class="about--intro--logo">
+  </div>
+  <h2>
+      FAQ
+  </h2>
+    <div class="accordion">
+      <div class="accordion-item-wrapper" *ngFor="let item of items">
+        <div class="accordion-item">
+          <h4 class="accordion-title" (click)="toggleAccordion(item)">
+            {{ item.title }}
+            <span class="accordion-icon">{{ isExpanded(item) ? '-' : '+' }}</span>
+          </h4>
+          <p class="accordion-content" *ngIf="isExpanded(item)">
+            {{ item.content }}
+          </p>
         </div>
-        <img src="../../assets/images/account-manna-logo.svg" 
-            alt="Manna-logo" class="about--intro--logo">
+      </div>
     </div>
-    <h2>
-        FAQ
-    </h2>
-    <tui-accordion class="about--Accordion">
-        <tui-accordion-item>
-            How do I get verified to start claiming manna?
-          <ng-template tuiAccordionItemContent>
-            In order to claim daily manna, all users must be verified. Currently, Manna requires a Gitcoin Passport. 
-            The minimum number required can change to prevent users from receiving manna from multiple accounts.
-          </ng-template>
-        </tui-accordion-item>
-        <tui-accordion-item>
-          How Do I Sell Manna?
-          <ng-template tuiAccordionItemContent>
-            <div #content>The sale of manna is up to the Manna DAO, community and exchanges to list and generate liquidity. 
-              As exchanges either centralized or in DEFI list Manna, this information will be announced and shared to the community</div>
-          </ng-template>
-        </tui-accordion-item>
-        <tui-accordion-item>
-          Where can I use Manna? 
-          <ng-template tuiAccordionItemContent>
-            The purpose of Mannabase is to provide the fundamental distribution of Manna. 
-            From there, it is up to the community to discover how to utilize it.
-          </ng-template>
-        </tui-accordion-item>
-        <tui-accordion-item>
-          What is the Total Supply and Distribution?
-            <ng-template tuiAccordionItemContent>
-              The manna supply can be tracked here. Manna DAO holdings can be seen here. 
-              The remainder is held by the community. Manna did not receive VC funding or hold an ICO. 
-              The only way new Manna is created is through unique humans claiming it daily.
-            </ng-template>
-          </tui-accordion-item>
-          <tui-accordion-item>
-            How is Manna Governed?
-            <ng-template tuiAccordionItemContent>
-              Manna is governed by the Manna DAO. 
-              The objective of the Manna DAO is to manage a treasury of Manna funded through ongoing contributions by the community. 
-              It also exists for the community to make important decisions on upgrades or developments for Manna. 
-            </ng-template>
-          </tui-accordion-item>
-          <tui-accordion-item>
-            Why is Manna built on Optimism?
-            <ng-template tuiAccordionItemContent>
-              Optimism is a highly trusted Ethereum layer 2 protocol that provides access to the Ethereum ecosystem while also offering extremely low gas fees. 
-              This enables users to access the broader crypto ecosystem while also enabling cheap and affordable transactions.
-            </ng-template>
-          </tui-accordion-item>
-          <tui-accordion-item>
-            Why Use Gitcoin Passport?
-            <ng-template tuiAccordionItemContent>
-              In order to ensure each user can only claim manna once per day, it is critical we prevent users from making many accounts. 
-              This can be challenging in a decentralized and global ecosystem. 
-              Gitcoin Passport is working to solve this and is a leader in the field of unique identity solutions on chain. 
-            </ng-template>
-          </tui-accordion-item>
-      </tui-accordion>
-      
+    <h3 class="socials-header">
+      SOCIALS:
+    </h3>
+    <div class="socials">
+      <div class="socials--item">
+        <a href="#" class="socials--item--icon">
+          <tui-svg src="/src/assets/icons/twitter.svg"></tui-svg>
+        </a>
+      </div>
+      <div class="socials--item">
+        <a href="#" class="socials--item--icon">
+          <tui-svg src="/src/assets/icons/twitter.svg"></tui-svg>
+        </a>
+      </div>
+      <div class="socials--item">
+        <a href="#" class="socials--item--icon">
+          <tui-svg src="/src/assets/icons/twitter.svg"></tui-svg>
+        </a>
+      </div>
+    </div>
 </div>

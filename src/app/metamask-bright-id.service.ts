@@ -26,16 +26,16 @@ export enum MetamaskState {
 })
 export class MetamaskBrightIdService {
   network$ = new BehaviorSubject<ethers.Network | null>(null);
-  account$ = new BehaviorSubject<string>('');
   balance$ = new BehaviorSubject<bigint | null>(null);
   qrcodeValue: string = '';
   public brightIdVerifiedData: any = null;
   private chainSwitched = false;
+  account$: BehaviorSubject<string> = new BehaviorSubject<string>(localStorage.getItem('walletAddress') || '');
 
   constructor(
     private readonly alertService: TuiAlertService,
     private readonly dialogService: TuiDialogService,
-    private readonly injector: Injector
+    private readonly injector: Injector,
   ) {
     this.initializeAccountListener();
   }
@@ -48,6 +48,26 @@ export class MetamaskBrightIdService {
                 this.account$.next('');
             }
         });
+        this.checkInitialAccount();
+    } else {
+        console.error('MetaMask is not installed');
+        // Handle MetaMask not installed scenario
+    }
+}
+
+private checkInitialAccount() {
+    if (window.ethereum) {
+        window.ethereum.request({ method: 'eth_accounts' })
+            .then((accounts: string[]) => {
+                if (accounts.length > 0) {
+                    this.account$.next(accounts[0]);
+                } else {
+                    this.account$.next('');
+                }
+            })
+            .catch((err: any) => {
+                console.error('Error fetching accounts:', err);
+            });
     }
 }
   connect(): Observable<string> {
