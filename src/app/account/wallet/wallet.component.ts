@@ -31,7 +31,7 @@ interface Transaction {
     ],
 })
 export class WalletComponent implements OnInit {
-    balance: string | null = null
+    balance: number | null = null;
     showWalletPage = false
     showPanel = false
     state = MetamaskState.NOT_CONNECTED
@@ -132,11 +132,10 @@ export class WalletComponent implements OnInit {
         if (this.walletAddress) {
             this.contractService.balanceOf(this.walletAddress).subscribe(
                 contractBalance => {
-                    this.balance = contractBalance;
+                    this.balance = parseFloat(contractBalance);
                     this.cdRef.detectChanges();
                 },
-                error => console.error('Error fetching contract balance:', error)
-            );
+            )
         }
     }
     private fetchMannabaseBalance() {
@@ -150,8 +149,7 @@ export class WalletComponent implements OnInit {
                     }
                     this.cdRef.detectChanges();
                 },
-                error => console.error('Error fetching Mannabase balance:', error)
-            );
+            )
         }
     }
     private refreshUserScore() {

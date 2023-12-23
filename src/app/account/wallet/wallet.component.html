@@ -73,7 +73,7 @@
                 <div class="panel--dashboard--balance--amount--number" >
                     <img class="panel--dashboard--balance--amount--number--logo" src="../../../assets/images/accont-wallet-panel-manna-logo.svg" alt="logo">
                     <div class="panel--dashboard--balance--amount--number--count">
-                            {{ balance !== null ? (balance | number:'1.0-2') : 'Loading...' }}                   
+                        {{ balance !== null && mannabaseBalance !== null ? ((balance + mannabaseBalance) | number:'1.0-2') : 'Loading...' }}                  
                     </div>
                     <p class="panel--dashboard--balance--amount--number--manna">
                         manna
@@ -89,7 +89,9 @@
                             <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" 
                             alt="wallet"
                             class="panel--dashboard--balance--details--info--text--img">
-                            <div class="panel--dashboard--balance--details--info--text--num">1025.00</div> 
+                            <div class="panel--dashboard--balance--details--info--text--num">
+                                {{ balance !== null ? (balance | number:'1.0-2') : 'Loading...' }} 
+                            </div> 
                         </div>
                     </div>
                 </div>

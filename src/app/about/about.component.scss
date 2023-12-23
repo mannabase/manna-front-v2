@@ -80,6 +80,9 @@
             padding: 20px;
             font-size: 30px;
             cursor: pointer;
+            &:hover{
+              color: $links-color-main;
+            }
         }
     }
 
