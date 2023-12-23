@@ -65,7 +65,7 @@ import {TuiAccordionModule} from '@taiga-ui/kit';
         TuiStepperModule,
         TuiSvgModule,
         TuiLoaderModule,
-        TuiAccordionModule
+        TuiAccordionModule,
     ],
   providers: [MetamaskBrightIdService, MannaService, VerifyService,
     {
