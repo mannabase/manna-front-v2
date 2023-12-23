@@ -77,8 +77,9 @@
         @include gradient-border;
         &--icon{
             @include gradient-border-inner;
-            width: 2rem;
-            height: 2rem;
+            padding: 20px;
+            font-size: 30px;
+            cursor: pointer;
         }
     }
 

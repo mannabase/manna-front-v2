@@ -1,15 +1,21 @@
-
-<div class="blog-detail">
-    <div class="blog-detail-header">
-        <h2>{{ selectedBlog.title }}</h2>
-        <p>{{ selectedBlog.date }}</p>
+<div class="container">
+    <!-- <a class="back-button" (click)="navigateBack()"><tui-svg src="tuiIconArrowLeft"></tui-svg> Back</a> -->
+    <div class="image-container">
+        <img class="image" [src]="selectedBlog.imageUrl" alt="Blog Image"/>
+        <div class="image-overlay">
+            <h2>{{ selectedBlog.title }}</h2>
+            <p>{{ selectedBlog.date }}</p>
+        </div>
     </div>
-    <img
-        class="blog-detail-image"
-        [src]="selectedBlog.imageUrl"
-        alt="Blog Image"
-    />
-    <div class="blog-detail-content">
+    <div class="content">
         {{ selectedBlog.content }}
+    </div>
+    <div class="navigation">
+        <div *ngIf="previousBlog" class="previous-blog" (click)="navigateToBlog(previousBlog.id)">
+            <p>Previous Post: <span class="blog-title">{{ previousBlog.title }}</span></p>
+        </div>
+        <div *ngIf="nextBlog" class="next-blog" (click)="navigateToBlog(nextBlog.id)">
+            <p>Next Post: <span class="blog-title">{{ nextBlog.title }}</span></p>
+        </div>
     </div>
 </div>

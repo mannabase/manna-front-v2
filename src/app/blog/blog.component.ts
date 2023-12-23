@@ -10,14 +10,31 @@ import { Router } from '@angular/router';
 export class BlogComponent implements OnInit {
     lastBlog: any;
     otherBlogs: any[] = [];
+    currentPage: number = 1;
+    pageSize: number = 6;
+    totalBlogs: number = 0;
+    totalPages: number = 0;
 
     constructor(private router: Router, private blogService: BlogService) {}
 
     ngOnInit() {
-        this.lastBlog = this.blogService.getAllBlogs().pop(); 
-        this.otherBlogs = this.blogService.getAllBlogs().reverse(); 
+        let blogs = [...this.blogService.getAllBlogs()];
+        if (blogs.length > 0) {
+            this.lastBlog = blogs.pop();
+        }
+        this.otherBlogs = blogs.reverse();
+        this.totalBlogs = this.blogService.getAllBlogs().length;
+        this.totalPages = Math.ceil(this.totalBlogs / this.pageSize);
+        this.loadBlogs();
+    }
+    loadBlogs() {
+        this.otherBlogs = this.blogService.getBlogsByPage(this.currentPage, this.pageSize);
     }
 
+    goToPage(page: number) {
+        this.currentPage = page;
+        this.loadBlogs();
+    }
     viewBlogDetail(id: number) {
         this.router.navigate(['/blog', id]);
     }

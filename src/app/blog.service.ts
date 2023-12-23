@@ -92,8 +92,21 @@ export class BlogService {
     getAllBlogs() {
         return this.blogs;
     }
+    getBlogsByPage(page: number, pageSize: number) {
+        const startIndex = (page - 1) * pageSize;
+        return this.blogs.slice(startIndex, startIndex + pageSize);
+    }
 
     getBlogById(id: number) {
         return this.blogs.find((blog) => blog.id === id);
+    }
+    getPreviousBlog(id: number) {
+        const index = this.blogs.findIndex((blog) => blog.id === id);
+        return index > 0 ? this.blogs[index - 1] : null;
+    }
+
+    getNextBlog(id: number) {
+        const index = this.blogs.findIndex((blog) => blog.id === id);
+        return index >= 0 && index < this.blogs.length - 1 ? this.blogs[index + 1] : null;
     }
 }
