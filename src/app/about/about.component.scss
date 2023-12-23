@@ -11,7 +11,7 @@
         display: flex;
         align-items: center;
         justify-content: space-evenly;
-        width: 80%;
+        width: 90%;
         margin: 100px 0px;
         &--text{
             display: flex;
@@ -33,10 +33,6 @@
         &--logo{
             width: 200px;
         }
-    }
-    &--Accordion{
-        width: 600px;
-        gap: 20px;
     }
 } 
 
@@ -86,4 +82,93 @@
         }
     }
 
+  }
+
+  .container{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    width: 100%;
+    gap: 20px;
+  }
+  .content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    
+  }
+  .image{
+    display: flex;
+    width: 15%;
+  }
+
+  @media #{$tablet}{
+    .about{
+      &--intro{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+        margin: 100px 0px;
+        &--text{
+          display: flex;
+          flex-direction: column;
+          width: 80%;
+          gap: 20px;
+          margin-bottom: 50px;
+        }
+        &--logo{
+          display: none;
+        }
+      }
+    }
+    .accordion{
+      width: 100%;
+    }
+    .content{
+      width: 80%;
+    }
+    .image{
+      display: none;
+    }
+    .socials{
+      width: 90%;
+      justify-content: space-between;
+    }
+  }
+  @media #{$mobile}{
+    .about{
+      &--intro{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+        margin: 100px 0px;
+        &--text{
+          display: flex;
+          flex-direction: column;
+          width: 80%;
+          gap: 20px;
+          margin-bottom: 50px;
+        }
+        &--logo{
+          display: none;
+        }
+      }
+    }
+    .accordion{
+      width: 100%;
+    }
+    .content{
+      width: 80%;
+    }
+    .image{
+      display: none;
+    }
+    .socials{
+      width: 100%;
+      justify-content: space-between;
+    }
   }
