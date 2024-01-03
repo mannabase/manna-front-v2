@@ -42,10 +42,11 @@ import {ClaimMannaComponent} from './claim-dialog/claim-manna/claim-manna.compon
 import {FooterComponent} from './footer/footer.component'
 import {DailyRewardDialogComponent} from './account/wallet/daily-reward-dialog/daily-reward-dialog.component'
 import {TuiAccordionModule} from '@taiga-ui/kit';
+import {WriteBlogComponent} from './blog/write-blog/write-blog.component'
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent,
-    AboutComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, ClaimMannaComponent, FooterComponent, DailyRewardDialogComponent],
+    AboutComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, ClaimMannaComponent, FooterComponent, WriteBlogComponent, DailyRewardDialogComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,

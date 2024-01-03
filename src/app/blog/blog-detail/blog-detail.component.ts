@@ -23,17 +23,18 @@ export class BlogDetailComponent implements OnInit {
     }
 
     loadBlog() {
-        const blogId = +this.route.snapshot.paramMap.get('id')!;
-        this.selectedBlog = this.blogService.getBlogById(blogId);
-        this.previousBlog = this.blogService.getPreviousBlog(blogId);
-        this.nextBlog = this.blogService.getNextBlog(blogId);
+        const blogId = this.route.snapshot.paramMap.get('id')!;
+        this.blogService.getBlogById(blogId).subscribe(blog => {
+            this.selectedBlog = blog;
+        });
     }
 
-    navigateToBlog(blogId: number) {
+    navigateToBlog(blogId: string) {
         this.router.navigate(['/blog', blogId]).then(() => {
             this.loadBlog();
         });
     }
+
     navigateBack() {
         this.router.navigate(['/blog']); 
     }

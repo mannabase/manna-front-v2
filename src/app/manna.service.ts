@@ -5,6 +5,13 @@ import { tap, catchError } from 'rxjs/operators';
 import { TuiAlertService } from '@taiga-ui/core';
 import {serverUrl} from "./config";
 
+export interface Signature {
+    timestamp: number;
+    v: number;
+    r: string;
+    s: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -28,10 +35,6 @@ export class MannaService {
     requestClaim(walletAddress: string): void {
         const payload = {mannaWallet$: walletAddress};
         this.http.post<any>(serverUrl + '/manna/claim', payload);
-    }
-
-    claim(): Observable<any> {
-        return of("HAHA")
     }
     sendSignature(walletAddress: string, signature: string, timestamp: number): Observable<any> {
         const payload = { timestamp, signature, user: walletAddress };
@@ -60,23 +63,29 @@ export class MannaService {
         );
     }
     sendClaimWithSig(walletAddress: string, signature: string, timestamp: number): Observable<any> {
-        const params = new HttpParams()
-          .set('user', walletAddress)
-          .set('signature', signature)
-          .set('timestamp', timestamp.toString());
+        const payload = {
+            user: walletAddress,
+            signature: signature,
+            timestamp: timestamp
+        };
     
-        return this.http.get<any>(`${serverUrl}/signing/checkin`, { params }).pipe(
-          tap(response => {
-            console.log('Check-in signatures received:', response);
-            this.alertService.open('Signatures fetched successfully.', { status: 'success', label: 'Success' }).subscribe();
-          }),
-          catchError(error => {
-            console.error('Error fetching check-in signatures:', error);
-            this.alertService.open('Failed to fetch signatures.', { status: 'error', label: 'Error' }).subscribe();
-            return throwError(error);
-          })
+        return this.http.post<any>(`${serverUrl}/signing/getCheckinSigs`, payload).pipe(
+            tap(response => {
+                console.log('Check-in signatures received:', response);
+                if (response.status === 'ok') {
+                    this.alertService.open('Signatures fetched successfully.', { status: 'success', label: 'Success' }).subscribe();
+                } else {
+                    this.alertService.open(`Error: ${response.msg}`, { status: 'error', label: 'Error' }).subscribe();
+                }
+            }),
+            catchError(error => {
+                console.error('Error fetching check-in signatures:', error);
+                this.alertService.open('Failed to fetch signatures.', { status: 'error', label: 'Error' }).subscribe();
+                return throwError(error);
+            })
         );
     }
+    
     
     
   getMannabaseBalance(walletAddress: string): Observable<any> {

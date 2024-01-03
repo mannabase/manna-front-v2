@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, Inject, Injector, Input, OnInit} from '@an
 import {MetamaskBrightIdService, MetamaskState} from 'src/app/metamask-bright-id.service'
 import {VerifyState, VerifyService} from '../../verify.service'
 import {ethers} from 'ethers'
-import {TuiAlertService, TuiDialogService} from '@taiga-ui/core'
+import {TuiAlertService, TuiDialogService,tuiLoaderOptionsProvider} from '@taiga-ui/core'
 import {TuiMobileDialogService} from '@taiga-ui/addon-mobile'
 import {TUI_IS_IOS} from '@taiga-ui/cdk'
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus'
@@ -11,6 +11,8 @@ import {mannaChainName ,mannaContractAddress} from "../../config"
 import { ContractService } from '../../contract.service';
 import { Subscription } from 'rxjs';
 import { MannaService } from '../../manna.service';
+import { Signature } from '../../manna.service';
+
 
 interface Transaction {
     type: 'withdraw' | 'receive';
@@ -18,7 +20,6 @@ interface Transaction {
     amount: number;
     result: 'complete' | 'canceled' | 'pending';
 }
-
 @Component({
     selector: 'app-wallet',
     templateUrl: './wallet.component.html',
@@ -28,6 +29,10 @@ interface Transaction {
             provide: TUI_IS_IOS,
             useValue: false,
         },
+        tuiLoaderOptionsProvider({
+            inheritColor: true,
+            overlay: true,
+          }),
     ],
 })
 export class WalletComponent implements OnInit {
@@ -96,26 +101,29 @@ export class WalletComponent implements OnInit {
 
     ngOnInit() {
         this.updateState();
-        this.subscribeToAccount();
-        this.fetchContractBalance();
-        this.fetchMannabaseBalance();
+        this.subscribeToAccountChanges();
+        this.subscribeToContractInitialization();
       }
     ngOnDestroy() {
         if (this.accountSubscription) {
-          this.accountSubscription.unsubscribe();
+            this.accountSubscription.unsubscribe();
         }
-      }
-      private subscribeToAccount() {
+    }
+    private subscribeToAccountChanges() {
         this.accountSubscription = this.metamaskBrightIdService.account$.subscribe(address => {
             this.walletAddress = address;
             if (address) {
-                this.fetchContractBalance();
-                this.refreshUserScore();
-            } else {
-                console.log('Waiting for wallet address...');
+                this.fetchBalances();
             }
         });
     }
+    private subscribeToContractInitialization() {
+        this.contractService.contractsInitialized.subscribe(initialized => {
+          if (initialized && this.walletAddress) {
+            this.fetchBalances();
+          }
+        });
+      }
     private updateState() {
         this.metamaskBrightIdService.checkMetamaskState().subscribe(state => {
             this.state = state;
@@ -128,28 +136,30 @@ export class WalletComponent implements OnInit {
     toggleWalletPage() {
         this.showWalletPage = !this.showWalletPage
     }
-    private fetchContractBalance() {
+    private fetchBalances() {
         if (this.walletAddress) {
             this.contractService.balanceOf(this.walletAddress).subscribe(
                 contractBalance => {
-                    this.balance = parseFloat(contractBalance);
+                    if (contractBalance) {
+                        this.balance = parseFloat(contractBalance);
+                    }
                     this.cdRef.detectChanges();
-                },
-            )
+                }
+            );
+            this.fetchMannabaseBalance();
         }
     }
+
     private fetchMannabaseBalance() {
         if (this.walletAddress) {
             this.mannaService.getMannabaseBalance(this.walletAddress).subscribe(
                 response => {
-                    if (response.status === 'ok') {
+                    if (response && response.status === 'ok') {
                         this.mannabaseBalance = response.balance;
-                    } else {
-                        this.mannabaseBalanceMessage = response.msg;
                     }
                     this.cdRef.detectChanges();
-                },
-            )
+                }
+            );
         }
     }
     private refreshUserScore() {
@@ -189,32 +199,88 @@ export class WalletComponent implements OnInit {
             }
         ).add(() => this.claimDailyLoader = false);
     }
-    claimWithSigs(): void {
-        this.claimDailyLoader = true;
+    // claimWithSigs(): void {
+    //     this.claimDailyLoader = true;
     
-        if (!this.walletAddress) {
+    //     if (!this.walletAddress) {
+    //         this.alertService.open("Please connect to a wallet first.", { status: 'warning' }).subscribe();
+    //         this.claimDailyLoader = false;
+    //         return;
+    //     }
+    
+    //     const timestamp = Math.floor(Date.now() / 1000);
+    //     const message = `Request for check-in signatures\naddress: ${this.walletAddress}\ntimestamp: ${timestamp}`;
+    
+    //     this.metamaskBrightIdService.signMessage(message).subscribe(
+    //         signature => {
+    //             this.mannaService.sendClaimWithSig(this.walletAddress as string, signature, timestamp).subscribe(
+    //                 serverResponse => {
+    //                     this.contractService.claimWithSigsContract(serverResponse.data).subscribe(
+    //                         () => {
+    //                             console.log('Claim successful on smart contract');
+    //                             this.alertService.open('Claim successful.', { status: 'success' }).subscribe();
+    //                         },
+    //                         contractError => {
+    //                             console.error('Error claiming on smart contract:', contractError);
+    //                             this.alertService.open('Failed to claim on smart contract.', { status: 'error' }).subscribe();
+    //                         }
+    //                     );
+    //                 },
+    //                 serverError => {
+    //                     console.error('Error sending claim request to server:', serverError);
+    //                     this.alertService.open('Failed to send claim request.', { status: 'error' }).subscribe();
+    //                 }
+    //             );
+    //         },
+    //         signError => {
+    //             console.error('Error signing message:', signError);
+    //             this.alertService.open('Failed to sign the claim message.', { status: 'error' }).subscribe();
+    //         }
+    //     ).add(() => this.claimDailyLoader = false); // Always turn off loader after process
+    // }
+
+
+    claimWithSignatures(): void {
+        this.claimDailyLoader = true;
+        const walletAddress = this.metamaskBrightIdService.account$.value;
+    
+        if (!walletAddress) {
             this.alertService.open("Please connect to a wallet first.", { status: 'warning' }).subscribe();
             this.claimDailyLoader = false;
             return;
         }
     
         const timestamp = Math.floor(Date.now() / 1000);
-        const message = `Request for check-in signatures\naddress: ${this.walletAddress}\ntimestamp: ${timestamp}`;
+        const message = `Request for check-in signatures\naddress: ${walletAddress}\ntimestamp: ${timestamp}`;
     
         this.metamaskBrightIdService.signMessage(message).subscribe(
             signature => {
-                this.mannaService.sendClaimWithSig(this.walletAddress as string, signature, timestamp).subscribe(
+                this.mannaService.sendClaimWithSig(walletAddress, signature, timestamp).subscribe(
                     serverResponse => {
-                        this.contractService.claimWithSigsContract(serverResponse.data).subscribe(
-                            () => {
-                                console.log('Claim successful on smart contract');
-                                this.alertService.open('Claim successful.', { status: 'success' }).subscribe();
-                            },
-                            contractError => {
-                                console.error('Error claiming on smart contract:', contractError);
-                                this.alertService.open('Failed to claim on smart contract.', { status: 'error' }).subscribe();
-                            }
-                        );
+                        if (serverResponse.status === 'ok' && serverResponse.signatures) {
+                            const formattedSignatures = serverResponse.signatures.map((sig: any) => {
+                                // Check if the signature object and its properties exist
+                                if (!sig.signature || sig.signature.v === undefined || sig.signature.r === undefined || sig.signature.s === undefined) {
+                                    console.error('Incomplete or missing signature data:', sig);
+                                    throw new Error('Incomplete or missing signature data');
+                                }
+                                return [sig.timestamp, sig.signature.v, sig.signature.r, sig.signature.s];
+                            });
+                            console.log('Formatted Signatures:', formattedSignatures);
+    
+                            this.contractService.claimWithSigsContract(formattedSignatures).subscribe(
+                                () => {
+                                    console.log('Claim successful on smart contract');
+                                    this.alertService.open('Claim successful.', { status: 'success' }).subscribe();
+                                },
+                                contractError => {
+                                    console.error('Error claiming on smart contract:', contractError);
+                                    this.alertService.open('Failed to claim on smart contract.', { status: 'error' }).subscribe();
+                                }
+                            );
+                        } else {
+                            this.alertService.open(`Error: ${serverResponse.msg}`, { status: 'error' }).subscribe();
+                        }
                     },
                     serverError => {
                         console.error('Error sending claim request to server:', serverError);
@@ -226,8 +292,12 @@ export class WalletComponent implements OnInit {
                 console.error('Error signing message:', signError);
                 this.alertService.open('Failed to sign the claim message.', { status: 'error' }).subscribe();
             }
-        ).add(() => this.claimDailyLoader = false); // Always turn off loader after process
+        ).add(() => this.claimDailyLoader = false);
     }
+    
+    
+
+
 
     openMetamaskExtension() {
         if (typeof window.ethereum === 'undefined') {

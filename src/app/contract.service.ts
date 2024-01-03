@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ethers, Contract } from 'ethers';
-import { from, Observable, throwError } from 'rxjs';
+import { from, Observable, throwError,BehaviorSubject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { MetamaskBrightIdService } from './metamask-bright-id.service';
 import { TuiAlertService } from '@taiga-ui/core';
 import { mannaContractAddress, mannaContractABI, claimMannaContractAddress, claimMannaContractABI } from './config';
+import { Signature } from './manna.service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +14,7 @@ import { mannaContractAddress, mannaContractABI, claimMannaContractAddress, clai
 export class ContractService {
   private mannaContract?: Contract;
   private claimMannaContract?: Contract;
+  public contractsInitialized = new BehaviorSubject<boolean>(false); 
 
   constructor(
     private metamaskService: MetamaskBrightIdService,
@@ -37,6 +40,7 @@ export class ContractService {
           claimMannaContractABI,
           signer
         );
+        this.contractsInitialized.next(true);
       }
     });
   }
@@ -83,8 +87,26 @@ export class ContractService {
       })
     );
   }
-  claimWithSigsContract(data: any): Observable<void> {
-    return from(this.claimMannaContract!['claimWithSigs'](data).then(tx => tx.wait())).pipe(
+  claimWithSigsContract(signatures: Signature[]): Observable<void> {
+    if (!this.claimMannaContract) {
+        console.error('ClaimManna contract is not initialized');
+        return throwError('Contract not initialized');
+    }
+
+    const method = this.claimMannaContract['claimWithSigs'];
+    if (typeof method !== 'function') {
+        console.error('claimWithSigs is not a function');
+        return throwError('Invalid method');
+    }
+    const formattedSignatures = signatures.map(sig => {
+      if (!sig.timestamp || !sig.v || !sig.r || !sig.s) {
+          console.error('Incomplete signature data:', sig);
+          throw new Error('Incomplete signature data');
+      }
+      return [sig.timestamp.toString(), sig.v, sig.r, sig.s];
+  });
+
+    return from(method(formattedSignatures).then(tx => tx.wait())).pipe(
         tap(() => this.alertService.open('Claim processed successfully.', { status: 'success', label: 'Success' }).subscribe()),
         catchError(error => {
             console.error('Error processing claim on contract:', error);
@@ -93,4 +115,5 @@ export class ContractService {
         })
     );
 }
+
 }

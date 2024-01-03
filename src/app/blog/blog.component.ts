@@ -18,24 +18,27 @@ export class BlogComponent implements OnInit {
     constructor(private router: Router, private blogService: BlogService) {}
 
     ngOnInit() {
-        let blogs = [...this.blogService.getAllBlogs()];
-        if (blogs.length > 0) {
-            this.lastBlog = blogs.pop();
-        }
-        this.otherBlogs = blogs.reverse();
-        this.totalBlogs = this.blogService.getAllBlogs().length;
-        this.totalPages = Math.ceil(this.totalBlogs / this.pageSize);
         this.loadBlogs();
     }
+
     loadBlogs() {
-        this.otherBlogs = this.blogService.getBlogsByPage(this.currentPage, this.pageSize);
+        this.blogService.getAllBlogs(this.currentPage, this.pageSize).subscribe(blogs => {
+            this.totalBlogs = blogs.length;
+            this.totalPages = Math.ceil(this.totalBlogs / this.pageSize);
+
+            if (blogs.length > 0) {
+                this.lastBlog = blogs.pop();
+                this.otherBlogs = blogs.reverse();
+            }
+        });
     }
 
     goToPage(page: number) {
         this.currentPage = page;
         this.loadBlogs();
     }
-    viewBlogDetail(id: number) {
+
+    viewBlogDetail(id: string) { // Ensure the ID type matches with what your service expects
         this.router.navigate(['/blog', id]);
     }
 

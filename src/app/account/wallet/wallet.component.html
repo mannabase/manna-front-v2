@@ -81,40 +81,45 @@
                 </div>
             </div>
             <div class="panel--dashboard--balance--details">
+                <!-- Balance in Wallet -->
                 <div class="panel--dashboard--balance--details--info">
                     <img src="../../../assets/images/accont-wallet-panel-inYourWallet.svg" alt="wallet" class="panel--dashboard--balance--details--info--img">
                     <div class="panel--dashboard--balance--details--info--text">
                         In your wallet
                         <div class="flex align-items-center">
-                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" 
-                            alt="wallet"
-                            class="panel--dashboard--balance--details--info--text--img">
+                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" alt="wallet" class="panel--dashboard--balance--details--info--text--img">
                             <div class="panel--dashboard--balance--details--info--text--num">
-                                {{ balance !== null ? (balance | number:'1.0-2') : 'Loading...' }} 
+                                <ng-container *ngIf="balance !== null; else walletLoading">
+                                    {{ balance | number:'1.0-2' }}
+                                </ng-container>
+                                <ng-template #walletLoading>
+                                    <tui-loader size="xs"></tui-loader>
+                                </ng-template>
                             </div> 
                         </div>
                     </div>
                 </div>
+            
+                <!-- Balance in Mannabase -->
                 <div class="panel--dashboard--balance--details--info">
                     <img src="../../../assets/images/accont-wallet-panel-inYourWallet.svg" alt="wallet" class="panel--dashboard--balance--details--info--img">
                     <div class="panel--dashboard--balance--details--info--text">
                         In Mannabase
                         <div class="flex align-items-center">
-                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" 
-                            alt=""
-                            class="panel--dashboard--balance--details--info--text--img">
+                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" alt="Mannabase logo" class="panel--dashboard--balance--details--info--text--img">
                             <div class="panel--dashboard--balance--details--info--text--num"> 
-                                {{ mannabaseBalance !== null ? mannabaseBalance : 'Loading...' }}
-                            </div> 
+                                <ng-container *ngIf="mannabaseBalance !== null; else mannaLoading">
+                                    {{ mannabaseBalance }}
+                                </ng-container>
+                                <ng-template #mannaLoading>
+                                    <tui-loader size="xs"></tui-loader>
+                                </ng-template>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="spacer">
-                </div>
-                <button (click)="claimWithSigs()" class="panel--dashboard--withdraw">
-                        Withdraw
-                </button>
             </div>
+            
             <div class="panel--dashboard--buttons">
                 <div class="panel--dashboard--buttons--withdraw-mobile">
                     Withdraw
