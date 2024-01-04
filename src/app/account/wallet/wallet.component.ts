@@ -50,6 +50,9 @@ export class WalletComponent implements OnInit {
     claimDailyLoader:boolean =false
     mannabaseBalance: number | null = null;
     mannabaseBalanceMessage:string | null = null;
+    VerifyState = VerifyState;
+    verificationState: VerifyState = VerifyState.NOT_VERIFIED;
+
     
     transactions: Transaction[] = [
         {
@@ -103,6 +106,7 @@ export class WalletComponent implements OnInit {
         this.updateState();
         this.subscribeToAccountChanges();
         this.subscribeToContractInitialization();
+        this.subscribeToVerificationState();
       }
     ngOnDestroy() {
         if (this.accountSubscription) {
@@ -114,6 +118,7 @@ export class WalletComponent implements OnInit {
             this.walletAddress = address;
             if (address) {
                 this.fetchBalances();
+                this.verifyService.verifyUser(address);
             }
         });
     }
@@ -124,6 +129,12 @@ export class WalletComponent implements OnInit {
           }
         });
       }
+    private subscribeToVerificationState() {
+        this.verifyService.verificationState$.subscribe(state => {
+            this.verificationState = state;
+            this.cdRef.detectChanges(); // Trigger change detection if needed
+        });
+    }
     private updateState() {
         this.metamaskBrightIdService.checkMetamaskState().subscribe(state => {
             this.state = state;
@@ -243,7 +254,12 @@ export class WalletComponent implements OnInit {
     claimWithSignatures(): void {
         this.claimDailyLoader = true;
         const walletAddress = this.metamaskBrightIdService.account$.value;
-    
+        
+        if (this.verificationState !== VerifyState.VERIFIED) {
+            this.alertService.open('You must be verified to withdraw.', {status: 'warning'}).subscribe();
+            this.claimDailyLoader = false;
+            return;
+        }
         if (!walletAddress) {
             this.alertService.open("Please connect to a wallet first.", { status: 'warning' }).subscribe();
             this.claimDailyLoader = false;
@@ -295,10 +311,6 @@ export class WalletComponent implements OnInit {
         ).add(() => this.claimDailyLoader = false);
     }
     
-    
-
-
-
     openMetamaskExtension() {
         if (typeof window.ethereum === 'undefined') {
             this.alertService

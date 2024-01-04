@@ -24,7 +24,7 @@ export class VerifyService {
       )),
       catchError(error => {
         console.error('Error during user verification:', error);
-        return of(VerifyState.NOT_VERIFIED); // Default to not verified in case of error
+        return of(VerifyState.NOT_VERIFIED); 
       })
     ).subscribe(newState => this.verificationStateSubject.next(newState));
   }

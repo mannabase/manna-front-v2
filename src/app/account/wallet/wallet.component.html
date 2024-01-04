@@ -118,6 +118,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="spacer">
+                </div>
+                <button 
+                    class="panel--dashboard--withdraw" 
+                    [class.unverified]="verificationState !== VerifyState.VERIFIED" 
+                    (click)="claimWithSignatures()" 
+                    [attr.title]="verificationState !== VerifyState.VERIFIED ? 'For withdraw must be verified' : null">
+                    Withdraw
+                </button>
+            
+
+                
+                
             </div>
             
             <div class="panel--dashboard--buttons">

@@ -287,6 +287,9 @@
             cursor: pointer;
             background: none;
         }
+        &--withdraw.unverified {
+            cursor: not-allowed;
+        }
         &--buttons {
             display: none;
             justify-content: end;
