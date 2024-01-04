@@ -52,6 +52,7 @@ export class WalletComponent implements OnInit {
     mannabaseBalanceMessage:string | null = null;
     VerifyState = VerifyState;
     verificationState: VerifyState = VerifyState.NOT_VERIFIED;
+    claimableAmount: number | null = null;
 
     
     transactions: Transaction[] = [
@@ -118,6 +119,7 @@ export class WalletComponent implements OnInit {
             this.walletAddress = address;
             if (address) {
                 this.fetchBalances();
+                this.fetchClaimableAmount();
                 this.verifyService.verifyUser(address);
             }
         });
@@ -132,7 +134,7 @@ export class WalletComponent implements OnInit {
     private subscribeToVerificationState() {
         this.verifyService.verificationState$.subscribe(state => {
             this.verificationState = state;
-            this.cdRef.detectChanges(); // Trigger change detection if needed
+            this.cdRef.detectChanges(); 
         });
     }
     private updateState() {
@@ -160,6 +162,25 @@ export class WalletComponent implements OnInit {
             this.fetchMannabaseBalance();
         }
     }
+    private fetchClaimableAmount() {
+        if (this.walletAddress) {
+            this.mannaService.getClaimableAmount(this.walletAddress).subscribe(
+                response => {
+                    if (response && response.status === 'ok') {
+                        this.claimableAmount = response.balance;
+                    } else {
+                        this.claimableAmount = null;
+                    }
+                    this.cdRef.detectChanges(); 
+                },
+                error => {
+                    console.error('Error fetching claimable amount:', error);
+                    this.claimableAmount = null;
+                }
+            );
+        }
+    }
+    
 
     private fetchMannabaseBalance() {
         if (this.walletAddress) {

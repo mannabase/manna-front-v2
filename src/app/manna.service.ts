@@ -23,13 +23,16 @@ export class MannaService {
     ) {
     }
 
-    getBalance(walletAddress: string) {
-        return of(8.2)
-        // return this.http.get<string>(serverUrl + `conversion/getBalance/${walletAddress}`);
-    }
-
-    mannaToClaim(walletAddress: string): Observable<string> {
-        return this.http.get<string>(serverUrl + `conversion/claimable/${walletAddress}`);
+    getClaimableAmount(walletAddress: string): Observable<any> {
+        return this.http.get<any>(`${serverUrl}/balance/${walletAddress}`).pipe(
+            tap(response => {
+                console.log('Claimable amount received:', response); 
+            }),
+            catchError(error => {
+                console.error('Error fetching claimable amount:', error);
+                return throwError(error);
+            })
+        );
     }
 
     requestClaim(walletAddress: string): void {
