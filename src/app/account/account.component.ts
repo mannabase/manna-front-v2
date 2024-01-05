@@ -37,15 +37,17 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.accountSubscription = this.metamaskService.account$.subscribe(address => {
-      this.walletAddress = address;
-      if (address) {
-        this.verifyService.verificationState$.subscribe(state => {
-          this.isVerified = state === VerifyState.VERIFIED;
-          this.showBanner = !this.isVerified; 
-        });
-      }
+        this.walletAddress = address;
+        if (address) {
+            this.verifyService.verifyUser(address);
+            this.verifyService.verificationState$.subscribe(state => {
+                this.isVerified = state === VerifyState.VERIFIED;
+                this.showBanner = !this.isVerified; 
+            });
+        }
     });
-  }
+}
+
   
 
   ngOnDestroy() {

@@ -118,7 +118,7 @@ export class WalletComponent implements OnInit {
         this.accountSubscription = this.metamaskBrightIdService.account$.subscribe(address => {
             this.walletAddress = address;
             if (address) {
-                this.fetchBalances();
+                // this.fetchBalances();
                 this.fetchClaimableAmount();
                 this.verifyService.verifyUser(address);
             }

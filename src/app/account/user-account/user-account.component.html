@@ -26,7 +26,7 @@
             </div>
             <div *ngIf="userScore" class="account--humanity--passport--score--num" 
                 [ngStyle]="{'color': isScoreGreaterThan25 ? 'green' : 'white'}">
-                {{ (userScore.score / 1000000) | number : '1.0-6' }}
+                {{ (userScore.score / 1000000) | number : '1.0-6' || 'loading...' }}
             </div>
             <img *ngIf="isScoreGreaterThan25" class="account--humanity--passport--score--icon" src="../../../assets/images/account-account-green-Check.svg">
             </div>
