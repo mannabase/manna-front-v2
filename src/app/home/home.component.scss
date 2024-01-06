@@ -103,7 +103,7 @@
         @include gradient-border;
         &--link {
             @include gradient-border-inner;
-            color: #f96d69;
+            color: $links-color-main;
         }
     }
 }

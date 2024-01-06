@@ -3,10 +3,10 @@
         <button tuiStep [stepState]="currentStep > 0 ? 'pass' : 'normal'" [disabled]="currentStep != 0">
             Metamask
         </button>
-        <button tuiStep [stepState]="currentStep > 1 ? 'pass' : 'normal'" [disabled]="currentStep != 1">
+        <!-- <button tuiStep [stepState]="currentStep > 1 ? 'pass' : 'normal'" [disabled]="currentStep != 1">
             Verification
-        </button>
-        <button tuiStep stepState="normal" [disabled]="currentStep != 2">
+        </button> -->
+        <button tuiStep stepState="normal" [disabled]="currentStep != 1">
             Claim
         </button>
     </tui-stepper>
@@ -18,7 +18,7 @@
         <!-- <app-verification *ngIf="currentStep == 1" (nextStep)="currentStep  = currentStep + 1">
 
         </app-verification> -->
-        <app-claim-manna *ngIf="currentStep == 2">
+        <app-claim-manna *ngIf="currentStep == 1">
 
         </app-claim-manna>
     </div>

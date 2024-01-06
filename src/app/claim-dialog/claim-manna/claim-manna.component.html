@@ -1,10 +1,19 @@
-<div>
-    <div>
-        <button>Claim Manna</button>
-        <p>You can claim manna</p>
-    </div>
-    <ng-template #register>
-        <button (click)="registerMe()">Register</button>
-    </ng-template>
+
+<div *ngIf="successMessage == false"  class="claim">
+    <p>You can claim manna!</p>
+    <button  tuiButton (click)="claimDailyReward()" size="m">
+        Claim Daily Manna
+    </button>
 </div>
-<p *ngIf="successMessage">Successfully claimed {{ successMessage }} manna!</p>
+<div *ngIf="successMessage == true"  class="claim">
+    <i class="fa-solid fa-circle-check icon" style="color: #fa8188;"></i>
+    <p>
+        Successfully claimed daily reward!
+    </p>
+    <p>
+        You can witdraw them on 
+        <span routerLink="/account" class="wallet">
+            wallet page
+          </span>
+    </p>
+</div>
