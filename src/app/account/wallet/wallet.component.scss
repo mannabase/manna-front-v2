@@ -260,7 +260,11 @@
                     );
                     font-size: 15px;
                     font-weight: 600;
+                    border: none;
                     cursor: pointer;
+                    &--text{
+                        color: white;
+                    }
                     &:first-child {
                         --tui-action-color: var(--tui-positive);
                         --tui-action-background: var(--tui-success-bg);

@@ -48,6 +48,7 @@ export class WalletComponent implements OnInit {
     sortColumn: keyof Transaction | null = null
     sortDirection: number = 1
     claimDailyLoader:boolean =false
+    successClaimDaily:boolean =false
     mannabaseBalance: number | null = null;
     mannabaseBalanceMessage:string | null = null;
     VerifyState = VerifyState;
@@ -204,6 +205,7 @@ export class WalletComponent implements OnInit {
       
     claimDailyReward(): void {
         this.claimDailyLoader = true;
+        this.successClaimDaily
         this.mannabaseBalance = null;
 
         if (!this.walletAddress) {
@@ -220,6 +222,7 @@ export class WalletComponent implements OnInit {
                 this.mannaService.sendCheckIn(this.walletAddress as string, signature, timestamp).subscribe(
                     serverResponse => {
                         this.fetchMannabaseBalance();
+                        this.successClaimDaily = true
                     },
                     error => {
                         this.alertService.open("Failed to Claim. Please try again.", { status: 'error' }).subscribe();

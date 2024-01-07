@@ -18,8 +18,9 @@
         class="account--humanity--header--fingerprint-mobile">
       </div>
       <div class="account--humanity--passport">
-        <div class="account--humanity--passport--score" *ngIf="showScore">
+        <tui-loader [showLoader]="loader" [overlay]="true">
           <div class="account--humanity--passport--container">
+            <div class="account--humanity--passport--score" *ngIf="showScore">
             <div class="flex mb-1 gap-1">
             <div class="account--humanity--passport--score--text">
               Your Score:
@@ -35,19 +36,16 @@
               Score Threshold:
               </div>
               <div class="account--humanity--passport--thresold--num">
-              {{ scoreThreshold || 'loading...' }}
+                    {{ scoreThreshold || 'loading...' }}
               </div>
             </div>
           </div>
           <div class="account--humanity--passport--update" (click)="updateUserScore()">
-          <ng-container *ngIf="loader; else updateScoreText">
-              <span>Loading...</span>
-          </ng-container>
-          <ng-template #updateScoreText>
-              Update Score
-          </ng-template>
+              <span *ngIf="loader">Loading...</span>
+              <span *ngIf="!loader">Update Score</span>
           </div>
-        </div>
+          </div>
+        </tui-loader>
         <div class="account--humanity--passport--connect-buttun" 
         (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED && !showScore">
           Connect

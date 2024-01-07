@@ -10,7 +10,7 @@ import { MannaService } from '../../manna.service';
 })
 export class ClaimMannaComponent {
   walletAddress: string | null = null;
-  claimDailyLoader: boolean = false;
+  loader: boolean = false;
   successMessage: boolean = false;
 
   constructor(
@@ -25,11 +25,11 @@ export class ClaimMannaComponent {
   }
 
   claimDailyReward(): void {
-    this.claimDailyLoader = true;
+    this.loader = true;
 
     if (!this.walletAddress) {
       console.error("Please connect to a wallet first.");
-      this.claimDailyLoader = false;
+      this.loader = false;
       return;
     }
 
@@ -51,6 +51,6 @@ export class ClaimMannaComponent {
       error => {
         console.error("Failed to sign the Claim message. Please try again.", error);
       }
-    ).add(() => this.claimDailyLoader = false);
+    ).add(() => this.loader = false);
   }
 }

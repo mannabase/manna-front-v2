@@ -1,11 +1,12 @@
 
-<div *ngIf="successMessage == false"  class="claim">
+<div *ngIf="!successMessage"  class="claim">
     <p>You can claim manna!</p>
-    <button  tuiButton (click)="claimDailyReward()" size="m">
-        Claim Daily Manna
+    <button tuiButton (click)="claimDailyReward()" size="m" [disabled]="loader">
+        <span *ngIf="!loader">Claim Daily Manna</span>
+        <span *ngIf="loader">loading...</span>
     </button>
 </div>
-<div *ngIf="successMessage == true"  class="claim">
+<div *ngIf="successMessage"  class="claim">
     <i class="fa-solid fa-circle-check icon" style="color: #fa8188;"></i>
     <p>
         Successfully claimed daily reward!

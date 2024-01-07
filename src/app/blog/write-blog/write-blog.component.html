@@ -1,25 +1,29 @@
-<div class="write-blog-container">
+<div class="admin-blog">
+    <h2>Write a Blog Post</h2>
     <form (ngSubmit)="onSubmit(blogForm)" #blogForm="ngForm">
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" name="title" ngModel required class="form-control">
+            <input type="text" id="title" name="title" [(ngModel)]="blog.title" required class="form-control"/>
         </div>
 
         <div class="form-group">
             <label for="description">Description</label>
-            <textarea id="description" name="description" ngModel required class="form-control"></textarea>
+            <!-- Placeholder for Description; replace with a textarea or editor as needed -->
+            <textarea id="description" name="description" [(ngModel)]="blog.description" class="form-control"></textarea>
         </div>
 
         <div class="form-group">
             <label for="writer">Writer</label>
-            <input type="text" id="writer" name="writer" ngModel required class="form-control">
+            <input type="text" id="writer" name="writer" [(ngModel)]="blog.writer" class="form-control"/>
         </div>
 
         <div class="form-group">
             <label for="picture">Picture URL</label>
-            <input type="text" id="picture" name="picture" ngModel class="form-control">
+            <input type="text" id="picture" name="picture" [(ngModel)]="blog.picture" class="form-control"/>
         </div>
 
-        <button type="submit" class="btn btn-primary" [disabled]="!blogForm.valid">Submit</button>
+        <button type="submit" class="btn-submit" [disabled]="!blogForm.valid">Post Blog</button>
     </form>
+    <p class="success-message" *ngIf="submissionSuccess">{{submissionSuccess}}</p>
+    <p class="error-message" *ngIf="submissionError">{{submissionError}}</p>
 </div>

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { serverUrl } from './config';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BlogService {
-  private apiUrl = `${serverUrl}/blog`;
+  private apiUrl = `${serverUrl}/blogs`;
 
   constructor(private http: HttpClient) {}
 
@@ -18,7 +19,7 @@ export class BlogService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  addBlog(blogData: any) {
+  addBlog(blogData: { title: string; description: string; writer: string; picture: string; }) {
     return this.http.post(`${this.apiUrl}`, blogData);
   }
 

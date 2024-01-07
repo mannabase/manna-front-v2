@@ -127,10 +127,6 @@
                     [attr.title]="verificationState !== VerifyState.VERIFIED ? 'For withdraw must be verified' : null">
                     Withdraw
                 </button>
-            
-
-                
-                
             </div>
             
             <div class="panel--dashboard--buttons">
@@ -147,17 +143,22 @@
                 <img src="../../../assets/images/accont-wallet-panel-stars.svg" alt="star" class="panel--dashboard--daily--header--star">
                 <div class="panel--dashboard--daily--header--reward">Daily Reward</div>
                 <div  class="panel--dashboard--daily--header--number">
-                        <p>loading...</p>
+                        <p *ngIf="!successClaimDaily">loading...</p>
+                        <p *ngIf="successClaimDaily">
+                            You claimed your daily Manna!
+                        </p>
                 </div>
             </div>
             <div class="panel--dashboard--daily--claim">
                 <div class="panel--dashboard--daily--claim--text mb-3">This transaction will claim all earning & credit them to your wallet</div>
-                <div tuiAction class="panel--dashboard--daily--claim--buttun" (click)="claimDailyReward()">
-                    <span *ngIf="!claimDailyLoader">Claim</span>
-                    <span *ngIf="claimDailyLoader">
+                <button tuiAction class="panel--dashboard--daily--claim--buttun" (click)="claimDailyReward()"[disabled]="successClaimDaily">
+                    <span class="panel--dashboard--daily--claim--buttun--text"  *ngIf="!claimDailyLoader">
+                        Claim
+                    </span>
+                    <span class="panel--dashboard--daily--claim--buttun--text"  *ngIf="claimDailyLoader">
                         Loading...
                     </span>
-                </div>
+                </button>
             </div>
         </div>
     </div>
