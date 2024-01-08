@@ -20,7 +20,7 @@ export class VerifyService {
   verifyUser(userAddress: string) {
     this.contractService.getUserScore(userAddress).pipe(
       switchMap(userScore => this.contractService.getScoreThreshold().pipe(
-        map(threshold => (userScore.score / 1000000) >= threshold ? VerifyState.VERIFIED : VerifyState.NOT_VERIFIED)
+        map(threshold => (userScore.score / 100000) >= threshold ? VerifyState.VERIFIED : VerifyState.NOT_VERIFIED)
       )),
       catchError(error => {
         console.error('Error during user verification:', error);

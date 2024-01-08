@@ -32,6 +32,8 @@ import {BlogDetailComponent} from './blog/blog-detail/blog-detail.component'
 import {MetamaskBrightIdService} from './metamask-bright-id.service'
 import {MannaService} from './manna.service'
 import {VerifyService} from './verify.service'
+import { ClaimService } from "./claim.service"
+import { ContractService } from "./contract.service"
 import {VerificationDialogComponent} from './verification-dialog/verification-dialog.component'
 import {TuiMobileDialogModule, TuiSidebarModule} from '@taiga-ui/addon-mobile'
 import {TuiActiveZoneModule} from '@taiga-ui/cdk'
@@ -68,7 +70,7 @@ import {WriteBlogComponent} from './blog/write-blog/write-blog.component'
         TuiLoaderModule,
         TuiAccordionModule,
     ],
-  providers: [MetamaskBrightIdService, MannaService, VerifyService,
+  providers: [MetamaskBrightIdService, MannaService, VerifyService,ClaimService,ContractService,
     {
       provide: TUI_SANITIZER,
       useClass: NgDompurifySanitizer

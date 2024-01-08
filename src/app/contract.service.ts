@@ -87,33 +87,49 @@ export class ContractService {
       })
     );
   }
-  claimWithSigsContract(signatures: Signature[]): Observable<void> {
+  claimWithSigsContract(signatures: Array<[number, number, string, string]>): Observable<void> {
     if (!this.claimMannaContract) {
-        console.error('ClaimManna contract is not initialized');
-        return throwError('Contract not initialized');
+      console.error('Claim Manna Contract not initialized');
+      return throwError('Contract not initialized');
     }
 
-    const method = this.claimMannaContract['claimWithSigs'];
-    if (typeof method !== 'function') {
-        console.error('claimWithSigs is not a function');
-        return throwError('Invalid method');
-    }
-    const formattedSignatures = signatures.map(sig => {
-      if (!sig.timestamp || !sig.v || !sig.r || !sig.s) {
-          console.error('Incomplete signature data:', sig);
-          throw new Error('Incomplete signature data');
-      }
-      return [sig.timestamp.toString(), sig.v, sig.r, sig.s];
-  });
-
-    return from(method(formattedSignatures).then(tx => tx.wait())).pipe(
-        tap(() => this.alertService.open('Claim processed successfully.', { status: 'success', label: 'Success' }).subscribe()),
-        catchError(error => {
-            console.error('Error processing claim on contract:', error);
-            this.alertService.open('Failed to process claim on contract.', { status: 'error', label: 'Error' }).subscribe();
-            return throwError(error);
-        })
+    return from(this.claimMannaContract!['claimWithSigs'](signatures).then(tx => tx.wait())).pipe(
+      tap(() => this.alertService.open('Claim with signatures successful.', { status: 'success', label: 'Success' }).subscribe()),
+      catchError(error => {
+        console.error('Error claiming with signatures on smart contract:', error);
+        this.alertService.open(`Failed to claim with signatures on smart contract. Error: ${error.message}`, { status: 'error', label: 'Error' }).subscribe();
+        return throwError(error);
+      })
     );
-}
+  }
+
+//   claimWithSigsContract(signatures: Signature[]): Observable<void> {
+//     if (!this.claimMannaContract) {
+//         console.error('ClaimManna contract is not initialized');
+//         return throwError('Contract not initialized');
+//     }
+
+//     const method = this.claimMannaContract['claimWithSigs'];
+//     if (typeof method !== 'function') {
+//         console.error('claimWithSigs is not a function');
+//         return throwError('Invalid method');
+//     }
+//     const formattedSignatures = signatures.map(sig => {
+//       if (!sig.timestamp || !sig.v || !sig.r || !sig.s) {
+//           console.error('Incomplete signature data:', sig);
+//           throw new Error('Incomplete signature data');
+//       }
+//       return [sig.timestamp.toString(), sig.v, sig.r, sig.s];
+//   });
+
+//     return from(method(formattedSignatures).then(tx => tx.wait())).pipe(
+//         tap(() => this.alertService.open('Claim processed successfully.', { status: 'success', label: 'Success' }).subscribe()),
+//         catchError(error => {
+//             console.error('Error processing claim on contract:', error);
+//             this.alertService.open('Failed to process claim on contract.', { status: 'error', label: 'Error' }).subscribe();
+//             return throwError(error);
+//         })
+//     );
+// }
 
 }
