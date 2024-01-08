@@ -18,9 +18,9 @@
         class="account--humanity--header--fingerprint-mobile">
       </div>
       <div class="account--humanity--passport">
-        <tui-loader [showLoader]="loader" [overlay]="true">
+        <tui-loader [showLoader]="loader" [overlay]="true" *ngIf="showScore">
           <div class="account--humanity--passport--container">
-            <div class="account--humanity--passport--score" *ngIf="showScore">
+            <div class="account--humanity--passport--score" >
             <div class="flex mb-1 gap-1">
             <div class="account--humanity--passport--score--text">
               Your Score:
@@ -63,6 +63,7 @@
           <p class="m-0">Passport</p>
         </div>
       </div>
+      <!-- for mobile version -->
       <div class="account--humanity--passport-mobile">
         <div class="account--humanity--passport-mobile--passport" (click)="openLinkInNewTab()">
           <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport--gitcoin">
