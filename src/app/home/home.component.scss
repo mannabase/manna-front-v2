@@ -84,7 +84,6 @@
         color: white;
         padding: 12px 16px;
         font-size: 16px;
-        font-weight: lighter;
         cursor: pointer;
         border: 0px;
         border-radius: $manna-border-radius;
@@ -273,7 +272,6 @@
         &--box {
             display: flex;
             flex-direction: row;
-            align-items: center;
             border: 2px solid $border-color;
             border-radius: 12px;
             padding: 20px;
@@ -289,6 +287,7 @@
             &--title {
                 color: $border-color;
                 font-size: 20px;
+                margin-bottom: 100px;
             }
         }
     }
@@ -297,7 +296,7 @@
         display: flex;
         align-self: end;
         justify-self: end;
-        width: 15rem;
+        width: 13rem;
         height: 20rem;
         margin-right: -5%;
         margin-top: 100px;
@@ -394,6 +393,7 @@
         align-items: center;
         text-align: center;
         font-size: 20px;
+        font-weight: 900;
         &--description {
             text-align: center;
         }
@@ -539,6 +539,7 @@
             display: none;
             &--mobile {
                 display: flex;
+                width: 50%;
             }
         }
     }
@@ -547,6 +548,7 @@
         align-items: center;
         text-align: center;
         font-size: 20px;
+        font-weight: 900;
         &--description {
             text-align: center;
         }

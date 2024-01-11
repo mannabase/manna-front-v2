@@ -27,9 +27,11 @@
       <ul class="menu-list" [ngClass]="{ 'show-menu': showBurgerMenu }">
         <ng-container *ngFor="let item of menuItems">
           <li class="menu-item" *ngIf="item.label && !item.icon">
-            <a [routerLink]="item.routerLink" [routerLinkActive]="['active']"
-               [routerLinkActiveOptions]="{ exact: true }">
-               <span>{{ item.label }}</span>
+            <a *ngIf="isArray(item.routerLink)" [routerLink]="item.routerLink" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">
+              <span>{{ item.label }}</span>
+            </a>
+            <a *ngIf="!isArray(item.routerLink)" [href]="item.routerLink" target="_blank" rel="noopener noreferrer">
+              <span>{{ item.label }}</span>
             </a>
           </li>
         </ng-container>

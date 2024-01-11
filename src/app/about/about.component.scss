@@ -37,7 +37,7 @@
 } 
 
 .accordion {
-    width: 50%;
+    width: 80%;
     .accordion-item-wrapper {
       border: 2px solid #b04c61;
       margin-bottom: 10px;
@@ -55,7 +55,8 @@
           margin: 10px;
         }
         .accordion-content {
-          padding: 20px;
+          padding: 0px 20px 20px 20px;
+          margin-top: 0px;
         }
         .accordion-icon{
             font-size: 20px;

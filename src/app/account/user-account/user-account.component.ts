@@ -125,7 +125,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
             scoreData => {
                 console.log('User score fetched:', scoreData.score, 'at timestamp:', scoreData.timestamp);
                 this.userScore = scoreData;
-                this.isScoreGreaterThan25 = scoreData.score > 25000000; // Assuming the score is 25 million or more
+                this.isScoreGreaterThan25 = scoreData.score > 25000000;
                 this.showScore = true;
                 this.userScoreAvailable.emit(true);
             },

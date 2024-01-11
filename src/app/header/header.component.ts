@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {label: 'Home', routerLink: ['/']},
       // {label: 'Marketplace', routerLink: ['/marketplace']},
       {label: 'About', routerLink: ['/about']},
-      {label: 'Blog', routerLink: ['/blog']},
+      {label: 'Blog', routerLink: 'https://hedgeforhumanity.medium.com/'},
       {label: 'Account', icon: 'fa-solid fa-circle-user fa-lg', routerLink: ['/account']},
     ];
   }
@@ -65,5 +65,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleSideBar(b: boolean) {
     this.displaySideBar = b;
+  }
+  isArray(val: any): boolean { //add this for linking the code to external link
+    return Array.isArray(val);
   }
 }
