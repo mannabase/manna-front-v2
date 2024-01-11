@@ -51,7 +51,7 @@
         }
         &--text {
             font-size: 20px;
-            font-weight: 800;
+            font-weight: 900;
             letter-spacing: 1px;
         }
     }
@@ -176,7 +176,10 @@
                         font-weight: 900;
                     }
                     &--manna {
-                        margin-bottom: 4px;
+                        margin-bottom: 0px;
+                    }
+                    &--logo{
+                        margin-bottom: -5px;
                     }
                 }
             }
