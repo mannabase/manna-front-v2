@@ -38,6 +38,14 @@
         }
     }
 } 
+:host ::ng-deep .link-style{
+  color: $links-color-main !important;
+  text-decoration: none ;
+  font-weight: 700;
+  &:hover{
+    color: $links-color-main;
+  }
+}
 
 .accordion {
     width: 80%;

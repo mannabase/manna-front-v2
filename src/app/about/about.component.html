@@ -45,8 +45,7 @@
             {{ item.title }}
             <span class="accordion-icon">{{ isExpanded(item) ? '-' : '+' }}</span>
           </h4>
-          <p class="accordion-content" *ngIf="isExpanded(item)" [@slideToggle]>
-            {{ item.content }}
+          <p class="accordion-content" *ngIf="isExpanded(item)" [@slideToggle] [innerHTML]="item.content">
           </p>
         </div>
       </div>
