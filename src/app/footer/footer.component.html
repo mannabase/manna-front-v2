@@ -35,8 +35,14 @@
                     Social
                 </p>
                 <div class="footer-links">
-                    <a tuiLink class="text"> Twitter </a>
-                    <a tuiLink class="text"> Medium </a>
+                    <a tuiLink class="text" [href]="twitterUrl"
+                        target="_blank" rel="noopener noreferrer"> 
+                        Twitter 
+                    </a>
+                    <a tuiLink class="text" [href]="mediumUrl"
+                        target="_blank" rel="noopener noreferrer"> 
+                        Medium 
+                    </a>
                     <!-- <a tuiLink> Disacord </a>
                     <a tuiLink> Telegram </a> -->
                 </div>
@@ -45,7 +51,7 @@
                 <p class="mannabase-footer mb-3">
                     Email
                 </p>
-                <a tuiLink class="text"> team&#64;headeforhumanity.org </a>
+                <a tuiLink class="text" [href]="emailUrl" target="_blank" rel="noopener noreferrer"> team&#64;headeforhumanity.org </a>
             </div>
         </div>
     </div>

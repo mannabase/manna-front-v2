@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { externalLinks } from '../config';
 
 interface AccordionItem {
   title: string;
@@ -8,9 +10,22 @@ interface AccordionItem {
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss']
+  styleUrls: ['./about.component.scss'],
+  animations: [
+    trigger('slideToggle', [
+      state('true', style({ height: '*', opacity: 1 })),
+      state('false', style({ height: '0px', opacity: 0 })),
+      transition('true <=> false', animate('500ms ease-out'))
+    ])
+  ]
 })
 export class AboutComponent {
+  
+  twitterUrl = externalLinks.twitterUrl;
+  discordUrl = externalLinks.discordUrl;
+  mediumUrl = externalLinks.mediumUrl;
+  emailUrl =externalLinks.emailUrl;
+
   items: AccordionItem[] = [
     { title: 'How Do I Sell Manna?', content: 'The sale of manna is up to the Manna DAO, community and exchanges to list and generate liquidity. As exchanges either centralized or in DEFI list Manna, this information will be announced and shared to the community.', expanded: true },
     { title: 'Where can I use Manna? ', content: 'The purpose of Mannabase is to provide the fundamental distribution of Manna. From there, it is up to the community to discover how to utilize it. ', expanded: false },

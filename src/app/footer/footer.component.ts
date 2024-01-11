@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { externalLinks } from '../config';
 
 @Component({
   selector: 'app-footer',
@@ -8,6 +9,10 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class FooterComponent {
   isAccount: boolean = false;
+  twitterUrl = externalLinks.twitterUrl;
+  discordUrl = externalLinks.discordUrl;
+  mediumUrl = externalLinks.mediumUrl;
+  emailUrl =externalLinks.emailUrl;
 
   constructor(private router: Router) {
     this.router.events.subscribe((event) => {

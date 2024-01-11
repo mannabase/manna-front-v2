@@ -5,19 +5,25 @@
               ABOUT
           </h2>
           <span class="about--intro--text--description">
-              Manna is a digital currency distributed 1-per-day to every person.
+              Manna is a digital currency distributed 1-per-day to all participating, verified humans. 
               The distribution model is based on the principles of universal basic income.
+
+
+
+
           </span>
           <span class="about--intro--text--description">
-              The value is equal to each human living one day.
-              The purpose of Manna is create the most accesible, widely distributed currency on earth.
+            The value is equal to each human living one day. 
+            The purpose of Manna is to create the most accesible, widely distributed currency on earth.
           </span>
           <span class="about--intro--text--description">
-              Unlike currencies like USD, EURO, Bitcoin, and Gold, new value creation is distributed directly to the user base.
-              This stems from the understanding that users in an economy generate the value of its currency through their s hared belief and use.
+            Unlike currencies like the U.S. dollar, the Euro, bitcoin, and gold, new value creation is distributed directly to the user base. 
+            This stems from the understanding that users in an economy generate the value of its currency through their shared belief and use.
           </span>
           <button class="about--intro--text--learn">
-              <a class="about--intro--text--learn--inner" tuiLink>
+              <a class="about--intro--text--learn--inner" tuiLink 
+                 [href]="mediumUrl"
+                 target="_blank" rel="noopener noreferrer">
                       Learn More
               </a>
           </button>
@@ -39,24 +45,36 @@
             {{ item.title }}
             <span class="accordion-icon">{{ isExpanded(item) ? '-' : '+' }}</span>
           </h4>
-          <p class="accordion-content" *ngIf="isExpanded(item)">
+          <p class="accordion-content" *ngIf="isExpanded(item)" [@slideToggle]>
             {{ item.content }}
           </p>
         </div>
       </div>
     </div>
     <h3 class="socials-header">
-      SOCIALS:
+      SOCIALS
     </h3>
     <div class="socials">
       <div class="socials--item">
-        <i class="fa-brands fa-x-twitter socials--item--icon"></i>
-    </div>
+        <a class="fa-brands fa-x-twitter socials--item--icon"
+              tuiLink
+              [href]="twitterUrl"
+              target="_blank" rel="noopener noreferrer">
+          </a>
+      </div>
       <div class="socials--item">
-        <i class="fa-brands fa-discord socials--item--icon"></i>
-    </div>
+        <a class="fa-brands fa-discord socials--item--icon"
+              tuiLink
+              [href]="discordUrl"
+              target="_blank" rel="noopener noreferrer">
+          </a>
+      </div>
       <div class="socials--item">
-          <i class="fa-brands fa-medium socials--item--icon"></i>
+          <a class="fa-brands fa-medium socials--item--icon"
+              tuiLink
+              [href]="mediumUrl"
+              target="_blank" rel="noopener noreferrer">
+          </a>
       </div>
     </div>
   </div>
