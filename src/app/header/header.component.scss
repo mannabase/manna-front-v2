@@ -16,20 +16,12 @@
         position: absolute;
         left: 0;
     }
-    &--logo {
+    &--container {
         display: flex;
         gap: 5px;
         align-items: center;
         cursor: pointer;
-        &--image {
-            width: 22px;
-            height: 32px;
-        }
-        &--text {
-            font-size: 19px;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
+        gap: 10px;
     }
     
 }
