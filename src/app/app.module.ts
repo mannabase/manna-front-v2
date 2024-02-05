@@ -11,7 +11,7 @@ import {
 } from "@taiga-ui/core"
 import {NgModule} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
-
+import { CommonModule } from '@angular/common'; 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {AppRoutingModule} from './app-routing.module'
 import {AppComponent} from './app.component'
@@ -69,6 +69,7 @@ import {WriteBlogComponent} from './blog/write-blog/write-blog.component'
         TuiSvgModule,
         TuiLoaderModule,
         TuiAccordionModule,
+        CommonModule,
     ],
   providers: [MetamaskBrightIdService, MannaService, VerifyService,ClaimService,ContractService,
     {

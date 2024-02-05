@@ -39,7 +39,7 @@ export class MannaService {
         const payload = {mannaWallet$: walletAddress};
         this.http.post<any>(serverUrl + '/manna/claim', payload);
     }
-    sendSignature(walletAddress: string, signature: string, timestamp: number): Observable<any> {
+    getGitcoinScore(walletAddress: string, signature: string, timestamp: number): Observable<any> {
         const payload = { timestamp, signature, user: walletAddress };
         return this.http.post<any>(`${serverUrl}/signing/gitcoinPassportScore`, payload).pipe(
             tap(response => {

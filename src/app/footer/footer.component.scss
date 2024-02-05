@@ -23,12 +23,29 @@
     color: #da677c ;
     border: 1px #aa4d5e solid;
 }
-.copyRight{
+.policy-conteiner{
     display: flex;
-    justify-content: center;
+    position: absolute;
+    left: 0;
+    gap:10px;
+    margin-left: 10px;
+}
+.policy{
     font-size:smaller;
     color: $gray-text;
-    margin: 0px;
+}
+.copyRight-container{
+    display: flex;
+    column-gap: 10px;
+    justify-content: center; 
+    align-items: center; 
+    width: 100%;
+}
+.copyRight{
+    text-align: center; 
+    margin: 0 auto;
+    font-size:smaller;
+    color: $gray-text;
 }
 .image-logo {
     width: 30px;

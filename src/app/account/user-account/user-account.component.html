@@ -21,30 +21,28 @@
         <tui-loader [showLoader]="loader" [overlay]="true" *ngIf="showScore">
           <div class="account--humanity--passport--container">
             <div class="account--humanity--passport--score" >
-            <div class="flex mb-1 gap-1">
-            <div class="account--humanity--passport--score--text">
-              Your Score:
-            </div>
-            <div *ngIf="userScore" class="account--humanity--passport--score--num" 
-                [ngStyle]="{'color': isScoreGreaterThan25 ? 'green' : 'white'}">
-                {{ (userScore.score / 1000000) | number : '1.0-6' || 'loading...' }}
-            </div>
-            <img *ngIf="isScoreGreaterThan25" class="account--humanity--passport--score--icon" src="../../../assets/images/account-account-green-Check.svg">
-            </div>
-            <div class="flex gap-1">
-              <div class="account--humanity--passport--thresold--text">
-              Score Threshold:
+              <div class="account--humanity--passport--score--text">
+                Your Score:
               </div>
-              <div class="account--humanity--passport--thresold--num">
-                    {{ scoreThreshold || 'loading...' }}
+              <div *ngIf="contractScore !== null" class="account--humanity--passport--score--num" 
+                   [ngStyle]="{'color': verificationState === 'VERIFIED' ? 'green' : 'white'}">
+                {{ (contractScore / 1000000) | number : '1.0-6' || 'loading...' }}
               </div>
-            </div>
-          </div>
-          <div class="account--humanity--passport--update" (click)="updateUserScore()">
+              <div class="account--humanity--passport-mobile--thresold">
+                <div class="account--humanity--passport-mobile--thresold--text">
+                  Score Threshold:
+                </div>
+                <div  class="account--humanity--passport-mobile--thresold--num">
+                  {{ thresholdScore || 'loading...' }}
+                </div>
+              </div>              
+            </div>         
+            <div class="account--humanity--passport--update" (click)="updateUserScore()">
               <span *ngIf="loader">Loading...</span>
               <span *ngIf="!loader">Update Score</span>
+            </div>
           </div>
-          </div>
+          <button class="check-score-button" (click)="checkUserScore()">Check Score</button>
         </tui-loader>
         <div class="account--humanity--passport--connect-buttun" 
         (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED && !showScore">
@@ -85,18 +83,18 @@
               <div class="account--humanity--passport-mobile--score--text">
               Your Score:
               </div>
-              <div *ngIf="userScore" class="account--humanity--passport-mobile--score--num" 
-                [ngStyle]="{'color': isScoreGreaterThan25 ? 'green' : 'white'}">
-                {{ (userScore.score / 1000000) | number : '1.0-6' }}
+              <div *ngIf="verifyService.contractScore$ | async as contractScore" class="account--humanity--passport-mobile--score--num" 
+                [ngStyle]="{'color': verificationState === 'VERIFIED'  ? 'green' : 'white'}">
+                {{ (contractScore / 1000000) | number : '1.0-6' }}
               </div>
-              <img *ngIf="isScoreGreaterThan25" class="account--humanity--passport-mobile--score--icon" src="../../../assets/images/account-account-green-Check.svg">
+              <img *ngIf="verificationState === 'VERIFIED' " class="account--humanity--passport-mobile--score--icon" src="../../../assets/images/account-account-green-Check.svg">
             </div>
             <div class="account--humanity--passport-mobile--thresold">
               <div class="account--humanity--passport-mobile--thresold--text">
                 Score Threshold:
               </div>
-              <div class="account--humanity--passport-mobile--thresold--num">
-                {{ scoreThreshold || 'loading...' }}
+              <div *ngIf="verifyService.threshold$ | async as threshold" class="account--humanity--passport-mobile--thresold--num">
+                {{ thresholdScore || 'loading...' }}
               </div>
             </div>
           </div>
@@ -106,12 +104,12 @@
           Connect
         </div>
         <div class="account--humanity--passport-mobile--connect-buttun" 
-        (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN && !showScore">
-          Arbitrum
+          (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN && !showScore">
+            Arbitrum
         </div>
-        <div class="account--humanity--passport-mobile--connect-buttun" 
-        *ngIf="state == MetamaskState.READY && !showScore">
-          Check Score
+        <div (click)="openDialogScore()" class="account--humanity--passport-mobile--connect-buttun" 
+          *ngIf="state == MetamaskState.READY && !showScore">
+            Check Score
         </div>
       </div>
   </div>

@@ -1,11 +1,14 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output ,Injector ,ChangeDetectorRef} from '@angular/core';
 import { MetamaskBrightIdService, MetamaskState } from 'src/app/metamask-bright-id.service';
-import { TuiAlertService } from '@taiga-ui/core';
+import { TuiAlertService ,TuiDialogService} from '@taiga-ui/core';
 import { Subscription } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { mannaChainName, serverUrl } from '../../config';
+import { HttpClient, } from '@angular/common/http';
+import { mannaChainName } from '../../config';
 import { ContractService } from '../../contract.service';
 import { MannaService } from '../../manna.service'; 
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { ScoreDialogComponent } from '../../score-dialog/score-dialog.component';
+import { VerifyService,VerifyState } from 'src/app/verify.service';
 
 interface UserScoreData {
     timestamp: number;
@@ -20,45 +23,87 @@ interface UserScoreData {
 
 export class UserAccountComponent implements OnInit, OnDestroy {
     walletAddress: string | null = null;
-    scoreThreshold: number | null = null;
-    userScore: UserScoreData | null = null;
     accountSubscription: Subscription = new Subscription();
     buttonText = 'Connect';
     loader: boolean = false;
-    isScoreGreaterThan25: boolean = false;
     showScore: boolean = false;
     state = MetamaskState.NOT_CONNECTED;
     MetamaskState = MetamaskState;
     connectedToMetamask: boolean = false;
     mannaChain = mannaChainName;
+    contractScore: number | null = null;
+    thresholdScore: number | null = null;
+    private subscription: Subscription = new Subscription();
+    verificationState: VerifyState;
 
     @Output() userScoreAvailable: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+    injector: Injector | null | undefined;
     constructor(
         readonly alertService: TuiAlertService,
         private metamaskService: MetamaskBrightIdService,
         private http: HttpClient,
         readonly metamaskBrightIdService: MetamaskBrightIdService,
         private contractService: ContractService,
-        private mannaService: MannaService 
+        private mannaService: MannaService,
+        public verifyService: VerifyService,
+        readonly dialogService: TuiDialogService,
+        private cdr: ChangeDetectorRef,
     ) {
         this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
             this.walletAddress = address;
             if (address) {
-                this.refreshUserScore();
+                this.verifyService.verifyUser(address);
             }
+        });
+        this.verificationState = VerifyState.NOT_VERIFIED;
+        this.verifyService.verificationState$.subscribe(state => {
+            this.verificationState = state;
         });
     }
 
     ngOnInit() {
-        this.refreshUserScore();
-        this.fetchScoreThreshold();
-    }
+        this.subscription.add(
+            this.verifyService.contractScore$.subscribe((score) => {
+                if (score !== null) {
+                    console.log(`Received contract score in component: ${score}`);
+                    this.contractScore = score;
+                    this.cdr.detectChanges(); // Trigger change detection
+                }
+            })
+        );
+        
+        this.subscription.add(
+            this.verifyService.threshold$.subscribe((threshold) => {
+                if (threshold !== null) {
+                    console.log(`Received threshold in component: ${threshold}`);
+                    this.thresholdScore = threshold;
+                    this.cdr.detectChanges(); // Trigger change detection
+                }
+            })
+        );
+      
+        this.subscription.add(
+          this.verifyService.verificationState$.subscribe(state => {
+            this.verificationState = state;
+          })
+        );
+
+        this.subscription.add(
+            this.verifyService.verificationState$.subscribe(state => {
+                console.log(`Received verification state in component: ${state}`);
+                this.verificationState = state;
+                this.showScore = true; // Consider the logic here based on your needs
+                this.cdr.detectChanges(); // Ensure UI updates
+            })
+        );
+        this.verifyService.fetchContractScore(this.walletAddress!);
+        this.verifyService.fetchThreshold();
+      }
 
     ngOnDestroy() {
         this.accountSubscription.unsubscribe();
-    }
-
+        this.subscription.unsubscribe();
+    }     
     updateState() {
         this.metamaskBrightIdService.checkMetamaskState().subscribe({
             next: (value) => {
@@ -113,33 +158,45 @@ export class UserAccountComponent implements OnInit, OnDestroy {
             },
         });
     }
-
     private refreshUserScore() {
         if (!this.walletAddress) {
-            console.log('No wallet address available for fetching user score.');
+            console.error('No wallet address available for fetching user score.');
             return;
         }
-        
-        console.log('Fetching user score for address:', this.walletAddress);
-        this.contractService.getUserScore(this.walletAddress).subscribe(
-            scoreData => {
-                console.log('User score fetched:', scoreData.score, 'at timestamp:', scoreData.timestamp);
-                this.userScore = scoreData;
-                this.isScoreGreaterThan25 = scoreData.score > 25000000;
+        this.verifyService.verificationStateSubject.subscribe(newState => {
+            const score = this.verifyService['contractScore'];
+            if (score !== null) {
+                console.log('User score fetched:', score);
                 this.showScore = true;
                 this.userScoreAvailable.emit(true);
+            } else {
+                console.error('Error fetching score: Score is null');
+            }
+        });
+    }
+    checkUserScore() {
+        if (!this.walletAddress) {
+          console.error('No wallet address available.');
+          return;
+        }
+      
+        const timestamp = Math.floor(Date.now() / 1000);
+        this.metamaskBrightIdService.signUserMessage().subscribe(signature => {
+          if (!signature) {
+            console.error('No signature received.');
+            return;
+          }
+          this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp).subscribe({
+            next: (response) => {
+              console.log('Score from server:', response.score);
+              this.verifyService.setServerScore(response.score);
+              this.openDialogScore();
             },
-            error => console.error('Error fetching score from contract:', error)
-        );
-    }
-
-    private fetchScoreThreshold() {
-        this.contractService.getScoreThreshold().subscribe(
-            threshold => this.scoreThreshold = threshold,
-            error => console.error('Error fetching score threshold:', error)
-        );
-    }
-
+            error: (error) => console.error('Error fetching score from server:', error),
+          });
+        }, signError => console.error('Error signing message:', signError));
+      }
+      
     updateUserScore() {
         if (!this.walletAddress) {
             console.error('No wallet address available.');
@@ -151,7 +208,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
 
         this.metamaskService.signUserMessage().subscribe(
             signature => {
-                this.mannaService.sendSignature(this.walletAddress!, signature, timestamp).subscribe(
+                this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp).subscribe(
                     serverResponse => {
                         this.contractService.submitUserScore(this.walletAddress!, serverResponse.data).subscribe(
                             () => {
@@ -183,5 +240,25 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     }
     openLinkInNewTab() {
         window.open('https://passport.gitcoin.co', '_blank');
+    }
+    openDialogScore() {
+        const score = this.verifyService.serverScore$;
+        const threshold = this.verifyService.threshold$;
+
+        console.log('Attempting to open dialog with score:', score, 'and threshold:', threshold);
+
+        const dialogRef = this.dialogService.open(new PolymorpheusComponent(ScoreDialogComponent, this.injector), {
+            data: { score, threshold },
+            dismissible: true,
+        });
+
+        dialogRef.subscribe({
+            next: (value: any) => {
+                console.log('Dialog closed with result:', value);
+            },
+            error: (error: any) => {
+                console.error('Error occurred while opening the dialog:', error);
+            }
+        });
     }
 }

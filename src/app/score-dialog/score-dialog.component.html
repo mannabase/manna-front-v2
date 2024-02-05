@@ -1,0 +1,15 @@
+<div *ngIf="score !== null && threshold !== null" class="score-dialog-container">
+  <h3 class="your-score">Your Score :</h3>
+  <div class="score-value" [ngStyle]="{'color': isScoreGreaterThanThreshold ? 'green' : 'red'}">
+    {{ score | number:'1.0-6' }}
+  </div>
+  <div class="threshold-value">
+    Threshold: {{ threshold }}
+  </div>
+  <div *ngIf="!isScoreGreaterThanThreshold" class="low-score-message">
+    Your score is below the threshold.
+  </div>
+</div>
+<div *ngIf="score === null || threshold === null" class="loading">
+  Loading...
+</div>
