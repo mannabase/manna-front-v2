@@ -97,12 +97,12 @@ export enum VerifyState {
   setContractScore(score: number) {
     console.log(`Emitting new contract score: ${score}`);
     this.contractScoreSource.next(score);
-}
+  }
 
-setThreshold(threshold: number) {
+  setThreshold(threshold: number) {
     console.log(`Emitting new threshold: ${threshold}`);
     this.thresholdSource.next(threshold);
-}
+  }
 
   submitScoreToContract(walletAddress: string, scoreData: any): Observable<void> {
     if (!scoreData || !this.contractService) {
