@@ -198,45 +198,20 @@ export class UserAccountComponent implements OnInit, OnDestroy {
       }
       
     updateUserScore() {
-        if (!this.walletAddress) {
-            console.error('No wallet address available.');
-            return;
-        }
         this.loader = true;
-
-        const timestamp = Math.floor(Date.now() / 1000);
-
-        this.metamaskService.signUserMessage().subscribe(
-            signature => {
-                this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp).subscribe(
-                    serverResponse => {
-                        this.contractService.submitUserScore(this.walletAddress!, serverResponse.data).subscribe(
-                            () => {
-                                console.log('Score updated successfully.');
-                                this.refreshUserScore();
-                                this.loader = false;
-                                this.alertService.open('Score updated successfully.', {status: 'success', label: 'Success'}).subscribe();
-                            },
-                            error => {
-                                console.error('Error submitting score to contract:', error);
-                                this.loader = false;
-                                this.alertService.open('Failed to update score.', {status: 'error', label: 'Error'}).subscribe();
-                            }
-                        );
-                    },
-                    error => {
-                        console.error('Error sending signature to server:', error);
-                        this.loader = false;
-                        this.alertService.open('Failed to send signature to server.', {status: 'error', label: 'Error'}).subscribe();
-                    }
-                );
-            },
-            error => {
-                console.error('Error signing message:', error);
+        this.verifyService.sendScoreToContract(this.walletAddress!).subscribe({
+            next: () => {
+                this.refreshUserScore();
                 this.loader = false;
-                this.alertService.open('Failed to sign message.', {status: 'error', label: 'Error'}).subscribe();
-            }
-        );
+                this.alertService.open('Score updated successfully.', {status: 'success', label: 'Success'}).subscribe();
+                console.log('Score updated successfully.');
+            },
+            error: (error) => {
+                this.loader = false;
+                this.alertService.open('Failed to update score.', {status: 'error', label: 'Error'}).subscribe();
+                console.error('Error submitting score to contract:', error);
+            },
+        });
     }
     openLinkInNewTab() {
         window.open('https://passport.gitcoin.co', '_blank');

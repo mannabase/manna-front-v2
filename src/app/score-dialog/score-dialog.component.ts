@@ -4,6 +4,7 @@ import { ContractService } from '../contract.service';
 import { Subscription } from 'rxjs';
 import { MetamaskBrightIdService, MetamaskState } from 'src/app/metamask-bright-id.service';
 import { CommonModule } from '@angular/common';
+import { MannaService } from '../manna.service'; 
 
 @Component({
   selector: 'app-score-dialog',
@@ -19,11 +20,13 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
   threshold: number | null = null;
   score: number | null = null;
   private scoreSubscription: Subscription = new Subscription();
+  alertService: any;
 
   constructor(
     public verifyService: VerifyService,
     private contractService: ContractService,
     private metamaskService: MetamaskBrightIdService,
+    private mannaService: MannaService,
   ) {
     this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
       this.walletAddress = address;
@@ -55,17 +58,17 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
   
 
   submitScoreToContract() {
-    // if (this.verifyService.serverScore !== null) {
-    //   this.contractService.submitUserScore(this.walletAddress!, serverResponse.data).subscribe({
-    //     next: () => {
-    //       console.log('Score submitted to contract successfully.');
-    //       if (this.verifyService.serverScore !== null) {
-    //          this.verifyService.setContractScore(this.verifyService.serverScore);
-    //       }
-    //      },
-    //     error: (error) => console.error('Error submitting score to contract:', error),
-    //   });
-    // }
+      // In your component
+    this.verifyService.sendScoreToContract(this.walletAddress!).subscribe({
+    next: () => {
+    console.log('Score submitted successfully.');
+    // Handle successful submission, e.g., update UI or state
+    },
+    error: (error) => {
+    console.error('Failed to submit score:', error);
+    // Handle error, e.g., show an error message
+      },
+    });
   }
 }
 

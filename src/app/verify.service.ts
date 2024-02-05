@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, Subscription, of, throwError } from 'rxjs'
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { ContractService } from './contract.service';
 import { MetamaskBrightIdService } from './metamask-bright-id.service';
+import { MannaService } from './manna.service'; 
 
 export enum VerifyState {
  NOT_VERIFIED = 'NOT_VERIFIED',
@@ -28,6 +29,7 @@ export enum VerifyState {
   constructor(
     private contractService: ContractService, 
     private metamaskService: MetamaskBrightIdService,
+    private mannaService: MannaService,
     ) 
   {
     this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
@@ -36,8 +38,6 @@ export enum VerifyState {
         console.log('Request to get score and threshold')
         this.fetchContractScore(address); 
         this.fetchThreshold();
-        // this.setContractScore(123);
-        // this.setThreshold(10);
       }
     });
   }
@@ -104,28 +104,30 @@ export enum VerifyState {
     this.thresholdSource.next(threshold);
   }
 
-  submitScoreToContract(walletAddress: string, scoreData: any): Observable<void> {
-    if (!scoreData || !this.contractService) {
-      console.error('Invalid score data or ContractService not initialized');
-      return throwError('Invalid score data or ContractService not initialized');
+  sendScoreToContract(walletAddress: string): Observable<void> {
+    if (!walletAddress) {
+      console.error('No wallet address available.');
+      return throwError('No wallet address provided');
     }
-    return this.contractService.submitUserScore(walletAddress, scoreData).pipe(
+
+    const timestamp = Math.floor(Date.now() / 1000);
+
+    return this.metamaskService.signUserMessage().pipe(
+      switchMap(signature => {
+        if (!signature) {
+          throw new Error('No signature received.');
+        }
+        return this.mannaService.getGitcoinScore(walletAddress, signature, timestamp);
+      }),
+      switchMap(serverResponse => {
+        return this.contractService.submitUserScore(walletAddress, serverResponse.data);
+      }),
       tap(() => {
-        console.log('Score submitted to contract successfully.');
-        if (this.serverScore$) {
-          this.serverScore$.subscribe(score => {
-              if (score !== null) {
-                  this.setContractScore(score);
-              } else {
-                  console.error("Server score is null");
-              }
-          });
-      } else {
-          console.error("Server score observable is null");
-      }
+        console.log('Score submitted and updated successfully.');
+        // Optionally, update the UI or state to reflect the successful submission
       }),
       catchError(error => {
-        console.error('Error submitting score to contract:', error);
+        console.error('Error during score submission:', error);
         return throwError(error);
       })
     );
