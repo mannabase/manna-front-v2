@@ -17,4 +17,12 @@
 <div>
   <p>Your score: {{ score }}</p>
   <p>Threshold: {{ threshold }}</p>
+  <!-- Conditionally show the submit button or the message to increase the score -->
+  <div *ngIf="isScoreGreaterThanThreshold; else increaseScoreText">
+    <button (click)="submitScoreToContract()">Submit</button>
+  </div>
+  <ng-template #increaseScoreText>
+    <p>Please increase your score in Gitcoin Passport.</p>
+  </ng-template>
 </div>
+

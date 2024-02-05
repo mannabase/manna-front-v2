@@ -3,12 +3,14 @@ import { VerifyService } from '../verify.service';
 import { ContractService } from '../contract.service';
 import { Subscription } from 'rxjs';
 import { MetamaskBrightIdService, MetamaskState } from 'src/app/metamask-bright-id.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-score-dialog',
   templateUrl: './score-dialog.component.html',
   styleUrls: ['./score-dialog.component.scss'],
   standalone: true,
+  imports: [CommonModule], 
 })
 export class ScoreDialogComponent implements OnInit, OnDestroy {
   isScoreGreaterThanThreshold: boolean = false;
@@ -32,17 +34,13 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-      this.isScoreGreaterThanThreshold =
-      this.verifyService.serverScore$ !== null &&
-      this.verifyService.threshold$ !== null &&
-      this.verifyService.serverScore$ >= this.verifyService.threshold$;
-
-    // Subscribe to the threshold observable
     this.verifyService.threshold$.subscribe((threshold) => {
       this.threshold = threshold;
+      this.updateIsScoreGreaterThanThreshold();
     });
     this.scoreSubscription = this.verifyService.serverScore$.subscribe((serverScore) => {
       this.score = serverScore;
+      this.updateIsScoreGreaterThanThreshold();
     });
   }
 
@@ -50,6 +48,11 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
     this.accountSubscription.unsubscribe();
     this.scoreSubscription.unsubscribe();
   }
+  updateIsScoreGreaterThanThreshold() {
+    this.isScoreGreaterThanThreshold = this.score !== null && this.threshold !== null && this.score >= this.threshold;
+    console.log(`Score: ${this.score}, Threshold: ${this.threshold}, isScoreGreaterThanThreshold: ${this.isScoreGreaterThanThreshold}`);
+  }
+  
 
   submitScoreToContract() {
     // if (this.verifyService.serverScore !== null) {
