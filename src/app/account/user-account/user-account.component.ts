@@ -62,22 +62,29 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.updateState(); 
         this.subscription.add(
             this.verifyService.contractScore$.subscribe((score) => {
-                if (score !== null) {
+                if (score !== null && score > 0) {
                     console.log(`Received contract score in component: ${score}`);
                     this.contractScore = score;
-                    this.cdr.detectChanges(); // Trigger change detection
+                    this.showScore = true
+                    this.cdr.detectChanges(); 
+                } else {
+                    this.contractScore = score;
+                    this.showScore = false;
+                    this.cdr.detectChanges();
                 }
             })
         );
+        
         
         this.subscription.add(
             this.verifyService.threshold$.subscribe((threshold) => {
                 if (threshold !== null) {
                     console.log(`Received threshold in component: ${threshold}`);
                     this.thresholdScore = threshold;
-                    this.cdr.detectChanges(); // Trigger change detection
+                    this.cdr.detectChanges();
                 }
             })
         );
@@ -92,12 +99,12 @@ export class UserAccountComponent implements OnInit, OnDestroy {
             this.verifyService.verificationState$.subscribe(state => {
                 console.log(`Received verification state in component: ${state}`);
                 this.verificationState = state;
-                this.showScore = true; // Consider the logic here based on your needs
-                this.cdr.detectChanges(); // Ensure UI updates
+                this.cdr.detectChanges();
             })
         );
         this.verifyService.fetchContractScore(this.walletAddress!);
         this.verifyService.fetchThreshold();
+        console.log('showScore value:', this.showScore);
       }
 
     ngOnDestroy() {
@@ -131,12 +138,22 @@ export class UserAccountComponent implements OnInit, OnDestroy {
             window.open('https://metamask.io/');
             return;
         }
-
+    
         this.metamaskBrightIdService.connect().subscribe({
             next: account => {
                 this.alertService.open("Connected to account: " + account, {status: "success"}).subscribe();
                 this.state = MetamaskState.CONNECTED;
                 this.updateState();
+                this.verifyService.fetchContractScore(account);
+                this.subscription.add(
+                    this.verifyService.threshold$.subscribe((threshold) => {
+                        if (threshold !== null) {
+                            console.log(`Received threshold in component: ${threshold}`);
+                            this.thresholdScore = threshold;
+                            this.cdr.detectChanges();
+                        }
+                    })
+                );
             },
             error: (err) => {
                 this.alertService.open("Failed to connect Metamask", {status: "error"}).subscribe();
@@ -145,19 +162,30 @@ export class UserAccountComponent implements OnInit, OnDestroy {
             },
         });
     }
-
-    switchChain() {
+    
+    switchChain() {       
         this.metamaskBrightIdService.switchToMannaChain().subscribe({
             next: () => {
                 this.alertService.open('Chain Switched to ' + mannaChainName, {status: 'success'}).subscribe();
                 this.state = MetamaskState.READY;
-                this.showScore = true;
+                this.updateState();
+                this.verifyService.fetchContractScore(this.walletAddress!);
+                this.subscription.add(
+                    this.verifyService.threshold$.subscribe((threshold) => {
+                        if (threshold !== null) {
+                            console.log(`Received threshold in component: ${threshold}`);
+                            this.thresholdScore = threshold;
+                            this.cdr.detectChanges();
+                        }
+                    })
+                );
             },
             error: (err) => {
                 this.alertService.open('Failed to switch chain', {status: 'error'}).subscribe();
             },
         });
     }
+    
     private refreshUserScore() {
         if (!this.walletAddress) {
             console.error('No wallet address available for fetching user score.');

@@ -18,7 +18,7 @@
         class="account--humanity--header--fingerprint-mobile">
       </div>
       <div class="account--humanity--passport">
-        <tui-loader [showLoader]="loader" [overlay]="true" *ngIf="showScore">
+        <tui-loader [showLoader]="loader" [overlay]="true" *ngIf="showScore && state == MetamaskState.READY">
           <div class="account--humanity--passport--container">
             <div class="account--humanity--passport--score" >
               <div class="account--humanity--passport--score--text">
@@ -42,18 +42,17 @@
               <span *ngIf="!loader">Update Score</span>
             </div>
           </div>
-          <button class="check-score-button" (click)="checkUserScore()">Check Score</button>
         </tui-loader>
         <div class="account--humanity--passport--connect-buttun" 
-        (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED && !showScore">
+        (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED">
           Connect
         </div>
         <div class="account--humanity--passport--connect-buttun" 
-        (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN && !showScore">
-          Arbitrum
+        (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN">
+          Goerly
         </div>
         <div class="account--humanity--passport--connect-buttun" 
-        *ngIf="state == MetamaskState.READY && !showScore">
+          *ngIf="state == MetamaskState.READY && !showScore" (click)="checkUserScore()">
           Check Score
         </div>
         <div class="account--humanity--passport--passport" (click)="openLinkInNewTab()">
