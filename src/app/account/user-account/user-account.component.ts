@@ -203,6 +203,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         });
     }
     checkUserScore() {
+        this.loader = true;
         if (!this.walletAddress) {
           console.error('No wallet address available.');
           return;

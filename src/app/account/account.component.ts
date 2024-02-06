@@ -16,6 +16,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   displaySideBar: boolean = false;
   showBanner: boolean = true; 
   isVerified: boolean = false;
+  private subscriptions = new Subscription();
 
   constructor(
     private metamaskService: MetamaskBrightIdService,
@@ -36,21 +37,26 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.accountSubscription = this.metamaskService.account$.subscribe(address => {
-        this.walletAddress = address;
-        if (address) {
-            this.verifyService.verifyUser(address);
-            this.verifyService.verificationState$.subscribe(state => {
-                this.isVerified = state === VerifyState.VERIFIED;
-                this.showBanner = !this.isVerified; 
-            });
-        }
+    // Combine account and verification state subscriptions
+    const accountSubscription = this.metamaskService.account$.subscribe(address => {
+      this.walletAddress = address;
+      if (address) {
+        this.verifyService.verifyUser(address);
+      }
     });
-}
 
-  
+    const verificationSubscription = this.verifyService.verificationState$.subscribe(state => {
+      this.isVerified = state === VerifyState.VERIFIED;
+      this.showBanner = !this.isVerified;
+    });
+
+    // Add subscriptions to the Subscription object for cleanup
+    this.subscriptions.add(accountSubscription);
+    this.subscriptions.add(verificationSubscription);
+  }
 
   ngOnDestroy() {
-    this.accountSubscription?.unsubscribe();
+    // Unsubscribe from all subscriptions to prevent memory leaks
+    this.subscriptions.unsubscribe();
   }
 }

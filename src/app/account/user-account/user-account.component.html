@@ -51,10 +51,10 @@
         (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN">
           Goerly
         </div>
-        <div class="account--humanity--passport--connect-buttun" 
+        <tui-loader [showLoader]="loader" [overlay]="true" class="account--humanity--passport--connect-buttun" 
           *ngIf="state == MetamaskState.READY && !showScore" (click)="checkUserScore()">
           Check Score
-        </div>
+        </tui-loader>
         <div class="account--humanity--passport--passport" (click)="openLinkInNewTab()">
           <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport--gitcoin">
           <p class="m-0">Passport</p>
