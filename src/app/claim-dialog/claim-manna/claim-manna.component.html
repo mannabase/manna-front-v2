@@ -1,5 +1,6 @@
 
 <div *ngIf="!successMessage"  class="claim">
+    <p class="claimbleManna">{{claimableAmount || "loading..."}}</p>
     <p>You can claim manna!</p>
     <button tuiButton (click)="claimDailyReward()" size="m" [disabled]="loader">
         <span *ngIf="!loader">Claim Daily Manna</span>

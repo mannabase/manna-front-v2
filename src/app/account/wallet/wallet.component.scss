@@ -238,8 +238,9 @@
                     font-weight: 600;
                 }
                 &--number {
-                    font-size: 15px;
-                    font-weight: 500;
+                    font-size: 20px;
+                    font-weight: 800;
+                    margin: 0px;
                 }
             }
             &--claim {
@@ -252,7 +253,7 @@
                     color: $gray-text;
                     text-align: center;
                 }
-                &--buttun {
+                &--button {
                     padding: 10px 60px 10px 60px;
                     flex-shrink: 0;
                     border-radius: 38px;
@@ -276,6 +277,9 @@
                     &:last-child {
                         --tui-action-color: var(--tui-negative);
                         --tui-action-background: var(--tui-error-bg);
+                    }
+                    &:disabled{
+                        background-color: #8F8F8F;
                     }
                 }
             }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ChangeDetectorRef} from '@angular/core';
 import { MetamaskBrightIdService, MetamaskState } from '../../metamask-bright-id.service';
 import { MannaService } from '../../manna.service';
 
@@ -8,22 +8,42 @@ import { MannaService } from '../../manna.service';
   templateUrl: './claim-manna.component.html',
   styleUrls:['./claim-manna.component.scss']
 })
-export class ClaimMannaComponent {
+export class ClaimMannaComponent implements OnInit  {
   walletAddress: string | null = null;
   loader: boolean = false;
   successMessage: boolean = false;
+  claimableAmount: number | null = null;
 
   constructor(
     private metamaskService: MetamaskBrightIdService,
-    private mannaService: MannaService
+    private mannaService: MannaService,
+    private cdRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
     this.metamaskService.account$.subscribe(address => {
       this.walletAddress = address;
     });
+    this.fetchClaimableAmount()
   }
-
+  private fetchClaimableAmount() {
+    if (this.walletAddress) {
+        this.mannaService.getClaimableAmount(this.walletAddress).subscribe(
+            response => {
+                if (response && response.status === 'ok') {
+                    this.claimableAmount = response.toClaim;
+                } else {
+                    this.claimableAmount = null;
+                }
+                this.cdRef.detectChanges(); 
+            },
+            error => {
+                console.error('Error fetching claimable amount:', error);
+                this.claimableAmount = null;
+            }
+        );
+    }
+}
   claimDailyReward(): void {
     this.loader = true;
 

@@ -142,20 +142,23 @@
             <div class="panel--dashboard--daily--header">
                 <img src="../../../assets/images/accont-wallet-panel-stars.svg" alt="star" class="panel--dashboard--daily--header--star">
                 <div class="panel--dashboard--daily--header--reward">Daily Reward</div>
-                <div  class="panel--dashboard--daily--header--number">
-                        <p *ngIf="!successClaimDaily">loading...</p>
-                        <p *ngIf="successClaimDaily">
-                            You claimed your daily Manna!
-                        </p>
+                <div class="panel--dashboard--daily--header--number">
+                    <p *ngIf="claimableAmount !== null && claimableAmount > 0" class="m-0">{{claimableAmount || "loading..."}}</p>
+                    <p *ngIf="claimableAmount === 0">
+                        You claimed your daily Manna!
+                    </p>
                 </div>
+                
             </div>
             <div class="panel--dashboard--daily--claim">
                 <div class="panel--dashboard--daily--claim--text mb-3">This transaction will claim all earning & credit them to your wallet</div>
-                <button tuiAction class="panel--dashboard--daily--claim--buttun" (click)="claimDailyReward()"[disabled]="successClaimDaily">
-                    <span class="panel--dashboard--daily--claim--buttun--text"  *ngIf="!claimDailyLoader">
+                <button tuiAction class="panel--dashboard--daily--claim--button" 
+                    (click)="claimDailyReward()" 
+                    [disabled]="claimableAmount === 0 || claimDailyLoader">
+                    <span class="panel--dashboard--daily--claim--button--text" *ngIf="!claimDailyLoader">
                         Claim
                     </span>
-                    <span class="panel--dashboard--daily--claim--buttun--text"  *ngIf="claimDailyLoader">
+                    <span class="panel--dashboard--daily--claim--button--text" *ngIf="claimDailyLoader">
                         Loading...
                     </span>
                 </button>

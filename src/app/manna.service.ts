@@ -24,7 +24,7 @@ export class MannaService {
     }
 
     getClaimableAmount(walletAddress: string): Observable<any> {
-        return this.http.get<any>(`${serverUrl}/balance/${walletAddress}`).pipe(
+        return this.http.get<any>(`${serverUrl}/manna/toClaim/${walletAddress}`).pipe(
             tap(response => {
                 console.log('Claimable amount received:', response); 
             }),

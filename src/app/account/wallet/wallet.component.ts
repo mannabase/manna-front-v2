@@ -46,47 +46,12 @@ export class WalletComponent implements OnInit {
     mannaChain = mannaChainName
     walletAddress: string | null = null
     private accountSubscription: Subscription | undefined;
-    sortColumn: keyof Transaction | null = null
-    sortDirection: number = 1
     claimDailyLoader:boolean =false
-    successClaimDaily:boolean =false
     mannabaseBalance: number | null = null;
     mannabaseBalanceMessage:string | null = null;
     VerifyState = VerifyState;
     verificationState: VerifyState = VerifyState.NOT_VERIFIED;
     claimableAmount: number | null = null;
-
-    
-    transactions: Transaction[] = [
-        {
-            type: 'receive',
-            date: new Date('2023-12-04'),
-            amount: 50,
-            result: 'pending',
-        },
-        {
-            type: 'receive',
-            date: new Date('2023-12-02'),
-            amount: 50,
-            result: 'pending',
-        },
-        {
-            type: 'withdraw',
-            date: new Date('2023-12-01'),
-            amount: 100,
-            result: 'complete',
-        },
-        {
-            type: 'withdraw',
-            date: new Date('2023-10-14'),
-            amount: 100,
-            result: 'complete',
-        },
-    ]
-    filteredTransactions: Transaction[] = this.transactions
-
-    dateFilter: 'today' | 'week' | 'month' | 'all' = 'all'
-    typeFilter: 'withdraw' | 'receive' | 'all' = 'all'
     connectedToMetamask: boolean = false
     
 
@@ -169,7 +134,7 @@ export class WalletComponent implements OnInit {
             this.mannaService.getClaimableAmount(this.walletAddress).subscribe(
                 response => {
                     if (response && response.status === 'ok') {
-                        this.claimableAmount = response.balance;
+                        this.claimableAmount = response.toClaim;
                     } else {
                         this.claimableAmount = null;
                     }
@@ -182,8 +147,6 @@ export class WalletComponent implements OnInit {
             );
         }
     }
-    
-
     private fetchMannabaseBalance() {
         if (this.walletAddress) {
             this.mannaService.getMannabaseBalance(this.walletAddress).subscribe(
@@ -196,14 +159,6 @@ export class WalletComponent implements OnInit {
             );
         }
     }
-    private refreshUserScore() {
-        if (this.walletAddress) {
-            
-        } else {
-            console.error('No wallet address available for fetching user score.');
-        }
-    }
-      
     claimDailyReward(): void {
         if (!this.walletAddress) {
           this.alertService.open("Please connect to a wallet first.", { status: 'warning' }).subscribe();
@@ -215,6 +170,7 @@ export class WalletComponent implements OnInit {
           this.walletAddress,
           () => {
             this.alertService.open('Daily reward claimed successfully.', { status: 'success' }).subscribe();
+            this.fetchClaimableAmount(); 
           },
           (errorMessage) => {
             this.alertService.open(errorMessage, { status: 'error' }).subscribe();
@@ -222,7 +178,9 @@ export class WalletComponent implements OnInit {
         );
     
         subscription.add(() => this.claimDailyLoader = false);
-      }
+    }
+    
+    
     
       claimWithSignatures(): void {
         if (!this.walletAddress) {
@@ -312,43 +270,5 @@ export class WalletComponent implements OnInit {
             )
             // .pipe(switchMap(index => this.alerts.open(`Selected: ${actions[index]}`)))
             .subscribe()
-    }   
-
-    sortData(column: keyof Transaction): void {
-        if (this.sortColumn === column) {
-            this.sortDirection *= -1
-        } else {
-            this.sortColumn = column
-            this.sortDirection = 1
-        }
-
-        this.transactions.sort((a, b) => {
-            return (a[column] < b[column] ? -1 : 1) * this.sortDirection
-        })
-    }
-
-    filterTransactions(): void {
-        const today = new Date()
-        const oneWeekAgo = new Date(today)
-        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7)
-        const oneMonthAgo = new Date(today)
-        oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1)
-
-        this.filteredTransactions = this.transactions.filter((transaction) => {
-            const isDateValid =
-                (this.dateFilter === 'today' &&
-                    transaction.date.toDateString() === today.toDateString()) ||
-                (this.dateFilter === 'week' &&
-                    transaction.date >= oneWeekAgo) ||
-                (this.dateFilter === 'month' &&
-                    transaction.date >= oneMonthAgo) ||
-                this.dateFilter === 'all'
-
-            const isTypeValid =
-                this.typeFilter === 'all' ||
-                transaction.type === this.typeFilter
-
-            return isDateValid && isTypeValid
-        })
-    }
+    }  
 }
