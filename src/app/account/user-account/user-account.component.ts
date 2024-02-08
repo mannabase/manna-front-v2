@@ -8,12 +8,10 @@ import { ContractService } from '../../contract.service';
 import { MannaService } from '../../manna.service'; 
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { ScoreDialogComponent } from '../../score-dialog/score-dialog.component';
-import { VerifyService,VerifyState } from 'src/app/verify.service';
+import { VerifyService,VerifyState ,localScoreData} from 'src/app/verify.service';
 
-interface UserScoreData {
-    timestamp: number;
-    score: number;
-}
+
+
 
 @Component({
     selector: 'app-user-account',
@@ -26,12 +24,14 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     accountSubscription: Subscription = new Subscription();
     buttonText = 'Connect';
     loader: boolean = false;
-    showScore: boolean = false;
+    showScore: boolean = true;
+    showContractScore: boolean = true;
     state = MetamaskState.NOT_CONNECTED;
     MetamaskState = MetamaskState;
     connectedToMetamask: boolean = false;
     mannaChain = mannaChainName;
     contractScore: number | null = null;
+    localScore: number | null = null;
     thresholdScore: number | null = null;
     private subscription: Subscription = new Subscription();
     verificationState: VerifyState;
@@ -62,23 +62,25 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.updateState(); 
+        this.updateState();
+        this.verifyService.fetchContractScore(this.walletAddress!);
+        this.verifyService.fetchThreshold(); 
         this.subscription.add(
             this.verifyService.contractScore$.subscribe((score) => {
                 if (score !== null && score > 0) {
                     console.log(`Received contract score in component: ${score}`);
                     this.contractScore = score;
-                    this.showScore = true
+                    this.showScore = true;
+                    this.showContractScore = true;
                     this.cdr.detectChanges(); 
                 } else {
                     this.contractScore = score;
-                    this.showScore = false;
-                    this.cdr.detectChanges();
+                    this.showContractScore = false;
+                    this.checkLocalScore();
+                    console.log('The local score was ckecked')
                 }
             })
         );
-        
-        
         this.subscription.add(
             this.verifyService.threshold$.subscribe((threshold) => {
                 if (threshold !== null) {
@@ -102,8 +104,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
                 this.cdr.detectChanges();
             })
         );
-        this.verifyService.fetchContractScore(this.walletAddress!);
-        this.verifyService.fetchThreshold();
+        
         console.log('showScore value:', this.showScore);
       }
 
@@ -162,6 +163,34 @@ export class UserAccountComponent implements OnInit, OnDestroy {
             },
         });
     }
+    checkLocalScore() {
+        const scoreDataString = localStorage.getItem('localScore');
+        const scoreData: localScoreData | null = scoreDataString ? JSON.parse(scoreDataString) : null;
+        const currentTime = Date.now();
+        const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
+    
+        console.log('Current Time:', currentTime);
+        console.log('Score Data:', scoreData);
+        if (scoreData) {
+            console.log('Score Timestamp:', scoreData.timestamp);
+            console.log('Time Difference:', currentTime - scoreData.timestamp);
+        }
+    
+        const isLocalScoreValid = scoreData && currentTime - scoreData.timestamp < sevenDaysInMs;
+      
+        if (isLocalScoreValid) {
+            this.showScore = true;
+            this.showContractScore = false;
+            this.localScore = scoreData.score;
+            console.log('Local score is valid and shown.');
+        } else {
+            this.showScore = false;
+            this.showContractScore = true;
+            localStorage.removeItem('localScore');
+            console.log('Local score is invalid or expired, removed from storage.');
+        }
+        this.cdr.detectChanges();
+    }
     
     switchChain() {       
         this.metamaskBrightIdService.switchToMannaChain().subscribe({
@@ -206,25 +235,37 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         this.loader = true;
         if (!this.walletAddress) {
           console.error('No wallet address available.');
+          this.loader = false;
           return;
         }
-      
         const timestamp = Math.floor(Date.now() / 1000);
-        this.metamaskBrightIdService.signUserMessage().subscribe(signature => {
-          if (!signature) {
-            console.error('No signature received.');
-            return;
+        this.metamaskBrightIdService.signUserMessage().subscribe({
+          next: (signature) => {
+            if (!signature) {
+              console.error('No signature received.');
+              this.loader = false;
+              return;
+            }
+            this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp).subscribe({
+              next: (response) => {
+                this.loader = false;
+                console.log('Score from server:', response.score);
+                this.verifyService.setServerScore(response.score);
+                this.openDialogScore();
+              },
+              error: (error) => {
+                console.error('Error fetching score from server:', error);
+                this.loader = false;
+              },
+            });
+          },
+          error: (signError) => {
+            console.error('Error signing message:', signError);
+            this.loader = false;
           }
-          this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp).subscribe({
-            next: (response) => {
-              console.log('Score from server:', response.score);
-              this.verifyService.setServerScore(response.score);
-              this.openDialogScore();
-            },
-            error: (error) => console.error('Error fetching score from server:', error),
-          });
-        }, signError => console.error('Error signing message:', signError));
+        });
       }
+      
       
     updateUserScore() {
         this.loader = true;

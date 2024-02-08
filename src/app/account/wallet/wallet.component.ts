@@ -180,13 +180,12 @@ export class WalletComponent implements OnInit {
         subscription.add(() => this.claimDailyLoader = false);
     }
     
-    
-    
       claimWithSignatures(): void {
         if (!this.walletAddress) {
-          this.alertService.open("Please connect to a wallet first.", { status: 'warning' }).subscribe();
-          return;
-        }
+            console.error('walletAddress is null or undefined when attempting to claim with signatures.');
+            this.alertService.open("Please connect to a wallet first.", { status: 'warning' }).subscribe();
+            return;
+          }
     
         if (this.verificationState !== VerifyState.VERIFIED) {
           this.alertService.open('You must be verified to withdraw.', {status: 'warning'}).subscribe();

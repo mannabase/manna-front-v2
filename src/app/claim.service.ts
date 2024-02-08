@@ -58,7 +58,7 @@ export class ClaimService {
   
             if (serverResponse.status === 'ok' && serverResponse.signatures) {
               const formattedSignatures = serverResponse.signatures.map((sig: any) => {
-                return [sig.timestamp, sig.signature.v, sig.signature.r, sig.signature.s];
+                return [sig.day, sig.signature.v, sig.signature.r, sig.signature.s];
               });
   
               console.log('Formatted Signatures:', formattedSignatures); // Log the formatted signatures
@@ -73,7 +73,7 @@ export class ClaimService {
                 }
               );
             } else {
-              errorCallback(`Error: ${serverResponse.msg}`);
+              errorCallback(`Error: ${serverResponse?.msg || 'Invalid server response'}`);
               return EMPTY.subscribe();
             }
           },
@@ -91,5 +91,6 @@ export class ClaimService {
       }
     );
   }
+
   
 }

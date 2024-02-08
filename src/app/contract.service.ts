@@ -88,6 +88,7 @@ export class ContractService {
     );
   }
   claimWithSigsContract(signatures: Array<[number, number, string, string]>): Observable<void> {
+    console.log('claimWithSigsContract called with signatures:', signatures);
     if (!this.claimMannaContract) {
       console.error('Claim Manna Contract not initialized');
       return throwError('Contract not initialized');

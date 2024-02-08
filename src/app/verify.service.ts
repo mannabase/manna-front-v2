@@ -9,6 +9,10 @@ export enum VerifyState {
  NOT_VERIFIED = 'NOT_VERIFIED',
  VERIFIED = 'VERIFIED',
 }
+export interface localScoreData {
+  timestamp: number;
+  score: number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -74,8 +78,7 @@ export enum VerifyState {
         return this.contractService.getScoreThreshold().pipe(
           map(threshold => {
             console.log(`Score threshold fetched: ${threshold}`);
-            this.setServerScore(userScore.score);
-            return (userScore.score / 100000) >= threshold ? VerifyState.VERIFIED : VerifyState.NOT_VERIFIED;
+            return (userScore.score / 1000000) >= threshold ? VerifyState.VERIFIED : VerifyState.NOT_VERIFIED;
           })
         );
       }),
@@ -88,12 +91,24 @@ export enum VerifyState {
       this.verificationStateSubject.next(newState);
     });
   }
+  saveScoreToLocal(score: number) {
+    const scoreData: localScoreData = {
+        timestamp: Date.now(),
+        score: score
+    };
+    localStorage.setItem('localScore', JSON.stringify(scoreData));
+    console.log('Saved local score:', scoreData);
+}
+
   
   setServerScore(score: number | null) {
     console.log(`Setting server score: ${score}`);
-    this.serverScoreSource.next(score);
+     this.serverScoreSource.next(score);
+    if (score !== null) {
+      this.saveScoreToLocal(score);
+      console.log('set server score in local' , score)
+    }
   }
-  
   setContractScore(score: number) {
     console.log(`Emitting new contract score: ${score}`);
     this.contractScoreSource.next(score);

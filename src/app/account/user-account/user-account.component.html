@@ -20,23 +20,26 @@
       <div class="account--humanity--passport">
         <tui-loader [showLoader]="loader" [overlay]="true" *ngIf="showScore && state == MetamaskState.READY">
           <div class="account--humanity--passport--container">
-            <div class="account--humanity--passport--score" >
+            <div class="account--humanity--passport--score">
               <div class="account--humanity--passport--score--text">
-                Your Score:
+                Your Score
               </div>
-              <div *ngIf="contractScore !== null" class="account--humanity--passport--score--num" 
+              <div *ngIf="showContractScore" class="account--humanity--passport--score--num" 
                    [ngStyle]="{'color': verificationState === 'VERIFIED' ? 'green' : 'white'}">
-                {{ (contractScore / 1000000) | number : '1.0-6' || 'loading...' }}
+                {{ ((contractScore ??  0)  / 1000000) | number : '1.0-6' || 'loading...' }}
+              </div>
+              <div *ngIf="!showContractScore" class="account--humanity--passport--score--num">
+                {{ ((localScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}
               </div>
               <div class="account--humanity--passport-mobile--thresold">
                 <div class="account--humanity--passport-mobile--thresold--text">
                   Score Threshold:
                 </div>
-                <div  class="account--humanity--passport-mobile--thresold--num">
+                <div class="account--humanity--passport-mobile--thresold--num">
                   {{ thresholdScore || 'loading...' }}
                 </div>
-              </div>              
-            </div>         
+              </div>
+            </div>
             <div class="account--humanity--passport--update" (click)="updateUserScore()">
               <span *ngIf="loader">Loading...</span>
               <span *ngIf="!loader">Update Score</span>
@@ -44,15 +47,15 @@
           </div>
         </tui-loader>
         <div class="account--humanity--passport--connect-buttun" 
-        (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED">
+             (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED">
           Connect
         </div>
         <div class="account--humanity--passport--connect-buttun" 
-        (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN">
+             (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN">
           Goerly
         </div>
         <tui-loader [showLoader]="loader" [overlay]="true" class="account--humanity--passport--connect-buttun" 
-          *ngIf="state == MetamaskState.READY && !showScore" (click)="checkUserScore()">
+                    *ngIf="state == MetamaskState.READY && !showScore" (click)="checkUserScore()">
           Check Score
         </tui-loader>
         <div class="account--humanity--passport--passport" (click)="openLinkInNewTab()">
@@ -60,6 +63,7 @@
           <p class="m-0">Passport</p>
         </div>
       </div>
+            
       <!-- for mobile version -->
       <div class="account--humanity--passport-mobile">
         <div class="account--humanity--passport-mobile--passport" (click)="openLinkInNewTab()">
