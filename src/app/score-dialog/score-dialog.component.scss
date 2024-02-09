@@ -39,6 +39,7 @@
       cursor: pointer;
       &--text{
           color: white;
+          margin: 0px;
       }
       &:first-child {
           --tui-action-color: var(--tui-positive);

@@ -7,8 +7,12 @@
     Threshold: {{ threshold }}
   </div>
   <div *ngIf="isScoreGreaterThanThreshold; else increaseScoreText">
-    <button *ngIf="!loading" (click)="submitScoreToContract()" class="submit">Submit</button>
-    <button *ngIf="loading" class="submit">Submitting...</button>
+    <button *ngIf="!loading" (click)="submitScoreToContract()" class="submit">
+      <p class="submit--text">Submit</p>
+    </button>
+    <button *ngIf="loading" class="submit"> 
+      <p class="submit--text">Submitting...</p>
+    </button>
   </div>
   <ng-template #increaseScoreText class="low-score-message">
     <p>Please increase your score in <a class="gitcoinLink" href="https://passport.gitcoin.co">Gitcoin Passport</a>.</p>

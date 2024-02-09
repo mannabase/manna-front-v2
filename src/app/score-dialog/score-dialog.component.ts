@@ -55,7 +55,7 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
     this.scoreSubscription.unsubscribe();
   }
   updateIsScoreGreaterThanThreshold() {
-    this.isScoreGreaterThanThreshold = this.score !== null && this.threshold !== null && this.score/ 100000 >= this.threshold;
+    this.isScoreGreaterThanThreshold = this.score !== null && this.threshold !== null && this.score/ 1000000 >= this.threshold;
     console.log(`Score: ${this.score}, Threshold: ${this.threshold}, isScoreGreaterThanThreshold: ${this.isScoreGreaterThanThreshold}`);
   }
   
