@@ -75,6 +75,7 @@ export interface localScoreData {
     this.contractService.getUserScore(userAddress).pipe(
       switchMap(userScore => {
         console.log(`User score fetched: ${userScore.score}`);
+        this.setServerScore(userScore.score)
         return this.contractService.getScoreThreshold().pipe(
           map(threshold => {
             console.log(`Score threshold fetched: ${threshold}`);

@@ -289,21 +289,21 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     openDialogScore() {
         const score = this.verifyService.serverScore$;
         const threshold = this.verifyService.threshold$;
-
+      
         console.log('Attempting to open dialog with score:', score, 'and threshold:', threshold);
-
+      
         const dialogRef = this.dialogService.open(new PolymorpheusComponent(ScoreDialogComponent, this.injector), {
-            data: { score, threshold },
-            dismissible: true,
+          data: { score, threshold },
+          dismissible: true,
         });
-
+      
         dialogRef.subscribe({
-            next: (value: any) => {
-                console.log('Dialog closed with result:', value);
-            },
-            error: (error: any) => {
-                console.error('Error occurred while opening the dialog:', error);
-            }
+          next: (value: any) => {
+            console.log('Dialog closed with result:', value);
+          },
+          error: (error: any) => {
+            console.error('Error occurred while opening the dialog:', error);
+          }
         });
-    }
+      }      
 }

@@ -6,6 +6,7 @@ import { MetamaskBrightIdService, MetamaskState } from 'src/app/metamask-bright-
 import { CommonModule } from '@angular/common';
 import { MannaService } from '../manna.service'; 
 
+
 @Component({
   selector: 'app-score-dialog',
   templateUrl: './score-dialog.component.html',
@@ -14,6 +15,7 @@ import { MannaService } from '../manna.service';
   imports: [CommonModule], 
 })
 export class ScoreDialogComponent implements OnInit, OnDestroy {
+  [x: string]: any;
   isScoreGreaterThanThreshold: boolean = false;
   walletAddress: string | null = null;
   accountSubscription: Subscription = new Subscription();
@@ -21,6 +23,7 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
   score: number | null = null;
   private scoreSubscription: Subscription = new Subscription();
   alertService: any;
+  loading: boolean = false; 
 
   constructor(
     public verifyService: VerifyService,
@@ -49,26 +52,28 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.accountSubscription.unsubscribe();
-    this.scoreSubscription.unsubscribe();
   }
   updateIsScoreGreaterThanThreshold() {
-    this.isScoreGreaterThanThreshold = this.score !== null && this.threshold !== null && this.score >= this.threshold;
+    this.isScoreGreaterThanThreshold = this.score !== null && this.threshold !== null && this.score/ 100000 >= this.threshold;
     console.log(`Score: ${this.score}, Threshold: ${this.threshold}, isScoreGreaterThanThreshold: ${this.isScoreGreaterThanThreshold}`);
   }
   
 
   submitScoreToContract() {
-      // In your component
+    this.loading = true; 
     this.verifyService.sendScoreToContract(this.walletAddress!).subscribe({
-    next: () => {
-    console.log('Score submitted successfully.');
-    // Handle successful submission, e.g., update UI or state
-    },
-    error: (error) => {
-    console.error('Failed to submit score:', error);
-    // Handle error, e.g., show an error message
+      next: () => {
+        console.log('Score submitted successfully.');
+        this.loading = false;
+        this['dialogRef'].close();
+      },
+      error: (error) => {
+        console.error('Failed to submit score:', error);
+        this.loading = false;
+        this.alertService.open('Failed to submit score.', {status: 'error', label: 'Error'});
       },
     });
   }
+  
 }
 
