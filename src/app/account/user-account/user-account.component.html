@@ -29,7 +29,7 @@
                 {{ ((contractScore ??  0)  / 1000000) | number : '1.0-6' || 'loading...' }}
               </div>
               <div *ngIf="!showContractScore" class="account--humanity--passport--score--num">
-                {{ ((localScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}
+                {{ ((localScoreData?.score ??  0)  / 1000000) | number : '1.0-6' || 'loading...' }}
               </div>
               <div class="account--humanity--passport-mobile--thresold">
                 <div class="account--humanity--passport-mobile--thresold--text">

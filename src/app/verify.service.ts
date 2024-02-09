@@ -75,7 +75,7 @@ export interface localScoreData {
     this.contractService.getUserScore(userAddress).pipe(
       switchMap(userScore => {
         console.log(`User score fetched: ${userScore.score}`);
-        this.setServerScore(userScore.score)
+        // this.setServerScore(userScore.score)
         return this.contractService.getScoreThreshold().pipe(
           map(threshold => {
             console.log(`Score threshold fetched: ${threshold}`);
@@ -92,24 +92,27 @@ export interface localScoreData {
       this.verificationStateSubject.next(newState);
     });
   }
-  saveScoreToLocal(score: number) {
-    const scoreData: localScoreData = {
-        timestamp: Date.now(),
-        score: score
-    };
-    localStorage.setItem('localScore', JSON.stringify(scoreData));
-    console.log('Saved local score:', scoreData);
+  setServerScore(score: number | null) {
+  console.log(`Setting server score: ${score}`);
+  this.serverScoreSource.next(score);
+  if (score !== null) {
+      const scoreData: localScoreData = {
+          timestamp: Date.now(),
+          score: score 
+      };
+      localStorage.setItem('localScore', JSON.stringify(scoreData));
+      console.log('Saved server score as localScoreData:', scoreData);
+  }
+}
+getLocalScoreData(): localScoreData | null {
+  const scoreDataString = localStorage.getItem('localScore');
+  if (scoreDataString) {
+      return JSON.parse(scoreDataString) as localScoreData;
+  }
+  return null;
 }
 
-  
-  setServerScore(score: number | null) {
-    console.log(`Setting server score: ${score}`);
-     this.serverScoreSource.next(score);
-    if (score !== null) {
-      this.saveScoreToLocal(score);
-      console.log('set server score in local' , score)
-    }
-  }
+
   setContractScore(score: number) {
     console.log(`Emitting new contract score: ${score}`);
     this.contractScoreSource.next(score);
@@ -140,7 +143,6 @@ export interface localScoreData {
       }),
       tap(() => {
         console.log('Score submitted and updated successfully.');
-        // Optionally, update the UI or state to reflect the successful submission
       }),
       catchError(error => {
         console.error('Error during score submission:', error);

@@ -35,6 +35,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     thresholdScore: number | null = null;
     private subscription: Subscription = new Subscription();
     verificationState: VerifyState;
+    localScoreData: localScoreData | null = null;
 
     @Output() userScoreAvailable: EventEmitter<boolean> = new EventEmitter<boolean>();
     injector: Injector | null | undefined;
@@ -65,6 +66,8 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         this.updateState();
         this.verifyService.fetchContractScore(this.walletAddress!);
         this.verifyService.fetchThreshold(); 
+        this.localScoreData = this.verifyService.getLocalScoreData();
+        this.cdr.detectChanges(); 
         this.subscription.add(
             this.verifyService.contractScore$.subscribe((score) => {
                 if (score !== null && score > 0) {
@@ -249,8 +252,8 @@ export class UserAccountComponent implements OnInit, OnDestroy {
             this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp).subscribe({
               next: (response) => {
                 this.loader = false;
-                console.log('Score from server:', response.score);
-                this.verifyService.setServerScore(response.score);
+                console.log('Score from server:', response.data.score);
+                this.verifyService.setServerScore(response.data.score);
                 this.openDialogScore();
               },
               error: (error) => {

@@ -52,6 +52,7 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.accountSubscription.unsubscribe();
+    this.scoreSubscription.unsubscribe();
   }
   updateIsScoreGreaterThanThreshold() {
     this.isScoreGreaterThanThreshold = this.score !== null && this.threshold !== null && this.score/ 100000 >= this.threshold;
