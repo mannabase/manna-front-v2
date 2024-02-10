@@ -1,6 +1,9 @@
-import { Component, OnInit ,ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit ,ChangeDetectorRef, Inject} from '@angular/core';
 import { MetamaskBrightIdService, MetamaskState } from '../../metamask-bright-id.service';
 import { MannaService } from '../../manna.service';
+import { Router } from '@angular/router';
+import { TuiDialogContext } from '@taiga-ui/core';
+import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 
 
 @Component({
@@ -19,6 +22,8 @@ export class ClaimMannaComponent implements OnInit  {
     private metamaskService: MetamaskBrightIdService,
     private mannaService: MannaService,
     private cdRef: ChangeDetectorRef,
+    private router:Router,
+    @Inject(POLYMORPHEUS_CONTEXT) readonly context: TuiDialogContext<number, number>
   ) {}
 
   ngOnInit() {
@@ -80,5 +85,10 @@ export class ClaimMannaComponent implements OnInit  {
         console.error("Failed to sign the Claim message. Please try again.", error);
       }
     ).add(() => this.loader = false);
+  }
+  openWallet(){
+    this.router.navigate(['account']);
+    this.context.completeWith(0)
+
   }
 }
