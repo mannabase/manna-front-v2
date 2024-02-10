@@ -15,7 +15,12 @@
     </button>
   </div>
   <ng-template #increaseScoreText class="low-score-message">
-    <p>Please increase your score in <a class="gitcoinLink" href="https://passport.gitcoin.co">Gitcoin Passport</a>.</p>
+    <p>
+      Please increase your score in 
+      <a class="gitcoinLink" href="https://passport.gitcoin.co" target="_blank" rel="noopener noreferrer">
+        Gitcoin Passport
+      </a>.
+    </p>
   </ng-template>
 </div>
 <div *ngIf="score === null || threshold === null" class="loading">
