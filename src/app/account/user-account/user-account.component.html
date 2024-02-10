@@ -54,7 +54,7 @@
              (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN">
           Goerly
         </div>
-        <tui-loader [showLoader]="loader" [overlay]="true" class="account--humanity--passport--connect-buttun" 
+        <tui-loader [showLoader]="loader" size="xs" [overlay]="true" class="account--humanity--passport--connect-buttun" 
                     *ngIf="state == MetamaskState.READY && !showScore" (click)="checkUserScore()">
           Check Score
         </tui-loader>

@@ -13,6 +13,7 @@ export class ClaimMannaComponent implements OnInit  {
   loader: boolean = false;
   successMessage: boolean = false;
   claimableAmount: number | null = null;
+  claimDailyLoader: boolean = false;
 
   constructor(
     private metamaskService: MetamaskBrightIdService,
@@ -27,17 +28,24 @@ export class ClaimMannaComponent implements OnInit  {
     this.fetchClaimableAmount()
   }
   private fetchClaimableAmount() {
+    this.claimDailyLoader=true;
     if (this.walletAddress) {
         this.mannaService.getClaimableAmount(this.walletAddress).subscribe(
             response => {
+              this.claimDailyLoader=false;
                 if (response && response.status === 'ok') {
                     this.claimableAmount = response.toClaim;
+                    console.log('claimableAmount',this.claimableAmount)
+                    if (this.claimableAmount === 0) {
+                      this.successMessage = true;
+                    }
                 } else {
                     this.claimableAmount = null;
                 }
                 this.cdRef.detectChanges(); 
             },
             error => {
+                this.claimDailyLoader=false;
                 console.error('Error fetching claimable amount:', error);
                 this.claimableAmount = null;
             }
