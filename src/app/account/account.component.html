@@ -14,11 +14,11 @@
         </div>
         <div class="account-wallet" *ngIf="walletAddress">
             <img src="../../assets/images/accont_wallet-circle.svg" alt="" />
-            <p class="account-wallet--number">
-                {{ walletAddress | slice : 0 : 6 }}...{{
-                    walletAddress | slice : -4
-                }}
+            <p (click)="copyWalletAddress(walletAddress)" class="account-wallet--number">
+                {{ walletAddress | slice : 0 : 6 }}...{{ walletAddress | slice : -4 }}
             </p>
+              
+              
             <!-- <tui-svg src="tuiIconChevronDown"></tui-svg> -->
         </div>
         <!-- <div class="user-info"> -->
