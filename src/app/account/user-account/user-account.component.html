@@ -46,6 +46,10 @@
             </div>
           </div>
         </tui-loader>
+        <div *ngIf="!showContractScore && localScoreData?.score && showScore && state == MetamaskState.READY" 
+              class="submit-score-button-container">
+          <button (click)="checkUserScore()">Submit Score</button>
+        </div>
         <div class="account--humanity--passport--connect-buttun" 
              (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED">
           Connect

@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { MetamaskBrightIdService } from '../metamask-bright-id.service';
 import { VerifyService, VerifyState } from '../verify.service';
 import { ContractService } from '../contract.service';
+import { TuiAlertService } from '@taiga-ui/core';
 
 @Component({
   selector: 'app-account',
@@ -21,7 +22,8 @@ export class AccountComponent implements OnInit, OnDestroy {
   constructor(
     private metamaskService: MetamaskBrightIdService,
     private verifyService: VerifyService,
-    private contractService: ContractService
+    private contractService: ContractService,
+    readonly alertService: TuiAlertService,
   ) {}
 
   changeTab(tabName: string) {
@@ -37,7 +39,6 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // Combine account and verification state subscriptions
     const accountSubscription = this.metamaskService.account$.subscribe(address => {
       this.walletAddress = address;
       if (address) {
@@ -56,7 +57,17 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Unsubscribe from all subscriptions to prevent memory leaks
     this.subscriptions.unsubscribe();
+  }
+  copyWalletAddress(walletAddress: string | null): void {
+    if (!walletAddress) {
+      console.error('No wallet address available to copy.');
+      return;
+    }
+    navigator.clipboard.writeText(walletAddress).then(() => {
+      this.alertService.open("Copied!", {status: "success"}).subscribe();
+    }).catch(err => {
+      this.alertService.open("Not Copied!", {status: "error"}).subscribe();
+    });
   }
 }
