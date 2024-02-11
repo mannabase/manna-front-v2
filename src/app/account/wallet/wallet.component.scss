@@ -1,4 +1,5 @@
 @import "../../../variables";
+@import "../../../assets/generalStyles/mixins.scss";
 
 .wallet-container {
     display: flex;
@@ -254,34 +255,7 @@
                     text-align: center;
                 }
                 &--button {
-                    padding: 10px 60px 10px 60px;
-                    flex-shrink: 0;
-                    border-radius: 38px;
-                    background: linear-gradient(
-                        180deg,
-                        #fc5590 0%,
-                        #f96971 100%
-                    );
-                    font-size: 15px;
-                    font-weight: 600;
-                    border: none;
-                    cursor: pointer;
-                    &--text{
-                        color: white;
-                    }
-                    &:first-child {
-                        --tui-action-color: var(--tui-positive);
-                        --tui-action-background: var(--tui-success-bg);
-                    }
-
-                    &:last-child {
-                        --tui-action-color: var(--tui-negative);
-                        --tui-action-background: var(--tui-error-bg);
-                    }
-                    &:disabled{
-                        background: #8F8F8F;
-                        cursor: not-allowed;
-                    }
+                    @include submit-button;
                 }
             }
         }

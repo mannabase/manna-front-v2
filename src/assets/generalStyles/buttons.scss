@@ -1,7 +1,7 @@
 /* buttons.scss */
 
 /* General styles */
-.white-link {
+@mixin white-link {
   font-size: 16px;
   color: $links-color-white;
   border: none;
@@ -12,5 +12,7 @@
 .white-link:hover {
   color: $links-color-main-hover;
 }
+
+
 
 

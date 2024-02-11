@@ -1,4 +1,5 @@
 @import "../../../variables";
+@import '../../../assets/generalStyles/mixins.scss';
 .account-container {
     display: flex;
     flex-direction: column;
@@ -67,7 +68,7 @@
                 height: 180px;
                 margin: 20px 0px;
             }
-            &--connect-buttun {
+            &--connect-button {
                 background-color: #d9d9d92f;
                 padding: 10px;
                 border-radius: 5px;
@@ -83,11 +84,14 @@
             justify-content: space-between;
             align-items: center;
             justify-self: end;
-            &--connect-buttun {
+            &--connect-button {
                 background-color: #d9d9d92f;
                 padding: 10px 30px 10px 30px;
                 border-radius: 5px;
                 cursor:pointer;
+            }
+            &--submit-button{
+                @include submit-button
             }
             &--container{
                 display: flex;
@@ -103,8 +107,11 @@
                 margin-bottom: 5px;
                 align-items: center;
                 &--text{
+                    display: flex;
+                    align-items: center;
                     font-size: 15px;
                     font-weight: 300;
+                    gap: 4px;
                 }
                 &--num{
                     color: white;
@@ -150,7 +157,7 @@
             width: 100%;
             flex-direction: row;
             align-items: center;
-            &--connect-buttun {
+            &--connect-button {
                 background-color: #d9d9d92f;
                 padding: 5px 15px;
                 border-radius: 5px;
@@ -265,6 +272,15 @@
 .spacer{
     flex-grow: 1;
 }
+.icon{
+    color: #f75a84;
+    margin-bottom: -1px;
+    cursor: pointer;
+    &:hover{
+        color: #85393e;
+    }
+}
+
 @media #{$tablet} {
     .account-container {
         justify-content: start;
