@@ -1,20 +1,17 @@
 
 <div *ngIf="!successMessage"  class="claim">
-    <ng-container *ngIf="claimableAmount !== null; else mannaLoading" class="m-0">
-        <p *ngIf="claimableAmount !== 0">
-            {{ claimableAmount }}
+    <ng-container *ngIf="claimableAmount !== null; else mannaLoading">
+            <p class="claimbleManna">
+                {{ claimableAmount }}
+            </p>
             <span>
                 You can cliam Manna !
             </span>
-        </p>
-        <p *ngIf="claimableAmount === 0">
-            You have claimed your daily Manna !
-        </p>
     </ng-container>
     <ng-template #mannaLoading>
         <tui-loader size="xs"></tui-loader>
     </ng-template>
-    <button tuiButton (click)="claimDailyReward()" size="m" [disabled]="loader || claimableAmount === 0 ">
+    <button tuiButton (click)="claimDailyReward()" size="m" [disabled]="loader" class="mt-3">
         <span *ngIf="!loader">Claim Daily Manna</span>
         <span *ngIf="loader">loading...</span>
     </button>

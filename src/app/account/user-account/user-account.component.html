@@ -87,9 +87,9 @@
         <div class="account--humanity--passport-mobile--score" *ngIf="showScore">
           <div class="account--humanity--passport-mobile--container">
             <div class="flex mb-1 gap-1">
-              <div class="account--humanity--passport-mobile--score--text">
+              <span class="account--humanity--passport-mobile--score--text">
               Your Score:
-              </div>
+              </span>
               <div *ngIf="verifyService.contractScore$ | async as contractScore" class="account--humanity--passport-mobile--score--num" 
                 [ngStyle]="{'color': verificationState === 'VERIFIED'  ? 'green' : 'white'}">
                 {{ (contractScore / 1000000) | number : '1.0-6' }}
@@ -120,11 +120,4 @@
         </div>
       </div>
   </div>
-  <!-- <div class="account--email">
-    <div class="account--email--title">Email Newsletter</div> 
-    <div class="account--email--box">
-      <input type="email" class="account--email--box--input" placeholder="Enter your email" />
-      <button class="account--email--box--update">Update</button>
-    </div>
-  </div> -->
 </div>

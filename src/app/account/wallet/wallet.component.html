@@ -49,15 +49,6 @@
             <span class="wallets--options--buttuns--text">Goerli</span>
             <tui-svg src="tuiIconChevronRight"></tui-svg>
         </div>
-        <div class="wallets--options--buttuns">
-            <img
-                src="../../../assets/images/account-wallet-gitCoin-icon.svg"
-                alt="gitcoin"
-                class="wallets--options--buttuns--icon"
-            />
-            <span class="wallets--options--buttuns--text">Gitcoin Passport</span>
-            <tui-svg src="tuiIconChevronRight"></tui-svg>
-        </div>
     </div>
 </div>
 
@@ -144,10 +135,10 @@
                 <div class="panel--dashboard--daily--header--reward">Daily Reward</div>
                 <div class="panel--dashboard--daily--header--number">
                     <ng-container *ngIf="claimableAmount !== null; else mannaLoading" class="m-0">
-                        <p *ngIf="claimableAmount !== 0">
+                        <p *ngIf="claimableAmount !== 0" class="m-0">
                             {{ claimableAmount }}
                         </p>
-                        <p *ngIf="claimableAmount === 0" class="algin-text-center">
+                        <p *ngIf="claimableAmount === 0" class="algin-text-center m-0">
                             You have claimed your daily Manna !
                         </p>
                     </ng-container>
