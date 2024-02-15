@@ -117,4 +117,15 @@
         flex-wrap: wrap;
         width: $width-of-mainPage-desktop;
     }
+    .copyRight-container{
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+    .policy-conteiner{
+        display: flex;
+        gap:10px;
+        margin-left: 10px;
+        position: relative;
+    }
 }

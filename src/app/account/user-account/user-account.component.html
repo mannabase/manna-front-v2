@@ -82,16 +82,19 @@
             <tui-svg src="tuiIconRotateCw"></tui-svg>
           </ng-template>
         </div>
-        <div class="account--humanity--passport-mobile--score" *ngIf="showScore">
+        <div class="account--humanity--passport-mobile--score" *ngIf="showScore && state == MetamaskState.READY">
           <div class="account--humanity--passport-mobile--container">
             <div class="flex mb-1 gap-1">
               <span class="account--humanity--passport-mobile--score--text">
               Your Score:
               </span>
-              <div *ngIf="verifyService.contractScore$ | async as contractScore" class="account--humanity--passport-mobile--score--num" 
-                [ngStyle]="{'color': verificationState === 'VERIFIED'  ? 'green' : 'white'}">
-                {{ (contractScore / 1000000) | number : '1.0-6' }}
-              </div>
+              <div *ngIf="showContractScore" class="account--humanity--passport-mobile--score--num" 
+                    [ngStyle]="{'color': verificationState === 'VERIFIED' ? 'green' : 'white'}">
+                    {{ ((contractScore ??  0)  / 1000000) | number : '1.0-6' || 'loading...' }}
+                </div>
+                <div *ngIf="!showContractScore" class="account--humanity--passport-mobile--score--num">
+                    {{ ((localScoreData?.score ??  0)  / 1000000) | number : '1.0-6' || 'loading...' }}
+                </div>
               <img *ngIf="verificationState === 'VERIFIED' " class="account--humanity--passport-mobile--score--icon" src="../../../assets/images/account-account-green-Check.svg">
             </div>
             <div class="account--humanity--passport-mobile--thresold">
@@ -105,15 +108,15 @@
           </div>
         </div>
         <div class="account--humanity--passport-mobile--connect-button"
-          (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED && !showScore">
+          (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED">
           Connect
         </div>
         <div class="account--humanity--passport-mobile--connect-button" 
-          (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN && !showScore">
+          (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN">
             Arbitrum
         </div>
-        <div (click)="openDialogScore()" class="account--humanity--passport-mobile--connect-button" 
-          *ngIf="state == MetamaskState.READY && !showScore">
+        <div (click)="checkUserScore()" class="account--humanity--passport-mobile--connect-button" 
+        *ngIf="state == MetamaskState.READY && !showScore">
             Check Score
         </div>
       </div>

@@ -171,6 +171,8 @@ export class WalletComponent implements OnInit {
           () => {
             this.alertService.open('Daily reward claimed successfully.', { status: 'success' }).subscribe();
             this.fetchClaimableAmount(); 
+            this.fetchBalances();
+            this.fetchMannabaseBalance()
           },
           (errorMessage) => {
             this.alertService.open(errorMessage, { status: 'error' }).subscribe();
