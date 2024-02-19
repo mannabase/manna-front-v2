@@ -272,4 +272,19 @@ export class WalletComponent implements OnInit {
             // .pipe(switchMap(index => this.alerts.open(`Selected: ${actions[index]}`)))
             .subscribe()
     }  
+    openDialogScore() {
+        const dialogRef = this.dialogService.open(new PolymorpheusComponent(DailyRewardDialogComponent, this.injector), {
+            data: { claimableAmount: this.claimableAmount },
+        });
+      
+        dialogRef.subscribe({
+            next: (value: any) => {
+                console.log('Dialog closed with result:', value);
+            },
+            error: (error: any) => {
+                console.error('Error occurred while opening the dialog:', error);
+            }
+        });
+    }
+    
 }

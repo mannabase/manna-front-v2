@@ -1,22 +1,52 @@
-import { Component, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { Component,OnInit, ChangeDetectorRef, EventEmitter, Output, Inject } from '@angular/core';
 import { MetamaskBrightIdService } from '../../../metamask-bright-id.service';
 import { MannaService } from '../../../manna.service';
-import { TuiAlertService } from '@taiga-ui/core';
+import { TuiAlertService, TuiDialogContext } from '@taiga-ui/core';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-daily-reward-dialog',
   templateUrl: './daily-reward-dialog.component.html',
   styleUrls: ['./daily-reward-dialog.component.scss'],
 })
-export class DailyRewardDialogComponent {
+export class DailyRewardDialogComponent implements OnInit {
   claimLoader: boolean = false;
   mannabaseBalance: number | null = null;
   mannabaseBalanceMessage: string | null = null;
+  claimableAmount: number | null = null; 
+  private accountSubscription: Subscription = new Subscription();
   constructor(
     private metamaskBrightIdService: MetamaskBrightIdService,
     private mannaService: MannaService,
     private alertService: TuiAlertService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
   ) {}
+  ngOnInit(): void {
+    this.accountSubscription = this.metamaskBrightIdService.account$.subscribe((walletAddress) => {
+      if (walletAddress) {
+        this.fetchClaimableAmount(walletAddress);
+      }
+    });
+  }
+  ngOnDestroy(): void {
+    this.accountSubscription.unsubscribe();
+  }
+
+  private fetchClaimableAmount(walletAddress: string): void {
+    this.mannaService.getClaimableAmount(walletAddress).subscribe(
+      (response) => {
+        if (response && response.status === 'ok') {
+          this.claimableAmount = response.toClaim;
+        } else {
+          this.claimableAmount = null;
+        }
+        this.cdRef.detectChanges();
+      },
+      (error) => {
+        console.error('Error fetching claimable amount:', error);
+        this.claimableAmount = null;
+      }
+    );
+  }
 
   claimManna(): void {
     this.claimLoader = true;
@@ -36,6 +66,7 @@ export class DailyRewardDialogComponent {
         this.mannaService.sendCheckIn(walletAddress, signature, timestamp).subscribe(
           serverResponse => {
             this.fetchMannabaseBalance();
+            this.fetchClaimableAmount(walletAddress);
             this.claimLoader = false; 
           },
           error => {
