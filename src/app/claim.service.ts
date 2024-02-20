@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { MetamaskBrightIdService } from './metamask-bright-id.service';
 import { MannaService } from './manna.service';
 import { ContractService } from './contract.service';
@@ -9,33 +9,41 @@ import { Subscription, EMPTY } from 'rxjs';
   providedIn: 'root',
 })
 export class ClaimService {
+  onClaimSuccess: EventEmitter<void> = new EventEmitter();
   constructor(
     private metamaskBrightIdService: MetamaskBrightIdService,
     private mannaService: MannaService,
     private contractService: ContractService,
-    private alertService: TuiAlertService
+    private alertService: TuiAlertService,
   ) {}
 
   claimDailyReward(walletAddress: string, successCallback: () => void, errorCallback: (errorMessage: string) => void): Subscription {
+    console.log('ClaimDailyReward method called'); // Verify method is called
     const timestamp = Math.floor(Date.now() / 1000);
     const message = `Check-in\naddress: ${walletAddress}\ntimestamp: ${timestamp}`;
 
     return this.metamaskBrightIdService.signMessage(message).subscribe(
       signature => {
+        console.log('Signature obtained, attempting to send check-in'); // Verify signature process
         return this.mannaService.sendCheckIn(walletAddress, signature, timestamp).subscribe(
           () => {
+            console.log('Emitting onClaimSuccess event'); // This is your original log
+            this.onClaimSuccess.emit();
             successCallback();
           },
           error => {
+            console.error("Failed to Claim. Please try again.", error);
             errorCallback("Failed to Claim. Please try again.");
           }
         );
       },
       error => {
+        console.error("Failed to sign the Claim message. Please try again.", error);
         errorCallback("Failed to sign the Claim message. Please try again.");
       }
     );
-  }
+}
+
 
   claimWithSignatures(walletAddress: string, isVerified: boolean, successCallback: () => void, errorCallback: (errorMessage: string) => void): Subscription {
     if (!isVerified) {

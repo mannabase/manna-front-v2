@@ -52,7 +52,8 @@ export class WalletComponent implements OnInit {
     VerifyState = VerifyState;
     verificationState: VerifyState = VerifyState.NOT_VERIFIED;
     claimableAmount: number | null = null;
-    connectedToMetamask: boolean = false
+    connectedToMetamask: boolean = false;
+    private claimSuccessSubscription: Subscription | undefined;
     
 
     constructor(
@@ -76,11 +77,15 @@ export class WalletComponent implements OnInit {
         this.subscribeToAccountChanges();
         this.subscribeToContractInitialization();
         this.subscribeToVerificationState();
+        this.subscribeToClaimSuccess();
       }
     ngOnDestroy() {
         if (this.accountSubscription) {
             this.accountSubscription.unsubscribe();
         }
+        if (this.claimSuccessSubscription) {
+            this.claimSuccessSubscription.unsubscribe();
+          }
     }
     private subscribeToAccountChanges() {
         this.accountSubscription = this.metamaskBrightIdService.account$.subscribe(address => {
@@ -116,6 +121,12 @@ export class WalletComponent implements OnInit {
     toggleWalletPage() {
         this.showWalletPage = !this.showWalletPage
     }
+    private subscribeToClaimSuccess() {
+        this.claimSuccessSubscription = this.claimService.onClaimSuccess.subscribe(() => {
+            console.log('Claim success event received, fetching mannabase balance...');
+          this.fetchBalances();
+        });
+      }
     private fetchBalances() {
         if (this.walletAddress) {
             this.contractService.balanceOf(this.walletAddress).subscribe(
@@ -152,9 +163,13 @@ export class WalletComponent implements OnInit {
             this.mannaService.getMannabaseBalance(this.walletAddress).subscribe(
                 response => {
                     if (response && response.status === 'ok') {
+                        console.log('Mannabase balance fetched:', response.balance);
                         this.mannabaseBalance = response.balance;
+                        this.cdRef.detectChanges(); 
                     }
-                    this.cdRef.detectChanges();
+                },
+                error => {
+                    console.error('Error fetching mannabase balance:', error);
                 }
             );
         }

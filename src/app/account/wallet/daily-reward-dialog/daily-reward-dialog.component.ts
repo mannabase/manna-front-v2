@@ -1,8 +1,12 @@
 import { Component,OnInit, ChangeDetectorRef, EventEmitter, Output, Inject } from '@angular/core';
 import { MetamaskBrightIdService } from '../../../metamask-bright-id.service';
 import { MannaService } from '../../../manna.service';
-import { TuiAlertService, TuiDialogContext } from '@taiga-ui/core';
+import { TuiAlertOptions, TuiAlertService, TuiDialogContext } from '@taiga-ui/core';
 import { Subscription } from 'rxjs';
+import { TuiBaseDialogContext } from '@taiga-ui/cdk';
+import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
+import { ClaimService } from '../../../claim.service';
+
 @Component({
   selector: 'app-daily-reward-dialog',
   templateUrl: './daily-reward-dialog.component.html',
@@ -14,11 +18,14 @@ export class DailyRewardDialogComponent implements OnInit {
   mannabaseBalanceMessage: string | null = null;
   claimableAmount: number | null = null; 
   private accountSubscription: Subscription = new Subscription();
+  walletAddress: any;
+  claimDailyLoader: boolean | undefined;
   constructor(
     private metamaskBrightIdService: MetamaskBrightIdService,
     private mannaService: MannaService,
     private alertService: TuiAlertService,
     private cdRef: ChangeDetectorRef,
+    private claimService: ClaimService,
   ) {}
   ngOnInit(): void {
     this.accountSubscription = this.metamaskBrightIdService.account$.subscribe((walletAddress) => {
@@ -60,26 +67,19 @@ export class DailyRewardDialogComponent implements OnInit {
   
     const timestamp = Math.floor(Date.now() / 1000);
     const message = `Check-in\naddress: ${walletAddress}\ntimestamp: ${timestamp}`;
-  
-    this.metamaskBrightIdService.signMessage(message).subscribe(
-      signature => {
-        this.mannaService.sendCheckIn(walletAddress, signature, timestamp).subscribe(
-          serverResponse => {
-            this.fetchMannabaseBalance();
-            this.fetchClaimableAmount(walletAddress);
-            this.claimLoader = false; 
-          },
-          error => {
-            this.alertService.open("Failed to Claim. Please try again.", { status: 'error' }).subscribe();
-            this.claimLoader = false; 
-          }
-        );
+    const subscription = this.claimService.claimDailyReward(
+      walletAddress,
+      () => {
+        this.alertService.open('Daily reward claimed successfully.', { status: 'success' }).subscribe();
+        this.fetchMannabaseBalance();
       },
-      error => {
-        this.alertService.open("Failed to sign the Claim message. Please try again.", { status: 'error' }).subscribe();
-        this.claimLoader = false; 
+      (errorMessage: PolymorpheusContent<TuiAlertOptions<any> & TuiBaseDialogContext<void>>) => {
+        this.alertService.open(errorMessage, { status: 'error' }).subscribe();
       }
     );
+  }
+  fetchBalances() {
+    throw new Error('Method not implemented.');
   }
   private fetchMannabaseBalance() {
     const walletAddress = this.metamaskBrightIdService.account$.value; 
