@@ -95,7 +95,7 @@ export class MannaService {
     return this.http.get<any>(`${serverUrl}/manna/balance/${walletAddress}`).pipe(
         tap(response => {
             if (response.status === 'ok') {
-                this.alertService.open(`Balance: ${response.balance}`, { status: 'success', label: 'mannabase' }).subscribe();
+                // this.alertService.open(`Balance: ${response.balance}`, { status: 'success', label: 'mannabase' }).subscribe();
             } else {
                 this.alertService.open(`Error: ${response.msg}`, { status: 'warning', label: 'Warning' }).subscribe();
             }

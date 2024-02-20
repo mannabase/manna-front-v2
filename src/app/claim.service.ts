@@ -18,28 +18,23 @@ export class ClaimService {
   ) {}
 
   claimDailyReward(walletAddress: string, successCallback: () => void, errorCallback: (errorMessage: string) => void): Subscription {
-    console.log('ClaimDailyReward method called'); // Verify method is called
     const timestamp = Math.floor(Date.now() / 1000);
     const message = `Check-in\naddress: ${walletAddress}\ntimestamp: ${timestamp}`;
 
     return this.metamaskBrightIdService.signMessage(message).subscribe(
       signature => {
-        console.log('Signature obtained, attempting to send check-in'); // Verify signature process
         return this.mannaService.sendCheckIn(walletAddress, signature, timestamp).subscribe(
           () => {
-            console.log('Emitting onClaimSuccess event'); // This is your original log
             this.onClaimSuccess.emit();
             successCallback();
           },
           error => {
             console.error("Failed to Claim. Please try again.", error);
-            errorCallback("Failed to Claim. Please try again.");
           }
         );
       },
       error => {
         console.error("Failed to sign the Claim message. Please try again.", error);
-        errorCallback("Failed to sign the Claim message. Please try again.");
       }
     );
 }

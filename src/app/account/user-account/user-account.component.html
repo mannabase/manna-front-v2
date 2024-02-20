@@ -39,12 +39,12 @@
                   {{ thresholdScore || 'loading...' }}
                 </div>
               </div>
-            </div>
-            <div *ngIf="!showContractScore && (localScoreData?.score ??  0) > (thresholdScore ??  0)" 
-                  class="account--humanity--passport--update" 
-                  (click)="checkUserScore()">
-                  <span *ngIf="loader">Loading...</span>
-                  <span *ngIf="!loader">Submit Score</span>
+              <div *ngIf="!showContractScore && (localScoreData?.score ??  0) > (thresholdScore ??  0)" 
+                    class="account--humanity--passport--update" 
+                    (click)="checkUserScore()">
+                    <span *ngIf="loader">Loading...</span>
+                    <span *ngIf="!loader">Submit Score</span>
+              </div>
             </div>
           </div>
         </tui-loader>
@@ -74,7 +74,7 @@
         </div>
         <div class="spacer">
         </div>
-        <div class="account--humanity--passport--update" (click)="updateUserScore()" *ngIf="showScore">
+        <div class="account--humanity--passport--update" (click)="checkUserScore()" *ngIf="showScore && state == MetamaskState.READY">
           <ng-container *ngIf="loader; else updateScoreText">
             <span>Loading...</span>
           </ng-container>
