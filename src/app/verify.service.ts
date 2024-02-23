@@ -7,6 +7,7 @@ import { MannaService } from './manna.service';
 
 export enum VerifyState {
  NOT_VERIFIED = 'NOT_VERIFIED',
+ EXPIRED = 'EXPIRED',
  VERIFIED = 'VERIFIED',
 }
 export interface localScoreData {
@@ -70,28 +71,43 @@ export interface localScoreData {
       error: (error) => console.error('Error fetching score threshold:', error),
     });
  }
-  verifyUser(userAddress: string) {
-    console.log(`Verifying user with address: ${userAddress}`);
-    this.contractService.getUserScore(userAddress).pipe(
-      switchMap(userScore => {
-        console.log(`User score fetched: ${userScore.score}`);
-        // this.setServerScore(userScore.score)
+ verifyUser(userAddress: string) {
+  console.log(`Verifying user with address: ${userAddress}`);
+  this.contractService.getUserScore(userAddress).pipe(
+    switchMap(userScore => {
+      console.log(`User score fetched: ${userScore.score}, timestamp: ${userScore.timestamp}`);
+      const oneMonthAgo = Date.now() - (30 * 24 * 60 * 60 * 1000); // 30 days in milliseconds
+      const scoreDate = new Date(userScore.timestamp);
+      if (scoreDate.getTime() < oneMonthAgo) {
+        return this.contractService.getScoreThreshold().pipe(
+          map(threshold => {
+            console.log(`Score threshold fetched: ${threshold}`);
+            if (userScore.score > threshold) {
+              return VerifyState.EXPIRED;
+            } else {
+              return VerifyState.NOT_VERIFIED;
+            }
+          })
+        );
+      } else {
         return this.contractService.getScoreThreshold().pipe(
           map(threshold => {
             console.log(`Score threshold fetched: ${threshold}`);
             return (userScore.score / 1000000) >= threshold ? VerifyState.VERIFIED : VerifyState.NOT_VERIFIED;
           })
         );
-      }),
-      catchError(error => {
-        console.error('Error during user verification:', error);
-        return of(VerifyState.NOT_VERIFIED); 
-      })
-    ).subscribe(newState => {
-      console.log(`Verification state updated: ${newState}`);
-      this.verificationStateSubject.next(newState);
-    });
-  }
+      }
+    }),
+    catchError(error => {
+      console.error('Error during user verification:', error);
+      return of(VerifyState.NOT_VERIFIED); 
+    })
+  ).subscribe(newState => {
+    console.log(`Verification state updated: ${newState}`);
+    this.verificationStateSubject.next(newState);
+  });
+}
+
   setServerScore(score: number | null) {
   console.log(`Setting server score: ${score}`);
   this.serverScoreSource.next(score);

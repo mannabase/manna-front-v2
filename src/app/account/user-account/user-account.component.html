@@ -24,9 +24,15 @@
               <div class="account--humanity--passport--score--text">
                 Your Score  <i class="fa-solid fa-rotate-right fa-xs icon" (click)="checkUserScore()"></i>
               </div>
-                <div *ngIf="showContractScore" class="account--humanity--passport--score--num" 
+                <div *ngIf="showContractScore && verificationState !== 'EXPIRED'" class="account--humanity--passport--score--num" 
                    [ngStyle]="{'color': verificationState === 'VERIFIED' ? 'green' : 'white'}">
                     {{ ((contractScore ??  0)  / 1000000) | number : '1.0-6' || 'loading...' }}
+                </div>
+                <div *ngIf="showContractScore && verificationState === 'EXPIRED'" 
+                      class="account--humanity--passport--connect-button" 
+                      (click)="updateUserScore()">
+                      <span *ngIf="loader">Updating...</span>
+                      <span *ngIf="!loader">Update Score</span>
                 </div>
                 <div *ngIf="!showContractScore" class="account--humanity--passport--score--num">
                     {{ ((localScoreData?.score ??  0)  / 1000000) | number : '1.0-6' || 'loading...' }}
