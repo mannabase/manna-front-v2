@@ -23,14 +23,14 @@
 
 //     checkVerification() {
 //         this.loading = true;
-//         this.metamaskBrightIdService.checkBrightIdState()
+//         this.metamaskService.checkBrightIdState()
 //             .subscribe(state => {
 //                 this.state = state;
 //                 this.loading = false;
 //                 if (state === BrightIdState.VERIFIED) {
 //                     this.nextStep.emit();
 //                 } else {
-//                     this.qrCodeValue = this.metamaskBrightIdService.qrcodeValue;
+//                     this.qrCodeValue = this.metamaskService.qrcodeValue;
 //                     if (this.qrCodeValue) {
 //                         this.alertService.open("Please complete your BrightID verification", {
 //                             status: "error"

@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
-import { MetamaskBrightIdService ,MetamaskState} from 'src/app/metamask-bright-id.service';
+import { MetamaskService ,MetamaskState} from 'src/app/metamask.service';
 import { VerifyState, VerifyService } from 'src/app/verify.service';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { ClaimDialogComponent } from '../claim-dialog/claim-dialog.component';
@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
     erthHomePage: string = '../../assets/images/erth.webp'
 
     constructor(
-        readonly metamaskBrightIdService: MetamaskBrightIdService,
+        readonly metamaskService: MetamaskService,
         readonly dialogService: TuiDialogService,
         readonly injector: Injector,
         readonly alertService: TuiAlertService
@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
         {
             title: 'Spend',
             description: 'Use manna for what you love. Join a growing community of manna users and discover new ways to use it.',
-            
+
             link: 'Start Now',
             imagePath: '../../assets/images/spend.png',
         },

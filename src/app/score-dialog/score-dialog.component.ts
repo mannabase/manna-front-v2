@@ -1,80 +1,49 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { VerifyService } from '../verify.service';
-import { ContractService } from '../contract.service';
-import { Subscription } from 'rxjs';
-import { MetamaskBrightIdService, MetamaskState } from 'src/app/metamask-bright-id.service';
-import { CommonModule } from '@angular/common';
-import { MannaService } from '../manna.service'; 
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core'
+import {VerifyService} from '../verify.service'
+import {CommonModule} from '@angular/common'
+import {TuiLetModule} from "@taiga-ui/cdk"
+import {TuiAlertService, TuiDialogContext, TuiLoaderModule} from "@taiga-ui/core"
+import {MetamaskService} from "../metamask.service"
+import {POLYMORPHEUS_CONTEXT} from "@tinkoff/ng-polymorpheus"
 
 
 @Component({
-  selector: 'app-score-dialog',
-  templateUrl: './score-dialog.component.html',
-  styleUrls: ['./score-dialog.component.scss'],
-  standalone: true,
-  imports: [CommonModule], 
+    selector: 'app-score-dialog',
+    templateUrl: './score-dialog.component.html',
+    styleUrls: ['./score-dialog.component.scss'],
+    standalone: true,
+    imports: [CommonModule, TuiLetModule, TuiLoaderModule],
 })
 export class ScoreDialogComponent implements OnInit, OnDestroy {
-  [x: string]: any;
-  isScoreGreaterThanThreshold: boolean = false;
-  walletAddress: string | null = null;
-  accountSubscription: Subscription = new Subscription();
-  threshold: number | null = null;
-  score: number | null = null;
-  private scoreSubscription: Subscription = new Subscription();
-  alertService: any;
-  loading: boolean = false; 
+    loading: boolean = false
 
-  constructor(
-    public verifyService: VerifyService,
-    private contractService: ContractService,
-    private metamaskService: MetamaskBrightIdService,
-    private mannaService: MannaService,
-  ) {
-    this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
-      this.walletAddress = address;
-      if (address) {
-        this.verifyService.verifyUser(address);
-      }
-    });
-  }
+    constructor(
+        public verifyService: VerifyService,
+        public alertService: TuiAlertService,
+        public metamaskService: MetamaskService,
+        @Inject(POLYMORPHEUS_CONTEXT) readonly context: TuiDialogContext<number, number>,
+    ) {
+    }
 
-  ngOnInit() {
-    this.verifyService.threshold$.subscribe((threshold) => {
-      this.threshold = threshold;
-      this.updateIsScoreGreaterThanThreshold();
-    });
-    this.scoreSubscription = this.verifyService.serverScore$.subscribe((serverScore) => {
-      this.score = serverScore;
-      this.updateIsScoreGreaterThanThreshold();
-    });
-  }
+    ngOnInit() {
+    }
 
-  ngOnDestroy() {
-    this.accountSubscription.unsubscribe();
-    this.scoreSubscription.unsubscribe();
-  }
-  updateIsScoreGreaterThanThreshold() {
-    this.isScoreGreaterThanThreshold = this.score !== null && this.threshold !== null && this.score/ 1000000 >= this.threshold;
-    console.log(`Score: ${this.score}, Threshold: ${this.threshold}, isScoreGreaterThanThreshold: ${this.isScoreGreaterThanThreshold}`);
-  }
-  
+    ngOnDestroy() {
+    }
 
-  submitScoreToContract() {
-    this.loading = true; 
-    this.verifyService.sendScoreToContract(this.walletAddress!).subscribe({
-      next: () => {
-        console.log('Score submitted successfully.');
-        this.loading = false;
-        this['dialogRef'].close();
-      },
-      error: (error) => {
-        console.error('Failed to submit score:', error);
-        this.loading = false;
-        this.alertService.open('Failed to submit score.', {status: 'error', label: 'Error'});
-      },
-    });
-  }
-  
+    submitScoreToContract() {
+        this.loading = true
+        this.verifyService.sendScoreToContract(this.metamaskService.account$.value).subscribe({
+            next: () => {
+                this.loading = false
+                this.context.completeWith(0)
+            },
+            error: (error) => {
+                this.loading = false
+                this.alertService.open('Failed to submit score.', {status: 'error', label: 'Error'})
+            },
+        })
+    }
+
 }
 

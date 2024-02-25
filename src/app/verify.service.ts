@@ -1,170 +1,153 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription, of, throwError } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { ContractService } from './contract.service';
-import { MetamaskBrightIdService } from './metamask-bright-id.service';
-import { MannaService } from './manna.service'; 
+import {Injectable} from '@angular/core'
+import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs'
+import {catchError, switchMap, tap} from 'rxjs/operators'
+import {ContractService} from './contract.service'
+import {MetamaskService} from './metamask.service'
+import {MannaService} from './manna.service'
+import {TuiAlertService} from "@taiga-ui/core"
 
 export enum VerifyState {
- NOT_VERIFIED = 'NOT_VERIFIED',
- EXPIRED = 'EXPIRED',
- VERIFIED = 'VERIFIED',
+    NOT_VERIFIED = 'NOT_VERIFIED',
+    EXPIRED = 'EXPIRED',
+    VERIFIED = 'VERIFIED',
 }
+
 export interface localScoreData {
-  timestamp: number;
-  score: number;
+    timestamp: number;
+    score: number;
 }
 
 @Injectable({
-  providedIn: 'root',
- })
- export class VerifyService {
-  [x: string]: any;
-  public verificationStateSubject = new BehaviorSubject<VerifyState>(VerifyState.NOT_VERIFIED);
-  verificationState$ = this.verificationStateSubject.asObservable();
-  private contractScoreSource = new BehaviorSubject<number | null>(null);
-  contractScore$ = this.contractScoreSource.asObservable();
-  private serverScoreSource = new BehaviorSubject<number | null>(null);
-  serverScore$ = this.serverScoreSource.asObservable();
-  private thresholdSource = new BehaviorSubject<number | null>(null);
-  threshold$ = this.thresholdSource.asObservable();
-  walletAddress: string | null = null;
-  accountSubscription: Subscription = new Subscription();
- 
-  constructor(
-    private contractService: ContractService, 
-    private metamaskService: MetamaskBrightIdService,
-    private mannaService: MannaService,
-    ) 
-  {
-    this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
-      this.walletAddress = address;
-      if (address) {
-        console.log('Request to get score and threshold')
-        this.fetchContractScore(address); 
-        this.fetchThreshold();
-      }
-    });
-  }
-  public fetchContractScore(address?: string) {
-    const walletAddress = address || this.walletAddress;
-    if (!walletAddress) {
-      console.error('Wallet address not available.');
-      return;
-    }
-    console.log(`Attempting to fetch contract score for address: ${walletAddress}`);
-    this.contractService.getUserScore(walletAddress).subscribe({
-      next: (scoreObj) => {
-        console.log(`Contract score fetched: ${scoreObj.score}`);
-        this.setContractScore(scoreObj.score);
-      },
-      error: (error) => console.error('Error fetching contract score:', error),
-    });
- }
- public fetchThreshold() {
-    console.log('Attempting to fetch threshold');
-    this.contractService.getScoreThreshold().subscribe({
-      next: (threshold) => {
-        console.log(`Score threshold fetched: ${threshold}`);
-        this.setThreshold(threshold);
-      },
-      error: (error) => console.error('Error fetching score threshold:', error),
-    });
- }
- verifyUser(userAddress: string) {
-  console.log(`Verifying user with address: ${userAddress}`);
-  this.contractService.getUserScore(userAddress).pipe(
-    switchMap(userScore => {
-      console.log(`User score fetched: ${userScore.score}, timestamp: ${userScore.timestamp}`);
-      const oneMonthAgo = Date.now() - (30 * 24 * 60 * 60 * 1000); // 30 days in milliseconds
-      const scoreDate = new Date(userScore.timestamp);
-      if (scoreDate.getTime() < oneMonthAgo) {
-        return this.contractService.getScoreThreshold().pipe(
-          map(threshold => {
-            console.log(`Score threshold fetched: ${threshold}`);
-            if (userScore.score > threshold) {
-              return VerifyState.EXPIRED;
-            } else {
-              return VerifyState.NOT_VERIFIED;
-            }
-          })
-        );
-      } else {
-        return this.contractService.getScoreThreshold().pipe(
-          map(threshold => {
-            console.log(`Score threshold fetched: ${threshold}`);
-            return (userScore.score / 1000000) >= threshold ? VerifyState.VERIFIED : VerifyState.NOT_VERIFIED;
-          })
-        );
-      }
-    }),
-    catchError(error => {
-      console.error('Error during user verification:', error);
-      return of(VerifyState.NOT_VERIFIED); 
-    })
-  ).subscribe(newState => {
-    console.log(`Verification state updated: ${newState}`);
-    this.verificationStateSubject.next(newState);
-  });
-}
+    providedIn: 'root',
+})
+export class VerifyService {
+    private verificationStateSubject = new BehaviorSubject<VerifyState>(VerifyState.NOT_VERIFIED)
+    verificationState$ = this.verificationStateSubject.asObservable()
 
-  setServerScore(score: number | null) {
-  console.log(`Setting server score: ${score}`);
-  this.serverScoreSource.next(score);
-  if (score !== null) {
-      const scoreData: localScoreData = {
-          timestamp: Date.now(),
-          score: score 
-      };
-      localStorage.setItem('localScore', JSON.stringify(scoreData));
-      console.log('Saved server score as localScoreData:', scoreData);
-  }
-}
-getLocalScoreData(): localScoreData | null {
-  const scoreDataString = localStorage.getItem('localScore');
-  if (scoreDataString) {
-      return JSON.parse(scoreDataString) as localScoreData;
-  }
-  return null;
-}
+    private contractScoreSource = new BehaviorSubject<number | undefined>(undefined)
+    contractScore$ = this.contractScoreSource.asObservable()
 
+    private serverScoreSource = new BehaviorSubject<number | null>(null)
+    serverScore$ = this.serverScoreSource.asObservable()
 
-  setContractScore(score: number) {
-    console.log(`Emitting new contract score: ${score}`);
-    this.contractScoreSource.next(score);
-  }
+    private thresholdSource = new BehaviorSubject<number | undefined>(undefined)
+    threshold$ = this.thresholdSource.asObservable()
 
-  setThreshold(threshold: number) {
-    console.log(`Emitting new threshold: ${threshold}`);
-    this.thresholdSource.next(threshold);
-  }
+    walletAddress: string | null = null
+    accountSubscription: Subscription = new Subscription()
+    serverScoreSignature?: string
 
-  sendScoreToContract(walletAddress: string): Observable<void> {
-    if (!walletAddress) {
-      console.error('No wallet address available.');
-      return throwError('No wallet address provided');
+    constructor(
+        private contractService: ContractService,
+        private metamaskService: MetamaskService,
+        private mannaService: MannaService,
+        private readonly alertService: TuiAlertService,
+    ) {
+        this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
+            this.walletAddress = address
+            if (address)
+                this.updateVerificationState()
+        })
+
+        this.serverScoreSource.subscribe(score => {
+                if (score != null) {
+                    localStorage.setItem('localScore', JSON.stringify({
+                        timestamp: Date.now(),
+                        score: score,
+                    }))
+                }
+            },
+        )
     }
 
-    const timestamp = Math.floor(Date.now() / 1000);
+    public updateVerificationState() {
+        this.contractService.getScoreThreshold()
+            .pipe(
+                tap(threshold => this.thresholdSource.next(threshold)),
+                switchMap(value => this.contractService.getUserScore(this.walletAddress!)),
+            )
+            .subscribe({
+                next: (scoreObj) => {
+                    this.contractScoreSource.next(scoreObj?.score)
+                    if (scoreObj != null) {
+                        const oneMonthAgo = Date.now() - (30 * 24 * 60 * 60 * 1000) // 30 days in milliseconds
+                        const scoreDate = new Date(scoreObj.timestamp)
+                        if (scoreDate.getTime() < oneMonthAgo) {
+                            if (scoreObj.score > this.thresholdSource.value!)
+                                this.verificationStateSubject.next(VerifyState.VERIFIED)
+                            else
+                                this.verificationStateSubject.next(VerifyState.NOT_VERIFIED)
+                        } else
+                            this.verificationStateSubject.next(VerifyState.EXPIRED)
+                    } else
+                        this.verificationStateSubject.next(VerifyState.NOT_VERIFIED)
+                },
+            })
+    }
 
-    return this.metamaskService.signUserMessage().pipe(
-      switchMap(signature => {
-        if (!signature) {
-          throw new Error('No signature received.');
+    updateServerScore(): Observable<any> {
+        const timestamp = Math.floor(Date.now() / 1000)
+        return this.getVerificationSignatureFromUser()
+            .pipe(
+                tap(signature => this.serverScoreSignature = signature),
+                switchMap(signature =>
+                    this.mannaService.getGitcoinScore(this.walletAddress!, this.serverScoreSignature!, timestamp),
+                ),
+                tap(response => this.serverScoreSource.next(response.data.score)),
+            )
+    }
+
+    sendScoreToContract(walletAddress: string): Observable<void> {
+        if (!walletAddress) {
+            console.error('No wallet address available.')
+            return throwError('No wallet address provided')
         }
-        return this.mannaService.getGitcoinScore(walletAddress, signature, timestamp);
-      }),
-      switchMap(serverResponse => {
-        return this.contractService.submitUserScore(walletAddress, serverResponse.data);
-      }),
-      tap(() => {
-        console.log('Score submitted and updated successfully.');
-      }),
-      catchError(error => {
-        console.error('Error during score submission:', error);
-        return throwError(error);
-      })
-    );
-  }
- }
- 
+
+        const timestamp = Math.floor(Date.now() / 1000)
+
+        return this.getVerificationSignatureFromUser().pipe(
+            switchMap(signature => {
+                if (!signature) {
+                    throw new Error('No signature received.')
+                }
+                return this.mannaService.getGitcoinScore(walletAddress, signature, timestamp)
+            }),
+            switchMap(serverResponse => {
+                return this.contractService.submitUserScore(walletAddress, serverResponse.data)
+            }),
+            tap(() => {
+                console.log('Score submitted and updated successfully.')
+            }),
+            catchError(error => {
+                console.error('Error during score submission:', error)
+                return throwError(error)
+            }),
+        )
+    }
+
+    getVerificationSignatureFromUser(): Observable<string> {
+        const timestamp = Math.floor(Date.now() / 1000)
+        const address = this.metamaskService.account$.value
+        const message = `Verification request\naddress: ${address}\ntimestamp: ${timestamp}`
+
+        console.log('Requesting signature for message:', message)
+
+        return this.metamaskService.signMessage(message).pipe(
+            tap(signature => {
+                console.log('Message signed:', signature)
+                this.alertService.open('Message successfully signed.', {
+                    status: 'success',
+                    label: 'Success',
+                }).subscribe()
+            }),
+            catchError(error => {
+                console.error('Error signing message:', error)
+                this.alertService.open('Failed to sign the message. Please try again.', {
+                    status: 'error',
+                    label: 'Error',
+                }).subscribe()
+                return throwError(error)
+            }),
+        )
+    }
+}

@@ -1,27 +1,28 @@
-<div *ngIf="score !== null && threshold !== null" class="score-dialog-container">
-  <div *ngIf="isScoreGreaterThanThreshold; else increaseScoreText">
-    <p class="your-score">
-      Congratulations! You meet our requirements for verification. Please proceed by submitting your score within the contract.
-    </p>
-    <button *ngIf="!loading" (click)="submitScoreToContract()" class="submit">
-      <p class="submit--text">Submit</p>
-    </button>
-    <button *ngIf="loading" class="submit"> 
-      <p class="submit--text">Submitting...</p>
-    </button>
-  </div>
-  <ng-template #increaseScoreText class="low-score-message">
-    <p>
-      Unfortunately, your score {{ score/ 1000000 | number:'1.0-6' }} falls below our minimum standard of 10. 
-      Consider visiting the 
-        <a class="gitcoinLink" href="https://passport.gitcoin.co" target="_blank" rel="noopener noreferrer">
-        Gitcoin Passport
-        </a>.
-      website to explore opportunities for increasing your score
-    </p>
-  </ng-template>
-</div>
-<div *ngIf="score === null || threshold === null" class="loading">
-  Loading...
-</div>
+<ng-container *tuiLet="(verifyService.serverScore$ | async) as serverScore">
+    <ng-container *tuiLet="(verifyService.threshold$ | async) as threshold">
+        <div *ngIf="serverScore != null && threshold != null" class="score-dialog-container flex flex-column justify-content-center align-items-center gap-3">
+            <ng-container *ngIf="serverScore >= threshold; else increaseScoreText">
+                <p class="your-score">
+                    Congratulations! You meet our requirements for verification. Please proceed by submitting your score within the contract.
+                </p>
+                <tui-loader [showLoader]="loading" (click)="submitScoreToContract()" class="submit">
+                    <p class="submit--text">Submit</p>
+                </tui-loader>
+            </ng-container>
 
+            <ng-template #increaseScoreText class="low-score-message">
+                <p>
+                    Unfortunately, your score {{ serverScore / 1000000 | number:'1.0-6' }} falls below our minimum standard of 10.
+                    Consider visiting the
+                    <a class="gitcoinLink" href="https://passport.gitcoin.co" target="_blank" rel="noopener noreferrer">
+                        Gitcoin Passport
+                    </a>.
+                    website to explore opportunities for increasing your score
+                </p>
+            </ng-template>
+        </div>
+        <div *ngIf="serverScore == null || threshold == null" class="loading">
+            Loading...
+        </div>
+    </ng-container>
+</ng-container>

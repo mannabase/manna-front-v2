@@ -1,165 +1,140 @@
-<div class="wallet-container" *ngIf="!showWalletPage && !showPanel && !connectedToMetamask">
-    <div class="intro">
-        <img
-            src="../../../assets/images/accont-wallet-manna-main-logo.svg"
-            alt="logo"
-            class="intro--logo"
-        />
-        <h1 class="intro--mannabase">Mannabase</h1>
-        <div class="intro--title">
-            <h4 class="intro--title--trade mt-0">One Person.</h4>
-            <h4 class="intro--title--create mt-0">One Manna.</h4>
-            <h4 class="intro--title--market mt-0">One Day.</h4>
-        </div>
-        <div class="intro--buttun" (click)="toggleWalletPage()">
-            <img
-                src="../../../assets/images/account-wallet-buttun-icon.svg"
-                alt="wallet"
-                class="intro--buttun--icon"
-            />
-            <span class="intro--buttun--text">Connect Wallet</span>
-        </div>
-    </div>
-</div>
-
-<!-- show connect wallet buttuns -->
-
-<div class="wallet-container" *ngIf="showWalletPage && !showPanel && !connectedToMetamask">
-    <div class="wallets--welcome">
-        <div class="wallets--welcome--text">Welcome to</div>
-        <div class="wallets--welcome--mannabase">mannabase</div>
-    </div>
-    <div class="wallets--options">
-        <h2 class="wallets--options--connect">Connect Wallet</h2>
-        <div class="wallets--options--buttuns" (click)="openMetamaskExtension()" *ngIf="state != MetamaskState.WRONG_CHAIN">
-            <img
-                src="../../../assets/images/account-wallet-metamask-icon.svg"
-                alt="metaMask"
-                class="wallets--options--buttuns--icon"
-            />
-            <span class="wallets--options--buttuns--text">Metamask</span>
-            <tui-svg src="tuiIconChevronRight"></tui-svg>
-        </div>
-        <div class="wallets--options--buttuns" (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN">
-            <img
-                src="../../../assets/images/account-wallet-Arbitrum.svg"
-                alt="Arbitrum"
-                class="wallets--options--buttuns--icon"
-            />
-            <span class="wallets--options--buttuns--text">Goerli</span>
-            <tui-svg src="tuiIconChevronRight"></tui-svg>
-        </div>
-    </div>
-</div>
-
-<div class="panel" *ngIf="showPanel || connectedToMetamask">
-    <div class="panel--welcome">
-        <div class="panel--welcome--welcome">Welcome Back</div>
-        <div class="panel--welcome--overview">Overview</div>
-    </div>
-    <div class="panel--dashboard">
-        <div class="panel--dashboard--balance">
-            <div class="panel--dashboard--balance--amount" >
-                <div class="panel--dashboard--balance--amount--text" >Current Balance</div> 
-                <div class="panel--dashboard--balance--amount--number" >
-                    <img class="panel--dashboard--balance--amount--number--logo" src="../../../assets/images/accont-wallet-panel-manna-logo.svg" alt="logo">
-                    <div class="panel--dashboard--balance--amount--number--count">
-                        {{ balance !== null && mannabaseBalance !== null ? ((balance + mannabaseBalance) | number:'1.0-2') : 'Loading...' }}                  
-                    </div>
-                    <p class="panel--dashboard--balance--amount--number--manna">
-                        manna
-                    </p>
+<ng-container *tuiLet="(metamaskService.metamaskState$ | async) as metamaskState">
+    <ng-container *tuiLet="(verifyService.verificationState$ | async) as verificationState">
+        <div class="wallet-container" *ngIf="metamaskState != MetamaskState.READY">
+            <div class="intro">
+                <img
+                    src="../../../assets/images/accont-wallet-manna-main-logo.svg"
+                    alt="logo"
+                    class="intro--logo"
+                />
+                <h1 class="intro--mannabase">Mannabase</h1>
+                <div class="intro--title">
+                    <h4 class="intro--title--trade mt-0">One Person.</h4>
+                    <h4 class="intro--title--create mt-0">One Manna.</h4>
+                    <h4 class="intro--title--market mt-0">One Day.</h4>
+                </div>
+                <div class="intro--buttun" (click)="metamaskService.connectWallet()">
+                    <img
+                        src="../../../assets/images/account-wallet-buttun-icon.svg"
+                        alt="wallet"
+                        class="intro--buttun--icon"
+                    />
+                    <span class="intro--buttun--text" *ngIf="metamaskState == MetamaskState.NOT_CONNECTED">Connect Wallet</span>
+                    <span class="intro--buttun--text" *ngIf="metamaskState == MetamaskState.WRONG_CHAIN">Switch Chain</span>
                 </div>
             </div>
-            <div class="panel--dashboard--balance--details">
-                <!-- Balance in Wallet -->
-                <div class="panel--dashboard--balance--details--info">
-                    <img src="../../../assets/images/accont-wallet-panel-inYourWallet.svg" alt="wallet" class="panel--dashboard--balance--details--info--img">
-                    <div class="panel--dashboard--balance--details--info--text">
-                        In your wallet
-                        <div class="flex align-items-center">
-                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" alt="wallet" class="panel--dashboard--balance--details--info--text--img">
-                            <div class="panel--dashboard--balance--details--info--text--num">
-                                <ng-container *ngIf="balance !== null; else walletLoading">
-                                    {{ balance | number:'1.0-2' }}
-                                </ng-container>
-                                <ng-template #walletLoading>
-                                    <tui-loader size="xs"></tui-loader>
-                                </ng-template>
-                            </div> 
+        </div>
+
+        <div class="panel" *ngIf="metamaskState == MetamaskState.READY">
+            <div class="panel--welcome">
+                <div class="panel--welcome--welcome">Welcome Back</div>
+                <div class="panel--welcome--overview">Overview</div>
+            </div>
+            <div class="panel--dashboard">
+                <div class="panel--dashboard--balance">
+                    <div class="panel--dashboard--balance--amount">
+                        <div class="panel--dashboard--balance--amount--text">Current Balance</div>
+                        <div class="panel--dashboard--balance--amount--number">
+                            <img class="panel--dashboard--balance--amount--number--logo" src="../../../assets/images/accont-wallet-panel-manna-logo.svg" alt="logo">
+                            <div class="panel--dashboard--balance--amount--number--count">
+                                {{ balance !== null && mannabaseBalance !== null ? ((balance + mannabaseBalance) | number:'1.0-2') : 'Loading...' }}
+                            </div>
+                            <p class="panel--dashboard--balance--amount--number--manna">
+                                manna
+                            </p>
                         </div>
                     </div>
-                </div>
-            
-                <!-- Balance in Mannabase -->
-                <div class="panel--dashboard--balance--details--info">
-                    <img src="../../../assets/images/accont-wallet-panel-inYourWallet.svg" alt="wallet" class="panel--dashboard--balance--details--info--img">
-                    <div class="panel--dashboard--balance--details--info--text">
-                        In Mannabase
-                        <div class="flex align-items-center">
-                            <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" alt="Mannabase logo" class="panel--dashboard--balance--details--info--text--img">
-                            <div class="panel--dashboard--balance--details--info--text--num"> 
-                                <ng-container *ngIf="mannabaseBalance !== null; else mannaLoading">
-                                    {{ mannabaseBalance }}
-                                </ng-container>
-                                <ng-template #mannaLoading>
-                                    <tui-loader size="xs"></tui-loader>
-                                </ng-template>
+                    <div class="panel--dashboard--balance--details">
+                        <!-- Balance in Wallet -->
+                        <div class="panel--dashboard--balance--details--info">
+                            <img src="../../../assets/images/accont-wallet-panel-inYourWallet.svg" alt="wallet" class="panel--dashboard--balance--details--info--img">
+                            <div class="panel--dashboard--balance--details--info--text">
+                                In your wallet
+                                <div class="flex align-items-center">
+                                    <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" alt="wallet" class="panel--dashboard--balance--details--info--text--img">
+                                    <div class="panel--dashboard--balance--details--info--text--num">
+                                        <ng-container *ngIf="balance !== null; else walletLoading">
+                                            {{ balance | number:'1.0-2' }}
+                                        </ng-container>
+                                        <ng-template #walletLoading>
+                                            <tui-loader size="xs"></tui-loader>
+                                        </ng-template>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Balance in Mannabase -->
+                        <div class="panel--dashboard--balance--details--info">
+                            <img src="../../../assets/images/accont-wallet-panel-inYourWallet.svg" alt="wallet" class="panel--dashboard--balance--details--info--img">
+                            <div class="panel--dashboard--balance--details--info--text">
+                                In Mannabase
+                                <div class="flex align-items-center">
+                                    <img src="../../../assets/images/accont-wallet-panel-manna-logo-small.svg" alt="Mannabase logo" class="panel--dashboard--balance--details--info--text--img">
+                                    <div class="panel--dashboard--balance--details--info--text--num">
+                                        <ng-container *ngIf="mannabaseBalance !== null; else mannaLoading">
+                                            {{ mannabaseBalance }}
+                                        </ng-container>
+                                        <ng-template #mannaLoading>
+                                            <tui-loader size="xs"></tui-loader>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="spacer">
+                        </div>
+                        <button
+                            class="panel--dashboard--withdraw"
+                            [class.unverified]="verificationState !== VerifyState.VERIFIED"
+                            (click)="claimWithSignatures()"
+                            [attr.title]="verificationState !== VerifyState.VERIFIED ? 'For withdraw must be verified' : null">
+                            Withdraw
+                        </button>
+                    </div>
+
+                    <div class="panel--dashboard--buttons">
+                        <div class="panel--dashboard--buttons--withdraw-mobile" (click)="claimWithSignatures()">
+                            Withdraw
+                        </div>
+                        <div class="panel--dashboard--buttons--daily" (click)="openRewardDialog()">
+                            Daily Reward
+                        </div>
                     </div>
                 </div>
-                <div class="spacer">
-                </div>
-                <button 
-                    class="panel--dashboard--withdraw" 
-                    [class.unverified]="verificationState !== VerifyState.VERIFIED" 
-                    (click)="claimWithSignatures()" 
-                    [attr.title]="verificationState !== VerifyState.VERIFIED ? 'For withdraw must be verified' : null">
-                    Withdraw
-                </button>
-            </div>
-            
-            <div class="panel--dashboard--buttons">
-                <div class="panel--dashboard--buttons--withdraw-mobile" (click)="claimWithSignatures()">
-                    Withdraw
-                </div>
-                <div class="panel--dashboard--buttons--daily" (click)="openDialogScore()">
-                    Daily Reward
-                </div>
-            </div>
-        </div>
-        <div class="panel--dashboard--daily">
-            <div class="panel--dashboard--daily--header">
-                <img src="../../../assets/images/accont-wallet-panel-stars.svg" alt="star" class="panel--dashboard--daily--header--star">
-                <div class="panel--dashboard--daily--header--reward">Daily Reward</div>
-                <div class="panel--dashboard--daily--header--number">
-                    <ng-container *ngIf="claimableAmount !== null; else mannaLoading" class="m-0">
-                        <p *ngIf="claimableAmount !== 0" class="m-0">
-                            {{ claimableAmount }}
-                        </p>
-                        <p *ngIf="claimableAmount === 0" class="algin-text-center m-0">
-                            You have claimed your daily Manna !
-                        </p>
-                    </ng-container>
-                    <ng-template #mannaLoading>
-                        <tui-loader size="xs"></tui-loader>
-                    </ng-template>
-                </div>
-            </div>
-            <div class="panel--dashboard--daily--claim">
-                <div class="panel--dashboard--daily--claim--text mb-3">This transaction will claim all earning & credit them to your wallet</div>
-                <button tuiAction class="panel--dashboard--daily--claim--button" 
-                    (click)="claimDailyReward()" 
-                    [disabled]="claimableAmount === 0 || claimDailyLoader">
+                <div class="panel--dashboard--daily">
+                    <div class="panel--dashboard--daily--header">
+                        <img src="../../../assets/images/accont-wallet-panel-stars.svg" alt="star" class="panel--dashboard--daily--header--star">
+                        <div class="panel--dashboard--daily--header--reward">Daily Reward</div>
+                        <div class="panel--dashboard--daily--header--number">
+                            <ng-container *ngIf="claimableAmount !== null; else mannaLoading" class="m-0">
+                                <p *ngIf="claimableAmount !== 0" class="m-0">
+                                    {{ claimableAmount }}
+                                </p>
+                                <p *ngIf="claimableAmount === 0" class="algin-text-center m-0">
+                                    You have claimed your daily Manna !
+                                </p>
+                            </ng-container>
+                            <ng-template #mannaLoading>
+                                <tui-loader size="xs"></tui-loader>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="panel--dashboard--daily--claim">
+                        <div class="panel--dashboard--daily--claim--text mb-3">This transaction will claim all earning & credit them to your wallet</div>
+                        <button tuiAction class="panel--dashboard--daily--claim--button"
+                                (click)="claimDailyReward()"
+                                [disabled]="claimableAmount === 0 || claimDailyLoader">
                     <span class="panel--dashboard--daily--claim--button--text" *ngIf="!claimDailyLoader">
                         Claim
                     </span>
-                    <span class="panel--dashboard--daily--claim--button--text" *ngIf="claimDailyLoader">
+                            <span class="panel--dashboard--daily--claim--button--text" *ngIf="claimDailyLoader">
                         Loading...
                     </span>
-                </button>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </ng-container>
+</ng-container>

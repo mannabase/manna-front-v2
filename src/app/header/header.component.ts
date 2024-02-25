@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit,HostListener } from '@angular/core';
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
-import {MetamaskBrightIdService} from '../metamask-bright-id.service';
+import {MetamaskService} from '../metamask.service';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private metamaskService: MetamaskBrightIdService) {
+    private metamaskService: MetamaskService) {
     this.menuItems = [
       {label: 'Home', routerLink: ['/']},
       // {label: 'Marketplace', routerLink: ['/marketplace']},

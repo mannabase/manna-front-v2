@@ -1,5 +1,5 @@
 import { Component,OnInit, ChangeDetectorRef, EventEmitter, Output, Inject } from '@angular/core';
-import { MetamaskBrightIdService } from '../../../metamask-bright-id.service';
+import { MetamaskService } from '../../../metamask.service';
 import { MannaService } from '../../../manna.service';
 import { TuiAlertOptions, TuiAlertService, TuiDialogContext } from '@taiga-ui/core';
 import { Subscription } from 'rxjs';
@@ -16,19 +16,19 @@ export class DailyRewardDialogComponent implements OnInit {
   claimLoader: boolean = false;
   mannabaseBalance: number | null = null;
   mannabaseBalanceMessage: string | null = null;
-  claimableAmount: number | null = null; 
+  claimableAmount: number | null = null;
   private accountSubscription: Subscription = new Subscription();
   walletAddress: any;
   claimDailyLoader: boolean | undefined;
   constructor(
-    private metamaskBrightIdService: MetamaskBrightIdService,
+    private metamaskService: MetamaskService,
     private mannaService: MannaService,
     private alertService: TuiAlertService,
     private cdRef: ChangeDetectorRef,
     private claimService: ClaimService,
   ) {}
   ngOnInit(): void {
-    this.accountSubscription = this.metamaskBrightIdService.account$.subscribe((walletAddress) => {
+    this.accountSubscription = this.metamaskService.account$.subscribe((walletAddress) => {
       if (walletAddress) {
         this.fetchClaimableAmount(walletAddress);
       }
@@ -57,14 +57,14 @@ export class DailyRewardDialogComponent implements OnInit {
 
   claimManna(): void {
     this.claimLoader = true;
-    const walletAddress = this.metamaskBrightIdService.account$.value;
-  
+    const walletAddress = this.metamaskService.account$.value;
+
     if (!walletAddress) {
       this.alertService.open("Please connect to a wallet first.", { status: 'warning' }).subscribe();
       this.claimLoader = false;
       return;
     }
-  
+
     const timestamp = Math.floor(Date.now() / 1000);
     const message = `Check-in\naddress: ${walletAddress}\ntimestamp: ${timestamp}`;
     const subscription = this.claimService.claimDailyReward(
@@ -82,7 +82,7 @@ export class DailyRewardDialogComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   private fetchMannabaseBalance() {
-    const walletAddress = this.metamaskBrightIdService.account$.value; 
+    const walletAddress = this.metamaskService.account$.value;
 
     if (walletAddress) {
       this.mannaService.getMannabaseBalance(walletAddress).subscribe(
@@ -92,7 +92,7 @@ export class DailyRewardDialogComponent implements OnInit {
           } else {
             this.mannabaseBalanceMessage = response.msg;
           }
-          this.cdRef.detectChanges(); 
+          this.cdRef.detectChanges();
         },
         error => {
           this.mannabaseBalanceMessage = 'Error fetching balance';
@@ -101,6 +101,6 @@ export class DailyRewardDialogComponent implements OnInit {
       );
     }
   }
-  
-  
+
+
 }

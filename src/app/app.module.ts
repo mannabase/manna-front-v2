@@ -11,7 +11,7 @@ import {
 } from "@taiga-ui/core"
 import {NgModule} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {AppRoutingModule} from './app-routing.module'
 import {AppComponent} from './app.component'
@@ -29,16 +29,16 @@ import {AccountComponent} from './account/account.component'
 import {WalletComponent} from './account/wallet/wallet.component'
 import {UserAccountComponent} from './account/user-account/user-account.component'
 import {BlogDetailComponent} from './blog/blog-detail/blog-detail.component'
-import {MetamaskBrightIdService} from './metamask-bright-id.service'
+import {MetamaskService} from './metamask.service'
 import {MannaService} from './manna.service'
 import {VerifyService} from './verify.service'
 import { ClaimService } from "./claim.service"
 import { ContractService } from "./contract.service"
 import {VerificationDialogComponent} from './verification-dialog/verification-dialog.component'
 import {TuiMobileDialogModule, TuiSidebarModule} from '@taiga-ui/addon-mobile'
-import {TuiActiveZoneModule} from '@taiga-ui/cdk'
+import {TuiActiveZoneModule, TuiLetModule} from '@taiga-ui/cdk'
 import {ClaimDialogComponent} from './claim-dialog/claim-dialog.component'
-import {TuiStepperModule} from "@taiga-ui/kit"
+import {TuiActionModule, TuiStepperModule} from "@taiga-ui/kit"
 import {MetamaskConnectionComponent} from './claim-dialog/metamask-connection/metamask-connection.component'
 import {ClaimMannaComponent} from './claim-dialog/claim-manna/claim-manna.component'
 import {FooterComponent} from './footer/footer.component'
@@ -70,8 +70,10 @@ import {WriteBlogComponent} from './blog/write-blog/write-blog.component'
         TuiLoaderModule,
         TuiAccordionModule,
         CommonModule,
+        TuiLetModule,
+        TuiActionModule,
     ],
-  providers: [MetamaskBrightIdService, MannaService, VerifyService,ClaimService,ContractService,
+  providers: [MetamaskService, MannaService, VerifyService,ClaimService,ContractService,
     {
       provide: TUI_SANITIZER,
       useClass: NgDompurifySanitizer
