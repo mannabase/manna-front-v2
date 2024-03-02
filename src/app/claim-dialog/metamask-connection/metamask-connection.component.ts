@@ -34,17 +34,6 @@ export class MetamaskConnectionComponent implements OnInit {
                     this.nextStep.emit()
             })
     }
-    updateState() {
-        this.metamaskBrightIdService.checkMetamaskState()
-            .subscribe({
-                next: (value: MetamaskState) => {
-                    console.log("Metamask state:", value);
-                    if (value == MetamaskState.READY)
-                        this.nextStep.emit();
-                    this.state = value;
-                }
-            })
-    }
     installMetamask() {
         window.open('https://metamask.io/download/', '_blank')
     }

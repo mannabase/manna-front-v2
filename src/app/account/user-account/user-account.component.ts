@@ -55,9 +55,10 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     }
 
     refreshUserScore() {
-        this.loader=true
         this.verifyService.updateServerScore()
-            .subscribe(value => this.openDialogScore())
+            .subscribe(value => {
+                this.openDialogScore();
+            });
     }
     
 
