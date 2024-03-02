@@ -1,139 +1,139 @@
-<!--<div class="account-container">-->
-<!--    <div class="account&#45;&#45;info">-->
-<!--        <div class="account&#45;&#45;info&#45;&#45;account">Account</div>-->
-<!--        <div class="account&#45;&#45;info&#45;&#45;text">overview</div>-->
-<!--    </div>-->
-<!--    <div class="account&#45;&#45;humanity">-->
-<!--        <div class="account&#45;&#45;humanity&#45;&#45;header">-->
-<!--            <div>-->
-<!--                <h2 class="mb-1">Proof of Humanity</h2>-->
-<!--                <div class="account&#45;&#45;humanity&#45;&#45;header&#45;&#45;text">-->
-<!--                    We use Gitcoin Passport to verify you are a unique human.-->
-<!--                    <img src="../../../assets/images/accunt-account-information.svg" alt="information" class="account&#45;&#45;humanity&#45;&#45;header&#45;&#45;text&#45;&#45;icon">-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <img src="../../../assets/images/accunt-account-fingerprint.png" alt="fingerprint"-->
-<!--                 class="account&#45;&#45;humanity&#45;&#45;header&#45;&#45;fingerprint">-->
-<!--            <img src="../../../assets/images/accunt-account-fingerprint-mobile.svg" alt="fingerprint"-->
-<!--                 class="account&#45;&#45;humanity&#45;&#45;header&#45;&#45;fingerprint-mobile">-->
-<!--        </div>-->
-<!--        <div class="account&#45;&#45;humanity&#45;&#45;passport" *tuiLet="(metamaskService.metamaskState$ | async) as metamaskState">-->
-<!--            <ng-container *tuiLet="(verifyService.verificationState$ | async) as verificationState">-->
-<!--                <ng-container *tuiLet="(verifyService.threshold$ | async) as threshold">-->
-<!--                    <ng-container *tuiLet="(verifyService.contractScore$ | async) as contractScore">-->
+<div class="account-container">
+    <div class="account--info">
+        <div class="account--info--account">Account</div>
+        <div class="account--info--text">overview</div>
+    </div>
+    <div class="account--humanity">
+        <div class="account--humanity--header">
+            <div>
+                <h2 class="mb-1">Proof of Humanity</h2>
+                <div class="account--humanity--header--text">
+                    We use Gitcoin Passport to verify you are a unique human.
+                    <img src="../../../assets/images/accunt-account-information.svg" alt="information" class="account--humanity--header--text--icon">
+                </div>
+            </div>
+            <img src="../../../assets/images/accunt-account-fingerprint.png" alt="fingerprint"
+                 class="account--humanity--header--fingerprint">
+            <img src="../../../assets/images/accunt-account-fingerprint-mobile.svg" alt="fingerprint"
+                 class="account--humanity--header--fingerprint-mobile">
+        </div>
+        <div class="account--humanity--passport" *tuiLet="(metamaskService.metamaskState$ | async) as metamaskState">
+            <ng-container *tuiLet="(verifyService.verificationState$ | async) as verificationState">
+                <ng-container *tuiLet="(verifyService.threshold$ | async) as threshold">
+                    <ng-container *tuiLet="(verifyService.contractScore$ | async) as contractScore">
+                        <tui-loader [showLoader]="loader" [overlay]="true" *ngIf="metamaskState == MetamaskState.READY && (contractScore! > 0 || localScore != null)">
+                            <div class="account--humanity--passport--container">
+                                <div class="account--humanity--passport--score">
+                                    <div class="account--humanity--passport--score--text">
+                                        Your Score <i class="fa-solid fa-rotate-right fa-xs icon" (click)="refreshUserScore()"></i>
+                                    </div>
+                                    <div *ngIf="contractScore !==0 && verificationState !== VerifyState.EXPIRED" class="account--humanity--passport--score--num"
+                                         [ngStyle]="{'color': verificationState === VerifyState.VERIFIED ? 'green' : 'white'}">
+                                        {{ ((contractScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}
+                                    </div>
+                                    <div *ngIf=" verificationState === VerifyState.EXPIRED"
+                                         class="account--humanity--passport--connect-button"
+                                         (click)="refreshUserScore()">
+                                        <span *ngIf="loader">Updating...</span>
+                                        <span *ngIf="!loader">Update Score</span>
+                                    </div>
+                                    <div *ngIf="contractScore ==0 && (localScoreData?.score ?? 0) >= 0" class="account--humanity--passport--score--num">
+                                        {{ ((localScoreData?.score ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}
+                                    </div>
+                                    <div class="account--humanity--passport-mobile--thresold">
+                                        <div class="account--humanity--passport-mobile--thresold--text">
+                                            Score Threshold:
+                                        </div>
+                                        <div class="account--humanity--passport-mobile--thresold--num">
+                                            {{ threshold || 'loading...' }}
+                                        </div>
+                                    </div>
+                                    <div *ngIf="(localScoreData?.score ??  0) > (threshold ??  0)"
+                                         class="account--humanity--passport--update"
+                                         (click)="refreshUserScore()">
+                                        <span *ngIf="loader">Loading...</span>
+                                        <span *ngIf="!loader">Submit Score</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </tui-loader>
+                        
+                        <div class="account--humanity--passport--connect-button"
+                             (click)="metamaskService.connectWallet()" *ngIf="metamaskState == MetamaskState.NOT_CONNECTED">
+                            Connect
+                        </div>
 
-<!--                        <tui-loader [showLoader]="loader" [overlay]="true" *ngIf="metamaskState == MetamaskState.READY && (contractScore > 0 || localScore != null)">-->
-<!--                            <div class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;container">-->
-<!--                                <div class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;score">-->
-<!--                                    <div class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;score&#45;&#45;text">-->
-<!--                                        Your Score <i class="fa-solid fa-rotate-right fa-xs icon" (click)="refreshUserScore()"></i>-->
-<!--                                    </div>-->
-<!--                                    <div *ngIf="showContractScore && verificationState !== VerifyState.EXPIRED" class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;score&#45;&#45;num"-->
-<!--                                         [ngStyle]="{'color': verificationState === VerifyState.VERIFIED ? 'green' : 'white'}">-->
-<!--                                        {{ ((contractScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}-->
-<!--                                    </div>-->
-<!--                                    <div *ngIf="showContractScore && verificationState === VerifyState.EXPIRED"-->
-<!--                                         class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;connect-button"-->
-<!--                                         (click)="updateUserScore()">-->
-<!--                                        <span *ngIf="loader">Updating...</span>-->
-<!--                                        <span *ngIf="!loader">Update Score</span>-->
-<!--                                    </div>-->
-<!--                                    <div *ngIf="!showContractScore" class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;score&#45;&#45;num">-->
-<!--                                        {{ ((localScoreData?.score ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}-->
-<!--                                    </div>-->
-<!--                                    <div class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;thresold">-->
-<!--                                        <div class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;thresold&#45;&#45;text">-->
-<!--                                            Score Threshold:-->
-<!--                                        </div>-->
-<!--                                        <div class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;thresold&#45;&#45;num">-->
-<!--                                            {{ thresholdScore || 'loading...' }}-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div *ngIf="!showContractScore && (localScoreData?.score ??  0) > (thresholdScore ??  0)"-->
-<!--                                         class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;update"-->
-<!--                                         (click)="refreshUserScore()">-->
-<!--                                        <span *ngIf="loader">Loading...</span>-->
-<!--                                        <span *ngIf="!loader">Submit Score</span>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </tui-loader>-->
+                        <div class="account--humanity--passport--connect-button"
+                             (click)="metamaskService.switchToMannaChain()" *ngIf="metamaskState == MetamaskState.WRONG_CHAIN">
+                            Switch Chain
+                        </div>
+                        <tui-loader [showLoader]="loader" size="xs" [overlay]="true" class="account--humanity--passport--connect-button"
+                                    *ngIf="(contractScore ?? 0) == 0 && metamaskState == 'READY' && localScore == null"
+                                    (click)="refreshUserScore()">
+                            Check Score 
+                        </tui-loader>
+                        <div class="account--humanity--passport--passport" (click)="openLinkInNewTab()">
+                            <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport--gitcoin">
+                            <p class="m-0">Passport</p>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+        </div>
 
-<!--                        <div class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;connect-button"-->
-<!--                             (click)="metamaskService.connectWallet()" *ngIf="metamaskState == MetamaskState.NOT_CONNECTED">-->
-<!--                            Connect-->
-<!--                        </div>-->
-
-<!--                        <div class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;connect-button"-->
-<!--                             (click)="metamaskService.switchChain()" *ngIf="metamaskState == MetamaskState.WRONG_CHAIN">-->
-<!--                            Switch Chain-->
-<!--                        </div>-->
-<!--                        <tui-loader [showLoader]="loader" size="xs" [overlay]="true" class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;connect-button"-->
-<!--                                    *ngIf="metamaskState == MetamaskState.READY" (click)="refreshUserScore()">-->
-<!--                            Check Score-->
-<!--                        </tui-loader>-->
-<!--                        <div class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;passport" (click)="openLinkInNewTab()">-->
-<!--                            <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;gitcoin">-->
-<!--                            <p class="m-0">Passport</p>-->
-<!--                        </div>-->
-<!--                    </ng-container>-->
-<!--                </ng-container>-->
-<!--            </ng-container>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; for mobile version &ndash;&gt;-->
-<!--        <div class="account&#45;&#45;humanity&#45;&#45;passport-mobile">-->
-<!--            <div class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;passport" (click)="openLinkInNewTab()">-->
-<!--                <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;gitcoin">-->
-<!--                <p class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;passport&#45;&#45;text">Passport</p>-->
-<!--            </div>-->
-<!--            <div class="spacer">-->
-<!--            </div>-->
-<!--            <div class="account&#45;&#45;humanity&#45;&#45;passport&#45;&#45;update" (click)="refreshUserScore()" *ngIf="showScore && state == MetamaskState.READY">-->
-<!--                <ng-container *ngIf="loader; else updateScoreText">-->
-<!--                    <span>Loading...</span>-->
-<!--                </ng-container>-->
-<!--                <ng-template #updateScoreText>-->
-<!--                    <tui-svg src="tuiIconRotateCw"></tui-svg>-->
-<!--                </ng-template>-->
-<!--            </div>-->
-<!--            <div class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;score" *ngIf="showScore && state == MetamaskState.READY">-->
-<!--                <div class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;container">-->
-<!--                    <div class="flex mb-1 gap-1">-->
-<!--              <span class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;score&#45;&#45;text">-->
-<!--              Your Score:-->
-<!--              </span>-->
-<!--                        <div *ngIf="showContractScore" class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;score&#45;&#45;num"-->
-<!--                             [ngStyle]="{'color': verificationState === 'VERIFIED' ? 'green' : 'white'}">-->
-<!--                            {{ ((contractScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}-->
-<!--                        </div>-->
-<!--                        <div *ngIf="!showContractScore" class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;score&#45;&#45;num">-->
-<!--                            {{ ((localScoreData?.score ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}-->
-<!--                        </div>-->
-<!--                        <img *ngIf="verificationState === 'VERIFIED' " class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;score&#45;&#45;icon" src="../../../assets/images/account-account-green-Check.svg">-->
-<!--                    </div>-->
-<!--                    <div class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;thresold">-->
-<!--                        <div class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;thresold&#45;&#45;text">-->
-<!--                            Score Threshold:-->
-<!--                        </div>-->
-<!--                        <div *ngIf="verifyService.threshold$ | async as threshold" class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;thresold&#45;&#45;num">-->
-<!--                            {{ thresholdScore || 'loading...' }}-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;connect-button"-->
-<!--                 (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED">-->
-<!--                Connect-->
-<!--            </div>-->
-<!--            <div class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;connect-button"-->
-<!--                 (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN">-->
-<!--                Arbitrum-->
-<!--            </div>-->
-<!--            <div (click)="refreshUserScore()" class="account&#45;&#45;humanity&#45;&#45;passport-mobile&#45;&#45;connect-button"-->
-<!--                 *ngIf="state == MetamaskState.READY && !showScore">-->
-<!--                Check Score-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+        <!-- for mobile version -->
+        <!-- <div class="account--humanity--passport-mobile">
+            <div class="account--humanity--passport-mobile--passport" (click)="openLinkInNewTab()">
+                <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport-mobile--gitcoin">
+                <p class="account--humanity--passport-mobile--passport--text">Passport</p>
+            </div>
+            <div class="spacer">
+            </div>
+            <div class="account--humanity--passport-mobile--update" (click)="refreshUserScore()" *ngIf="showScore && state == MetamaskState.READY">
+                <ng-container *ngIf="loader; else updateScoreText">
+                    <span>Loading...</span>
+                </ng-container>
+                <ng-template #updateScoreText>
+                    <tui-svg src="tuiIconRotateCw"></tui-svg>
+                </ng-template>
+            </div>
+            <div class="account--humanity--passport-mobile--score" *ngIf="showScore && state == MetamaskState.READY">
+                <div class="account--humanity--passport-mobile--container">
+                    <div class="flex mb-1 gap-1">
+                        <span class="account--humanity--passport-mobile--score--text">
+                        Your Score:
+                        </span>
+                        <div *ngIf="showContractScore" class="account--humanity--passport-mobile--score--num"
+                             [ngStyle]="{'color': verificationState === 'VERIFIED' ? 'green' : 'white'}">
+                            {{ ((contractScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}
+                        </div>
+                        <div *ngIf="!showContractScore" class="account--humanity--passport-mobile--score--num">
+                            {{ ((localScoreData?.score ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}
+                        </div>
+                        <img *ngIf="verificationState === 'VERIFIED' " class="account--humanity--passport-mobile--score--icon" src="../../../assets/images/account-account-green-Check.svg">
+                    </div>
+                    <div class="account--humanity--passport-mobile--thresold">
+                        <div class="account--humanity--passport-mobile--thresold--text">
+                            Score Threshold:
+                        </div>
+                        <div *ngIf="verifyService.threshold$ | async as threshold" class="account--humanity--passport-mobile--thresold--num">
+                            {{ thresholdScore || 'loading...' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="account--humanity--passport-mobile--connect-button"
+                 (click)="openMetamaskExtension()" *ngIf="state == MetamaskState.NOT_CONNECTED">
+                Connect
+            </div>
+            <div class="account--humanity--passport-mobile--connect-button"
+                 (click)="switchChain()" *ngIf="state == MetamaskState.WRONG_CHAIN">
+                Arbitrum
+            </div>
+            <div (click)="refreshUserScore()" class="account--humanity--passport-mobile--connect-button"
+                 *ngIf="state == MetamaskState.READY && !showScore">
+                Check Score
+            </div>
+        </div>
+    </div>
+</div> -->

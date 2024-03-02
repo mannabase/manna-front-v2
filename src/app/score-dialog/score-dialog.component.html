@@ -1,18 +1,21 @@
 <ng-container *tuiLet="(verifyService.serverScore$ | async) as serverScore">
     <ng-container *tuiLet="(verifyService.threshold$ | async) as threshold">
         <div *ngIf="serverScore != null && threshold != null" class="score-dialog-container flex flex-column justify-content-center align-items-center gap-3">
-            <ng-container *ngIf="serverScore >= threshold; else increaseScoreText">
+            <ng-container *ngIf="serverScore /100000 >= threshold; else increaseScoreText">
+                <h2 class="title">Congratulations!</h2>
                 <p class="your-score">
-                    Congratulations! You meet our requirements for verification. Please proceed by submitting your score within the contract.
+                    You meet our requirements for verification. Please proceed by submitting your score within the contract.
                 </p>
-                <tui-loader [showLoader]="loading" (click)="submitScoreToContract()" class="submit">
+                <tui-loader [showLoader]="loading" [inheritColor]="true" [overlay]="true" size="xs" (click)="submitScoreToContract()" class="submit">
                     <p class="submit--text">Submit</p>
                 </tui-loader>
             </ng-container>
 
             <ng-template #increaseScoreText class="low-score-message">
                 <p>
-                    Unfortunately, your score {{ serverScore / 1000000 | number:'1.0-6' }} falls below our minimum standard of 10.
+                    Unfortunately, your score <a class="gitcoinLink" href="https://passport.gitcoin.co" target="_blank" rel="noopener noreferrer">
+                        {{ serverScore / 1000000 | number:'1.0-6' }} 
+                    </a> falls below our minimum standard of 10.
                     Consider visiting the
                     <a class="gitcoinLink" href="https://passport.gitcoin.co" target="_blank" rel="noopener noreferrer">
                         Gitcoin Passport
@@ -21,7 +24,7 @@
                 </p>
             </ng-template>
         </div>
-        <div *ngIf="serverScore == null || threshold == null" class="loading">
+        <div *ngIf="serverScore == null" class="loading">
             Loading...
         </div>
     </ng-container>
