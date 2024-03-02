@@ -13,6 +13,8 @@ export class MetamaskConnectionComponent implements OnInit {
     @Output() nextStep = new EventEmitter<any>()
     MetamaskState = MetamaskState
     mannaChain = mannaChainName
+    metamaskBrightIdService: any
+    state: any
 
     constructor(
         readonly metamaskService: MetamaskService,
@@ -26,8 +28,23 @@ export class MetamaskConnectionComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.metamaskService.metamaskState$.pipe(takeUntilDestroyed())
+            .subscribe(value => {
+                if (value == MetamaskState.READY)
+                    this.nextStep.emit()
+            })
     }
-
+    updateState() {
+        this.metamaskBrightIdService.checkMetamaskState()
+            .subscribe({
+                next: (value: MetamaskState) => {
+                    console.log("Metamask state:", value);
+                    if (value == MetamaskState.READY)
+                        this.nextStep.emit();
+                    this.state = value;
+                }
+            })
+    }
     installMetamask() {
         window.open('https://metamask.io/download/', '_blank')
     }

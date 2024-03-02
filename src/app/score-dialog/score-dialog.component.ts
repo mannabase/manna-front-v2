@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core'
+import {Component, Inject, OnDestroy, OnInit ,ChangeDetectionStrategy} from '@angular/core'
 import {VerifyService} from '../verify.service'
 import {CommonModule} from '@angular/common'
 import {TuiLetModule} from "@taiga-ui/cdk"
@@ -13,6 +13,7 @@ import {POLYMORPHEUS_CONTEXT} from "@tinkoff/ng-polymorpheus"
     styleUrls: ['./score-dialog.component.scss'],
     standalone: true,
     imports: [CommonModule, TuiLetModule, TuiLoaderModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreDialogComponent implements OnInit, OnDestroy {
     loading: boolean = false

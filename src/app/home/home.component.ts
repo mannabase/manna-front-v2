@@ -68,5 +68,6 @@ export class HomeComponent implements OnInit {
             .subscribe({
                 next: (value) => {},
             });
+            console.log('this.metamaskService.metamaskState$',this.metamaskService.metamaskState$.value)
     }
 }

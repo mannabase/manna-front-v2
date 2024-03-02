@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Injector, OnDestroy, OnInit, Output} from '@angular/core'
+import {Component, EventEmitter, Injector, OnDestroy, OnInit, Output ,ChangeDetectionStrategy} from '@angular/core'
 import {TuiAlertService, TuiDialogService} from '@taiga-ui/core'
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus'
 import {ScoreDialogComponent} from '../../score-dialog/score-dialog.component'
@@ -10,6 +10,7 @@ import {MetamaskService, MetamaskState} from "../../metamask.service"
     selector: 'app-user-account',
     templateUrl: './user-account.component.html',
     styleUrls: ['./user-account.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class UserAccountComponent implements OnInit, OnDestroy {
@@ -54,9 +55,11 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     }
 
     refreshUserScore() {
+        this.loader=true
         this.verifyService.updateServerScore()
             .subscribe(value => this.openDialogScore())
     }
+    
 
     openDialogScore() {
         this.dialogService.open(new PolymorpheusComponent(ScoreDialogComponent, this.injector), {

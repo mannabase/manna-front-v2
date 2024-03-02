@@ -21,8 +21,8 @@
             <ng-container *tuiLet="(verifyService.verificationState$ | async) as verificationState">
                 <ng-container *tuiLet="(verifyService.threshold$ | async) as threshold">
                     <ng-container *tuiLet="(verifyService.contractScore$ | async) as contractScore">
-                        <tui-loader [showLoader]="loader" [overlay]="true" *ngIf="metamaskState == MetamaskState.READY && (contractScore! > 0 || localScore != null)">
-                            <div class="account--humanity--passport--container">
+                            <div class="account--humanity--passport--container" 
+                                 *ngIf="metamaskState == MetamaskState.READY && (contractScore! > 0 || localScore != null)">
                                 <div class="account--humanity--passport--score">
                                     <div class="account--humanity--passport--score--text">
                                         Your Score <i class="fa-solid fa-rotate-right fa-xs icon" (click)="refreshUserScore()"></i>
@@ -48,15 +48,14 @@
                                             {{ threshold || 'loading...' }}
                                         </div>
                                     </div>
-                                    <div *ngIf="(localScoreData?.score ??  0) > (threshold ??  0)"
-                                         class="account--humanity--passport--update"
+                                </div>
+                                <tui-loader [showLoader]="loader" size='xs' [overlay]="true"  [inheritColor]="true" 
+                                         class="account--humanity--passport--submit"
                                          (click)="refreshUserScore()">
                                         <span *ngIf="loader">Loading...</span>
                                         <span *ngIf="!loader">Submit Score</span>
-                                    </div>
-                                </div>
+                                </tui-loader>
                             </div>
-                        </tui-loader>
                         
                         <div class="account--humanity--passport--connect-button"
                              (click)="metamaskService.connectWallet()" *ngIf="metamaskState == MetamaskState.NOT_CONNECTED">
