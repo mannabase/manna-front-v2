@@ -16,7 +16,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {AppRoutingModule} from './app-routing.module'
 import {AppComponent} from './app.component'
 import {HomeComponent} from './home/home.component'
-import {HttpClientModule} from '@angular/common/http'
+import {provideHttpClient, withInterceptors ,HttpClientModule} from "@angular/common/http"
 import {AngularSvgIconModule} from 'angular-svg-icon'
 import {InfoBoxComponent} from './home/info-box/info-box.component'
 import {IntroCardComponent} from './home/intro-card/intro-card.component'
@@ -33,6 +33,7 @@ import {MetamaskService} from './metamask.service'
 import {MannaService} from './manna.service'
 import {VerifyService} from './verify.service'
 import { ClaimService } from "./claim.service"
+import { LoadingService } from "./loading.service"
 import { ContractService } from "./contract.service"
 import {VerificationDialogComponent} from './verification-dialog/verification-dialog.component'
 import {TuiMobileDialogModule, TuiSidebarModule} from '@taiga-ui/addon-mobile'
@@ -44,7 +45,8 @@ import {ClaimMannaComponent} from './claim-dialog/claim-manna/claim-manna.compon
 import {FooterComponent} from './footer/footer.component'
 import {DailyRewardDialogComponent} from './account/wallet/daily-reward-dialog/daily-reward-dialog.component'
 import {TuiAccordionModule} from '@taiga-ui/kit';
-import {WriteBlogComponent} from './blog/write-blog/write-blog.component'
+import {WriteBlogComponent} from './blog/write-blog/write-blog.component';
+import {httpInterceptor} from "./http.interceptor";
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent,
@@ -73,7 +75,8 @@ import {WriteBlogComponent} from './blog/write-blog/write-blog.component'
         TuiLetModule,
         TuiActionModule,
     ],
-  providers: [MetamaskService, MannaService, VerifyService,ClaimService,ContractService,
+  providers: [MetamaskService, MannaService, VerifyService,ClaimService,ContractService,LoadingService,
+              provideHttpClient(withInterceptors([httpInterceptor]),),
     {
       provide: TUI_SANITIZER,
       useClass: NgDompurifySanitizer
@@ -83,3 +86,4 @@ import {WriteBlogComponent} from './blog/write-blog/write-blog.component'
 })
 export class AppModule {
 }
+

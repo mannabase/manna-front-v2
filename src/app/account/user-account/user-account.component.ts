@@ -4,6 +4,7 @@ import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus'
 import {ScoreDialogComponent} from '../../score-dialog/score-dialog.component'
 import {localScoreData, VerifyService, VerifyState} from 'src/app/verify.service'
 import {MetamaskService, MetamaskState} from "../../metamask.service"
+import { LoadingService } from 'src/app/loading.service'
 
 
 @Component({
@@ -30,6 +31,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         public verifyService: VerifyService,
         readonly dialogService: TuiDialogService,
         private injector: Injector,
+        readonly loadingService : LoadingService,
     ) {
     }
 
@@ -63,6 +65,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     
 
     openDialogScore() {
+        this.checkLocalScore()
         this.dialogService.open(new PolymorpheusComponent(ScoreDialogComponent, this.injector), {
             dismissible: true,
         }).subscribe()

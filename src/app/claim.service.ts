@@ -45,30 +45,37 @@ export class ClaimService {
     claimWithSignatures(walletAddress: string, successCallback: () => void, errorCallback: (errorMessage: string) => void): Subscription {
         const timestamp = Math.floor(Date.now() / 1000)
         const message = `Request for check-in signatures\naddress: ${walletAddress}\ntimestamp: ${timestamp}`
-
-        console.log('Signing message:', message) // Log the message being signed
-
+    
+        console.log('Signing message:', message)
+    
         return this.metamaskService.signMessage(message).subscribe(
             signature => {
-                console.log('Signature received:', signature) // Log the received signature
-
+                console.log('Signature received:', signature)
+    
                 return this.mannaService.sendClaimWithSig(walletAddress, signature, timestamp).subscribe(
                     serverResponse => {
-                        console.log('Server response:', serverResponse) // Log the server response
-
+                        console.log('Server response:', serverResponse)
+    
                         if (serverResponse.status === 'ok' && serverResponse.signatures) {
                             const formattedSignatures = serverResponse.signatures.map((sig: any) => {
                                 return [sig.day, sig.signature.v, sig.signature.r, sig.signature.s]
                             })
-
-                            console.log('Formatted Signatures:', formattedSignatures) // Log the formatted signatures
-
-                            return this.contractService.claimWithSigsContract(formattedSignatures).subscribe(
+    
+                            console.log('Formatted Signatures:', formattedSignatures)
+    
+                            // Modified formatting to match the required format
+                            const formattedForContract = formattedSignatures.map((sig: any) => {
+                                return [sig[0], sig[1], `${sig[2]}`, `${sig[3]}`]
+                            })
+    
+                            console.log('Formatted for Contract:', formattedForContract)
+    
+                            return this.contractService.claimWithSigsContract(formattedForContract).subscribe(
                                 () => {
                                     successCallback()
                                 },
                                 contractError => {
-                                    console.error('Contract error:', contractError) // Log any errors from the contract
+                                    console.error('Contract error:', contractError)
                                     errorCallback('Failed to claim on smart contract with signatures.')
                                 },
                             )
@@ -78,7 +85,7 @@ export class ClaimService {
                         }
                     },
                     serverError => {
-                        console.error('Server error on sending claim request:', serverError) // Log server-side errors
+                        console.error('Server error on sending claim request:', serverError)
                         errorCallback('Failed to send claim request.')
                         return EMPTY.subscribe()
                     },
@@ -91,6 +98,7 @@ export class ClaimService {
             },
         )
     }
+    
 
 
 }

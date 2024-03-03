@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core'
 import {ethers} from 'ethers'
-import {BehaviorSubject, combineLatest, from, Observable, switchMap} from 'rxjs'
-import {map, tap} from 'rxjs/operators'
+import {BehaviorSubject, combineLatest, from, Observable, switchMap, throwError} from 'rxjs'
+import {catchError, map, tap} from 'rxjs/operators'
 import {TuiAlertService} from '@taiga-ui/core'
 import {chainConfig, mannaChainId} from './config'
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop"
+import { LoadingService } from './loading.service';
 
 declare let ethereum: any
 
@@ -32,6 +33,7 @@ export class MetamaskService {
 
     constructor(
         private readonly alertService: TuiAlertService,
+        private readonly loadingService: LoadingService
     ) {
         if (window.ethereum) {
             window.ethereum.on('accountsChanged', (accounts: string[]) => {
@@ -97,16 +99,18 @@ export class MetamaskService {
             window.open('https://metamask.io/')
             return
         }
-
+        this.loadingService.setLoading(true);
         this.connect().pipe(
             switchMap(value => this.switchToMannaChain()),
         ).subscribe({
             next: account => {
+                this.loadingService.setLoading(false); 
                 this.alertService.open("Connected to account: " + this.account$.value, {
                     status: "success",
                 }).subscribe()
             },
             error: (err) => {
+                this.loadingService.setLoading(false);
                 this.alertService.open("Failed to connect Metamask", {
                     status: "error",
                 }).subscribe()
@@ -115,19 +119,30 @@ export class MetamaskService {
     }
 
     switchToMannaChain(): Observable<any> {
+        this.loadingService.setLoading(true);
         return from(ethereum.request(chainConfig)).pipe(
             tap(async () => {
+                this.loadingService.setLoading(false);
                 const provider = new ethers.BrowserProvider(ethereum)
                 this.network$.next(await provider.getNetwork())
             }),
         )
     }
 
-    signMessage(message: string):
-        Observable<string> {
+    signMessage(message: string): Observable<string> {
+        this.loadingService.setLoading(true);
         return from((window as any).ethereum.request({
             method: 'personal_sign',
             params: [message, this.account$.value],
-        }) as Promise<string>)
+        }) as Promise<string>).pipe(
+            tap(() => {
+                this.loadingService.setLoading(false);
+            }),
+            catchError(error => {
+                this.loadingService.setLoading(false);
+                return throwError(error);
+            })
+        );
     }
+    
 }

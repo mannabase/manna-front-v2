@@ -49,7 +49,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <tui-loader [showLoader]="loader" size='xs' [overlay]="true"  [inheritColor]="true" 
+                                <tui-loader *ngIf="contractScore ?? 0 <= (threshold ?? 0) && (localScoreData?.score ?? 0) >= (threshold ?? 0)" [showLoader]="loadingService.loading()" size='xs' [overlay]="true"  [inheritColor]="true" 
                                          class="account--humanity--passport--submit"
                                          (click)="refreshUserScore()">
                                         <span *ngIf="loader">Loading...</span>
@@ -57,20 +57,20 @@
                                 </tui-loader>
                             </div>
                         
-                        <div class="account--humanity--passport--connect-button"
+                        <button tuiButton [showLoader]="loadingService.loading()"
                              (click)="metamaskService.connectWallet()" *ngIf="metamaskState == MetamaskState.NOT_CONNECTED">
                             Connect
-                        </div>
+                        </button>
 
-                        <div class="account--humanity--passport--connect-button"
+                        <button tuiButton [showLoader]="loadingService.loading()"
                              (click)="metamaskService.switchToMannaChain()" *ngIf="metamaskState == MetamaskState.WRONG_CHAIN">
                             Switch Chain
-                        </div>
-                        <tui-loader [showLoader]="loader" size="xs" [overlay]="true" class="account--humanity--passport--connect-button"
+                        </button>
+                        <button tuiButton [showLoader]="loadingService.loading()" 
                                     *ngIf="(contractScore ?? 0) == 0 && metamaskState == 'READY' && localScore == null"
                                     (click)="refreshUserScore()">
                             Check Score 
-                        </tui-loader>
+                        </button>
                         <div class="account--humanity--passport--passport" (click)="openLinkInNewTab()">
                             <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport--gitcoin">
                             <p class="m-0">Passport</p>
