@@ -60,10 +60,7 @@ export class ClaimService {
                             const formattedSignatures = serverResponse.signatures.map((sig: any) => {
                                 return [sig.day, sig.signature.v, sig.signature.r, sig.signature.s]
                             })
-    
-                            console.log('Formatted Signatures:', formattedSignatures)
-    
-                            // Modified formatting to match the required format
+
                             const formattedForContract = formattedSignatures.map((sig: any) => {
                                 return [sig[0], sig[1], `${sig[2]}`, `${sig[3]}`]
                             })

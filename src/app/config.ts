@@ -35,7 +35,7 @@ export let chainConfig = {
 // }
 
 export let mannaContractAddress = '0x5B47C7D32db51D03341840cDC3297557BFd8468b'
-export let claimMannaContractAddress = '0xeb2873A6ee9786C1EfD715DF0D62C34BE2Fd5D27'
+export let claimMannaContractAddress = '0x0De3040dE77Da1D6ECBCddBb3e3a9Dc73528F24d'
 
 export let mannaContractABI = [{"inputs": [], "stateMutability": "nonpayable", "type": "constructor"}, {
     "inputs": [],

@@ -87,6 +87,7 @@
                         <button
                             class="panel--dashboard--withdraw"
                             [class.unverified]="verificationState !== VerifyState.VERIFIED"
+                            [disabled]="verificationState !== VerifyState.VERIFIED"
                             (click)="claimWithSignatures()"
                             [attr.title]="verificationState !== VerifyState.VERIFIED ? 'For withdraw must be verified' : null">
                             Withdraw
