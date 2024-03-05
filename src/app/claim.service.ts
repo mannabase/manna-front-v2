@@ -68,30 +68,16 @@ export class ClaimService {
                                 serverResponse.status === 'ok' &&
                                 serverResponse.signatures
                             ) {
-                                const formattedSignatures =
-                                    serverResponse.signatures.map(
-                                        (sig: any) => {
-                                            return [
-                                                sig.day,
-                                                sig.signature.v,
-                                                sig.signature.r,
-                                                sig.signature.s,
-                                            ];
-                                        }
-                                    );
-                                const formattedForContract =
-                                    formattedSignatures.map((sig: any) => {
-                                        return [
-                                            sig[0],
-                                            sig[1],
-                                            `${sig[2]}`,
-                                            `${sig[3]}`,
-                                        ];
-                                    });
-                                console.log(
-                                    'Formatted for Contract:',
-                                    formattedForContract
-                                );
+                                const formattedForContract = serverResponse.signatures.map((sig: any) => {
+                                    return [
+                                        sig.day,
+                                        sig.signature.v,
+                                        `${sig.signature.r}`,
+                                        `${sig.signature.s}`,
+                                    ];
+                                });
+                                console.log('Formatted for Contract:', formattedForContract);
+                                
                                 return this.contractService
                                     .claimWithSigsContract(formattedForContract)
                                     .pipe(
