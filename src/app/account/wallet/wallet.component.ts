@@ -123,35 +123,30 @@ export class WalletComponent implements OnInit, OnDestroy {
 
     claimDailyReward(): void {
         this.claimDailyLoader = true
-        const subscription = this.claimService.claimDailyReward(
-            this.walletAddress!,
+        this.claimService.claimDailyReward(this.walletAddress!).subscribe(
             () => {
                 this.alertService.open('Daily reward claimed successfully.', {status: 'success'}).subscribe()
                 this.fetchClaimableAmount()
                 this.fetchBalances()
                 this.fetchMannabaseBalance()
             },
-            (errorMessage) => {
-                this.alertService.open(errorMessage, {status: 'error'}).subscribe()
-            },
-        )
-
-        subscription.add(() => this.claimDailyLoader = false)
+        ).add(()=>{
+            this.claimDailyLoader = false
+        })
     }
 
     claimWithSignatures(): void {
         this.claimDailyLoader = true
-        const subscription = this.claimService.claimWithSignatures(
-            this.walletAddress!,
+        this.claimService.claimWithSignatures(this.walletAddress!).subscribe(
             () => {
                 this.alertService.open('Claim with signatures successful.', {status: 'success'}).subscribe()
             },
-            (errorMessage) => {
-                this.alertService.open(errorMessage, {status: 'error'}).subscribe()
+            error => {
+                console.error('Failed to claim daily reward:', error);
             },
-        )
-
-        subscription.add(() => this.claimDailyLoader = false)
+            ).add(() => {
+                this.claimDailyLoader = false;
+            });
     }
 
     openRewardDialog() {

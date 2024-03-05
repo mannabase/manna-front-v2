@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit,HostListener } from '@angular/core';
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
-import {MetamaskService} from '../metamask.service';
+import {MetamaskService, MetamaskState} from '../metamask.service';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -14,9 +14,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAccountPage: boolean = false;
   walletAddress: string | null = null;
   displaySideBar: boolean = false;
-  accountSubscription: Subscription = new Subscription();
   showBurgerMenu: boolean = false;
-
+  MetamaskState = MetamaskState
   public isScrolled = false;
 
   @HostListener('window:scroll', [])
@@ -32,7 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private metamaskService: MetamaskService) {
+    readonly metamaskService: MetamaskService) {
     this.menuItems = [
       {label: 'Home', routerLink: ['/']},
       // {label: 'Marketplace', routerLink: ['/marketplace']},
@@ -43,19 +42,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.metamaskService.checkState()
     this.router.events.pipe(filter((event): event is NavigationStart => event instanceof NavigationStart)
     ).subscribe((event: NavigationStart) => {
       this.isAccountPage = event.url.includes('/account');
-    });
-    this.accountSubscription = this.metamaskService.account$.subscribe(address => {
-      this.walletAddress = address;
     });
     this.handleResize();
     window.addEventListener('resize', this.handleResize.bind(this));
   }
 
   ngOnDestroy() {
-    this.accountSubscription?.unsubscribe();
     window.removeEventListener('resize', this.handleResize.bind(this));
   }
 

@@ -9,7 +9,8 @@ export class ClaimDialogComponent implements OnInit {
 
     currentStep: number = 0
 
-    constructor() {
+    constructor(
+    ) {
     }
 
     ngOnInit() {

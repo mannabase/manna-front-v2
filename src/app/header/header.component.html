@@ -38,11 +38,15 @@
       </ul>
     </nav>
   </div>
-  <button [routerLink]="['/account']" class="account-button">
-    Account
-    <i class="fa-regular fa-user ml-2" ></i>
-  </button>
-  <!-- <div class="wallet-header flex flex-row" *ngIf="walletAddress">
-    {{ walletAddress | slice:0:6 }}...{{ walletAddress | slice:-4 }}
-  </div> -->
+    <button [routerLink]="['/account']" class="account-button" *tuiLet="(metamaskService.metamaskState$ | async) as metamaskState">
+      <span  *ngIf="(metamaskState !== MetamaskState.NOT_CONNECTED && metamaskState !== MetamaskState.NOT_INSTALLED); else account" >
+        <ng-container *tuiLet="(metamaskService.account$ | async) as walletAddress">
+          {{ walletAddress | slice:0:6 }}...{{ walletAddress | slice:-4 }}
+        </ng-container>
+      </span>
+      <ng-template #account>
+        Account
+      </ng-template>
+      <i class="fa-regular fa-user ml-2" ></i>
+    </button>
 </div>

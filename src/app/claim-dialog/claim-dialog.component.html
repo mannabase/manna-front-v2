@@ -3,9 +3,6 @@
         <button tuiStep [stepState]="currentStep > 0 ? 'pass' : 'normal'" [disabled]="currentStep != 0">
             Metamask
         </button>
-        <!-- <button tuiStep [stepState]="currentStep > 1 ? 'pass' : 'normal'" [disabled]="currentStep != 1">
-            Verification
-        </button> -->
         <button tuiStep stepState="normal" [disabled]="currentStep != 1">
             Claim
         </button>
@@ -13,13 +10,8 @@
 
     <div class="p-3">
         <app-metamask-connection *ngIf="currentStep == 0" (nextStep)="currentStep  = currentStep + 1">
-
         </app-metamask-connection>
-        <!-- <app-verification *ngIf="currentStep == 1" (nextStep)="currentStep  = currentStep + 1">
-
-        </app-verification> -->
         <app-claim-manna *ngIf="currentStep == 1">
-
         </app-claim-manna>
     </div>
 </div>

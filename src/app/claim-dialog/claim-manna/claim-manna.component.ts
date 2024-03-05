@@ -4,6 +4,8 @@ import {MannaService} from '../../manna.service'
 import {Router} from '@angular/router'
 import {TuiDialogContext} from '@taiga-ui/core'
 import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus'
+import {ClaimService} from '../../claim.service'
+import {TuiAlertService} from '@taiga-ui/core'
 
 
 @Component({
@@ -24,6 +26,8 @@ export class ClaimMannaComponent implements OnInit {
         private cdRef: ChangeDetectorRef,
         private router: Router,
         @Inject(POLYMORPHEUS_CONTEXT) readonly context: TuiDialogContext<number, number>,
+        private claimService: ClaimService,
+        readonly alertService: TuiAlertService,
     ) {
     }
 
@@ -42,7 +46,6 @@ export class ClaimMannaComponent implements OnInit {
                     this.claimDailyLoader = false
                     if (response && response.status === 'ok') {
                         this.claimableAmount = response.toClaim
-                        console.log('claimableAmount', this.claimableAmount)
                         if (this.claimableAmount === 0) {
                             this.successMessage = true
                         }
@@ -61,34 +64,20 @@ export class ClaimMannaComponent implements OnInit {
     }
 
     claimDailyReward(): void {
-        this.loader = true
-
-        if (!this.walletAddress) {
-            console.error("Please connect to a wallet first.")
-            this.loader = false
-            return
-        }
-
-        const timestamp = Math.floor(Date.now() / 1000)
-        const message = `Check-in\naddress: ${this.walletAddress}\ntimestamp: ${timestamp}`
-
-        this.metamaskService.signMessage(message).subscribe(
-            signature => {
-                this.mannaService.sendCheckIn(this.walletAddress as string, signature, timestamp).subscribe(
-                    serverResponse => {
-                        this.successMessage = true
-                        console.log("Claim successful:", serverResponse)
-                    },
-                    error => {
-                        console.error("Failed to claim. Please try again.", error)
-                    },
-                )
+        this.claimDailyLoader = true;
+        this.claimService.claimDailyReward(this.walletAddress!).subscribe(
+            () => {
+                this.alertService.open('Daily reward claimed successfully.', { status: 'success' });
+                this.successMessage = true
             },
             error => {
-                console.error("Failed to sign the Claim message. Please try again.", error)
-            },
-        ).add(() => this.loader = false)
+                console.error('Failed to claim daily reward:', error);
+            }
+        ).add(() => {
+            this.claimDailyLoader = false;
+        });
     }
+    
 
     openWallet() {
         this.router.navigate(['account'])
