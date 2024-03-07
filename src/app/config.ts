@@ -332,7 +332,235 @@ export let mannaContractABI = [{"inputs": [], "stateMutability": "nonpayable", "
     "stateMutability": "nonpayable",
     "type": "function",
 }, {"inputs": [], "name": "unPause", "outputs": [], "stateMutability": "nonpayable", "type": "function"}]
-export let claimMannaContractABI = [{"inputs":[],"name":"EnforcedPause","type":"error"},{"inputs":[],"name":"ExpectedPause","type":"error"},{"inputs":[],"name":"InvalidInitialization","type":"error"},{"inputs":[],"name":"NotInitializing","type":"error"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"OwnableInvalidOwner","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"OwnableUnauthorizedAccount","type":"error"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint64","name":"version","type":"uint64"}],"name":"Initialized","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"addr","type":"address"}],"name":"MannaTokenSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"maxClaimable","type":"uint256"}],"name":"MaxClaimableSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"scoreThreshold","type":"uint256"}],"name":"ScoreThresholdSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"signatureVerifier","type":"address"}],"name":"SignatureVerifierSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"checkPeriod","type":"uint256"}],"name":"UserScoreValidPeriodSet","type":"event"},{"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"components":[{"internalType":"uint256","name":"day","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"internalType":"struct CheckinSignature[]","name":"sigs","type":"tuple[]"}],"name":"claimWithSigs","outputs":[{"internalType":"uint256","name":"claimed","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"claimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"mannaAddr","type":"address"},{"internalType":"address","name":"_signatureVerifier","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"lastClaim","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"mannaToken","outputs":[{"internalType":"contract IManna","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"maxClaimable","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"register","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"registered","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"scoreThreshold","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"setMannaToken","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"maxClaimable_","type":"uint256"}],"name":"setMaxClaimable","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_scoreThreshold","type":"uint256"}],"name":"setScoreThreshold","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_signatureVerifier","type":"address"}],"name":"setSignatureVerifier","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"period","type":"uint256"}],"name":"setUserScoreValidPeriod","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"signatureVerifier","outputs":[{"internalType":"contract ISignatureVerifier","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"score","type":"uint256"},{"components":[{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"internalType":"struct VerificationSignature","name":"sig","type":"tuple"}],"name":"submitScore","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"userScoreValidPeriod","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"userScores","outputs":[{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"score","type":"uint256"}],"stateMutability":"view","type":"function"}]
+export let claimMannaContractABI = [{"inputs": [], "name": "EnforcedPause", "type": "error"}, {
+    "inputs": [],
+    "name": "ExpectedPause",
+    "type": "error",
+}, {"inputs": [], "name": "InvalidInitialization", "type": "error"}, {
+    "inputs": [],
+    "name": "NotInitializing",
+    "type": "error",
+}, {
+    "inputs": [{"internalType": "address", "name": "owner", "type": "address"}],
+    "name": "OwnableInvalidOwner",
+    "type": "error",
+}, {
+    "inputs": [{"internalType": "address", "name": "account", "type": "address"}],
+    "name": "OwnableUnauthorizedAccount",
+    "type": "error",
+}, {
+    "anonymous": false,
+    "inputs": [{"indexed": false, "internalType": "uint64", "name": "version", "type": "uint64"}],
+    "name": "Initialized",
+    "type": "event",
+}, {
+    "anonymous": false,
+    "inputs": [{"indexed": false, "internalType": "address", "name": "addr", "type": "address"}],
+    "name": "MannaTokenSet",
+    "type": "event",
+}, {
+    "anonymous": false,
+    "inputs": [{"indexed": false, "internalType": "uint256", "name": "maxClaimable", "type": "uint256"}],
+    "name": "MaxClaimableSet",
+    "type": "event",
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address",
+    }, {"indexed": true, "internalType": "address", "name": "newOwner", "type": "address"}],
+    "name": "OwnershipTransferred",
+    "type": "event",
+}, {
+    "anonymous": false,
+    "inputs": [{"indexed": false, "internalType": "address", "name": "account", "type": "address"}],
+    "name": "Paused",
+    "type": "event",
+}, {
+    "anonymous": false,
+    "inputs": [{"indexed": false, "internalType": "uint256", "name": "scoreThreshold", "type": "uint256"}],
+    "name": "ScoreThresholdSet",
+    "type": "event",
+}, {
+    "anonymous": false,
+    "inputs": [{"indexed": false, "internalType": "address", "name": "signatureVerifier", "type": "address"}],
+    "name": "SignatureVerifierSet",
+    "type": "event",
+}, {
+    "anonymous": false,
+    "inputs": [{"indexed": false, "internalType": "address", "name": "account", "type": "address"}],
+    "name": "Unpaused",
+    "type": "event",
+}, {
+    "anonymous": false,
+    "inputs": [{"indexed": false, "internalType": "uint256", "name": "checkPeriod", "type": "uint256"}],
+    "name": "UserScoreValidPeriodSet",
+    "type": "event",
+}, {
+    "inputs": [],
+    "name": "claim",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+}, {
+    "inputs": [{
+        "components": [{"internalType": "uint256", "name": "day", "type": "uint256"}, {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8",
+        }, {"internalType": "bytes32", "name": "r", "type": "bytes32"}, {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32",
+        }], "internalType": "struct CheckinSignature[]", "name": "sigs", "type": "tuple[]",
+    }],
+    "name": "claimWithSigs",
+    "outputs": [{"internalType": "uint256", "name": "claimed", "type": "uint256"}],
+    "stateMutability": "nonpayable",
+    "type": "function",
+}, {
+    "inputs": [{"internalType": "address", "name": "addr", "type": "address"}],
+    "name": "claimable",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function",
+}, {
+    "inputs": [{"internalType": "address", "name": "mannaAddr", "type": "address"}, {
+        "internalType": "address",
+        "name": "_signatureVerifier",
+        "type": "address",
+    }], "name": "initialize", "outputs": [], "stateMutability": "nonpayable", "type": "function",
+}, {
+    "inputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "name": "lastClaim",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function",
+}, {
+    "inputs": [],
+    "name": "mannaToken",
+    "outputs": [{"internalType": "contract IManna", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function",
+}, {
+    "inputs": [],
+    "name": "maxClaimable",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function",
+}, {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function",
+}, {
+    "inputs": [],
+    "name": "paused",
+    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+    "stateMutability": "view",
+    "type": "function",
+}, {
+    "inputs": [],
+    "name": "register",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+}, {
+    "inputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "name": "registered",
+    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+    "stateMutability": "view",
+    "type": "function",
+}, {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+}, {
+    "inputs": [],
+    "name": "scoreThreshold",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function",
+}, {
+    "inputs": [{"internalType": "address", "name": "addr", "type": "address"}],
+    "name": "setMannaToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+}, {
+    "inputs": [{"internalType": "uint256", "name": "maxClaimable_", "type": "uint256"}],
+    "name": "setMaxClaimable",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+}, {
+    "inputs": [{"internalType": "uint256", "name": "_scoreThreshold", "type": "uint256"}],
+    "name": "setScoreThreshold",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+}, {
+    "inputs": [{"internalType": "address", "name": "_signatureVerifier", "type": "address"}],
+    "name": "setSignatureVerifier",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+}, {
+    "inputs": [{"internalType": "uint256", "name": "period", "type": "uint256"}],
+    "name": "setUserScoreValidPeriod",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+}, {
+    "inputs": [],
+    "name": "signatureVerifier",
+    "outputs": [{"internalType": "contract ISignatureVerifier", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function",
+}, {
+    "inputs": [{
+        "internalType": "uint256",
+        "name": "score",
+        "type": "uint256",
+    }, {
+        "components": [{"internalType": "uint256", "name": "timestamp", "type": "uint256"}, {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8",
+        }, {"internalType": "bytes32", "name": "r", "type": "bytes32"}, {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32",
+        }], "internalType": "struct VerificationSignature", "name": "sig", "type": "tuple",
+    }], "name": "submitScore", "outputs": [], "stateMutability": "nonpayable", "type": "function",
+}, {
+    "inputs": [{"internalType": "address", "name": "newOwner", "type": "address"}],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+}, {
+    "inputs": [],
+    "name": "userScoreValidPeriod",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function",
+}, {
+    "inputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "name": "userScores",
+    "outputs": [{"internalType": "uint256", "name": "timestamp", "type": "uint256"}, {
+        "internalType": "uint256",
+        "name": "score",
+        "type": "uint256",
+    }],
+    "stateMutability": "view",
+    "type": "function",
+}]
 
 export let serverUrl = 'https://mannatest.hedgeforhumanity.org/backend'
 

@@ -25,19 +25,19 @@
                         <ng-container *tuiLet="(verifyService.threshold$ | async) as threshold">
                             <ng-container *tuiLet="(verifyService.contractScore$ | async) as contractScore" >
                                 <div *ngIf="metamaskState == MetamaskState.READY && (contractScore! > 0 || localScore != null)">
-                                    <h3 style="color:rgb(30, 173, 30) ;" *ngIf="contractScore ?? 0 <= (threshold ?? 0) && (localScoreData?.score ?? 0) >= (threshold ?? 0); else increaseScoreText">
-                                        Congratulations! You meet our requirements for verification. 
+                                    <h3 style="color:rgb(30, 173, 30) ;" *ngIf="contractScore ?? 0 <= (threshold ?? 0) && (localScore ?? 0) >= (threshold ?? 0); else increaseScoreText">
+                                        Congratulations! You meet our requirements for verification.
                                         Please proceed by submitting your score within the contract.
                                     </h3>
                                     <ng-template #increaseScoreText>
                                         <h3 style="color: rgb(225, 54, 45);">
-                                            Unfortunately, your score falls below our minimum standard of {{threshold}}. 
+                                            Unfortunately, your score falls below our minimum standard of {{threshold}}.
                                             Consider visiting the Gitcoin Passport website to explore opportunities for increasing your score
                                         </h3>
                                     </ng-template>
                                 </div>
                                 <div class="account--humanity--passport">
-                                    <div class="account--humanity--passport--container" 
+                                    <div class="account--humanity--passport--container"
                                         *ngIf="metamaskState == MetamaskState.READY && (contractScore! > 0 || localScore != null)">
                                     <div class="account--humanity--passport--score">
                                         <div class="account--humanity--passport--score--text">
@@ -45,7 +45,7 @@
                                         </div>
                                     <div *ngIf="(contractScore ?? 0) !==0 && verificationState !== VerifyState.EXPIRED" class="account--humanity--passport--score--num"
                                         [ngStyle]="{'color': verificationState === VerifyState.VERIFIED ? 'green' : 'white'}">
-                                        {{ ((contractScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }} contract 
+                                        {{ ((contractScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }} contract
                                     </div>
                                 <div *ngIf=" verificationState === VerifyState.EXPIRED"
                                     class="account--humanity--passport--connect-button"
@@ -53,8 +53,8 @@
                                     <span *ngIf="loader">Updating...</span>
                                     <span *ngIf="!loader">Update Score</span>
                                 </div>
-                                <div *ngIf="contractScore ==0 && (localScoreData?.score ?? 0) >= 0" class="account--humanity--passport--score--num">
-                                    {{ ((localScoreData?.score ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }} local
+                                <div *ngIf="contractScore ==0 && (localScore ?? 0) >= 0" class="account--humanity--passport--score--num">
+                                    {{ ((localScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }} local
                                 </div>
                                 <div class="account--humanity--passport-mobile--thresold">
                                     <div class="account--humanity--passport-mobile--thresold--text">
@@ -65,32 +65,31 @@
                                     </div>
                                 </div>
                             </div>
-                            <tui-loader *ngIf="(contractScore ?? 0) <= (threshold ?? 0) && (localScoreData?.score ?? 0) >= (threshold ?? 0)" 
-                                [showLoader]="loadingService.loading()" 
-                                size='xs' 
-                                [overlay]="true"  
-                                [inheritColor]="true" 
+                            <tui-loader *ngIf="(contractScore ?? 0) <= (threshold ?? 0) && (localScore ?? 0) >= (threshold ?? 0)"
+                                [showLoader]="loadingService.loading()"
+                                size='xs'
+                                [overlay]="true"
+                                [inheritColor]="true"
                                 class="account--humanity--passport--submit"
                                 (click)="refreshUserScore()">
                                 Submit Score
                             </tui-loader>
-                    
+
                         </div>
-                        
-                            
+
                             <button tuiButton [showLoader]="loadingService.loading()"
                                  (click)="metamaskService.connectWallet()" *ngIf="metamaskState == MetamaskState.NOT_CONNECTED">
                                 Connect
                             </button>
-    
+
                             <button tuiButton [showLoader]="loadingService.loading()"
                                  (click)="metamaskService.switchToMannaChain()" *ngIf="metamaskState == MetamaskState.WRONG_CHAIN">
                                 Switch Chain
                             </button>
-                            <button tuiButton [showLoader]="loadingService.loading()" 
+                            <button tuiButton [showLoader]="loadingService.loading()"
                                         *ngIf="(contractScore ?? 0) == 0 && metamaskState == 'READY' && localScore == null"
                                         (click)="refreshUserScore()">
-                                Check Score 
+                                Check Score
                             </button>
                             <div class="account--humanity--passport--passport" (click)="openLinkInNewTab()">
                                 <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport--gitcoin">
@@ -105,7 +104,7 @@
         <!-- for mobile version -->
         <div *tuiLet="(metamaskService.metamaskState$ | async) as metamaskState" class="account--humanity--passport-mobile">
             <ng-container *tuiLet="(verifyService.verificationState$ | async) as verificationState">
-            <ng-container *tuiLet="(verifyService.threshold$ | async) as threshold">  
+            <ng-container *tuiLet="(verifyService.threshold$ | async) as threshold">
             <ng-container *tuiLet="(verifyService.contractScore$ | async) as contractScore">
             <div class="account--humanity--passport-mobile--passport" (click)="openLinkInNewTab()">
                 <img src="../../../assets/images/accunt-account-gitcoin.png" alt="fingerprint" class="account--humanity--passport-mobile--gitcoin">
@@ -132,8 +131,8 @@
                              [ngStyle]="{'color': verificationState === 'VERIFIED' ? 'green' : 'white'}">
                             {{ ((contractScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}
                         </div>
-                        <div *ngIf="contractScore ==0 && (localScoreData?.score ?? 0) >= 0" class="account--humanity--passport-mobile--score--num">
-                            {{ ((localScoreData?.score ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}
+                        <div *ngIf="contractScore ==0 && (localScore ?? 0) >= 0" class="account--humanity--passport-mobile--score--num">
+                            {{ ((localScore!) / 1000000) | number : '1.0-6' || 'loading...' }}
                         </div>
                         <img *ngIf="verificationState === 'VERIFIED' " class="account--humanity--passport-mobile--score--icon" src="../../../assets/images/account-account-green-Check.svg">
                     </div>

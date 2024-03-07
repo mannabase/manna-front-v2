@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core'
-import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs'
-import {catchError, switchMap, tap} from 'rxjs/operators'
+import {BehaviorSubject, Observable, Subscription} from 'rxjs'
+import {switchMap, tap} from 'rxjs/operators'
 import {ContractService} from './contract.service'
 import {MetamaskService} from './metamask.service'
 import {MannaService} from './manna.service'
-import {TuiAlertService} from "@taiga-ui/core"
 
 export enum VerifyState {
     NOT_VERIFIED = 'NOT_VERIFIED',
@@ -41,7 +40,6 @@ export class VerifyService {
         private contractService: ContractService,
         private metamaskService: MetamaskService,
         private mannaService: MannaService,
-        private readonly alertService: TuiAlertService,
     ) {
         this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
             this.walletAddress = address
@@ -73,7 +71,7 @@ export class VerifyService {
                         const oneMonthAgo = Date.now() - (30 * 24 * 60 * 60 * 1000) // 30 days in milliseconds
                         const scoreDate = new Date(scoreObj.timestamp)
                         if (scoreDate.getTime() < oneMonthAgo) {
-                            if (scoreObj.score / 1000000> this.thresholdSource.value!)
+                            if (scoreObj.score / 1000000 > this.thresholdSource.value!)
                                 this.verificationStateSubject.next(VerifyState.VERIFIED)
                             else
                                 this.verificationStateSubject.next(VerifyState.NOT_VERIFIED)
@@ -91,18 +89,13 @@ export class VerifyService {
             .pipe(
                 tap(signature => this.serverScoreSignature = signature),
                 switchMap(signature =>
-                    this.mannaService.getGitcoinScore(this.walletAddress!, this.serverScoreSignature!, timestamp),
+                    this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp),
                 ),
                 tap(response => this.serverScoreSource.next(response.data.score)),
             )
     }
 
     sendScoreToContract(walletAddress: string): Observable<void> {
-        if (!walletAddress) {
-            console.error('No wallet address available.')
-            return throwError('No wallet address provided')
-        }
-
         const timestamp = Math.floor(Date.now() / 1000)
 
         return this.getVerificationSignatureFromUser().pipe(
@@ -115,39 +108,13 @@ export class VerifyService {
             switchMap(serverResponse => {
                 return this.contractService.submitUserScore(walletAddress, serverResponse.data)
             }),
-            tap(() => {
-                console.log('Score submitted and updated successfully.')
-            }),
-            catchError(error => {
-                console.error('Error during score submission:', error)
-                return throwError(error)
-            }),
         )
     }
 
     getVerificationSignatureFromUser(): Observable<string> {
         const timestamp = Math.floor(Date.now() / 1000)
         const address = this.metamaskService.account$.value
-        const message = `Verification request\naddress: ${address}\ntimestamp: ${timestamp}`
-
-        console.log('Requesting signature for message:', message)
-
-        return this.metamaskService.signMessage(message).pipe(
-            tap(signature => {
-                console.log('Message signed:', signature)
-                this.alertService.open('Message successfully signed.', {
-                    status: 'success',
-                    label: 'Success',
-                }).subscribe()
-            }),
-            catchError(error => {
-                console.error('Error signing message:', error)
-                this.alertService.open('Failed to sign the message. Please try again.', {
-                    status: 'error',
-                    label: 'Error',
-                }).subscribe()
-                return throwError(error)
-            }),
-        )
+        const message = `Verification request\naddress: ${address.toLowerCase()}\ntimestamp: ${timestamp}`
+        return this.metamaskService.signMessage(message)
     }
 }

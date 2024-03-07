@@ -18,7 +18,6 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     walletAddress: string | null = null
     loader: boolean = false
     localScore?: number
-    localScoreData: localScoreData | null = null
     protected readonly VerifyState = VerifyState
     protected readonly MetamaskState = MetamaskState
 
@@ -62,7 +61,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
                 this.openDialogScore();
             });
     }
-    
+
 
     openDialogScore() {
         this.checkLocalScore()
