@@ -38,6 +38,7 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
             next: () => {
                 this.loading = false
                 this.context.completeWith(0)
+                this.alertService.open('Score submitted successfuly.', {status: 'success', label: 'Success'})
             },
             error: (error) => {
                 this.loading = false

@@ -9,6 +9,13 @@
     width: 100%;
     position: relative;
 }
+.gitcoinLink{
+    color: rgb(248, 169, 165);
+    cursor: pointer;
+    :hover{
+        color: #f6548c;
+    }
+}
 .account {
     &--info {
         position: absolute;
