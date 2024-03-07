@@ -48,7 +48,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         const currentTime = Date.now()
         const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000
         const isLocalScoreValid = scoreData && currentTime - scoreData.timestamp < sevenDaysInMs
-        this.localScore = isLocalScoreValid ? scoreData.score : undefined
+        this.localScore = (isLocalScoreValid ? scoreData.score/1000000 : undefined)
     }
 
     openLinkInNewTab() {

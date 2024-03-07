@@ -39,6 +39,7 @@ export class WalletComponent implements OnInit, OnDestroy {
     MetamaskState = MetamaskState
     walletAddress: string | null = null
     claimDailyLoader: boolean = false
+    claimWithSigsLoader: boolean = false
     mannabaseBalance: number | null = null
     VerifyState = VerifyState
     claimableAmount: number | null = null
@@ -136,16 +137,17 @@ export class WalletComponent implements OnInit, OnDestroy {
     }
 
     claimWithSignatures(): void {
-        this.claimDailyLoader = true
+        this.claimWithSigsLoader = true
         this.claimService.claimWithSignatures(this.walletAddress!).subscribe(
             () => {
                 this.alertService.open('Claim with signatures successful.', {status: 'success'}).subscribe()
             },
             error => {
+                this.alertService.open('Claim with signatures Unsuccessful.', {status: 'error'}).subscribe()
                 console.error('Failed to claim daily reward:', error);
             },
             ).add(() => {
-                this.claimDailyLoader = false;
+                this.claimWithSigsLoader = false;
             });
     }
 

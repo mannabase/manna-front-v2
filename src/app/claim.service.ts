@@ -19,7 +19,7 @@ export class ClaimService {
 
     claimDailyReward(walletAddress: string): Observable<void> {
         const timestamp = Math.floor(Date.now() / 1000)
-        const message = `Check-in\naddress: ${walletAddress}\ntimestamp: ${timestamp}`
+        const message = `Check-in\naddress: ${walletAddress.toLowerCase()}\ntimestamp: ${timestamp}`
 
         return this.metamaskService.signMessage(message).pipe(
             switchMap((signature) => {
