@@ -18,7 +18,8 @@
                  class="account--humanity--header--fingerprint-mobile">
                 </div>
                 <ng-container>
-
+                    {{localScore}}
+                    
                 </ng-container>
                 <div *tuiLet="(metamaskService.metamaskState$ | async) as metamaskState">
                     <ng-container *tuiLet="(verifyService.verificationState$ | async) as verificationState">
@@ -45,7 +46,7 @@
                                         </div>
                                     <div *ngIf="(contractScore ?? 0) !==0 && verificationState !== VerifyState.EXPIRED" class="account--humanity--passport--score--num"
                                         [ngStyle]="{'color': verificationState === VerifyState.VERIFIED ? 'green' : 'white'}">
-                                        {{ ((contractScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }} contract
+                                        {{ ((contractScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }} 
                                     </div>
                                 <div *ngIf=" verificationState === VerifyState.EXPIRED"
                                     class="account--humanity--passport--connect-button"
@@ -53,8 +54,8 @@
                                     <span *ngIf="loader">Updating...</span>
                                     <span *ngIf="!loader">Update Score</span>
                                 </div>
-                                <div *ngIf="contractScore ==0 && (localScore ?? 0) >= 0" class="account--humanity--passport--score--num">
-                                    {{ ((localScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }} local
+                                <div *ngIf="contractScore ==(0 || null) && (localScore ?? 0) >= 0" class="account--humanity--passport--score--num">
+                                    {{ ((localScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }} 
                                 </div>
                                 <div class="account--humanity--passport-mobile--thresold">
                                     <div class="account--humanity--passport-mobile--thresold--text">
