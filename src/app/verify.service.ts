@@ -71,7 +71,7 @@ export class VerifyService {
                         const oneMonthAgo = Date.now() - (30 * 24 * 60 * 60 * 1000) // 30 days in milliseconds
                         const scoreDate = new Date(scoreObj.timestamp)
                         if (scoreDate.getTime() < oneMonthAgo) {
-                            if (scoreObj.score / 1000000 > this.thresholdSource.value!)
+                            if (scoreObj.score / 100000 > this.thresholdSource.value!)
                                 this.verificationStateSubject.next(VerifyState.VERIFIED)
                             else
                                 this.verificationStateSubject.next(VerifyState.NOT_VERIFIED)

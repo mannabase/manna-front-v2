@@ -29,6 +29,10 @@ const routes: Routes = [
     path: 'account',
     component: AccountComponent,
   },
+  // { 
+  //   path: 'wallet', 
+  //   component: WriteBlogComponent 
+  // },
   {
     path: 'blog/:id',
     component: BlogDetailComponent
@@ -36,7 +40,7 @@ const routes: Routes = [
   { 
     path: 'write-blog', 
     component: WriteBlogComponent 
-  }
+  },
 ];
 
 @NgModule({
