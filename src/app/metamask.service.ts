@@ -43,7 +43,7 @@ export class MetamaskService {
 
     constructor(
         private readonly alertService: TuiAlertService,
-        private readonly loadingService: LoadingService
+        private readonly loadingService: LoadingService,
     ) {
         if (window.ethereum) {
             window.ethereum.on('accountsChanged', (accounts: string[]) => {
@@ -54,6 +54,10 @@ export class MetamaskService {
                 }
             });
         }
+        window.ethereum.on('chainChanged', (chainId: string) => {
+            this.network$.next(null);
+            this.checkState(); 
+        });
 
         combineLatest([this.account$, this.network$])
             .pipe(takeUntilDestroyed())

@@ -70,7 +70,7 @@ export class VerifyService {
                 next: (scoreObj) => {
                     this.contractScoreSource.next(scoreObj?.score)
                     if (scoreObj != null) {
-                        const oneMonthAgo = Date.now() - (30 * 24 * 60 * 60 * 1000) // 30 days in milliseconds
+                        const oneMonthAgo = Date.now() - (30 * 24 * 60 * 60 * 1000) // 30 days 
                         const scoreDate = new Date(scoreObj.timestamp)
                         if (scoreDate.getTime() < oneMonthAgo) {
                             if (scoreObj.score / 1000000 > this.thresholdSource.value!)

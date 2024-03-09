@@ -25,10 +25,12 @@ export class AccountComponent implements OnInit, OnDestroy {
         private contractService: ContractService,
         readonly alertService: TuiAlertService,
     ) {
+        this.selectedTab = localStorage.getItem('selectedTab') || 'Account';
     }
 
     changeTab(tabName: string) {
-        this.selectedTab = tabName
+        this.selectedTab = tabName,
+        localStorage.setItem('selectedTab', tabName);
     }
 
     toggleSideBar(b: boolean) {
@@ -52,7 +54,6 @@ export class AccountComponent implements OnInit, OnDestroy {
             this.showBanner = !this.isVerified
         })
 
-        // Add subscriptions to the Subscription object for cleanup
         this.subscriptions.add(accountSubscription)
         this.subscriptions.add(verificationSubscription)
     }

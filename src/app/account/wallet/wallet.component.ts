@@ -44,6 +44,7 @@ export class WalletComponent implements OnInit, OnDestroy {
     VerifyState = VerifyState
     claimableAmount: number | null = null
     private accountSubscription: Subscription | undefined
+    private networkSubscription: Subscription | undefined;
 
     constructor(
         readonly metamaskService: MetamaskService,
@@ -56,6 +57,7 @@ export class WalletComponent implements OnInit, OnDestroy {
         readonly contractService: ContractService,
         private mannaService: MannaService,
         private claimService: ClaimService,
+        
     ) {
     }
 
@@ -66,10 +68,20 @@ export class WalletComponent implements OnInit, OnDestroy {
             this.fetchClaimableAmount()
             this.fetchBalances()
         })
+        this.networkSubscription = this.metamaskService.network$.subscribe(() => {
+            this.balance = null;
+            this.mannabaseBalance = null;
+            this.claimableAmount = null;
+            if (this.walletAddress) {
+                this.fetchClaimableAmount();
+                this.fetchBalances();
+            }
+        });
     }
 
     ngOnDestroy() {
         this.accountSubscription?.unsubscribe()
+        this.networkSubscription?.unsubscribe(); 
     }
 
     private fetchBalances() {
@@ -77,13 +89,20 @@ export class WalletComponent implements OnInit, OnDestroy {
             this.contractService.balanceOf(this.walletAddress).subscribe(
                 contractBalance => {
                     if (contractBalance) {
-                        this.balance = parseFloat(contractBalance)
+                        this.balance = parseFloat(contractBalance);
+                        this.cdRef.detectChanges(); 
                     }
                 },
-            )
-            this.fetchMannabaseBalance()
+                error => {
+                    console.error('Error fetching contract balance:', error);
+                    this.balance = null; 
+                    this.cdRef.detectChanges(); 
+                }
+            );
+            this.fetchMannabaseBalance();
         }
     }
+    
 
     private fetchClaimableAmount() {
         if (this.walletAddress) {
