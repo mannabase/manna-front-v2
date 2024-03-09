@@ -35,6 +35,8 @@ export class VerifyService {
     walletAddress: string | null = null
     accountSubscription: Subscription = new Subscription()
     serverScoreSignature?: string
+    private cachedSignature: string | null = null;
+    private cacheExpiry: number = 0;
 
     constructor(
         private contractService: ContractService,
@@ -71,7 +73,7 @@ export class VerifyService {
                         const oneMonthAgo = Date.now() - (30 * 24 * 60 * 60 * 1000) // 30 days in milliseconds
                         const scoreDate = new Date(scoreObj.timestamp)
                         if (scoreDate.getTime() < oneMonthAgo) {
-                            if (scoreObj.score / 100000 > this.thresholdSource.value!)
+                            if (scoreObj.score / 1000000 > this.thresholdSource.value!)
                                 this.verificationStateSubject.next(VerifyState.VERIFIED)
                             else
                                 this.verificationStateSubject.next(VerifyState.NOT_VERIFIED)
@@ -112,9 +114,20 @@ export class VerifyService {
     }
 
     getVerificationSignatureFromUser(): Observable<string> {
-        const timestamp = Math.floor(Date.now() / 1000)
-        const address = this.metamaskService.account$.value
-        const message = `Verification request\naddress: ${address.toLowerCase()}\ntimestamp: ${timestamp}`
-        return this.metamaskService.signMessage(message)
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (this.cachedSignature && currentTime < this.cacheExpiry) {
+            return new BehaviorSubject<string>(this.cachedSignature);
+        } else {
+            const timestamp = currentTime;
+            const address = this.metamaskService.account$.value;
+            const message = `Verification request\naddress: ${address.toLowerCase()}\ntimestamp: ${timestamp}`;
+            
+            return this.metamaskService.signMessage(message).pipe(
+                tap(signature => {
+                    this.cachedSignature = signature;
+                    this.cacheExpiry = currentTime + 60; 
+                })
+            );
+        }
     }
 }

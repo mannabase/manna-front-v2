@@ -21,7 +21,7 @@
                     <ng-container *tuiLet="(verifyService.verificationState$ | async) as verificationState">
                         <ng-container *tuiLet="(verifyService.threshold$ | async) as threshold">
                             <ng-container *tuiLet="(verifyService.contractScore$ | async) as contractScore" >
-                                <div *ngIf="metamaskState == MetamaskState.READY && (contractScore! > 0  || localScore != null) && threshold! > contractScore!">
+                                <div *ngIf="metamaskState == MetamaskState.READY && (contractScore! > 0  || localScore != null) && verificationState !== VerifyState.VERIFIED">
                                     <h5 class="account--humanity--success" *ngIf="contractScore ?? 0 <= (threshold ?? 0) && (localScore ?? 0) >= (threshold ?? 0) ; else increaseScoreText">
                                         Congratulations! You meet our requirements for verification.
                                         Please proceed by submitting your score within the contract.
@@ -39,13 +39,12 @@
                                 </div>
                                 <div class="account--humanity--passport">
                                     <div class="account--humanity--passport--container"
-                                        *ngIf="metamaskState == MetamaskState.READY && (contractScore! > 0 || localScore != null) && threshold! > contractScore!">
+                                        *ngIf="metamaskState == MetamaskState.READY && (contractScore! > 0 || localScore != null) && verificationState !== VerifyState.VERIFIED">
                                     <div class="account--humanity--passport--score">
                                         <div class="account--humanity--passport--score--text">
                                             Your Score <i class="fa-solid fa-rotate-right fa-xs icon" (click)="refreshUserScore()"></i>
                                         </div>
-                                    <div *ngIf="(contractScore ?? 0) !==0 && verificationState !== VerifyState.EXPIRED" class="account--humanity--passport--score--num"
-                                        [ngStyle]="{'color': verificationState === VerifyState.VERIFIED ? 'green' : 'white'}">
+                                    <div *ngIf="(contractScore ?? 0) !==0 && verificationState !== VerifyState.EXPIRED" class="account--humanity--passport--score--num">
                                         {{ ((contractScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}
                                     </div>
                                 <div *ngIf=" verificationState === VerifyState.EXPIRED"
@@ -77,7 +76,7 @@
                             </tui-loader>
                         </div>
                         <div class="verified"
-                            *ngIf="metamaskState == MetamaskState.READY && contractScore! > threshold!">
+                            *ngIf="metamaskState == MetamaskState.READY && verificationState == VerifyState.VERIFIED">
                                 You are verified
                         </div>
 

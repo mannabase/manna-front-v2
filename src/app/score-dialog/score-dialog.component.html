@@ -6,7 +6,7 @@
                 <p class="your-score">
                     You meet our requirements for verification. Please proceed by submitting your score within the contract.
                 </p>
-                <tui-loader [showLoader]="loading" [inheritColor]="true" [overlay]="true" size="xs" (click)="submitScoreToContract()" class="submit">
+                <tui-loader [showLoader]="loadingService.loading()" [inheritColor]="true" [overlay]="true" size="xs" (click)="submitScoreToContract()" class="submit">
                     <p class="submit--text">Submit</p>
                 </tui-loader>
             </ng-container>

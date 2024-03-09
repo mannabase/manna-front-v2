@@ -5,6 +5,7 @@ import {TuiLetModule} from "@taiga-ui/cdk"
 import {TuiAlertService, TuiDialogContext, TuiLoaderModule} from "@taiga-ui/core"
 import {MetamaskService} from "../metamask.service"
 import {POLYMORPHEUS_CONTEXT} from "@tinkoff/ng-polymorpheus"
+import { LoadingService } from 'src/app/loading.service'
 
 
 @Component({
@@ -16,12 +17,12 @@ import {POLYMORPHEUS_CONTEXT} from "@tinkoff/ng-polymorpheus"
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreDialogComponent implements OnInit, OnDestroy {
-    loading: boolean = false
 
     constructor(
         public verifyService: VerifyService,
         public alertService: TuiAlertService,
         public metamaskService: MetamaskService,
+        readonly loadingService:LoadingService,
         @Inject(POLYMORPHEUS_CONTEXT) readonly context: TuiDialogContext<number, number>,
     ) {
     }
@@ -33,15 +34,12 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
     }
 
     submitScoreToContract() {
-        this.loading = true
         this.verifyService.sendScoreToContract(this.metamaskService.account$.value).subscribe({
             next: () => {
-                this.loading = false
                 this.context.completeWith(0)
                 this.alertService.open('Score submitted successfuly.', {status: 'success', label: 'Success'}).subscribe()
             },
             error: (error) => {
-                this.loading = false
                 this.alertService.open('Failed to submit score.', {status: 'error', label: 'Error'}).subscribe()
             }
         })
