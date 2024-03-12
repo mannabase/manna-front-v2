@@ -110,7 +110,7 @@ export class VerifyService {
     }
 
     getVerificationSignatureFromUser(): Observable<{ timestamp: number, signature: string }> {
-        const currentTime = Math.floor(Date.now() / 1000);
+        const currentTime = this.getCurrentTimestamp();
     
         if (this.cachedSignature && currentTime < this.cacheExpiry) {
             return of({
@@ -132,6 +132,9 @@ export class VerifyService {
                 map(signature => ({ timestamp: this.cachedTimestamp!, signature }))
             );
         }
+    }
+    private getCurrentTimestamp(): number {
+        return Math.floor(Date.now() / 1000);
     }
     
     
