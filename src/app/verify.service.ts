@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
-import {BehaviorSubject, Observable, Subscription} from 'rxjs'
-import {switchMap, tap} from 'rxjs/operators'
+import {BehaviorSubject, Observable, Subscription, of} from 'rxjs'
+import {map, switchMap, tap} from 'rxjs/operators'
 import {ContractService} from './contract.service'
 import {MetamaskService} from './metamask.service'
 import {MannaService} from './manna.service'
@@ -35,7 +35,8 @@ export class VerifyService {
     walletAddress: string | null = null
     accountSubscription: Subscription = new Subscription()
     serverScoreSignature?: string
-    private cachedSignature: string | null = null;
+    private cachedTimestamp: number | null = null;
+    private cachedSignature: string | null = null
     private cacheExpiry: number = 0;
 
     constructor(
@@ -86,48 +87,52 @@ export class VerifyService {
     }
 
     updateServerScore(): Observable<any> {
-        const timestamp = Math.floor(Date.now() / 1000)
-        return this.getVerificationSignatureFromUser()
-            .pipe(
-                tap(signature => this.serverScoreSignature = signature),
-                switchMap(signature =>
-                    this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp),
-                ),
-                tap(response => this.serverScoreSource.next(response.data.score)),
-            )
+        return this.getVerificationSignatureFromUser().pipe(
+            switchMap(({ timestamp, signature }) =>
+                this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp),
+            ),
+            tap(response => this.serverScoreSource.next(response.data.score)),
+        );
     }
 
     sendScoreToContract(walletAddress: string): Observable<void> {
-        const timestamp = Math.floor(Date.now() / 1000)
-
         return this.getVerificationSignatureFromUser().pipe(
-            switchMap(signature => {
+            switchMap(({ timestamp, signature }) => {
                 if (!signature) {
-                    throw new Error('No signature received.')
+                    throw new Error('No signature received.');
                 }
-                return this.mannaService.getGitcoinScore(walletAddress, signature, timestamp)
+                return this.mannaService.getGitcoinScore(walletAddress, signature, timestamp);
             }),
             switchMap(serverResponse => {
-                return this.contractService.submitUserScore(walletAddress, serverResponse.data)
+                return this.contractService.submitUserScore(walletAddress, serverResponse.data);
             }),
-        )
+        );
     }
 
-    getVerificationSignatureFromUser(): Observable<string> {
+    getVerificationSignatureFromUser(): Observable<{ timestamp: number, signature: string }> {
         const currentTime = Math.floor(Date.now() / 1000);
+    
         if (this.cachedSignature && currentTime < this.cacheExpiry) {
-            return new BehaviorSubject<string>(this.cachedSignature);
+            return of({
+                timestamp: this.cachedTimestamp!, 
+                signature: this.cachedSignature
+            });
         } else {
-            const timestamp = currentTime;
+            const timestamp = currentTime; 
             const address = this.metamaskService.account$.value;
             const message = `Verification request\naddress: ${address.toLowerCase()}\ntimestamp: ${timestamp}`;
             
             return this.metamaskService.signMessage(message).pipe(
                 tap(signature => {
                     this.cachedSignature = signature;
+                    this.cachedTimestamp = timestamp;
                     this.cacheExpiry = currentTime + 60; 
-                })
+                    console.log('New signature and timestamp cached'); 
+                }),
+                map(signature => ({ timestamp: this.cachedTimestamp!, signature }))
             );
         }
     }
+    
+    
 }
