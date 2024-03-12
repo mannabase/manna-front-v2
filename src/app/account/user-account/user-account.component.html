@@ -42,7 +42,7 @@
                                         *ngIf="metamaskState == MetamaskState.READY && (contractScore! > 0 || localScore != null) && verificationState !== VerifyState.VERIFIED">
                                     <div class="account--humanity--passport--score">
                                         <div class="account--humanity--passport--score--text">
-                                            Your Score <i class="fa-solid fa-rotate-right fa-xs icon" (click)="refreshUserScore()"></i>
+                                            Your Score <i class="fa-solid fa-rotate-right fa-xs icon" title= "If update score on GitcoinPassport refresh 15 minutes later" (click)="refreshUserScore()"></i>
                                         </div>
                                     <div *ngIf="(contractScore ?? 0) !==0 && verificationState !== VerifyState.EXPIRED" class="account--humanity--passport--score--num">
                                         {{ ((contractScore ?? 0) / 1000000) | number : '1.0-6' || 'loading...' }}
