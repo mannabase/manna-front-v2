@@ -48,6 +48,7 @@ export class MetamaskService {
         if (window.ethereum) {
             window.ethereum.on('accountsChanged', (accounts: string[]) => {
                 localStorage.removeItem('localScore');
+                window.location.reload();
                 if (accounts.length > 0) {
                     this.account$.next(accounts[0]);
                 } else {
