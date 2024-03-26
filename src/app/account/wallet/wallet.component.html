@@ -156,6 +156,7 @@
                             "
                             
                             (click)="claimWithSignatures()"
+                            [disabled]="verificationState !== VerifyState.VERIFIED"
                             [attr.title]="
                                 verificationState !== VerifyState.VERIFIED
                                     ? 'For withdraw must be verified'
@@ -172,12 +173,13 @@
                     </div>
 
                     <div class="panel--dashboard--buttons">
-                        <div
+                        <button
                             class="panel--dashboard--buttons--withdraw-mobile"
                             (click)="claimWithSignatures()"
+                            *ngIf="verificationState == VerifyState.VERIFIED"
                         >
                             Withdraw
-                        </div>
+                    </button>
                         <div
                             class="panel--dashboard--buttons--daily"
                             (click)="openRewardDialog()"

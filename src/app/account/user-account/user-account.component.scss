@@ -192,8 +192,8 @@
         &--passport-mobile {
             display: none;
             width: 100%;
-            flex-direction: row;
             align-items: center;
+            justify-content: center;
             margin-right: 5px;
             &--connect-button {
                 background-color: #d9d9d92f;
@@ -372,6 +372,9 @@
             &--passport {
                 display: none;
             }
+            &--passport-mobile{
+                display: flex;
+            }
         }
         &--email {
             width: 85%;
@@ -446,6 +449,9 @@
             }
             &--passport {
                 display: none;
+            }
+            &--passport-mobile{
+                display: flex;
             }
         }
         &--email {
