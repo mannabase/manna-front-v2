@@ -5,6 +5,7 @@ import {ScoreDialogComponent} from '../../score-dialog/score-dialog.component'
 import {localScoreData, VerifyService, VerifyState} from 'src/app/verify.service'
 import {MetamaskService, MetamaskState} from "../../metamask.service"
 import { LoadingService } from 'src/app/loading.service'
+import { catchError, of } from 'rxjs'
 
 
 @Component({
@@ -61,12 +62,15 @@ export class UserAccountComponent implements OnInit, OnDestroy {
                 this.openDialogScore();
             });
     }
+    
 
 
     openDialogScore() {
         this.checkLocalScore()
         this.dialogService.open(new PolymorpheusComponent(ScoreDialogComponent, this.injector), {
             dismissible: true,
-        }).subscribe()
+        }).subscribe(
+            
+        )
     }
 }

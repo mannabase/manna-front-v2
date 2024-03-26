@@ -9,21 +9,25 @@
     width: 100%;
     position: relative;
 }
-.gitcoinLink{
+.mobile{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+.gitcoinLink {
     color: rgb(248, 169, 165);
     cursor: pointer;
-    :hover{
+    :hover {
         color: #f6548c;
     }
 }
-.verified{
+.verified {
     padding: 10px 20px;
     background-color: green;
     color: white;
     border-radius: 10px;
     font-weight: 700;
     letter-spacing: 1px;
-    
 }
 .account {
     &--info {
@@ -59,6 +63,9 @@
         border-radius: 13px;
         padding: 40px 30px 60px 30px;
         margin-bottom: 10px;
+        &--desktop {
+            display: block;
+        }
         &--success {
             width: 70%;
             color: rgb(30, 168, 30);
@@ -150,8 +157,9 @@
             &--submit {
                 cursor: pointer;
                 font-size: 12px;
+                font-weight: 800;
                 color: white;
-                background-color: rgb(14, 85, 20);
+                background-color: #f75a84;
                 padding: 5px;
                 border-radius: 5px;
                 margin-bottom: 10px;
@@ -311,6 +319,9 @@
 }
 
 @media #{$tablet} {
+    .mobile{
+        display:flex;
+    }
     .account-container {
         justify-content: start;
         margin-top: 100px;
@@ -325,6 +336,10 @@
             height: 400px;
             padding: 20px 20px;
             align-items: start;
+            justify-content: space-between;
+            &--desktop {
+                display: none;
+            }
             &--header {
                 flex-direction: column;
                 width: 100%;
@@ -347,11 +362,15 @@
                     margin-bottom: 50px;
                 }
             }
+            &--success {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            &--fail {
+                width: 100%;
+            }
             &--passport {
                 display: none;
-            }
-            &--passport-mobile {
-                display: flex;
             }
         }
         &--email {
@@ -370,9 +389,17 @@
     }
 }
 @media #{$mobile} {
+    .mobile{
+        display:flex;
+    }
     .account-container {
         justify-content: start;
         margin-top: 100px;
+    }
+    .center-in-mobile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     .account {
         align-items: start;
@@ -383,7 +410,11 @@
             width: 90%;
             height: 400px;
             padding: 20px 20px;
-            align-items: start;
+            align-items: center;
+            justify-content: space-between;
+            &--desktop {
+                display: none;
+            }
             &--header {
                 flex-direction: column;
                 width: 100%;
@@ -406,11 +437,15 @@
                     margin-bottom: 50px;
                 }
             }
+            &--success {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            &--fail {
+                width: 100%;
+            }
             &--passport {
                 display: none;
-            }
-            &--passport-mobile {
-                display: flex;
             }
         }
         &--email {

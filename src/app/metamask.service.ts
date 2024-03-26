@@ -5,6 +5,7 @@ import {
     combineLatest,
     from,
     Observable,
+    of,
     switchMap,
     throwError,
 } from 'rxjs';
@@ -160,14 +161,36 @@ export class MetamaskService {
 
     switchToMannaChain(): Observable<any> {
         this.loadingService.setLoading(true);
-        return from(ethereum.request(chainConfig)).pipe(
-            tap(async () => {
+        const provider = new ethers.BrowserProvider(ethereum);
+        return from(provider.getNetwork()).pipe(
+            switchMap((currentNetwork) => {
+                if (currentNetwork.chainId === mannaChainId) {
+                    this.loadingService.setLoading(false);
+                    this.network$.next(currentNetwork);
+                    return of(currentNetwork); 
+                } else {
+                    return from(ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [chainConfig],
+                    })).pipe(
+                        tap(async () => {
+                            this.loadingService.setLoading(false);
+                            this.network$.next(await provider.getNetwork());
+                        }),
+                        catchError((error) => {
+                            this.loadingService.setLoading(false);
+                            return throwError(error);
+                        })
+                    );
+                }
+            }),
+            catchError((error) => {
                 this.loadingService.setLoading(false);
-                const provider = new ethers.BrowserProvider(ethereum);
-                this.network$.next(await provider.getNetwork());
+                return throwError(error);
             })
         );
     }
+        
 
     signMessage(message: string): Observable<string> {
         this.loadingService.setLoading(true);
