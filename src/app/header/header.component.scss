@@ -135,7 +135,7 @@
     background-color: #383838;
 }
 .account-button {
-    justify-content: start;
+    justify-content: flex-start;
     background-image: $get-started-button-background;
     background-size: cover;
     background-repeat: no-repeat;
@@ -157,6 +157,9 @@
     }
 }
 @media #{$tablet} {
+    .container {
+        justify-content: center;
+    }
     .black-background {
         background: rgb(0, 0, 0);
     }
@@ -198,6 +201,9 @@
     }
 }
 @media #{$mobile} {
+    .container {
+        justify-content: center;
+    }
     .black-background {
         background: rgb(0, 0, 0);
     }

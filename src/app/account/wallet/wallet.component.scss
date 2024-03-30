@@ -64,8 +64,8 @@
         left: 50px;
         display: flex;
         flex-direction: column;
-        justify-content: start;
-        align-items: start;
+        justify-content: flex-start;
+        align-items: flex-start;
         text-align: left;
         margin-bottom: 60px;
         &--text {
@@ -127,8 +127,8 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        justify-content: start;
-        align-items: start;
+        justify-content: flex-start;
+        align-items: flex-start;
         text-align: left;
         margin-bottom: 30px;
         &--welcome {
@@ -278,7 +278,7 @@
         }
         &--buttons {
             display: none;
-            justify-content: end;
+            justify-content: flex-end;
             gap: 10px;
             
             &--withdraw-mobile{
@@ -325,7 +325,7 @@
             }
             &--filters {
                 display: flex;
-                justify-content: end;
+                justify-content: flex-end;
                 &--date {
                     display: flex;
                     justify-content: center;

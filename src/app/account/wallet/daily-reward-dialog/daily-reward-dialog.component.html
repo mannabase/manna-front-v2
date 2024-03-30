@@ -1,14 +1,14 @@
 <div class="daily">
     <div class="daily--header">
         <img src="../../../assets/images/accont-wallet-panel-stars.svg" alt="star" class="panel--dashboard--daily--header--star">
-        <div class="daily--header--reward">Daily Reward</div>
+        <div class="daily--header--reward">Daily Manna</div>
         <div *ngIf="claimableAmount === 0" class="daily--header--message">You have claimed your daily Manna!</div>
         <div *ngIf="claimableAmount !== 0" class="daily--header--number">{{claimableAmount || "loading..."}}</div>
     </div>
     <div *ngIf="claimableAmount !== 0" class="daily--claim">
         <div class="daily--claim--text mb-3">This transaction will claim all earning & credit them to your wallet</div>
         <button tuiButton class="daily--claim--button" (click)="claimManna()">
-            <span *ngIf="!claimLoader">Claim Daily Reward</span>
+            <span *ngIf="!claimLoader">Claim Daily Manna</span>
             <span *ngIf="claimLoader">
                 Loading...
             </span>

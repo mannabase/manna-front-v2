@@ -84,6 +84,7 @@ export class ContractService {
     }
 
     submitUserScore(address: string, scoreData: any): Observable<void> {
+        console.log("Submitting user score data:", scoreData);
         return from(this.claimMannaContract!['submitScore'](
                 scoreData.score,
                 [

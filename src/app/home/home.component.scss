@@ -21,7 +21,7 @@
 }
 .full-height {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     height: calc(100vh - 120px);
     padding-bottom: 60px 0px !important;
     &--main {
@@ -31,14 +31,14 @@
             // width: 25%;
             height: 90vh;
             display: flex;
-            align-self: end;
-            justify-content: start;
+            align-self: flex-end;
+            justify-content: flex-start;
             z-index: 0;
             padding-bottom: 50px;
             &--mannas {
                 display: flex;
                 position: absolute;
-                align-self: end;
+                align-self: flex-end;
                 // height: 80vh;
                 width: 18%;
                 margin-left: -5%;
@@ -131,7 +131,7 @@
 .text-daily-manna {
     display: flex;
     justify-content: center;
-    align-items: start;
+    align-items: flex-start;
     font-size: 40px;
     letter-spacing: 2px;
     &--description {
@@ -161,7 +161,7 @@
         }
         &--header {
             display: flex;
-            justify-content: start;
+            justify-content: flex-start;
             align-items: center;
             gap: 20px;
             margin-bottom: 20px;
@@ -194,7 +194,7 @@
     &--item1 {
         width: 40%;
         height: 150px;
-        justify-content: start;
+        justify-content: flex-start;
         padding: 20px 5px 30px 5px;
         display: flex;
         flex-direction: column;
@@ -239,7 +239,7 @@
     &--govern {
         display: flex;
         flex-direction: column;
-        justify-content: end;
+        justify-content: flex-end;
         width: 50%;
         border: 1px solid $border-color;
         border-radius: 10px;
@@ -262,7 +262,7 @@
     &--boxes {
         // margin-top: 20px;
         width: 45%;
-        justify-content: start;
+        justify-content: flex-start;
         padding: 0px;
         display: flex;
         flex-direction: column;
@@ -294,8 +294,8 @@
     &--image {
         position: absolute;
         display: flex;
-        align-self: end;
-        justify-self: end;
+        align-self: flex-end;
+        justify-self: flex-end;
         width: 13rem;
         height: 20rem;
         margin-right: -5%;
@@ -322,7 +322,7 @@
     border-radius: $manna-border-radius;
     margin-bottom: 10px;
     &--img {
-        text-align: end;
+        text-align: flex-end;
         position: absolute;
         right: 0;
         bottom: 0;
@@ -344,7 +344,7 @@
     display: flex-column;
     gap: 2px;
     padding: 20px;
-    text-align: start;
+    text-align: flex-start;
 }
 .funding {
     min-height: 300px;
@@ -423,7 +423,7 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        align-items: end;
+        align-items: flex-end;
         height: auto;
 
         &--item1 {
@@ -455,7 +455,7 @@
         &--govern {
             display: flex;
             flex-direction: column;
-            justify-content: end;
+            justify-content: flex-end;
             width: 90%;
             margin-bottom: 50px;
             height: 200px;
@@ -485,8 +485,8 @@
         &--image {
             position: absolute;
             display: flex;
-            align-self: end;
-            justify-self: end;
+            align-self: flex-end;
+            justify-self: flex-end;
             width: 9rem;
             height: 12rem;
             margin-right: -4%;
@@ -578,7 +578,7 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        align-items: end;
+        align-items: flex-end;
         // height: auto;
 
         &--item1 {
@@ -588,8 +588,8 @@
         }
         &--item2 {
             width: 80%;
-            align-items: end;
-            justify-content: end;
+            align-items: flex-end;
+            justify-content: flex-end;
             min-width: 0px;
             margin-right: -10%;
             margin-top: -80px;
@@ -615,7 +615,7 @@
         &--govern {
             display: flex;
             flex-direction: column;
-            justify-content: end;
+            justify-content: flex-end;
             width: 90%;
             margin-bottom: 50px;
             height: 200px;
@@ -645,8 +645,8 @@
         &--image {
             position: absolute;
             display: flex;
-            align-self: end;
-            justify-self: end;
+            align-self: flex-end;
+            justify-self: flex-end;
             width: 9rem;
             height: 12rem;
             margin-right: -4%;

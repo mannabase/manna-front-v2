@@ -26,7 +26,7 @@
 .search-icon {
   background-color: #9f9f9f;
   border-radius: var(--manna-border-radius);
-  justify-items: end;
+  justify-items: flex-end;
 }
 
 .search-input {
@@ -70,7 +70,7 @@
   .p-card .p-card-footer {
     display: flex;
     justify-content: space-between;
-    align-items: end;
+    align-items: flex-end;
   }
 
   .p-card .p-card-content {

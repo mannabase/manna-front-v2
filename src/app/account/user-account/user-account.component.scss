@@ -36,8 +36,8 @@
         left: 50px;
         display: flex;
         flex-direction: column;
-        justify-content: start;
-        align-items: start;
+        justify-content: flex-start;
+        align-items: flex-start;
         text-align: left;
         margin-bottom: 60px;
         &--text {
@@ -114,7 +114,7 @@
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            justify-self: end;
+            justify-self: flex-end;
             &--connect-button {
                 background-color: #d9d9d92f;
                 padding: 10px 30px 10px 30px;
@@ -127,7 +127,7 @@
             &--container {
                 display: flex;
                 flex-direction: row;
-                align-items: end;
+                align-items: flex-end;
                 gap: 10px;
             }
             &--score {
@@ -323,11 +323,11 @@
         display:flex;
     }
     .account-container {
-        justify-content: start;
+        justify-content: flex-start;
         margin-top: 100px;
     }
     .account {
-        align-items: start;
+        align-items: flex-start;
         &--info {
             display: none;
         }
@@ -335,7 +335,7 @@
             width: 90%;
             height: 400px;
             padding: 20px 20px;
-            align-items: start;
+            align-items: flex-start;
             justify-content: space-between;
             &--desktop {
                 display: none;
@@ -396,7 +396,7 @@
         display:flex;
     }
     .account-container {
-        justify-content: start;
+        justify-content: flex-start;
         margin-top: 100px;
     }
     .center-in-mobile {
@@ -405,7 +405,7 @@
         align-items: center;
     }
     .account {
-        align-items: start;
+        align-items: flex-start;
         &--info {
             display: none;
         }

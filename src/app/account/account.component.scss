@@ -88,7 +88,7 @@
         }
     }
     &--user{
-        justify-self: end;
+        justify-self: flex-end;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -125,6 +125,9 @@
         width: 20px;
         margin-right: 40px;
     }
+}
+.spacer{
+    flex-grow: 1;
 }
 .hamburger-menu.open .bar:nth-child(1) {
     transform: rotate(-45deg) translate(-5px, 6px);
@@ -211,7 +214,7 @@
 
 .tab {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     padding: 10px;
     cursor: pointer;
@@ -242,7 +245,7 @@
 }
 .tab-width {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     padding-left: 20px;
     width: 150px;
