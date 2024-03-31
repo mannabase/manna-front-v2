@@ -160,6 +160,8 @@ export class WalletComponent implements OnInit, OnDestroy {
         this.claimService.claimWithSignatures(this.walletAddress!).subscribe(
             () => {
                 this.alertService.open('Claim with signatures successful.', {status: 'success'}).subscribe()
+                this.fetchBalances()
+                this.fetchMannabaseBalance()
             },
             error => {
                 this.alertService.open('Claim with signatures Unsuccessful.', {status: 'error'}).subscribe()
