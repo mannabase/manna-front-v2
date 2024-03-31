@@ -57,10 +57,10 @@ export class MetamaskService {
                 }
             });
         }
-        window.ethereum.on('chainChanged', (chainId: string) => {
-            this.network$.next(null);
-            this.checkState(); 
-        });
+        // window.ethereum.on('chainChanged', (chainId: string) => {
+        //     this.network$.next(null);
+        //     this.checkState(); 
+        // });
 
         combineLatest([this.account$, this.network$])
             .pipe(takeUntilDestroyed())
