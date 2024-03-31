@@ -1,7 +1,7 @@
 <div class="container"
      [ngClass]="{ 'account': isAccountPage, 'scrolled': isScrolled }" >
   <div class="logo">
-    <button class="logo--hambergur" tuiIconButton *ngIf="showBurgerMenu" icon="tuiIconMenu" appearance="flat" size="l"
+    <!-- <button class="logo--hambergur" tuiIconButton *ngIf="showBurgerMenu" icon="tuiIconMenu" appearance="flat" size="l"
             (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">
       <div *tuiSidebar="displaySideBar; direction: 'left'" class="h-full">
         <div class="side-bar flex flex-column w-full h-full">
@@ -12,11 +12,49 @@
                  [routerLink]="item.routerLink" (click)="toggleSideBar(false)">
                 {{item.label}}
               </a>
+              
+            </button>
+          </div>
+        </div>
+      </div>
+    </button> -->
+    <button class="logo--hambergur" tuiIconButton *ngIf="showBurgerMenu" icon="tuiIconMenu" appearance="flat" size="l"
+            (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">
+      <div *tuiSidebar="displaySideBar; direction: 'left'" class="h-full">
+        <div class="side-bar flex flex-column w-full h-full">
+          <span class="text-lg p-3 text-600">Menu</span>
+          <div class="flex flex-column">
+            <button tuiButton appearance="flat" size="m">
+              <a tuiLink class="w-full p-2 pl-3"
+                 routerLink="/" (click)="toggleSideBar(false)">
+                 Home
+              </a>
+            </button>
+            <button tuiButton appearance="flat" size="m">
+              <a tuiLink class="w-full p-2 pl-3"
+                 routerLink="/about" (click)="toggleSideBar(false)">
+                 About
+              </a>
+            </button>
+            <button tuiButton appearance="flat" size="m" >
+              <a tuiLink class="w-full p-2 pl-3"
+                 href="https://hedgeforhumanity.medium.com/" 
+                 target="_blank" rel="noopener noreferrer"
+                (click)="toggleSideBar(false)">
+                 Blog
+              </a>
+            </button>
+            <button tuiButton appearance="flat" size="m">
+              <a tuiLink class="w-full p-2 pl-3"
+                 routerLink="/account" (click)="toggleSideBar(false)">
+                 Account
+              </a>
             </button>
           </div>
         </div>
       </div>
     </button>
+     
     <div routerLink="/" class="logo--container">
       <img src="../../assets/images/governed_manna_logo.webp" class="logo-image">
       <div class="mannabse-logo">mannabase</div>
