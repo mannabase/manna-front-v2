@@ -211,9 +211,9 @@
                                 </p>
                                 <p
                                     *ngIf="claimableAmount === 0"
-                                    class="algin-text-center m-0"
+                                    class="panel--dashboard--daily--claimed"
                                 >
-                                    You have claimed your daily Manna !
+                                    You have claimed your daily manna!
                                 </p>
                             </ng-container>
                             <ng-template #mannaLoading>
@@ -223,8 +223,7 @@
                     </div>
                     <div class="panel--dashboard--daily--claim">
                         <div class="panel--dashboard--daily--claim--text mb-3">
-                            This transaction will claim all earning & credit
-                            them to your wallet
+                            This transaction will claim all daily manna accrued up to the last 7 days.
                         </div>
                         <button
                             tuiAction

@@ -91,6 +91,7 @@ export class WalletComponent implements OnInit, OnDestroy {
                     if (contractBalance) {
                         this.balance = parseFloat(contractBalance);
                         this.cdRef.detectChanges(); 
+                        console.log('wallet balance fetched:', contractBalance)
                     }
                 },
                 error => {
@@ -146,9 +147,7 @@ export class WalletComponent implements OnInit, OnDestroy {
         this.claimService.claimDailyReward(this.walletAddress!).subscribe(
             () => {
                 this.alertService.open('Daily reward claimed successfully.', {status: 'success'}).subscribe()
-                this.fetchClaimableAmount()
-                this.fetchBalances()
-                this.fetchMannabaseBalance()
+                this.ngOnInit()
             },
         ).add(()=>{
             this.claimDailyLoader = false
@@ -160,8 +159,7 @@ export class WalletComponent implements OnInit, OnDestroy {
         this.claimService.claimWithSignatures(this.walletAddress!).subscribe(
             () => {
                 this.alertService.open('Claim with signatures successful.', {status: 'success'}).subscribe()
-                this.fetchBalances()
-                this.fetchMannabaseBalance()
+                this.ngOnInit()
             },
             error => {
                 this.alertService.open('Claim with signatures Unsuccessful.', {status: 'error'}).subscribe()

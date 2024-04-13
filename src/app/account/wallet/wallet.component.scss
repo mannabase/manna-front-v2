@@ -178,6 +178,7 @@
                     }
                     &--manna {
                         margin-bottom: 0px;
+                        font-family: "Nexa Light", sans-serif !important;
                     }
                     &--logo{
                         margin-bottom: -5px;
@@ -243,6 +244,10 @@
                     font-weight: 800;
                     margin: 0px;
                 }
+            }
+            &--claimed{
+                text-align: center;
+                margin: 0px;
             }
             &--claim {
                 display: flex;
