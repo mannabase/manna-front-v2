@@ -48,16 +48,28 @@ export class ContractService {
     balanceOf(walletAddress: string): Observable<string> {
         if (!this.initializing.value) {
             return from(this.mannaContract!['balanceOf'](walletAddress))
+                .pipe(
+                    map(balance => {
+                        const formattedBalance = ethers.formatEther(balance);
+                        return (parseFloat(formattedBalance) / 1000000).toString();
+                    })
+                );
         } else {
             return this.initializing.pipe(
                 filter(value => !value),
                 switchMap(value => {
                     return from(this.mannaContract!['balanceOf'](walletAddress))
+                        .pipe(
+                            map(balance => {
+                                const formattedBalance = ethers.formatEther(balance);
+                                return (parseFloat(formattedBalance) / 1000000).toString();
+                            })
+                        );
                 }),
-                map(balance => ethers.formatEther(balance)),
-            )
+            );
         }
     }
+    
 
     getUserScore(userAddress: string): Observable<UserScore | undefined> {
         return from(this.claimMannaContract!['userScores'](userAddress).then(response => {
@@ -72,17 +84,22 @@ export class ContractService {
     getScoreThreshold(): Observable<number> {
         if (!this.initializing.value) {
             return from(this.claimMannaContract!['scoreThreshold']())
+                .pipe(
+                    map(threshold => parseInt(threshold.toString()) / 1000000)
+                );
         } else {
             return this.initializing.pipe(
                 filter(value => !value),
                 switchMap(value => {
                     return from(this.claimMannaContract!['scoreThreshold']())
+                        .pipe(
+                            map(threshold => parseInt(threshold.toString()) / 1000000)
+                        );
                 }),
-                map(threshold => parseInt(threshold.toString())),
-            )
+            );
         }
     }
-
+    
     submitUserScore(address: string, scoreData: any): Observable<void> {
         console.log("Submitting user score data:", scoreData);
         return from(this.claimMannaContract!['submitScore'](
