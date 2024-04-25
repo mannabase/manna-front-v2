@@ -107,6 +107,9 @@ export class MetamaskService {
             }
         });
     }
+    isMobileDevice(): boolean {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
 
     connect(): Observable<string> {
         return from(
@@ -125,39 +128,30 @@ export class MetamaskService {
 
     connectWallet() {
         if (typeof window.ethereum === 'undefined') {
-            this.alertService
-                .open(
-                    'Metamask is not installed. Please install Metamask and try again.',
-                    {
-                        status: 'error',
-                    }
-                )
-                .subscribe();
+            this.alertService.open('Metamask is not installed. Please install Metamask and try again.', { status: 'error' }).subscribe();
             window.open('https://metamask.io/');
             return;
         }
+    
+        if (this.isMobileDevice()) {
+            window.location.href = 'metamask:';
+        }
+    
         this.loadingService.setLoading(true);
-        this.connect()
-            .pipe(switchMap((value) => this.switchToMannaChain()))
-            .subscribe({
-                next: (account) => {
-                    this.loadingService.setLoading(false);
-                    this.alertService
-                        .open('Connected to account: ' + this.account$.value, {
-                            status: 'success',
-                        })
-                        .subscribe();
-                },
-                error: (err) => {
-                    this.loadingService.setLoading(false);
-                    this.alertService
-                        .open('Failed to connect Metamask', {
-                            status: 'error',
-                        })
-                        .subscribe();
-                },
-            });
+        this.connect().pipe(
+            switchMap((value) => this.switchToMannaChain())
+        ).subscribe({
+            next: (account) => {
+                this.loadingService.setLoading(false);
+                this.alertService.open('Connected to account: ' + this.account$.value, { status: 'success' }).subscribe();
+            },
+            error: (err) => {
+                this.loadingService.setLoading(false);
+                this.alertService.open('Failed to connect Metamask', { status: 'error' }).subscribe();
+            },
+        });
     }
+    
 
     switchToMannaChain(): Observable<any> {
         this.loadingService.setLoading(true);
