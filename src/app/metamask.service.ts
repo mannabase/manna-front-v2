@@ -13,10 +13,9 @@ import { chainConfig, mannaChainId } from './config';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LoadingService } from './loading.service';
 import { createWeb3Modal, defaultConfig } from '@web3modal/ethers';
-import { ethers, BrowserProvider, JsonRpcProvider, Contract, Typed } from 'ethers';
 
-// Web3Modal Configuration
-const projectId = 'YOUR_PROJECT_ID'; // Replace with your actual project ID
+
+const projectId = '83f8bb3871bd791900a7248b8abdcb21'; 
 
 const mainnet = {
     chainId: 1,
@@ -29,7 +28,7 @@ const mainnet = {
 const metadata = {
     name: 'My Website',
     description: 'My Website description',
-    url: 'https://mywebsite.com', // URL must match your domain & subdomain
+    url: 'https://mywebsite.com',
     icons: ['https://avatars.mywebsite.com/'],
 };
 

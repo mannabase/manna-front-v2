@@ -32,7 +32,6 @@
     "@types/node": "^20.10.3",
     "@walletconnect/modal": "^2.6.2",
     "@web3modal/ethers": "^4.1.11",
-    "@web3modal/standalone": "^2.4.3",
     "angular-svg-icon": "^17.0.0",
     "dompurify": "3.0.11",
     "ethers": "^6.12.1",

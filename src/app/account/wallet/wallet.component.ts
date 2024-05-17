@@ -86,15 +86,15 @@ export class WalletComponent implements OnInit, OnDestroy {
 
     private fetchBalances() {
         if (this.walletAddress) {
-            this.contractService.balanceOf(this.walletAddress).subscribe(
-                contractBalance => {
+            this.contractService.balanceOf().subscribe(
+                (contractBalance: string) => {
                     if (contractBalance) {
                         this.balance = parseFloat(contractBalance);
                         this.cdRef.detectChanges(); 
                         console.log('wallet balance fetched:', contractBalance)
                     }
                 },
-                error => {
+                (error: any) => {
                     console.error('Error fetching contract balance:', error);
                     this.balance = null; 
                     this.cdRef.detectChanges(); 
