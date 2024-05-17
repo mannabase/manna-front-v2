@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-    BehaviorSubject,
-    combineLatest,
-    from,
-    Observable,
-    of,
-    throwError,
-} from 'rxjs';
+import { BehaviorSubject, combineLatest, from, Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap, switchMap } from 'rxjs/operators';
 import { TuiAlertService } from '@taiga-ui/core';
 import { chainConfig, mannaChainId } from './config';
@@ -14,15 +7,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LoadingService } from './loading.service';
 import { createWeb3Modal, defaultConfig } from '@web3modal/ethers';
 
-
-const projectId = '83f8bb3871bd791900a7248b8abdcb21'; 
+const projectId = '83f8bb3871bd791900a7248b8abdcb21';
 
 const mainnet = {
-    chainId: 1,
-    name: 'Ethereum',
-    currency: 'ETH',
-    explorerUrl: 'https://etherscan.io',
-    rpcUrl: 'https://cloudflare-eth.com',
+    chainId: 137,
+    name: 'MATIC',
+    currency: 'MATIC',
+    explorerUrl: 'https://polygon-rpc.com/',
+    rpcUrl: 'https://polygon-rpc.com/',
 };
 
 const metadata = {
@@ -78,21 +70,29 @@ export class MetamaskService {
     }
 
     private async initializeWeb3Modal() {
-        this.web3Modal.open({ view: 'Connect' });
-
-        // Handling the connection logic
-        this.ethereum = await new Promise((resolve, reject) => {
-            const unsubscribe = this.web3Modal.subscribeProvider((provider: any) => {
-                unsubscribe();
-                if (provider) {
-                    resolve(provider);
-                } else {
-                    reject(new Error('Failed to connect to provider'));
-                }
-            });
+        this.web3Modal.subscribeState((newState) => {
+            if (newState.open) {
+                this.loadingService.setLoading(false);
+            }
         });
 
-        if (this.ethereum) {
+        this.web3Modal.subscribeProvider((providerData) => {
+            const { provider, address, chainId } = providerData;
+            if (provider) {
+                this.ethereum = provider;
+                if (address) {
+                    this.account$.next(address);
+                }
+                this.network$.next({ chainId });
+                this.checkState();
+            } else {
+                this.metamaskState$.next(MetamaskState.NOT_INSTALLED);
+            }
+        });
+
+        if (!this.ethereum) {
+            this.metamaskState$.next(MetamaskState.NOT_INSTALLED);
+        } else {
             this.ethereum.on('accountsChanged', (accounts: string[]) => {
                 localStorage.removeItem('localScore');
                 window.location.reload();
@@ -109,26 +109,23 @@ export class MetamaskService {
             });
 
             this.checkState();
-        } else {
-            this.metamaskState$.next(MetamaskState.NOT_INSTALLED);
         }
 
         combineLatest([this.account$, this.network$])
             .pipe(takeUntilDestroyed())
-            .subscribe((data) => {
-                const account = data[0];
+            .subscribe(([account, network]) => {
                 if (!this.ethereum) {
                     this.metamaskState$.next(MetamaskState.NOT_INSTALLED);
                     return;
                 }
                 if (account.length > 0) {
-                    this.ethereum.request({ method: 'eth_chainId' }).then((chainId: string) => {
-                        if (BigInt(chainId) === mannaChainId) {  // Fix: Convert chainId to BigInt
+                    this.ethereum.request({ method: 'eth_chainId' }).then((chainId: string | undefined) => {
+                        if (chainId && BigInt(chainId) === mannaChainId) {
                             this.metamaskState$.next(MetamaskState.READY);
                         } else {
                             this.metamaskState$.next(MetamaskState.WRONG_CHAIN);
                         }
-                    }).catch((err: any) => {
+                    }).catch(() => {
                         this.alertService.open('Failed to connect to wallet', {
                             status: 'error',
                         });
@@ -173,7 +170,7 @@ export class MetamaskService {
             return;
         }
         this.loadingService.setLoading(true);
-        this.web3Modal.open({ view: 'Connect' }); 
+        this.web3Modal.open({ view: 'Connect' });
         this.connect().subscribe({
             next: (account) => {
                 this.loadingService.setLoading(false);
@@ -181,7 +178,7 @@ export class MetamaskService {
                     status: 'success',
                 }).subscribe();
             },
-            error: (err) => {
+            error: () => {
                 this.loadingService.setLoading(false);
                 this.alertService.open('Failed to connect Metamask', {
                     status: 'error',
@@ -192,7 +189,7 @@ export class MetamaskService {
 
     disconnectWallet() {
         if (this.ethereum) {
-            this.web3Modal.disconnect(); 
+            this.web3Modal.disconnect();
             this.account$.next('');
             this.metamaskState$.next(MetamaskState.NOT_CONNECTED);
         }
@@ -202,8 +199,8 @@ export class MetamaskService {
         this.loadingService.setLoading(true);
         return from(this.ethereum.request({ method: 'eth_chainId' })).pipe(
             switchMap((currentChainId: unknown) => {
-                const currentChainIdString = currentChainId as string; // Cast to string
-                if (BigInt(currentChainIdString) === mannaChainId) {  // Use the casted string
+                const currentChainIdString = currentChainId as string | undefined;
+                if (currentChainIdString && BigInt(currentChainIdString) === mannaChainId) {
                     this.loadingService.setLoading(false);
                     this.network$.next({ chainId: mannaChainId });
                     return of({ chainId: mannaChainId });
