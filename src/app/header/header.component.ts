@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.metamaskService.checkState()
+    // this.metamaskService.checkState()
     this.router.events.pipe(filter((event): event is NavigationStart => event instanceof NavigationStart)
     ).subscribe((event: NavigationStart) => {
       this.isAccountPage = event.url.includes('/account');
