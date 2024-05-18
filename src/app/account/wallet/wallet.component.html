@@ -20,27 +20,28 @@
                 </div>
                 <div
                     class="intro--buttun"
-                    (click)="metamaskService.connectWallet()"
                 >
-                    <img
+                    <!-- <img
                         src="../../../assets/images/account-wallet-buttun-icon.svg"
                         alt="wallet"
                         class="intro--buttun--icon"
-                    />
-                    <span
+                    /> -->
+                    <!-- <span
                         class="intro--buttun--text"
                         *ngIf="metamaskState == MetamaskState.NOT_CONNECTED"
                         >Connect Wallet</span
-                    >
+                    > -->
+                    <!-- <w3m-connect-button *ngIf="metamaskState == MetamaskState.NOT_CONNECTED" /> -->
                     <!-- <span
                         class="intro--buttun--text"
                         *ngIf="metamaskState == MetamaskState.WRONG_CHAIN"
                         >Switch Chain</span
                     > -->
-                    <w3m-network-button
+                    <!-- <w3m-network-button
                         *ngIf="metamaskState == MetamaskState.WRONG_CHAIN"
                     > 
-                    </w3m-network-button>
+                    </w3m-network-button> -->
+                    <w3m-button></w3m-button>
                 </div>
             </div>
         </div>

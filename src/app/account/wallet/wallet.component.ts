@@ -10,7 +10,8 @@ import { ContractService } from '../../contract.service';
 import { Subscription } from 'rxjs';
 import { MannaService } from '../../manna.service';
 import { ClaimService } from '../../claim.service';
-import { createWeb3Modal, defaultConfig } from '@web3modal/ethers'
+import { createWeb3Modal, defaultConfig } from '@web3modal/ethers';
+
 
 interface Transaction {
     type: 'withdraw' | 'receive';
@@ -57,7 +58,49 @@ export class WalletComponent implements OnInit, OnDestroy {
         readonly contractService: ContractService,
         private mannaService: MannaService,
         private claimService: ClaimService,
-    ) {}
+    ) {
+        const projectId = '83f8bb3871bd791900a7248b8abdcb21';
+
+    // 2. Set chains
+    const mainnet = {
+      chainId: 137,
+      name: 'MATIC',
+      currency: 'MATIC',
+      explorerUrl: 'https://polygon-rpc.com/',
+      rpcUrl: 'https://polygon-rpc.com/',
+    };
+
+    // 3. Create your application's metadata object
+    const metadata = {
+      name: 'Manna',
+      description: 'Fture of money',
+      url: 'https://mywebsite.com', // url must match your domain & subdomain
+      icons: ['https://avatars.mywebsite.com/'],
+    };
+
+    // 4. Create Ethers config
+    const ethersConfig = defaultConfig({
+      /*Required*/
+      metadata,
+
+      /*Optional*/
+      enableEIP6963: true, // true by default
+      enableInjected: true, // true by default
+      enableCoinbase: true, // true by default
+      rpcUrl: '...', // used for the Coinbase SDK
+      defaultChainId: 1, // used for the Coinbase SDK
+    });
+
+    // 5. Create a Web3Modal instance
+    const modal = createWeb3Modal({
+      ethersConfig,
+      chains: [mainnet],
+      projectId,
+      enableAnalytics: true, // Optional - defaults to your Cloud configuration
+      enableOnramp: true, // Optional - false as default
+    });
+    modal.getWalletProvider
+    }
 
     ngOnInit() {
         this.metamaskService.connectWallet();
