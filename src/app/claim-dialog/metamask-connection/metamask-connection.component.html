@@ -1,10 +1,10 @@
 <div class="flex flex-column gap-3 justify-content-center align-items-center w-full" *tuiLet="(metamaskService.metamaskState$ | async) as metamaskState">
-    <div class="flex flex-column gap-2 justify-content-center align-items-center" *ngIf="metamaskState == MetamaskState.NOT_INSTALLED">
+    <!-- <div class="flex flex-column gap-2 justify-content-center align-items-center" *ngIf="metamaskState == MetamaskState.NOT_INSTALLED">
         <span>
             Metamask extension is not installed. Please install it to continue.
         </span>
         <button tuiButton (click)="installMetamask()" size="m">Install Metamask</button>
-    </div>
+    </div> -->
     <div class="flex flex-column gap-2 justify-content-center align-items-center" *ngIf="metamaskState == MetamaskState.NOT_CONNECTED">
         <span>
             Let's get you started! Please connect your Metamask wallet by clicking the button below

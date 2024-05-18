@@ -42,7 +42,6 @@ const modal = createWeb3Modal({
 });
 
 export enum MetamaskState {
-    NOT_INSTALLED = 'NOT_INSTALLED',
     NOT_CONNECTED = 'NOT_CONNECTED',
     CONNECTED = 'CONNECTED',
     WRONG_CHAIN = 'WRONG_CHAIN',
@@ -78,21 +77,14 @@ export class MetamaskService {
 
         this.web3Modal.subscribeProvider((providerData) => {
             const { provider, address, chainId } = providerData;
-            if (provider) {
                 this.ethereum = provider;
                 if (address) {
                     this.account$.next(address);
                 }
                 this.network$.next({ chainId });
                 this.checkState();
-            } else {
-                this.metamaskState$.next(MetamaskState.NOT_INSTALLED);
-            }
         });
 
-        if (!this.ethereum) {
-            this.metamaskState$.next(MetamaskState.NOT_INSTALLED);
-        } else {
             this.ethereum.on('accountsChanged', (accounts: string[]) => {
                 localStorage.removeItem('localScore');
                 window.location.reload();
@@ -109,13 +101,11 @@ export class MetamaskService {
             });
 
             this.checkState();
-        }
 
         combineLatest([this.account$, this.network$])
             .pipe(takeUntilDestroyed())
             .subscribe(([account, network]) => {
                 if (!this.ethereum) {
-                    this.metamaskState$.next(MetamaskState.NOT_INSTALLED);
                     return;
                 }
                 if (account.length > 0) {
@@ -162,13 +152,13 @@ export class MetamaskService {
     }
 
     connectWallet() {
-        if (!this.ethereum) {
-            this.alertService.open('Metamask is not installed. Please install Metamask and try again.', {
-                status: 'error',
-            }).subscribe();
-            window.open('https://metamask.io/');
-            return;
-        }
+        // if (!this.ethereum) {
+        //     this.alertService.open('Metamask is not installed. Please install Metamask and try again.', {
+        //         status: 'error',
+        //     }).subscribe();
+        //     window.open('https://metamask.io/');
+        //     return;
+        // }
         this.loadingService.setLoading(true);
         this.web3Modal.open({ view: 'Connect' });
         this.connect().subscribe({
@@ -177,6 +167,7 @@ export class MetamaskService {
                 this.alertService.open('Connected to account: ' + this.account$.value, {
                     status: 'success',
                 }).subscribe();
+                this.checkNetwork();
             },
             error: () => {
                 this.loadingService.setLoading(false);
@@ -193,6 +184,21 @@ export class MetamaskService {
             this.account$.next('');
             this.metamaskState$.next(MetamaskState.NOT_CONNECTED);
         }
+    }
+
+    checkNetwork() {
+        if (!this.ethereum) {
+            return;
+        }
+        this.ethereum.request({ method: 'eth_chainId' }).then((chainId: string | undefined) => {
+            if (chainId && BigInt(chainId) === mannaChainId) {
+                this.metamaskState$.next(MetamaskState.READY);
+            } else {
+                this.metamaskState$.next(MetamaskState.WRONG_CHAIN);
+            }
+        }).catch(() => {
+            this.metamaskState$.next(MetamaskState.NOT_CONNECTED);
+        });
     }
 
     switchToMannaChain(): Observable<any> {

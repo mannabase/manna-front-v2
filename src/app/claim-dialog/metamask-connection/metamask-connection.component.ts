@@ -39,7 +39,4 @@ export class MetamaskConnectionComponent implements OnInit {
     ngOnDestroy() {
         this.subscriptions.unsubscribe();
     }
-    installMetamask() {
-        window.open('https://metamask.io/download/', '_blank');
-    }
 }

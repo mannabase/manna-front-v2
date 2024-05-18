@@ -9,7 +9,7 @@ import {
     TuiRootModule,
     TuiSvgModule,
 } from "@taiga-ui/core"
-import {NgModule} from '@angular/core'
+import {NgModule,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
 import { CommonModule } from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
@@ -48,6 +48,7 @@ import {TuiAccordionModule} from '@taiga-ui/kit';
 import {WriteBlogComponent} from './blog/write-blog/write-blog.component';
 import {httpInterceptor} from "./http.interceptor";
 
+
 @NgModule({
   declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent,
     AboutComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, ClaimMannaComponent, FooterComponent, WriteBlogComponent, DailyRewardDialogComponent],
@@ -83,6 +84,7 @@ import {httpInterceptor} from "./http.interceptor";
     },
   ],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
 }

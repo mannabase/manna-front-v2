@@ -10,6 +10,7 @@ import { ContractService } from '../../contract.service';
 import { Subscription } from 'rxjs';
 import { MannaService } from '../../manna.service';
 import { ClaimService } from '../../claim.service';
+import { createWeb3Modal, defaultConfig } from '@web3modal/ethers'
 
 interface Transaction {
     type: 'withdraw' | 'receive';

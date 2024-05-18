@@ -77,7 +77,7 @@
     </nav>
   </div>
     <button [routerLink]="['/account']" class="account-button" *tuiLet="(metamaskService.metamaskState$ | async) as metamaskState">
-      <span  *ngIf="(metamaskState !== MetamaskState.NOT_CONNECTED && metamaskState !== MetamaskState.NOT_INSTALLED); else account" >
+      <span  *ngIf="(metamaskState !== MetamaskState.NOT_CONNECTED); else account" >
         <ng-container *tuiLet="(metamaskService.account$ | async) as walletAddress">
           {{ walletAddress | slice:0:6 }}...{{ walletAddress | slice:-4 }}
         </ng-container>
