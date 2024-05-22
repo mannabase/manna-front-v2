@@ -67,51 +67,17 @@ export class DailyRewardDialogComponent implements OnInit {
             }
         );
     }
-
-    claimManna(): void {
-        this.claimLoader = true;
+    claimDailyReward(): void {
+        this.claimDailyLoader = true;
         const walletAddress = this.metamaskService.account$.value;
-
-        if (!walletAddress) {
-            this.alertService
-                .open('Please connect to a wallet first.', {
-                    status: 'warning',
-                })
-                .subscribe();
-            this.claimLoader = false;
-            return;
-        }
-        this.claimService.claimDailyReward(walletAddress).subscribe(
+        this.claimService.claimDailyReward(walletAddress!).subscribe(
             () => {
-                this.alertService.open('Daily reward claimed successfully.');
-                this.fetchMannabaseBalance();
+                this.alertService.open('Daily reward claimed successfully.', { status: 'success' }).subscribe();
+                this.ngOnInit();
             },
-            (error) => {
-                console.error('Failed to claim daily reward:', error);
-            }
-        );
+        ).add(() => {
+            this.claimDailyLoader = false;
+        });
     }
-    fetchBalances() {
-        throw new Error('Method not implemented.');
-    }
-    private fetchMannabaseBalance() {
-        const walletAddress = this.metamaskService.account$.value;
-
-        if (walletAddress) {
-            this.mannaService.getMannabaseBalance(walletAddress).subscribe(
-                (response) => {
-                    if (response.status === 'ok') {
-                        this.mannabaseBalance = response.balance;
-                    } else {
-                        this.mannabaseBalanceMessage = response.msg;
-                    }
-                    this.cdRef.detectChanges();
-                },
-                (error) => {
-                    this.mannabaseBalanceMessage = 'Error fetching balance';
-                    this.cdRef.detectChanges();
-                }
-            );
-        }
-    }
+    
 }

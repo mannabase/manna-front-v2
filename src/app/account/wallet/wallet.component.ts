@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, Inject, Injector, OnDestroy, OnInit } fro
 import { MetamaskService, MetamaskState } from 'src/app/metamask.service';
 import { VerifyService, VerifyState } from '../../verify.service';
 import { TuiAlertService, TuiDialogService, tuiLoaderOptionsProvider } from '@taiga-ui/core';
-import { TuiMobileDialogService } from '@taiga-ui/addon-mobile';
 import { TUI_IS_IOS } from '@taiga-ui/cdk';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { DailyRewardDialogComponent } from './daily-reward-dialog/daily-reward-dialog.component';
@@ -11,7 +10,6 @@ import { Subscription } from 'rxjs';
 import { MannaService } from '../../manna.service';
 import { ClaimService } from '../../claim.service';
 import { createWeb3Modal, defaultConfig } from '@web3modal/ethers';
-
 
 interface Transaction {
     type: 'withdraw' | 'receive';
@@ -61,54 +59,54 @@ export class WalletComponent implements OnInit, OnDestroy {
     ) {
         const projectId = '83f8bb3871bd791900a7248b8abdcb21';
 
-    // 2. Set chains
-    const mainnet = {
-      chainId: 137,
-      name: 'MATIC',
-      currency: 'MATIC',
-      explorerUrl: 'https://polygon-rpc.com/',
-      rpcUrl: 'https://polygon-rpc.com/',
-    };
+        // 2. Set chains
+        const mainnet = {
+            chainId: 137,
+            name: 'MATIC',
+            currency: 'MATIC',
+            explorerUrl: 'https://polygon-rpc.com/',
+            rpcUrl: 'https://polygon-rpc.com/',
+        };
 
-    // 3. Create your application's metadata object
-    const metadata = {
-      name: 'Manna',
-      description: 'Fture of money',
-      url: 'https://mywebsite.com', // url must match your domain & subdomain
-      icons: ['https://avatars.mywebsite.com/'],
-    };
+        // 3. Create your application's metadata object
+        const metadata = {
+            name: 'Manna',
+            description: 'Future of money',
+            url: 'https://mywebsite.com', // url must match your domain & subdomain
+            icons: ['https://avatars.mywebsite.com/'],
+        };
 
-    // 4. Create Ethers config
-    const ethersConfig = defaultConfig({
-      /*Required*/
-      metadata,
+        // 4. Create Ethers config
+        const ethersConfig = defaultConfig({
+            /*Required*/
+            metadata,
 
-      /*Optional*/
-      enableEIP6963: true, // true by default
-      enableInjected: true, // true by default
-      enableCoinbase: true, // true by default
-      rpcUrl: '...', // used for the Coinbase SDK
-      defaultChainId: 1, // used for the Coinbase SDK
-    });
+            /*Optional*/
+            enableEIP6963: true, // true by default
+            enableInjected: true, // true by default
+            enableCoinbase: true, // true by default
+            rpcUrl: '...', // used for the Coinbase SDK
+            defaultChainId: 1, // used for the Coinbase SDK
+        });
 
-    // 5. Create a Web3Modal instance
-    const modal = createWeb3Modal({
-      ethersConfig,
-      chains: [mainnet],
-      projectId,
-      enableAnalytics: true, // Optional - defaults to your Cloud configuration
-      enableOnramp: true, // Optional - false as default
-    });
-    modal.getWalletProvider
+        // 5. Create a Web3Modal instance
+        const modal = createWeb3Modal({
+            ethersConfig,
+            chains: [mainnet],
+            projectId,
+            enableAnalytics: true, // Optional - defaults to your Cloud configuration
+            enableOnramp: true, // Optional - false as default
+        });
+        modal.getWalletProvider
     }
 
     ngOnInit() {
-        this.metamaskService.connectWallet();
         this.accountSubscription = this.metamaskService.account$.subscribe(address => {
             this.walletAddress = address;
             this.fetchClaimableAmount();
             this.fetchBalances();
         });
+
         this.networkSubscription = this.metamaskService.network$.subscribe(() => {
             this.balance = null;
             this.mannabaseBalance = null;
@@ -125,12 +123,20 @@ export class WalletComponent implements OnInit, OnDestroy {
         this.networkSubscription?.unsubscribe();
     }
 
+    connectWallet() {
+        this.metamaskService.connectWallet();
+    }
+
+    switchChain() {
+        this.metamaskService.switchToMannaChain().subscribe();
+    }
+
     private fetchBalances() {
         if (this.walletAddress) {
             this.contractService.balanceOf().subscribe(
-                (contractBalance: string) => {
-                    if (contractBalance) {
-                        this.balance = parseFloat(contractBalance);
+                (contractBalance: any) => { 
+                    if (contractBalance!== undefined) {
+                        this.balance = contractBalance;
                         this.cdRef.detectChanges();
                         console.log('wallet balance fetched:', contractBalance);
                     }

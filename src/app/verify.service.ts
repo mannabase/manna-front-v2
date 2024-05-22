@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core'
-import {BehaviorSubject, Observable, Subscription, of} from 'rxjs'
-import {map, switchMap, tap} from 'rxjs/operators'
-import {ContractService} from './contract.service'
-import {MetamaskService} from './metamask.service'
-import {MannaService} from './manna.service'
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription, of } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { ContractService } from './contract.service';
+import { MetamaskService } from './metamask.service';
+import { MannaService } from './manna.service';
+import { ethers } from 'ethers';
 
 export enum VerifyState {
     NOT_VERIFIED = 'NOT_VERIFIED',
@@ -20,23 +21,23 @@ export interface localScoreData {
     providedIn: 'root',
 })
 export class VerifyService {
-    private verificationStateSubject = new BehaviorSubject<VerifyState>(VerifyState.NOT_VERIFIED)
-    verificationState$ = this.verificationStateSubject.asObservable()
+    private verificationStateSubject = new BehaviorSubject<VerifyState>(VerifyState.NOT_VERIFIED);
+    verificationState$ = this.verificationStateSubject.asObservable();
 
-    private contractScoreSource = new BehaviorSubject<number | undefined>(undefined)
-    contractScore$ = this.contractScoreSource.asObservable()
+    private contractScoreSource = new BehaviorSubject<number | undefined>(undefined);
+    contractScore$ = this.contractScoreSource.asObservable();
 
-    private serverScoreSource = new BehaviorSubject<number | null>(null)
-    serverScore$ = this.serverScoreSource.asObservable()
+    private serverScoreSource = new BehaviorSubject<number | null>(null);
+    serverScore$ = this.serverScoreSource.asObservable();
 
-    private thresholdSource = new BehaviorSubject<number | undefined>(undefined)
-    threshold$ = this.thresholdSource.asObservable()
+    private thresholdSource = new BehaviorSubject<number | undefined>(undefined);
+    threshold$ = this.thresholdSource.asObservable();
 
-    walletAddress: string | null = null
-    accountSubscription: Subscription = new Subscription()
-    serverScoreSignature?: string
+    walletAddress: string | null = null;
+    accountSubscription: Subscription = new Subscription();
+    serverScoreSignature?: string;
     private cachedTimestamp: number | null = null;
-    private cachedSignature: string | null = null
+    private cachedSignature: string | null = null;
     private cacheExpiry: number = 0;
 
     constructor(
@@ -69,21 +70,21 @@ export class VerifyService {
             )
             .subscribe({
                 next: (scoreObj) => {
-                    this.contractScoreSource.next(scoreObj?.score)
+                    this.contractScoreSource.next(scoreObj?.score);
                     if (scoreObj != null) {
-                        const oneMonthAgo = Date.now() - (30 * 24 * 60 * 60 * 1000) // 30 days 
-                        const scoreDate = new Date(scoreObj.timestamp)
+                        const oneMonthAgo = Date.now() - (30 * 24 * 60 * 60 * 1000); // 30 days
+                        const scoreDate = new Date(scoreObj.timestamp);
                         if (scoreDate.getTime() < oneMonthAgo) {
                             if (scoreObj.score / 1000000 > this.thresholdSource.value!)
-                                this.verificationStateSubject.next(VerifyState.VERIFIED)
+                                this.verificationStateSubject.next(VerifyState.VERIFIED);
                             else
-                                this.verificationStateSubject.next(VerifyState.NOT_VERIFIED)
+                                this.verificationStateSubject.next(VerifyState.NOT_VERIFIED);
                         } else
-                            this.verificationStateSubject.next(VerifyState.EXPIRED)
+                            this.verificationStateSubject.next(VerifyState.EXPIRED);
                     } else
-                        this.verificationStateSubject.next(VerifyState.NOT_VERIFIED)
+                        this.verificationStateSubject.next(VerifyState.NOT_VERIFIED);
                 },
-            })
+            });
     }
 
     updateServerScore(): Observable<any> {
@@ -111,31 +112,30 @@ export class VerifyService {
 
     getVerificationSignatureFromUser(): Observable<{ timestamp: number, signature: string }> {
         const currentTime = this.getCurrentTimestamp();
-    
+
         if (this.cachedSignature && currentTime < this.cacheExpiry) {
             return of({
-                timestamp: this.cachedTimestamp!, 
+                timestamp: this.cachedTimestamp!,
                 signature: this.cachedSignature
             });
         } else {
-            const timestamp = currentTime; 
+            const timestamp = currentTime;
             const address = this.metamaskService.account$.value;
             const message = `Verification request\naddress: ${address.toLowerCase()}\ntimestamp: ${timestamp}`;
-            
+
             return this.metamaskService.signMessage(message).pipe(
                 tap(signature => {
                     this.cachedSignature = signature;
                     this.cachedTimestamp = timestamp;
-                    this.cacheExpiry = currentTime + 60; 
-                    console.log('New signature and timestamp cached'); 
+                    this.cacheExpiry = currentTime + 60;
+                    console.log('New signature and timestamp cached');
                 }),
                 map(signature => ({ timestamp: this.cachedTimestamp!, signature }))
             );
         }
     }
+
     private getCurrentTimestamp(): number {
         return Math.floor(Date.now() / 1000);
     }
-    
-    
 }

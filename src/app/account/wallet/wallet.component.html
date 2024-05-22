@@ -19,29 +19,23 @@
                     <h4 class="intro--title--market mt-0">One Day.</h4>
                 </div>
                 <div
-                    class="intro--buttun"
+                class="intro--buttun"
+                *ngIf="metamaskState === MetamaskState.NOT_CONNECTED"
+                (click)="connectWallet()"
                 >
-                    <!-- <img
+                <img
                         src="../../../assets/images/account-wallet-buttun-icon.svg"
                         alt="wallet"
                         class="intro--buttun--icon"
-                    /> -->
-                    <!-- <span
-                        class="intro--buttun--text"
-                        *ngIf="metamaskState == MetamaskState.NOT_CONNECTED"
-                        >Connect Wallet</span
-                    > -->
-                    <!-- <w3m-connect-button *ngIf="metamaskState == MetamaskState.NOT_CONNECTED" /> -->
-                    <!-- <span
-                        class="intro--buttun--text"
-                        *ngIf="metamaskState == MetamaskState.WRONG_CHAIN"
-                        >Switch Chain</span
-                    > -->
-                    <!-- <w3m-network-button
-                        *ngIf="metamaskState == MetamaskState.WRONG_CHAIN"
-                    > 
-                    </w3m-network-button> -->
-                    <w3m-button></w3m-button>
+                    />
+                    <span class="intro--buttun--text">Connect Wallet</span>
+                </div>
+                <div
+                    class="intro--buttun"
+                    *ngIf="metamaskState === MetamaskState.WRONG_CHAIN"
+                    (click)="switchChain()"
+                >
+                    <span class="intro--buttun--text">Switch Chain</span>
                 </div>
             </div>
         </div>

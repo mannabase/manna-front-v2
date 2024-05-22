@@ -6,6 +6,7 @@ import { MetamaskService } from './metamask.service';
 import { claimMannaContractABI, claimMannaContractAddress, mannaContractABI, mannaContractAddress } from './config';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Signature, UserScore } from './types';
+import { AnyARecord } from 'dns';
 
 @Injectable({
     providedIn: 'root',
@@ -42,17 +43,19 @@ export class ContractService {
         });
     }
 
-    balanceOf(): Observable<string> {
+    balanceOf(): Observable<number> {
+        console.log('request to contract balance');
         if (!this.mannaContract) {
-            return of('0');
+            return of(0); // Return 0 as a number
         }
-
+    
         return from(this.mannaContract['balanceOf'](this.metamaskService.account$.value)).pipe(
-            switchMap((balance: string) => of(balance))
+            map((balance: any) => parseInt(balance.toString()) / 1000000000000000000)
         );
     }
 
     getUserScore(userAddress: string): Observable<UserScore | undefined> {
+        console.log('Getting user score for address:', userAddress);
         return from(this.claimMannaContract!['userScores'](userAddress).then(response => {
             const timestamp = parseInt(response[0].toString());
             if (timestamp == 0) return undefined;
@@ -79,6 +82,7 @@ export class ContractService {
     }
 
     submitUserScore(address: string, scoreData: any): Observable<void> {
+        console.log('Submitting score for address:', address);
         console.log('Submitting user score data:', scoreData);
         return from(this.claimMannaContract!['submitScore'](
             scoreData.score,

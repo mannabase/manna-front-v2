@@ -6,6 +6,7 @@ import { chainConfig, mannaChainId } from './config';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LoadingService } from './loading.service';
 import { createWeb3Modal, defaultConfig } from '@web3modal/ethers';
+import { ethers } from 'ethers';
 
 const projectId = '83f8bb3871bd791900a7248b8abdcb21';
 
@@ -77,7 +78,6 @@ export class MetamaskService {
 
         this.web3Modal.subscribeProvider((providerData) => {
             const { provider, address, chainId } = providerData;
-            console.log('subscribeProvider:', { provider, address, chainId });
             this.ethereum = provider;
             if (address) {
                 this.account$.next(address);
@@ -88,13 +88,13 @@ export class MetamaskService {
 
         if (!this.ethereum) {
             this.metamaskState$.next(MetamaskState.NOT_CONNECTED);
-            console.log('Metamask state:', MetamaskState.NOT_CONNECTED);
         } else {
             this.ethereum.on('accountsChanged', (accounts: string[]) => {
                 localStorage.removeItem('localScore');
                 window.location.reload();
                 if (accounts.length > 0) {
-                    this.account$.next(accounts[0]);
+                    const checksummedAddress = ethers.getAddress(accounts[0]);
+                    this.account$.next(checksummedAddress);
                 } else {
                     this.account$.next('');
                 }
@@ -258,15 +258,12 @@ export class MetamaskService {
 
     signMessage(message: string): Observable<string> {
         this.loadingService.setLoading(true);
-        return from(
-            this.ethereum.request({
-                method: 'personal_sign',
-                params: [message, this.account$.value],
-            }) as Promise<string>
-        ).pipe(
-            tap(() => {
-                this.loadingService.setLoading(false);
-            }),
+
+        return from(this.ethereum.request({
+            method: 'personal_sign',
+            params: [message, this.account$.value],
+        }) as Promise<string>).pipe(
+            tap(() => this.loadingService.setLoading(false)),
             catchError((error) => {
                 this.loadingService.setLoading(false);
                 return throwError(error);
