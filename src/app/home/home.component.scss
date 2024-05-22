@@ -45,7 +45,7 @@
             // width: 25%;
             height: 90vh;
             display: flex;
-            align-self: flex-end;
+            align-self: flex-start;
             justify-content: flex-start;
             z-index: 0;
             padding-bottom: 50px;
@@ -53,8 +53,8 @@
                 display: flex;
                 position: absolute;
                 align-self: flex-end;
-                // height: 80vh;
-                width: 18%;
+                height: 80vh;
+                width: 22%;
                 margin-left: -5%;
                 &--mobile {
                     display: none;
@@ -603,6 +603,14 @@
         padding: 5px 10px;
         &--text {
             font-size: 14px;
+        }
+    }
+    .boxes{
+        &--item{
+            &--discription{
+                height: auto;
+                margin-bottom: 10px;
+            }
         }
     }
     .flex-item {

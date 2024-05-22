@@ -28,6 +28,7 @@
     border-radius: 10px;
     font-weight: 700;
     letter-spacing: 1px;
+    text-align: center;
 }
 .account {
     &--info {
@@ -333,7 +334,7 @@
         }
         &--humanity {
             width: 90%;
-            height: 400px;
+            min-height: 400px;
             padding: 20px 20px;
             align-items: flex-start;
             justify-content: space-between;
@@ -411,7 +412,7 @@
         }
         &--humanity {
             width: 90%;
-            height: 400px;
+            min-height: 400px;
             padding: 20px 20px;
             align-items: center;
             justify-content: space-between;

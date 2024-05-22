@@ -6,7 +6,7 @@
         <div *ngIf="claimableAmount !== 0" class="daily--header--number">{{claimableAmount || "loading..."}}</div>
     </div>
     <div *ngIf="claimableAmount !== 0" class="daily--claim">
-        <div class="daily--claim--text mb-3">This transaction will claim all earning & credit them to your wallet</div>
+        <div class="daily--claim--text mb-3">This transaction will claim all daily manna accrued up to the last 7 days.</div>
         <button tuiButton class="daily--claim--button" (click)="claimDailyReward()">
             <span *ngIf="!claimLoader">Claim Daily Manna</span>
             <span *ngIf="claimLoader">
