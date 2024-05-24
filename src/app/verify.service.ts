@@ -63,6 +63,7 @@ export class VerifyService {
     }
 
     public updateVerificationState() {
+        console.log('updateVerificationState')
         this.contractService.getScoreThreshold()
             .pipe(
                 tap(threshold => this.thresholdSource.next(threshold)),
@@ -72,9 +73,10 @@ export class VerifyService {
                 next: (scoreObj) => {
                     this.contractScoreSource.next(scoreObj?.score);
                     if (scoreObj != null) {
-                        const oneMonthAgo = Date.now() - (30 * 24 * 60 * 60 * 1000); // 30 days
-                        const scoreDate = new Date(scoreObj.timestamp);
-                        if (scoreDate.getTime() < oneMonthAgo) {
+                        const oneMonthAgo = Date.now() - (15 * 24 * 60 * 60 * 1000); // 15 days
+                        const scoreDate = new Date(scoreObj.timestamp * 1000); // Convert to milliseconds
+                        if (scoreDate.getTime() > oneMonthAgo) {
+                            console.log('updateVerificationState-date', scoreDate.getTime())
                             if (scoreObj.score / 1000000 > this.thresholdSource.value!)
                                 this.verificationStateSubject.next(VerifyState.VERIFIED);
                             else
@@ -85,6 +87,7 @@ export class VerifyService {
                         this.verificationStateSubject.next(VerifyState.NOT_VERIFIED);
                 },
             });
+            console.log('updateVerificationState', this.verificationState$)
     }
 
     updateServerScore(): Observable<any> {

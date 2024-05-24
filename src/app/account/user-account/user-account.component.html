@@ -43,7 +43,7 @@
                             *ngIf="
                                 metamaskState == MetamaskState.READY &&
                                 (contractScore! > 0 || localScore != null) &&
-                                verificationState !== VerifyState.VERIFIED
+                                verificationState == VerifyState.NOT_VERIFIED
                             "
                             class="account--humanity--desktop"
                         >
@@ -77,6 +77,23 @@
                                 </h5>
                             </ng-template>
                         </div>
+                        <div
+                            *ngIf="verificationState === VerifyState.EXPIRED"
+                        >
+                        <h5 class="account--humanity--fail">
+                            Unfortunately, your score is expired for withdraw increase your scoper higher than threshold and updae the score please.
+                            <a
+                                class="gitcoinLink"
+                                href="https://passport.gitcoin.co"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Gitcoin Passport
+                            </a>
+                            website to explore opportunities for
+                            increasing your score
+                        </h5>
+                    </div>
                         <div class="account--humanity--passport">
                             <div
                                 class="account--humanity--passport--container"
@@ -84,7 +101,8 @@
                                     metamaskState == MetamaskState.READY &&
                                     (contractScore! > 0 ||
                                         localScore != null) &&
-                                    verificationState !== VerifyState.VERIFIED
+                                    verificationState ==
+                                        VerifyState.NOT_VERIFIED
                                 "
                             >
                                 <div class="account--humanity--passport--score">
@@ -99,11 +117,7 @@
                                         ></i>
                                     </div>
                                     <div
-                                        *ngIf="
-                                            (contractScore ?? 0) !== 0 &&
-                                            verificationState !==
-                                                VerifyState.EXPIRED
-                                        "
+                                        *ngIf="(contractScore ?? 0) !== 0"
                                         class="account--humanity--passport--score--num"
                                     >
                                         {{
@@ -111,19 +125,6 @@
                                                 | number
                                                     : "1.0-6" || "loading..."
                                         }}
-                                    </div>
-                                    <div
-                                        *ngIf="
-                                            verificationState ===
-                                            VerifyState.EXPIRED
-                                        "
-                                        class="account--humanity--passport--connect-button"
-                                        (click)="refreshUserScore()"
-                                    >
-                                        <span *ngIf="loader">Updating...</span>
-                                        <span *ngIf="!loader"
-                                            >Update Score</span
-                                        >
                                     </div>
                                     <div
                                         *ngIf="
@@ -178,7 +179,16 @@
                             >
                                 You are verified
                             </div>
-
+                            <div
+                                *ngIf="
+                                    verificationState === VerifyState.EXPIRED
+                                "
+                                class="account--humanity--passport--connect-button"
+                                (click)="refreshUserScore()"
+                            >
+                                <span *ngIf="loader">Updating...</span>
+                                <span *ngIf="!loader">Update Score</span>
+                            </div>
                             <button
                                 tuiButton
                                 [showLoader]="loadingService.loading()"
