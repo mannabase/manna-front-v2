@@ -1,37 +1,18 @@
-import { ChangeDetectorRef, Component, Inject, Injector, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { MetamaskService, MetamaskState } from 'src/app/metamask.service';
 import { VerifyService, VerifyState } from '../../verify.service';
-import { TuiAlertService, TuiDialogService, tuiLoaderOptionsProvider } from '@taiga-ui/core';
-import { TUI_IS_IOS } from '@taiga-ui/cdk';
+import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { DailyRewardDialogComponent } from './daily-reward-dialog/daily-reward-dialog.component';
 import { ContractService } from '../../contract.service';
 import { Subscription } from 'rxjs';
 import { MannaService } from '../../manna.service';
 import { ClaimService } from '../../claim.service';
-import { createWeb3Modal, defaultConfig } from '@web3modal/ethers';
-
-interface Transaction {
-    type: 'withdraw' | 'receive';
-    date: Date;
-    amount: number;
-    result: 'complete' | 'canceled' | 'pending';
-}
 
 @Component({
     selector: 'app-wallet',
     templateUrl: './wallet.component.html',
     styleUrls: ['./wallet.component.scss'],
-    providers: [
-        {
-            provide: TUI_IS_IOS,
-            useValue: false,
-        },
-        tuiLoaderOptionsProvider({
-            inheritColor: true,
-            overlay: true,
-        }),
-    ],
 })
 export class WalletComponent implements OnInit, OnDestroy {
     balance: number | null = null;
@@ -44,6 +25,7 @@ export class WalletComponent implements OnInit, OnDestroy {
     claimableAmount: number | null = null;
     private accountSubscription: Subscription | undefined;
     private networkSubscription: Subscription | undefined;
+    private metamaskStateSubscription: Subscription | undefined;
 
     constructor(
         readonly metamaskService: MetamaskService,
@@ -56,49 +38,7 @@ export class WalletComponent implements OnInit, OnDestroy {
         readonly contractService: ContractService,
         private mannaService: MannaService,
         private claimService: ClaimService,
-    ) {
-        const projectId = '83f8bb3871bd791900a7248b8abdcb21';
-
-        // 2. Set chains
-        const mainnet = {
-            chainId: 137,
-            name: 'MATIC',
-            currency: 'MATIC',
-            explorerUrl: 'https://polygon-rpc.com/',
-            rpcUrl: 'https://polygon-rpc.com/',
-        };
-
-        // 3. Create your application's metadata object
-        const metadata = {
-            name: 'Manna',
-            description: 'Future of money',
-            url: 'https://mywebsite.com', // url must match your domain & subdomain
-            icons: ['https://avatars.mywebsite.com/'],
-        };
-
-        // 4. Create Ethers config
-        const ethersConfig = defaultConfig({
-            /*Required*/
-            metadata,
-
-            /*Optional*/
-            enableEIP6963: true, // true by default
-            enableInjected: true, // true by default
-            enableCoinbase: true, // true by default
-            rpcUrl: '...', // used for the Coinbase SDK
-            defaultChainId: 1, // used for the Coinbase SDK
-        });
-
-        // 5. Create a Web3Modal instance
-        const modal = createWeb3Modal({
-            ethersConfig,
-            chains: [mainnet],
-            projectId,
-            enableAnalytics: true, // Optional - defaults to your Cloud configuration
-            enableOnramp: true, // Optional - false as default
-        });
-        modal.getWalletProvider
-    }
+    ) {}
 
     ngOnInit() {
         this.accountSubscription = this.metamaskService.account$.subscribe(address => {
@@ -116,11 +56,16 @@ export class WalletComponent implements OnInit, OnDestroy {
                 this.fetchBalances();
             }
         });
+
+        this.metamaskStateSubscription = this.metamaskService.metamaskState$.subscribe(state => {
+            this.cdRef.detectChanges();
+        });
     }
 
     ngOnDestroy() {
         this.accountSubscription?.unsubscribe();
         this.networkSubscription?.unsubscribe();
+        this.metamaskStateSubscription?.unsubscribe();
     }
 
     connectWallet() {
@@ -135,10 +80,9 @@ export class WalletComponent implements OnInit, OnDestroy {
         if (this.walletAddress) {
             this.contractService.balanceOf().subscribe(
                 (contractBalance: any) => { 
-                    if (contractBalance!== undefined) {
+                    if (contractBalance !== undefined) {
                         this.balance = contractBalance;
                         this.cdRef.detectChanges();
-                        console.log('wallet balance fetched:', contractBalance);
                     }
                 },
                 (error: any) => {
@@ -176,7 +120,6 @@ export class WalletComponent implements OnInit, OnDestroy {
             this.mannaService.getMannabaseBalance(this.walletAddress).subscribe(
                 response => {
                     if (response && response.status === 'ok') {
-                        console.log('Mannabase balance fetched:', response.balance);
                         this.mannabaseBalance = response.balance;
                         this.cdRef.detectChanges();
                     }

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Contract, ethers } from 'ethers';
-import { BehaviorSubject, from, Observable, of } from 'rxjs';
-import { switchMap, map, filter } from 'rxjs/operators'; // Import map and filter
+import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { MetamaskService } from './metamask.service';
 import { claimMannaContractABI, claimMannaContractAddress, mannaContractABI, mannaContractAddress } from './config';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Signature, UserScore } from './types';
-import { AnyARecord } from 'dns';
+
 
 @Injectable({
     providedIn: 'root',
@@ -27,63 +27,72 @@ export class ContractService {
                 const provider = new ethers.BrowserProvider(window.ethereum as any);
                 return from(provider.getSigner());
             }),
-        ).subscribe((signer) => {
-            if (signer == null) return;
-            this.mannaContract = new Contract(
-                mannaContractAddress,
-                mannaContractABI,
-                signer,
-            );
-            this.claimMannaContract = new Contract(
-                claimMannaContractAddress,
-                claimMannaContractABI,
-                signer,
-            );
-            this.initializing.next(false);
+        ).subscribe({
+            next: (signer) => {
+                if (signer == null) return;
+                this.mannaContract = new Contract(mannaContractAddress, mannaContractABI, signer);
+                this.claimMannaContract = new Contract(claimMannaContractAddress, claimMannaContractABI, signer);
+                this.initializing.next(false);
+            },
+            error: (error) => {
+                console.error('Error initializing contracts:', error);
+                this.initializing.next(false);
+            }
         });
     }
 
     balanceOf(): Observable<number> {
-        console.log('request to contract balance');
         if (!this.mannaContract) {
-            return of(0); // Return 0 as a number
+            return of(0);
         }
-    
         return from(this.mannaContract['balanceOf'](this.metamaskService.account$.value)).pipe(
-            map((balance: any) => parseInt(balance.toString()) / 1000000000000000000)
+            map((balance: any) => parseInt(balance.toString()) / 1e18),
+            catchError((error) => {
+                console.error('Error fetching balance:', error);
+                return of(0);
+            })
         );
     }
 
     getUserScore(userAddress: string): Observable<UserScore | undefined> {
-        console.log('Getting user score for address:', userAddress);
-        return from(this.claimMannaContract!['userScores'](userAddress).then(response => {
-            const timestamp = parseInt(response[0].toString());
-            if (timestamp == 0) return undefined;
-            const score = parseInt(response[1].toString());
-            return { timestamp, score };
-        }));
+        return from(this.claimMannaContract!['userScores'](userAddress)).pipe(
+            map(response => {
+                const timestamp = parseInt(response[0].toString());
+                if (timestamp == 0) return undefined;
+                const score = parseInt(response[1].toString());
+                return { timestamp, score };
+            }),
+            catchError((error) => {
+                console.error('Error fetching user score:', error);
+                return of(undefined);
+            })
+        );
     }
 
     getScoreThreshold(): Observable<number> {
         if (!this.initializing.value) {
             return from(this.claimMannaContract!['scoreThreshold']()).pipe(
-                map((threshold: any) => parseInt(threshold.toString()) / 1000000)
+                map((threshold: any) => parseInt(threshold.toString()) / 1e6),
+                catchError((error) => {
+                    console.error('Error fetching score threshold:', error);
+                    return of(7);
+                })
             );
         } else {
             return this.initializing.pipe(
                 filter((value: boolean) => !value),
-                switchMap(() => {
-                    return from(this.claimMannaContract!['scoreThreshold']()).pipe(
-                        map((threshold: any) => parseInt(threshold.toString()) / 1000000)
-                    );
-                }),
+                switchMap(() => from(this.claimMannaContract!['scoreThreshold']()).pipe(
+                    map((threshold: any) => parseInt(threshold.toString()) / 1e6),
+                    catchError((error) => {
+                        console.error('Error fetching score threshold:', error);
+                        return of(7);
+                    })
+                )),
             );
         }
     }
 
     submitUserScore(address: string, scoreData: any): Observable<void> {
-        console.log('Submitting score for address:', address);
-        console.log('Submitting user score data:', scoreData);
         return from(this.claimMannaContract!['submitScore'](
             scoreData.score,
             [
@@ -92,10 +101,22 @@ export class ContractService {
                 scoreData.signature.r,
                 scoreData.signature.s,
             ],
-        ).then(tx => tx.wait()));
+        )).pipe(
+            switchMap(tx => from(tx.wait()) as Observable<void>),
+            catchError((error) => {
+                console.error('Error submitting user score:', error);
+                return throwError(error);
+            })
+        );
     }
 
     claimWithSigsContract(signatures: Signature[]): Observable<void> {
-        return from(this.claimMannaContract!['claimWithSigs'](signatures).then(tx => tx.wait()));
+        return from(this.claimMannaContract!['claimWithSigs'](signatures)).pipe(
+            switchMap(tx => from(tx.wait()) as Observable<void>),
+            catchError((error) => {
+                console.error('Error claiming with signatures:', error);
+                return throwError(error);
+            })
+        );
     }
 }

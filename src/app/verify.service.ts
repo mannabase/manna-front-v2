@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription, of, throwError } from 'rxjs';
+import { map, switchMap, tap, catchError } from 'rxjs/operators';
 import { ContractService } from './contract.service';
 import { MetamaskService } from './metamask.service';
 import { MannaService } from './manna.service';
@@ -46,28 +46,25 @@ export class VerifyService {
         private mannaService: MannaService,
     ) {
         this.accountSubscription = this.metamaskService.account$.subscribe((address) => {
-            this.walletAddress = address
-            if (address)
-                this.updateVerificationState()
-        })
+            this.walletAddress = address;
+            if (address) this.updateVerificationState();
+        });
 
         this.serverScoreSource.subscribe(score => {
-                if (score != null) {
-                    localStorage.setItem('localScore', JSON.stringify({
-                        timestamp: Date.now(),
-                        score: score,
-                    }))
-                }
-            },
-        )
+            if (score != null) {
+                localStorage.setItem('localScore', JSON.stringify({
+                    timestamp: Date.now(),
+                    score: score,
+                }));
+            }
+        });
     }
 
     public updateVerificationState() {
-        console.log('updateVerificationState')
         this.contractService.getScoreThreshold()
             .pipe(
                 tap(threshold => this.thresholdSource.next(threshold)),
-                switchMap(value => this.contractService.getUserScore(this.walletAddress!)),
+                switchMap(() => this.contractService.getUserScore(this.walletAddress!)),
             )
             .subscribe({
                 next: (scoreObj) => {
@@ -76,26 +73,35 @@ export class VerifyService {
                         const oneMonthAgo = Date.now() - (15 * 24 * 60 * 60 * 1000); // 15 days
                         const scoreDate = new Date(scoreObj.timestamp * 1000); // Convert to milliseconds
                         if (scoreDate.getTime() > oneMonthAgo) {
-                            console.log('updateVerificationState-date', scoreDate.getTime())
-                            if (scoreObj.score / 1000000 > this.thresholdSource.value!)
+                            if (scoreObj.score / 1e6 > this.thresholdSource.value!) {
                                 this.verificationStateSubject.next(VerifyState.VERIFIED);
-                            else
+                            } else {
                                 this.verificationStateSubject.next(VerifyState.NOT_VERIFIED);
-                        } else
+                            }
+                        } else {
                             this.verificationStateSubject.next(VerifyState.EXPIRED);
-                    } else
+                        }
+                    } else {
                         this.verificationStateSubject.next(VerifyState.NOT_VERIFIED);
+                    }
                 },
+                error: (error) => {
+                    console.error('Error updating verification state:', error);
+                    this.verificationStateSubject.next(VerifyState.NOT_VERIFIED);
+                }
             });
-            console.log('updateVerificationState', this.verificationState$)
     }
 
     updateServerScore(): Observable<any> {
         return this.getVerificationSignatureFromUser().pipe(
             switchMap(({ timestamp, signature }) =>
-                this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp),
+                this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp)
             ),
             tap(response => this.serverScoreSource.next(response.data.score)),
+            catchError((error) => {
+                console.error('Error updating server score:', error);
+                return of(null);
+            })
         );
     }
 
@@ -110,6 +116,10 @@ export class VerifyService {
             switchMap(serverResponse => {
                 return this.contractService.submitUserScore(walletAddress, serverResponse.data);
             }),
+            catchError((error) => {
+                console.error('Error sending score to contract:', error);
+                return throwError(error);
+            })
         );
     }
 

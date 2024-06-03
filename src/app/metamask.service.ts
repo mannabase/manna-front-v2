@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, from, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap, switchMap } from 'rxjs/operators';
 import { TuiAlertService } from '@taiga-ui/core';
 import { chainConfig, mannaChainId } from './config';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LoadingService } from './loading.service';
 import { createWeb3Modal, defaultConfig } from '@web3modal/ethers';
 import { ethers } from 'ethers';
@@ -56,11 +55,8 @@ export class MetamaskService {
     private web3Modal = modal;
     private ethereum: any = null;
     network$ = new BehaviorSubject<any>(null);
-    account$: BehaviorSubject<string> = new BehaviorSubject<string>(
-        localStorage.getItem('walletAddress') || ''
-    );
-    metamaskState$: BehaviorSubject<MetamaskState> =
-        new BehaviorSubject<MetamaskState>(MetamaskState.NOT_CONNECTED);
+    account$ = new BehaviorSubject<string>(localStorage.getItem('walletAddress') || '');
+    metamaskState$ = new BehaviorSubject<MetamaskState>(MetamaskState.NOT_CONNECTED);
 
     constructor(
         private readonly alertService: TuiAlertService,
@@ -90,8 +86,6 @@ export class MetamaskService {
             this.metamaskState$.next(MetamaskState.NOT_CONNECTED);
         } else {
             this.ethereum.on('accountsChanged', (accounts: string[]) => {
-                localStorage.removeItem('localScore');
-                window.location.reload();
                 if (accounts.length > 0) {
                     const checksummedAddress = ethers.getAddress(accounts[0]);
                     this.account$.next(checksummedAddress);
@@ -107,32 +101,6 @@ export class MetamaskService {
 
             this.checkState();
         }
-
-        combineLatest([this.account$, this.network$])
-            .pipe(takeUntilDestroyed())
-            .subscribe(([account, network]) => {
-                if (!this.ethereum) {
-                    return;
-                }
-                if (account.length > 0) {
-                    this.ethereum.request({ method: 'eth_chainId' }).then((chainId: string | undefined) => {
-                        if (chainId && BigInt(chainId) === mannaChainId) {
-                            this.metamaskState$.next(MetamaskState.READY);
-                            console.log('Metamask state:', MetamaskState.READY);
-                        } else {
-                            this.metamaskState$.next(MetamaskState.WRONG_CHAIN);
-                            console.log('Metamask state:', MetamaskState.WRONG_CHAIN);
-                        }
-                    }).catch(() => {
-                        this.alertService.open('Failed to connect to wallet', {
-                            status: 'error',
-                        });
-                    });
-                } else {
-                    this.metamaskState$.next(MetamaskState.NOT_CONNECTED);
-                    console.log('Metamask state:', MetamaskState.NOT_CONNECTED);
-                }
-            });
     }
 
     checkState() {
@@ -143,10 +111,9 @@ export class MetamaskService {
             if (accounts.length > 0) {
                 this.account$.next(accounts[0]);
                 this.metamaskState$.next(MetamaskState.CONNECTED);
-                console.log('Metamask state:', MetamaskState.CONNECTED);
+                this.checkNetwork();
             } else {
                 this.metamaskState$.next(MetamaskState.NOT_CONNECTED);
-                console.log('Metamask state:', MetamaskState.NOT_CONNECTED);
             }
         });
     }
@@ -161,7 +128,7 @@ export class MetamaskService {
                     const account = accounts[0];
                     this.account$.next(account);
                     this.metamaskState$.next(MetamaskState.CONNECTED);
-                    console.log('Metamask state:', MetamaskState.CONNECTED);
+                    this.checkNetwork();
                     return account;
                 })
             );
@@ -173,16 +140,12 @@ export class MetamaskService {
         this.connect().subscribe({
             next: (account) => {
                 this.loadingService.setLoading(false);
-                this.alertService.open('Connected to account: ' + this.account$.value, {
-                    status: 'success',
-                }).subscribe();
+                this.alertService.open('Connected to account: ' + this.account$.value, { status: 'success' }).subscribe();
                 this.checkNetwork();
             },
             error: () => {
                 this.loadingService.setLoading(false);
-                this.alertService.open('Failed to connect Metamask', {
-                    status: 'error',
-                }).subscribe();
+                this.alertService.open('Failed to connect Metamask', { status: 'error' }).subscribe();
             },
         });
     }
@@ -192,27 +155,22 @@ export class MetamaskService {
             this.web3Modal.disconnect();
             this.account$.next('');
             this.metamaskState$.next(MetamaskState.NOT_CONNECTED);
-            console.log('Metamask state:', MetamaskState.NOT_CONNECTED);
         }
     }
 
     checkNetwork() {
         if (!this.ethereum) {
             this.metamaskState$.next(MetamaskState.NOT_CONNECTED);
-            console.log('Metamask state:', MetamaskState.NOT_CONNECTED);
             return;
         }
         this.ethereum.request({ method: 'eth_chainId' }).then((chainId: string | undefined) => {
             if (chainId && BigInt(chainId) === mannaChainId) {
                 this.metamaskState$.next(MetamaskState.READY);
-                console.log('Metamask state:', MetamaskState.READY);
             } else {
                 this.metamaskState$.next(MetamaskState.WRONG_CHAIN);
-                console.log('Metamask state:', MetamaskState.WRONG_CHAIN);
             }
         }).catch(() => {
             this.metamaskState$.next(MetamaskState.NOT_CONNECTED);
-            console.log('Metamask state:', MetamaskState.NOT_CONNECTED);
         });
     }
 
@@ -225,7 +183,6 @@ export class MetamaskService {
                     this.loadingService.setLoading(false);
                     this.network$.next({ chainId: mannaChainId });
                     this.metamaskState$.next(MetamaskState.READY);
-                    console.log('Metamask state:', MetamaskState.READY);
                     return of({ chainId: mannaChainId });
                 } else {
                     return from(this.ethereum.request({
@@ -236,12 +193,10 @@ export class MetamaskService {
                             this.loadingService.setLoading(false);
                             this.network$.next({ chainId: mannaChainId });
                             this.metamaskState$.next(MetamaskState.READY);
-                            console.log('Metamask state:', MetamaskState.READY);
                         }),
                         catchError((error) => {
                             this.loadingService.setLoading(false);
                             this.metamaskState$.next(MetamaskState.WRONG_CHAIN);
-                            console.log('Metamask state:', MetamaskState.WRONG_CHAIN);
                             return throwError(error);
                         })
                     );
@@ -250,7 +205,6 @@ export class MetamaskService {
             catchError((error) => {
                 this.loadingService.setLoading(false);
                 this.metamaskState$.next(MetamaskState.NOT_CONNECTED);
-                console.log('Metamask state:', MetamaskState.NOT_CONNECTED);
                 return throwError(error);
             })
         );
