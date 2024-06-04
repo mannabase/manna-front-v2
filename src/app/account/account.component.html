@@ -24,11 +24,11 @@
         <!-- <div class="user-info"> -->
             <!-- <img src="../../assets/images/accont-user-image.svg" alt="" />
             <h5 class="mb-1">mannabase</h5> -->
-            <div *ngIf="isVerified" class="user-info">
+            <div *ngIf="isVerified" class="user-info" (click)="changeTab('Wallet')">
                 <img src="../../assets/images/account-verify-Check.svg" class="user-info--img" alt="verified">
                 <p class="user-info--text">Verified account</p>
             </div>
-            <div *ngIf="!isVerified" class="user-info">
+            <div *ngIf="!isVerified" class="user-info" (click)="changeTab('Wallet')">
                 <img src="../../assets/images/account-unverify-Check.svg" class="user-info--img" alt="unverified">
                 <p class="user-info--text">Unverified account</p>
             </div>
