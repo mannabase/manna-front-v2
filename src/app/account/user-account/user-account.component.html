@@ -355,6 +355,7 @@
                             </div>
                             <tui-loader
                                 *ngIf="
+                                    metamaskState == MetamaskState.READY &&
                                     (contractScore ?? 0) <= (threshold ?? 0) &&
                                     (localScore ?? 0) >= (threshold ?? 0)
                                 "
