@@ -1,38 +1,43 @@
-<!-- <div *ngIf="showBanner" class="banner">
-    <h6 class="banner--text">
-      Your account is unverified. Please verify to withdraw your Manna.
-    </h6>
-    <div class="banner--close" (click)="closeBanner()">
-      &times;
-    </div>
-</div> -->
 <div class="container">
     <div class="sideBar">
         <div routerLink="/" class="logo">
-            <img src="../../assets/images/governed_manna_logo.webp" class="logo-image" />
+            <img
+                src="../../assets/images/governed_manna_logo.webp"
+                class="logo-image"
+            />
             <p class="mannabse-logo">mannabase</p>
         </div>
         <div class="account-wallet" *ngIf="walletAddress">
             <img src="../../assets/images/accont_wallet-circle.svg" alt="" />
-            <p (click)="copyWalletAddress(walletAddress)" class="account-wallet--number">
-                {{ walletAddress | slice : 0 : 6 }}...{{ walletAddress | slice : -4 }}
+            <p
+                (click)="copyWalletAddress(walletAddress)"
+                class="account-wallet--number"
+            >
+                {{ walletAddress | slice : 0 : 6 }}...{{
+                    walletAddress | slice : -4
+                }}
             </p>
-              
-              
-            <!-- <tui-svg src="tuiIconChevronDown"></tui-svg> -->
         </div>
-        <!-- <div class="user-info"> -->
-            <!-- <img src="../../assets/images/accont-user-image.svg" alt="" />
-            <h5 class="mb-1">mannabase</h5> -->
-            <div *ngIf="isVerified" class="user-info" (click)="changeTab('Wallet')">
-                <img src="../../assets/images/account-verify-Check.svg" class="user-info--img" alt="verified">
-                <p class="user-info--text">Verified account</p>
-            </div>
-            <div *ngIf="!isVerified" class="user-info" (click)="changeTab('Wallet')">
-                <img src="../../assets/images/account-unverify-Check.svg" class="user-info--img" alt="unverified">
-                <p class="user-info--text">Unverified account</p>
-            </div>
-        <!-- </div> -->
+        <div *ngIf="isVerified" class="user-info" (click)="changeTab('Wallet')">
+            <img
+                src="../../assets/images/account-verify-Check.svg"
+                class="user-info--img"
+                alt="verified"
+            />
+            <p class="user-info--text">Verified account</p>
+        </div>
+        <div
+            *ngIf="!isVerified"
+            class="user-info"
+            (click)="changeTab('Wallet')"
+        >
+            <img
+                src="../../assets/images/account-unverify-Check.svg"
+                class="user-info--img"
+                alt="unverified"
+            />
+            <p class="user-info--text">Unverified account</p>
+        </div>
         <div class="tabs">
             <div
                 class="tab active-line"
@@ -69,22 +74,37 @@
     </div>
     <!-- mobile hamburger menu -->
     <div class="header-mobile">
-        <button class="hambergur" tuiIconButton icon="tuiIconMenu" appearance="flat" size="s"
-            (click)="toggleSideBar(true)" (tuiActiveZoneChange)="toggleSideBar($event)">
-            <div *tuiSidebar="displaySideBar; direction: 'left'" 
-                class="hambergur--container" >
+        <button
+            class="hambergur"
+            tuiIconButton
+            icon="tuiIconMenu"
+            appearance="flat"
+            size="s"
+            (click)="toggleSideBar(true)"
+            (tuiActiveZoneChange)="toggleSideBar($event)"
+        >
+            <div
+                *tuiSidebar="displaySideBar; direction: 'left'"
+                class="hambergur--container"
+            >
                 <div routerLink="/" class="hambergur--logo">
-                    <img src="../../assets/images/governed_manna_logo.webp" 
-                        class="hambergur--logo--image" />
-                        <p class="hambergur--logo--text">mannabase</p>
+                    <img
+                        src="../../assets/images/governed_manna_logo.webp"
+                        class="hambergur--logo--image"
+                    />
+                    <p class="hambergur--logo--text">mannabase</p>
                 </div>
                 <div class="tabs">
-                    <div class="hambergur--tabs--tab"  *ngIf="walletAddress">
+                    <div class="hambergur--tabs--tab" *ngIf="walletAddress">
                         <div class="hambergur--tabs--tab--address">
-                            <img src="../../assets/images/accont_wallet-circle.svg" alt="" class="tab-image"/>
+                            <img
+                                src="../../assets/images/accont_wallet-circle.svg"
+                                alt=""
+                                class="tab-image"
+                            />
                             <p class="m-0">
                                 {{ walletAddress | slice : 0 : 6 }}...{{
-                                 walletAddress | slice : -4
+                                    walletAddress | slice : -4
                                 }}
                             </p>
                         </div>
@@ -112,8 +132,8 @@
                     >
                         <div class="tab-width">
                             <img
-                        src="../../assets/images/account-account-icon.svg"
-                        class="tab-image"
+                                src="../../assets/images/account-account-icon.svg"
+                                class="tab-image"
                             />
                             <span
                                 class="tab__text"
@@ -124,29 +144,29 @@
                     </div>
                 </div>
                 <div class="hambergur--user">
-                    <img class="hambergur--user--image" 
-                        src="../../assets/images/accont-user-image.svg">
+                    <img
+                        class="hambergur--user--image"
+                        src="../../assets/images/accont-user-image.svg"
+                    />
                     <div class="hambergur--user--feature">
                         <div class="hambergur--user--feature--name">
                             mannabase
                         </div>
-                        <!-- <div class="hambergur--user--feature--email">
-                            9394lay&#64;gmail.com
-                        </div> -->
                     </div>
                 </div>
             </div>
         </button>
         <div class="header-mobile--title">
-            {{ selectedTab === 'Account' ? 'Wallet' : 'Account' }}
+            {{ selectedTab === "Account" ? "Wallet" : "Account" }}
         </div>
-        <img 
-            class="header-mobile--search"
-        >
+        <img class="header-mobile--search" />
     </div>
-        
+
     <div class="tabPage">
         <app-wallet *ngIf="selectedTab === 'Account'" class="page"></app-wallet>
-        <app-user-account *ngIf="selectedTab === 'Wallet'" class="page"></app-user-account>
+        <app-user-account
+            *ngIf="selectedTab === 'Wallet'"
+            class="page"
+        ></app-user-account>
     </div>
 </div>
