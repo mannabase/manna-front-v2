@@ -18,6 +18,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     showBanner: boolean = true
     isVerified: boolean = false
     private subscriptions = new Subscription()
+    private accountStateSubscription: Subscription | undefined;
 
     constructor(
         private metamaskService: MetamaskService,
@@ -53,10 +54,17 @@ export class AccountComponent implements OnInit, OnDestroy {
 
         this.subscriptions.add(accountSubscription)
         this.subscriptions.add(verificationSubscription)
+
+        this.accountStateSubscription = this.verifyService.getRefreshAccount().subscribe(refresh => {
+            if (refresh) {
+              this.verifyService.updateVerificationState()
+            }
+        });
     }
 
     ngOnDestroy() {
         this.subscriptions.unsubscribe()
+        this.accountStateSubscription?.unsubscribe();
     }
 
     copyWalletAddress(walletAddress: string | null): void {

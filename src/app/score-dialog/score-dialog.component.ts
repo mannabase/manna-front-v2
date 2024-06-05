@@ -38,6 +38,7 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
             next: () => {
                 this.context.completeWith(0)
                 this.alertService.open('Score submitted successfuly.', {status: 'success', label: 'Success'}).subscribe()
+                this.verifyService.triggerAccountRefresh();
             },
             error: (error) => {
                 this.alertService.open('Failed to submit score.', {status: 'error', label: 'Error'}).subscribe()

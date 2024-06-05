@@ -5,7 +5,7 @@ import {ScoreDialogComponent} from '../../score-dialog/score-dialog.component'
 import {localScoreData, VerifyService, VerifyState} from 'src/app/verify.service'
 import {MetamaskService, MetamaskState} from "../../metamask.service"
 import { LoadingService } from 'src/app/loading.service'
-import { catchError, of } from 'rxjs'
+import { Subscription, catchError, of } from 'rxjs'
 
 
 @Component({
@@ -21,6 +21,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     localScore?: number
     protected readonly VerifyState = VerifyState
     protected readonly MetamaskState = MetamaskState
+    private accountStateSubscription: Subscription | undefined;
 
     @Output() userScoreAvailable: EventEmitter<boolean> = new EventEmitter<boolean>()
     signature?: string
@@ -36,10 +37,16 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.checkLocalScore()
+        this.checkLocalScore();
+        this.accountStateSubscription = this.verifyService.getRefreshAccount().subscribe(refresh => {
+            if (refresh) {
+              this.verifyService.updateServerScore()
+            }
+        });
     }
 
     ngOnDestroy() {
+        this.accountStateSubscription?.unsubscribe();
     }
 
 
@@ -62,8 +69,6 @@ export class UserAccountComponent implements OnInit, OnDestroy {
                 this.openDialogScore();
             });
     }
-    
-
 
     openDialogScore() {
         this.checkLocalScore()
