@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core'
+import {Component, OnDestroy, OnInit,ChangeDetectorRef} from '@angular/core'
 import {Subscription} from 'rxjs'
 import {VerifyService, VerifyState} from '../verify.service'
 import {ContractService} from '../contract.service'
@@ -26,6 +26,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         public verifyService: VerifyService,
         private contractService: ContractService,
         readonly alertService: TuiAlertService,
+        private cdr: ChangeDetectorRef 
     ) {
         this.selectedTab = localStorage.getItem('selectedTab') || 'Account';
     }
@@ -45,12 +46,14 @@ export class AccountComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         const accountSubscription = this.metamaskService.account$.subscribe(address => {
-            this.walletAddress = address
+            this.walletAddress = address,
+            this.cdr.detectChanges();
         })
 
         const verificationSubscription = this.verifyService.verificationState$.subscribe(state => {
             this.isVerified = state === VerifyState.VERIFIED
             this.showBanner = !this.isVerified
+            this.cdr.detectChanges();
         })
 
         this.subscriptions.add(accountSubscription)
@@ -59,6 +62,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         this.accountStateSubscription = this.verifyService.getRefreshAccount().subscribe(refresh => {
             if (refresh) {
               this.verifyService.updateVerificationState()
+              this.cdr.detectChanges();
             }
         });
     }
