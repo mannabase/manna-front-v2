@@ -2,7 +2,7 @@ import {Component, EventEmitter, Injector, OnDestroy, OnInit, Output ,ChangeDete
 import {TuiAlertService, TuiDialogService} from '@taiga-ui/core'
 import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus'
 import {ScoreDialogComponent} from '../../score-dialog/score-dialog.component'
-import {localScoreData, VerifyService, VerifyState} from 'src/app/verify.service'
+import {LocalScoreData, VerifyService, VerifyState} from 'src/app/verify.service'
 import {MetamaskService, MetamaskState} from "../../metamask.service"
 import { LoadingService } from 'src/app/loading.service'
 import { Subscription, catchError, of } from 'rxjs'
@@ -52,7 +52,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
 
     checkLocalScore() {
         const scoreDataString = localStorage.getItem('localScore')
-        const scoreData: localScoreData | null = scoreDataString ? JSON.parse(scoreDataString) : null
+        const scoreData: LocalScoreData | null = scoreDataString ? JSON.parse(scoreDataString) : null
         const currentTime = Date.now()
         const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000
         const isLocalScoreValid = scoreData && currentTime - scoreData.timestamp < sevenDaysInMs

@@ -1,4 +1,7 @@
-<div class="container">
+<div
+    class="container"
+    *tuiLet="verifyService.verificationState$ | async as verificationState"
+>
     <div class="sideBar">
         <div routerLink="/" class="logo">
             <img
@@ -18,16 +21,8 @@
                 }}
             </p>
         </div>
-        <div *ngIf="isVerified" class="user-info" (click)="changeTab('Wallet')">
-            <img
-                src="../../assets/images/account-verify-Check.svg"
-                class="user-info--img"
-                alt="verified"
-            />
-            <p class="user-info--text">Verified account</p>
-        </div>
         <div
-            *ngIf="!isVerified"
+            *ngIf="verificationState == VerifyState.NOT_VERIFIED"
             class="user-info"
             (click)="changeTab('Wallet')"
         >
@@ -37,6 +32,30 @@
                 alt="unverified"
             />
             <p class="user-info--text">Unverified account</p>
+        </div>
+        <div
+            *ngIf="verificationState == VerifyState.EXPIRED"
+            class="user-info"
+            (click)="changeTab('Wallet')"
+        >
+            <img
+                src="../../assets/images/account-unverify-Check.svg"
+                class="user-info--img"
+                alt="unverified"
+            />
+            <p class="user-info--text">Expired account</p>
+        </div>
+        <div
+            *ngIf="verificationState == VerifyState.VERIFIED"
+            class="user-info"
+            (click)="changeTab('Wallet')"
+        >
+            <img
+                src="../../assets/images/account-verify-Check.svg"
+                class="user-info--img"
+                alt="verified"
+            />
+            <p class="user-info--text">Verified account</p>
         </div>
         <div class="tabs">
             <div

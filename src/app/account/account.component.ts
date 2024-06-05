@@ -19,10 +19,11 @@ export class AccountComponent implements OnInit, OnDestroy {
     isVerified: boolean = false
     private subscriptions = new Subscription()
     private accountStateSubscription: Subscription | undefined;
+    protected readonly VerifyState = VerifyState
 
     constructor(
         private metamaskService: MetamaskService,
-        private verifyService: VerifyService,
+        public verifyService: VerifyService,
         private contractService: ContractService,
         readonly alertService: TuiAlertService,
     ) {
