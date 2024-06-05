@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core'
 import {Subscription} from 'rxjs'
-import {MetamaskService} from '../metamask.service'
 import {VerifyService, VerifyState} from '../verify.service'
 import {ContractService} from '../contract.service'
 import {TuiAlertService} from '@taiga-ui/core'
+import { MetamaskService, MetamaskState } from 'src/app/metamask.service';
 
 @Component({
     selector: 'app-account',
@@ -22,7 +22,7 @@ export class AccountComponent implements OnInit, OnDestroy {
     protected readonly VerifyState = VerifyState
 
     constructor(
-        private metamaskService: MetamaskService,
+        public metamaskService: MetamaskService,
         public verifyService: VerifyService,
         private contractService: ContractService,
         readonly alertService: TuiAlertService,

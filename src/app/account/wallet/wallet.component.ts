@@ -27,7 +27,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   private networkSubscription: Subscription | undefined;
   private metamaskStateSubscription: Subscription | undefined;
   private walletStateSubscription: Subscription | undefined;
-    injector: Injector | null | undefined;
+  injector: Injector | null | undefined;
 
   constructor(
     readonly metamaskService: MetamaskService,
@@ -55,8 +55,11 @@ export class WalletComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.metamaskStateSubscription = this.metamaskService.metamaskState$.subscribe(() => {
-      this.cdRef.detectChanges();
+    this.metamaskStateSubscription = this.metamaskService.metamaskState$.subscribe(state => {
+      if (state === MetamaskState.READY) {
+        this.fetchBalances();
+        this.cdRef.detectChanges();
+      }
     });
 
     this.walletStateSubscription = this.mannaService.getRefreshWallet().subscribe(refresh => {

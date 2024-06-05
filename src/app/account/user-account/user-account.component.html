@@ -1,4 +1,4 @@
-<div class="account-container">
+<div class="account-container"  *tuiLet="verifyService.verificationState$ | async as verificationState" >
     <div class="account--info">
         <div class="account--info--account">Account</div>
         <div class="account--info--text">overview</div>
@@ -25,10 +25,6 @@
 
         <div *tuiLet="metamaskService.metamaskState$ | async as metamaskState">
             <ng-container
-                *tuiLet="
-                    verifyService.verificationState$
-                        | async as verificationState
-                "
             >
                 <ng-container
                     *tuiLet="verifyService.threshold$ | async as threshold"

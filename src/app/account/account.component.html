@@ -1,6 +1,7 @@
-<div
+<ng-container *tuiLet="verifyService.verificationState$ | async as verificationState" >
+    <div
     class="container"
-    *tuiLet="verifyService.verificationState$ | async as verificationState"
+    
 >
     <div class="sideBar">
         <div routerLink="/" class="logo">
@@ -189,3 +190,4 @@
         ></app-user-account>
     </div>
 </div>
+</ng-container>

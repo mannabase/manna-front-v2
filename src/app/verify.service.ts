@@ -101,6 +101,7 @@ export class VerifyService {
                     this.verificationStateSubject.next(VerifyState.NOT_VERIFIED);
                 },
             });
+            console.log('VerificationState',this.verificationState$)
     }
 
     updateServerScore(): Observable<any> {

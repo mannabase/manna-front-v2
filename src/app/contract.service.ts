@@ -7,7 +7,6 @@ import { claimMannaContractABI, claimMannaContractAddress, mannaContractABI, man
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Signature, UserScore } from './types';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -43,24 +42,40 @@ export class ContractService {
 
     balanceOf(): Observable<number> {
         if (!this.mannaContract) {
-            return of(0);
+            return this.initializing.pipe(
+                filter(initializing => !initializing),
+                switchMap(() => from(this.mannaContract!['balanceOf'](this.metamaskService.account$.value))),
+                tap(balance => console.log(`Raw balance received from contract: ${balance}`)),
+                map((balance: any) => parseInt(balance.toString()) / 1e18),
+                tap(parsedBalance => console.log(`Parsed balance: ${parsedBalance} Manna`)),
+                catchError((error) => {
+                    console.error('Error fetching balance:', error);
+                    return of(0);
+                })
+            );
+        } else {
+            return from(this.mannaContract['balanceOf'](this.metamaskService.account$.value)).pipe(
+                tap(balance => console.log(`Raw balance received from contract: ${balance}`)),
+                map((balance: any) => parseInt(balance.toString()) / 1e18),
+                tap(parsedBalance => console.log(`Parsed balance: ${parsedBalance} Manna`)),
+                catchError((error) => {
+                    console.error('Error fetching balance:', error);
+                    return of(0);
+                })
+            );
         }
-        return from(this.mannaContract['balanceOf'](this.metamaskService.account$.value)).pipe(
-            map((balance: any) => parseInt(balance.toString()) / 1e18),
-            catchError((error) => {
-                console.error('Error fetching balance:', error);
-                return of(0);
-            })
-        );
     }
 
     getUserScore(userAddress: string): Observable<UserScore | undefined> {
         return from(this.claimMannaContract!['userScores'](userAddress)).pipe(
+            tap(response => console.log(`Raw user score response: ${response}`)),
             map(response => {
                 const timestamp = parseInt(response[0].toString());
                 if (timestamp == 0) return undefined;
                 const score = parseInt(response[1].toString());
-                return { timestamp, score };
+                const userScore = { timestamp, score };
+                console.log(`Parsed user score: ${JSON.stringify(userScore)}`);
+                return userScore;
             }),
             catchError((error) => {
                 console.error('Error fetching user score:', error);
@@ -70,24 +85,22 @@ export class ContractService {
     }
 
     getScoreThreshold(): Observable<number> {
+        const fetchThreshold = () => from(this.claimMannaContract!['scoreThreshold']()).pipe(
+            tap(threshold => console.log(`Raw score threshold received from contract: ${threshold}`)),
+            map((threshold: any) => parseInt(threshold.toString()) / 1e6),
+            tap(parsedThreshold => console.log(`Parsed score threshold: ${parsedThreshold}`)),
+            catchError((error) => {
+                console.error('Error fetching score threshold:', error);
+                return of(7);
+            })
+        );
+
         if (!this.initializing.value) {
-            return from(this.claimMannaContract!['scoreThreshold']()).pipe(
-                map((threshold: any) => parseInt(threshold.toString()) / 1e6),
-                catchError((error) => {
-                    console.error('Error fetching score threshold:', error);
-                    return of(7);
-                })
-            );
+            return fetchThreshold();
         } else {
             return this.initializing.pipe(
                 filter((value: boolean) => !value),
-                switchMap(() => from(this.claimMannaContract!['scoreThreshold']()).pipe(
-                    map((threshold: any) => parseInt(threshold.toString()) / 1e6),
-                    catchError((error) => {
-                        console.error('Error fetching score threshold:', error);
-                        return of(7);
-                    })
-                )),
+                switchMap(fetchThreshold),
             );
         }
     }

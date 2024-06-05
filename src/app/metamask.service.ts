@@ -104,6 +104,7 @@ export class MetamaskService {
     }
 
     checkState() {
+        console.log('checkState',this.metamaskState$)
         if (!this.ethereum) {
             return;
         }
