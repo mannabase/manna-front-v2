@@ -1,12 +1,11 @@
-import {Component, EventEmitter, Injector, OnDestroy, OnInit, Output ,ChangeDetectionStrategy} from '@angular/core'
-import {TuiAlertService, TuiDialogService} from '@taiga-ui/core'
-import {PolymorpheusComponent} from '@tinkoff/ng-polymorpheus'
-import {ScoreDialogComponent} from '../../score-dialog/score-dialog.component'
-import {LocalScoreData, VerifyService, VerifyState} from 'src/app/verify.service'
-import {MetamaskService, MetamaskState} from "../../metamask.service"
-import { LoadingService } from 'src/app/loading.service'
-import { Subscription, catchError, of } from 'rxjs'
-
+import { Component, EventEmitter, Injector, OnDestroy, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { ScoreDialogComponent } from '../../score-dialog/score-dialog.component';
+import { LocalScoreData, VerifyService, VerifyState } from 'src/app/verify.service';
+import { MetamaskService, MetamaskState } from "../../metamask.service";
+import { LoadingService } from 'src/app/loading.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-user-account',
@@ -16,15 +15,15 @@ import { Subscription, catchError, of } from 'rxjs'
 })
 
 export class UserAccountComponent implements OnInit, OnDestroy {
-    walletAddress: string | null = null
-    loader: boolean = false
-    localScore?: number
-    protected readonly VerifyState = VerifyState
-    protected readonly MetamaskState = MetamaskState
+    walletAddress: string | null = null;
+    loader: boolean = false;
+    localScore?: number;
+    protected readonly VerifyState = VerifyState;
+    protected readonly MetamaskState = MetamaskState;
     private accountStateSubscription: Subscription | undefined;
 
-    @Output() userScoreAvailable: EventEmitter<boolean> = new EventEmitter<boolean>()
-    signature?: string
+    @Output() userScoreAvailable: EventEmitter<boolean> = new EventEmitter<boolean>();
+    signature?: string;
 
     constructor(
         readonly metamaskService: MetamaskService,
@@ -32,16 +31,27 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         public verifyService: VerifyService,
         readonly dialogService: TuiDialogService,
         private injector: Injector,
-        readonly loadingService : LoadingService,
-    ) {
-    }
+        readonly loadingService: LoadingService,
+        private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
+    ) {}
 
     ngOnInit() {
         this.checkLocalScore();
         this.accountStateSubscription = this.verifyService.getRefreshAccount().subscribe(refresh => {
             if (refresh) {
-              this.verifyService.updateServerScore()
+                this.verifyService.updateServerScore();
+                this.cdr.detectChanges(); // Trigger change detection
             }
+        });
+
+        // Trigger change detection when verification state changes
+        this.verifyService.verificationState$.subscribe(() => {
+            this.cdr.detectChanges();
+        });
+
+        // Trigger change detection when metamask state changes
+        this.metamaskService.metamaskState$.subscribe(() => {
+            this.cdr.detectChanges();
         });
     }
 
@@ -49,33 +59,34 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         this.accountStateSubscription?.unsubscribe();
     }
 
-
     checkLocalScore() {
-        const scoreDataString = localStorage.getItem('localScore')
-        const scoreData: LocalScoreData | null = scoreDataString ? JSON.parse(scoreDataString) : null
-        const currentTime = Date.now()
-        const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000
-        const isLocalScoreValid = scoreData && currentTime - scoreData.timestamp < sevenDaysInMs
-        this.localScore = (isLocalScoreValid ? scoreData.score/1000000 : undefined)
+        const scoreDataString = localStorage.getItem('localScore');
+        const scoreData: LocalScoreData | null = scoreDataString ? JSON.parse(scoreDataString) : null;
+        const currentTime = Date.now();
+        const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
+        const isLocalScoreValid = scoreData && currentTime - scoreData.timestamp < sevenDaysInMs;
+        this.localScore = (isLocalScoreValid ? scoreData.score / 1000000 : undefined);
+        this.cdr.detectChanges(); // Trigger change detection
     }
 
     openLinkInNewTab() {
-        window.open('https://passport.gitcoin.co', '_blank')
+        window.open('https://passport.gitcoin.co', '_blank');
     }
 
     refreshUserScore() {
         this.verifyService.updateServerScore()
             .subscribe(value => {
                 this.openDialogScore();
+                this.cdr.detectChanges(); // Trigger change detection
             });
     }
 
     openDialogScore() {
-        this.checkLocalScore()
+        this.checkLocalScore();
         this.dialogService.open(new PolymorpheusComponent(ScoreDialogComponent, this.injector), {
             dismissible: true,
-        }).subscribe(
-            
-        )
+        }).subscribe(() => {
+            this.cdr.detectChanges(); // Trigger change detection after dialog is closed
+        });
     }
 }
