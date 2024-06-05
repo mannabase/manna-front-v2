@@ -238,7 +238,7 @@
                                     metamaskState == MetamaskState.READY &&
                                     (contractScore! > 0 ||
                                         localScore != null) &&
-                                    verificationState !== VerifyState.VERIFIED
+                                    verificationState == VerifyState.NOT_VERIFIED
                                 "
                             >
                                 <div class="account--humanity--passport--score">
@@ -253,11 +253,6 @@
                                         ></i>
                                     </div>
                                     <div
-                                        *ngIf="
-                                            (contractScore ?? 0) !== 0 &&
-                                            verificationState !==
-                                                VerifyState.EXPIRED
-                                        "
                                         class="account--humanity--passport--score--num"
                                     >
                                         {{
@@ -265,19 +260,6 @@
                                                 | number
                                                     : "1.0-6" || "loading..."
                                         }}
-                                    </div>
-                                    <div
-                                        *ngIf="
-                                            verificationState ===
-                                            VerifyState.EXPIRED
-                                        "
-                                        class="account--humanity--passport--connect-button"
-                                        (click)="refreshUserScore()"
-                                    >
-                                        <span *ngIf="loader">Updating...</span>
-                                        <span *ngIf="!loader"
-                                            >Update Score</span
-                                        >
                                     </div>
                                     <div
                                         *ngIf="
@@ -309,11 +291,24 @@
                                 </div>
                             </div>
                             <div
+                                        *ngIf="
+                                            verificationState ===
+                                            VerifyState.EXPIRED
+                                        "
+                                        class="account--humanity--passport--connect-button"
+                                        (click)="refreshUserScore()"
+                                    >
+                                        <span *ngIf="loader">Updating...</span>
+                                        <span *ngIf="!loader"
+                                            >Update Score</span
+                                        >
+                                    </div>
+                            <div
                                 *ngIf="
                                     metamaskState == MetamaskState.READY &&
                                     (contractScore! > 0 ||
                                         localScore != null) &&
-                                    verificationState !== VerifyState.VERIFIED
+                                    verificationState == VerifyState.NOT_VERIFIED
                                 "
                                 class="account--humanity--passport-mobile"
                             >
