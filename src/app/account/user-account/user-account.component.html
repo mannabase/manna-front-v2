@@ -251,6 +251,7 @@
                                     ></i>
                                 </div>
                                 <div
+                                    *ngIf="(contractScore ?? 0) !== 0"
                                     class="account--humanity--passport--score--num"
                                 >
                                     {{

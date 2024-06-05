@@ -40,16 +40,14 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         this.accountStateSubscription = this.verifyService.getRefreshAccount().subscribe(refresh => {
             if (refresh) {
                 this.verifyService.updateServerScore();
-                this.cdr.detectChanges(); // Trigger change detection
+                this.cdr.detectChanges(); 
             }
         });
 
-        // Trigger change detection when verification state changes
         this.verifyService.verificationState$.subscribe(() => {
             this.cdr.detectChanges();
         });
 
-        // Trigger change detection when metamask state changes
         this.metamaskService.metamaskState$.subscribe(() => {
             this.cdr.detectChanges();
         });
@@ -66,7 +64,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
         const isLocalScoreValid = scoreData && currentTime - scoreData.timestamp < sevenDaysInMs;
         this.localScore = (isLocalScoreValid ? scoreData.score / 1000000 : undefined);
-        this.cdr.detectChanges(); // Trigger change detection
+        this.cdr.detectChanges(); 
     }
 
     openLinkInNewTab() {
@@ -77,7 +75,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         this.verifyService.updateServerScore()
             .subscribe(value => {
                 this.openDialogScore();
-                this.cdr.detectChanges(); // Trigger change detection
+                this.cdr.detectChanges();
             });
     }
 
@@ -86,7 +84,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         this.dialogService.open(new PolymorpheusComponent(ScoreDialogComponent, this.injector), {
             dismissible: true,
         }).subscribe(() => {
-            this.cdr.detectChanges(); // Trigger change detection after dialog is closed
+            this.cdr.detectChanges(); 
         });
     }
 }
