@@ -72,7 +72,10 @@ export class VerifyService {
         this.contractService
             .getScoreThreshold()
             .pipe(
-                tap((threshold) => this.thresholdSource.next(threshold)),
+                tap((threshold) => {
+                    this.thresholdSource.next(threshold);
+                    alert(`Threshold fetched: ${threshold}`);
+                }),
                 switchMap(() =>
                     this.contractService.getUserScore(this.walletAddress!)
                 )
@@ -95,13 +98,14 @@ export class VerifyService {
                     } else {
                         this.verificationStateSubject.next(VerifyState.NOT_VERIFIED);
                     }
+                    alert(`Verification state updated: ${this.verificationStateSubject.value}`);
                 },
                 error: (error) => {
                     console.error('Error updating verification state:', error);
+                    alert(`Error updating verification state: ${error.message}`);
                     this.verificationStateSubject.next(VerifyState.NOT_VERIFIED);
                 },
             });
-            console.log('VerificationState',this.verificationState$)
     }
 
     updateServerScore(): Observable<any> {
@@ -109,9 +113,13 @@ export class VerifyService {
             switchMap(({ timestamp, signature }) =>
                 this.mannaService.getGitcoinScore(this.walletAddress!, signature, timestamp)
             ),
-            tap((response) => this.serverScoreSource.next(response.data.score)),
+            tap((response) => {
+                this.serverScoreSource.next(response.data.score);
+                alert(`Server score updated: ${response.data.score}`);
+            }),
             catchError((error) => {
                 console.error('Error updating server score:', error);
+                alert(`Error updating server score: ${error.message}`);
                 return of(null);
             })
         );
@@ -131,6 +139,7 @@ export class VerifyService {
             }),
             catchError((error) => {
                 console.error('Error sending score to contract:', error);
+                alert(`Error sending score to contract: ${error.message}`);
                 return throwError(error);
             }),
             finalize(() => {

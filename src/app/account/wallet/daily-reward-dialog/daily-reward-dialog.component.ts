@@ -69,7 +69,7 @@ import {
           this.ngOnInit()
         },
         (error) => {
-          this.alertService.open('Failed to claim daily reward.', { status: 'error' }).subscribe();
+          this.alertService.open(error, { status: 'error' }).subscribe();
           console.error('Failed to claim daily reward:', error);
         }
       ).add(() => {

@@ -171,7 +171,7 @@ export class WalletComponent implements OnInit, OnDestroy {
         this.fetchClaimableAmount();
       },
       error => {
-        this.alertService.open('Claim with signatures Unsuccessful.', { status: 'error' }).subscribe();
+        this.alertService.open(error, { status: 'error' }).subscribe();
         console.error('Failed to claim daily reward:', error);
       },
     ).add(() => {
