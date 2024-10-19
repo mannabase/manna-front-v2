@@ -47,16 +47,16 @@ export class ContractService {
                 switchMap(() => from(this.mannaContract!['balanceOf'](this.metamaskService.account$.value))),
                 tap(balance => {
                     console.log(`Raw balance received from contract: ${balance}`);
-                    alert(`Raw balance received from contract: ${balance}`);
+                    // alert(`Raw balance received from contract: ${balance}`);
                 }),
                 map((balance: any) => parseInt(balance.toString()) / 1e18),
                 tap(parsedBalance => {
                     console.log(`Parsed balance: ${parsedBalance} Manna`);
-                    alert(`Parsed balance: ${parsedBalance} Manna`);
+                    // alert(`Parsed balance: ${parsedBalance} Manna`);
                 }),
                 catchError((error) => {
                     console.error('Error fetching balance:', error);
-                    alert(`Error fetching balance: ${error.message}`);
+                    // alert(`Error fetching balance: ${error.message}`);
                     return of(0);
                 })
             );
@@ -64,16 +64,16 @@ export class ContractService {
             return from(this.mannaContract['balanceOf'](this.metamaskService.account$.value)).pipe(
                 tap(balance => {
                     console.log(`Raw balance received from contract: ${balance}`);
-                    alert(`Raw balance received from contract: ${balance}`);
+                    // alert(`Raw balance received from contract: ${balance}`);
                 }),
                 map((balance: any) => parseInt(balance.toString()) / 1e18),
                 tap(parsedBalance => {
                     console.log(`Parsed balance: ${parsedBalance} Manna`);
-                    alert(`Parsed balance: ${parsedBalance} Manna`);
+                    // alert(`Parsed balance: ${parsedBalance} Manna`);
                 }),
                 catchError((error) => {
                     console.error('Error fetching balance:', error);
-                    alert(`Error fetching balance: ${error.message}`);
+                    // alert(`Error fetching balance: ${error.message}`);
                     return of(0);
                 })
             );
@@ -84,7 +84,7 @@ export class ContractService {
         return from(this.claimMannaContract!['userScores'](userAddress)).pipe(
             tap(response => {
                 console.log(`Raw user score response: ${response}`);
-                alert(`Raw user score response: ${response}`);
+                // alert(`Raw user score response: ${response}`);
             }),
             map(response => {
                 const timestamp = parseInt(response[0].toString());
@@ -92,12 +92,12 @@ export class ContractService {
                 const score = parseInt(response[1].toString());
                 const userScore = { timestamp, score };
                 console.log(`Parsed user score: ${JSON.stringify(userScore)}`);
-                alert(`Parsed user score: ${JSON.stringify(userScore)}`);
+                // alert(`Parsed user score: ${JSON.stringify(userScore)}`);
                 return userScore;
             }),
             catchError((error) => {
                 console.error('Error fetching user score:', error);
-                alert(`Error fetching user score: ${error.message}`);
+                // alert(`Error fetching user score: ${error.message}`);
                 return of(undefined);
             })
         );
@@ -107,16 +107,16 @@ export class ContractService {
         const fetchThreshold = () => from(this.claimMannaContract!['scoreThreshold']()).pipe(
             tap(threshold => {
                 console.log(`Raw score threshold received from contract: ${threshold}`);
-                alert(`Raw score threshold received from contract: ${threshold}`);
+                // alert(`Raw score threshold received from contract: ${threshold}`);
             }),
             map((threshold: any) => parseInt(threshold.toString()) / 1e6),
             tap(parsedThreshold => {
                 console.log(`Parsed score threshold: ${parsedThreshold}`);
-                alert(`Parsed score threshold: ${parsedThreshold}`);
+                // alert(`Parsed score threshold: ${parsedThreshold}`);
             }),
             catchError((error) => {
                 console.error('Error fetching score threshold:', error);
-                alert(`Error fetching score threshold: ${error.message}`);
+                // alert(`Error fetching score threshold: ${error.message}`);
                 return of(7);
             })
         );
@@ -144,7 +144,7 @@ export class ContractService {
             switchMap(tx => from(tx.wait()) as Observable<void>),
             catchError((error) => {
                 console.error('Error submitting user score:', error);
-                alert(`Error submitting user score: ${error.message}`);
+                // alert(`Error submitting user score: ${error.message}`);
                 return throwError(error);
             })
         );
@@ -155,7 +155,7 @@ export class ContractService {
             switchMap(tx => from(tx.wait()) as Observable<void>),
             catchError((error) => {
                 console.error('Error claiming with signatures:', error);
-                alert(`Error claiming with signatures: ${error.message}`);
+                // alert(`Error claiming with signatures: ${error.message}`);
                 return throwError(error);
             })
         );

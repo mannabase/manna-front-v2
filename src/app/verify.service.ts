@@ -74,7 +74,7 @@ export class VerifyService {
             .pipe(
                 tap((threshold) => {
                     this.thresholdSource.next(threshold);
-                    alert(`Threshold fetched: ${threshold}`);
+                    // alert(`Threshold fetched: ${threshold}`);
                 }),
                 switchMap(() =>
                     this.contractService.getUserScore(this.walletAddress!)
@@ -98,11 +98,11 @@ export class VerifyService {
                     } else {
                         this.verificationStateSubject.next(VerifyState.NOT_VERIFIED);
                     }
-                    alert(`Verification state updated: ${this.verificationStateSubject.value}`);
+                    // alert(`Verification state updated: ${this.verificationStateSubject.value}`);
                 },
                 error: (error) => {
                     console.error('Error updating verification state:', error);
-                    alert(`Error updating verification state: ${error.message}`);
+                    // alert(`Error updating verification state: ${error.message}`);
                     this.verificationStateSubject.next(VerifyState.NOT_VERIFIED);
                 },
             });
@@ -115,11 +115,11 @@ export class VerifyService {
             ),
             tap((response) => {
                 this.serverScoreSource.next(response.data.score);
-                alert(`Server score updated: ${response.data.score}`);
+                // alert(`Server score updated: ${response.data.score}`);
             }),
             catchError((error) => {
                 console.error('Error updating server score:', error);
-                alert(`Error updating server score: ${error.message}`);
+                // alert(`Error updating server score: ${error.message}`);
                 return of(null);
             })
         );
@@ -139,7 +139,7 @@ export class VerifyService {
             }),
             catchError((error) => {
                 console.error('Error sending score to contract:', error);
-                alert(`Error sending score to contract: ${error.message}`);
+                // alert(`Error sending score to contract: ${error.message}`);
                 return throwError(error);
             }),
             finalize(() => {
