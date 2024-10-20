@@ -16,7 +16,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {AppRoutingModule} from './app-routing.module'
 import {AppComponent} from './app.component'
 import {HomeComponent} from './home/home.component'
-import {provideHttpClient, withInterceptors ,HttpClientModule} from "@angular/common/http"
+import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from "@angular/common/http"
 import {AngularSvgIconModule} from 'angular-svg-icon'
 import {InfoBoxComponent} from './home/info-box/info-box.component'
 import {IntroCardComponent} from './home/intro-card/intro-card.component'
@@ -49,14 +49,12 @@ import {WriteBlogComponent} from './blog/write-blog/write-blog.component';
 import {httpInterceptor} from "./http.interceptor";
 
 
-@NgModule({
-  declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent,
-    AboutComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, ClaimMannaComponent, FooterComponent, WriteBlogComponent, DailyRewardDialogComponent],
-    imports: [
-        BrowserModule,
+@NgModule({ declarations: [AppComponent, HomeComponent, InfoBoxComponent, IntroCardComponent, HeaderComponent, MarketplaceComponent,
+        AboutComponent, BlogComponent, AccountComponent, WalletComponent, UserAccountComponent, BlogDetailComponent, VerificationDialogComponent, ClaimDialogComponent, MetamaskConnectionComponent, ClaimMannaComponent, FooterComponent, WriteBlogComponent, DailyRewardDialogComponent],
+    bootstrap: [AppComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA], imports: [BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
-        HttpClientModule,
         AngularSvgIconModule,
         FormsModule,
         ReactiveFormsModule,
@@ -74,18 +72,12 @@ import {httpInterceptor} from "./http.interceptor";
         TuiAccordionModule,
         CommonModule,
         TuiLetModule,
-        TuiActionModule,
-    ],
-  providers: [MetamaskService, MannaService, VerifyService,ClaimService,ContractService,LoadingService,
-              provideHttpClient(withInterceptors([httpInterceptor]),),
-    {
-      provide: TUI_SANITIZER,
-      useClass: NgDompurifySanitizer
-    },
-  ],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
-})
+        TuiActionModule], providers: [MetamaskService, MannaService, VerifyService, ClaimService, ContractService, LoadingService,
+        provideHttpClient(withInterceptors([httpInterceptor])),
+        {
+            provide: TUI_SANITIZER,
+            useClass: NgDompurifySanitizer
+        }, provideHttpClient(withInterceptorsFromDi()),] })
 export class AppModule {
 }
 

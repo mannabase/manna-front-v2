@@ -327,7 +327,6 @@
 }
 .developer {
     position: relative;
-    background-image: $developer-main-background;
     background-size: cover;
     display: flex-column;
     padding: 50px 20px 50px 20px;
@@ -353,7 +352,6 @@
     box-shadow: 2px;
     border: 5px solid white;
     border-radius: 20px;
-    background-image: $developer-under-background;
     background-size: cover;
     display: flex-column;
     gap: 2px;
@@ -364,7 +362,6 @@
     min-height: 300px;
     width: 30%;
     box-shadow: 2px;
-    background-image: $developer-under-background;
     background-size: cover;
     display: flex-column;
     gap: 2px;
@@ -538,7 +535,6 @@
     }
     .under-developer {
         width: 100%;
-        background-image: $developer-main-background;
         margin-bottom: 10px;
     }
     .funding {
@@ -720,7 +716,6 @@
     }
     .under-developer {
         width: 100%;
-        background-image: $developer-main-background;
         margin-bottom: 10px;
     }
     .funding {
