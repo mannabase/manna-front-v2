@@ -2,7 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
 import { MetamaskService, MetamaskState } from 'src/app/metamask.service';
 import { VerifyState, VerifyService } from 'src/app/verify.service';
-import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { PolymorpheusComponent } from '@taiga-ui/polymorpheus';
 import { ClaimDialogComponent } from '../claim-dialog/claim-dialog.component';
 import { externalLinks } from '../config';
 

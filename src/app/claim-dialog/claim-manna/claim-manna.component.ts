@@ -3,7 +3,7 @@ import {MetamaskService} from '../../metamask.service'
 import {MannaService} from '../../manna.service'
 import {Router} from '@angular/router'
 import {TuiDialogContext} from '@taiga-ui/core'
-import {POLYMORPHEUS_CONTEXT} from '@tinkoff/ng-polymorpheus'
+import {POLYMORPHEUS_CONTEXT} from '@taiga-ui/polymorpheus'
 import {ClaimService} from '../../claim.service'
 import {TuiAlertService} from '@taiga-ui/core'
 
@@ -67,7 +67,7 @@ export class ClaimMannaComponent implements OnInit {
         this.claimDailyLoader = true;
         this.claimService.claimDailyReward(this.walletAddress!).subscribe(
             () => {
-                this.alertService.open('Daily reward claimed successfully.', { status: 'success' });
+                this.alertService.open('Daily reward claimed successfully.', { appearance: 'success' });
                 this.successMessage = true
             },
             error => {

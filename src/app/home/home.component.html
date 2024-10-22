@@ -27,10 +27,10 @@
                         routerLink="account"
                     >
                         Launch App
-                        <tui-svg
-                            src="tuiIconArrowRight"
+                        <tui-icon 
+                            icon="@tui.arrow-right"
                             class="getStart--button--icon"
-                        ></tui-svg>
+                        ></tui-icon>
                     </button>
                     <div class="getStart--learnMore">
                         <a
@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <p class="boxes--item--discription">{{ box.description }}</p>
-                <a tuiLink icon="tuiIconArrowRight" class="boxes--item--link">
+                <a tuiLink iconEnd="@tui.arrow-right" class="boxes--item--link">
                     {{ box.link }}
                 </a>
             </div>
@@ -97,10 +97,10 @@
                 <a tuiLink class="mb-3">
                     <div class="ecosystem--item1--link">
                         MANNA ECOSYSTEM
-                        <tui-svg
-                            src="tuiIconArrowRight"
-                            style="color: var(--tui-primary)"
-                        ></tui-svg>
+                        <tui-icon 
+                            icon="@tui.arrow-right"
+                            style="color: var(--tui-background-accent-1)"
+                        ></tui-icon>
                     </div>
                 </a>
                 <div class="ecosystem--item1--title mb-0">
@@ -115,10 +115,10 @@
                 </p>
                 <button class="getStart--button" (click)="openClaimDialog()">
                     Get Started
-                    <tui-svg
-                        src="tuiIconArrowRight"
+                    <tui-icon 
+                        icon="@tui.arrow-right"
                         class="getStart--button--icon"
-                    ></tui-svg>
+                    ></tui-icon>
                 </button>
             </div>
             <div class="ecosystem--item2">
@@ -145,10 +145,10 @@
                 <p class="community--govern--description mb-3">all humans.</p>
                 <button class="getStart--button" (click)="openClaimDialog()">
                     Get Started
-                    <tui-svg
-                        src="tuiIconArrowRight"
+                    <tui-icon 
+                        icon="@tui.arrow-right"
                         class="getStart--button--icon"
-                    ></tui-svg>
+                    ></tui-icon>
                 </button>
             </div>
             <div class="community--boxes">
@@ -161,7 +161,7 @@
                     <div>
                         <a
                             tuiLink
-                            icon="tuiIconArrowRight"
+                            iconEnd="@tui.arrow-right"
                             class="community--boxes--box--title"
                         >
                             1-Per-Day
@@ -180,7 +180,7 @@
                     <div>
                         <a
                             tuiLink
-                            icon="tuiIconArrowRight"
+                            iconEnd="@tui.arrow-right"
                             class="community--boxes--box--title"
                         >
                             Get Verified
@@ -200,7 +200,7 @@
                     <div>
                         <a
                             tuiLink
-                            icon="tuiIconArrowRight"
+                            iconEnd="@tui.arrow-right"
                             class="community--boxes--box--title"
                         >
                             Built On Optimism
@@ -239,8 +239,8 @@
                         <a class="gradiant-border-links" tuiLink>
                             Read more
                             <tui-svg
-                                src="tuiIconArrowUpRight"
-                                style="color: var(--tui-primary)"
+                                src="@tui.arrow-up-right"
+                                style="color: var(--tui-background-accent-1)"
                             ></tui-svg>
                         </a>
                     </div>
@@ -254,13 +254,13 @@
                     <div class="under-developer">
                         <a class="white-link">
                             Governed Foum
-                            <tui-svg src="tuiIconArrowRight"></tui-svg>
+                            <tui-svg src="@tui.arrow-right"></tui-svg>
                         </a>
                     </div>
                     <div class="under-developer">
                         <a class="white-link">
                             Governed Foum
-                            <tui-svg src="tuiIconArrowRight"></tui-svg>
+                            <tui-svg src="@tui.arrow-right"></tui-svg>
                         </a>
                     </div>
                 </div>
@@ -285,7 +285,7 @@
                         </div>
                         <a class="funding--read-more" tuiLink>
                             Read more
-                            <tui-svg src="tuiIconArrowUpRight"></tui-svg>
+                            <tui-svg src="@tui.arrow-up-right"></tui-svg>
                         </a>
                     </div>
                 </div>

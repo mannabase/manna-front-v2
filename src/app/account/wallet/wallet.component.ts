@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { MetamaskService, MetamaskState } from 'src/app/metamask.service';
 import { VerifyService, VerifyState } from '../../verify.service';
 import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
-import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { PolymorpheusComponent } from '@taiga-ui/polymorpheus';
 import { ContractService } from '../../contract.service';
 import { MannaService } from '../../manna.service';
 import { ClaimService } from '../../claim.service';
@@ -151,7 +151,7 @@ export class WalletComponent implements OnInit, OnDestroy {
     this.claimDailyLoader = true;
     this.claimService.claimDailyReward(this.walletAddress!).subscribe(
       () => {
-        this.alertService.open('Daily reward claimed successfully.', { status: 'success' }).subscribe();
+        this.alertService.open('Daily reward claimed successfully.', { appearance: 'success' }).subscribe();
         this.resetBalances();
         this.fetchBalances();
         this.fetchClaimableAmount();
@@ -165,13 +165,13 @@ export class WalletComponent implements OnInit, OnDestroy {
     this.claimWithSigsLoader = true;
     this.claimService.claimWithSignatures(this.walletAddress!).subscribe(
       () => {
-        this.alertService.open('Claim with signatures successful.', { status: 'success' }).subscribe();
+        this.alertService.open('Claim with signatures successful.', { appearance: 'success' }).subscribe();
         this.resetBalances();
         this.fetchBalances();
         this.fetchClaimableAmount();
       },
       error => {
-        this.alertService.open(error, { status: 'error' }).subscribe();
+        this.alertService.open(error, { appearance: 'error' }).subscribe();
         console.error('Failed to claim daily reward:', error);
       },
     ).add(() => {
@@ -180,7 +180,7 @@ export class WalletComponent implements OnInit, OnDestroy {
   }
 
   openRewardDialog() {
-    this.dialogService.open(new PolymorpheusComponent(DailyRewardDialogComponent, this.injector), {
+    this.dialogService.open(new PolymorpheusComponent(DailyRewardDialogComponent, this.injector!), {
       data: { claimableAmount: this.claimableAmount },
     }).subscribe();
   }

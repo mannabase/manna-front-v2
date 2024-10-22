@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, OnDestroy, OnInit, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { TuiAlertService, TuiDialogService } from '@taiga-ui/core';
-import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { PolymorpheusComponent } from '@taiga-ui/polymorpheus';
 import { ScoreDialogComponent } from '../../score-dialog/score-dialog.component';
 import { LocalScoreData, VerifyService, VerifyState } from 'src/app/verify.service';
 import { MetamaskService, MetamaskState } from "../../metamask.service";

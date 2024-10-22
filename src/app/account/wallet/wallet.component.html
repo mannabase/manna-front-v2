@@ -229,8 +229,9 @@
                         <div class="panel--dashboard--daily--claim--text mb-3">
                             This transaction will claim all daily manna accrued up to the last 7 days.
                         </div>
-                        <button
-                            tuiAction
+                        <!-- TODO: (Taiga UI migration) tuiAction has been removed in favour of tuiCardLarge + tuiSurface. Change the template according to this example https://taiga-ui.dev/layout/card-large -->
+<button
+                            tuiCardLarge tuiSurface="elevated"
                             class="panel--dashboard--daily--claim--button"
                             (click)="claimDailyReward()"
                             [disabled]="

@@ -178,7 +178,7 @@
                         </div>
                         <button
                             tuiButton
-                            [showLoader]="loadingService.loading()"
+                            [loading]="loadingService.loading()"
                             (click)="metamaskService.connectWallet()"
                             *ngIf="metamaskState == MetamaskState.NOT_CONNECTED"
                         >
@@ -187,7 +187,7 @@
 
                         <button
                             tuiButton
-                            [showLoader]="loadingService.loading()"
+                            [loading]="loadingService.loading()"
                             (click)="metamaskService.switchToMannaChain()"
                             *ngIf="metamaskState == MetamaskState.WRONG_CHAIN"
                         >
@@ -195,7 +195,7 @@
                         </button>
                         <button
                             tuiButton
-                            [showLoader]="loadingService.loading()"
+                            [loading]="loadingService.loading()"
                             *ngIf="
                                 (contractScore ?? 0) == 0 &&
                                 metamaskState == 'READY' &&
@@ -351,7 +351,7 @@
 
                         <button
                             tuiButton
-                            [showLoader]="loadingService.loading()"
+                            [loading]="loadingService.loading()"
                             (click)="metamaskService.connectWallet()"
                             *ngIf="metamaskState == MetamaskState.NOT_CONNECTED"
                         >
@@ -359,7 +359,7 @@
                         </button>
                         <button
                             tuiButton
-                            [showLoader]="loadingService.loading()"
+                            [loading]="loadingService.loading()"
                             (click)="metamaskService.switchToMannaChain()"
                             *ngIf="metamaskState == MetamaskState.WRONG_CHAIN"
                         >
@@ -367,7 +367,7 @@
                         </button>
                         <button
                             tuiButton
-                            [showLoader]="loadingService.loading()"
+                            [loading]="loadingService.loading()"
                             *ngIf="
                                 (contractScore ?? 0) == 0 &&
                                 metamaskState == 'READY' &&
@@ -407,7 +407,7 @@
                                 <span>Loading...</span>
                             </ng-container>
                             <ng-template #updateScoreText>
-                                <tui-svg src="tuiIconRotateCw"></tui-svg>
+                                <tui-svg src="@tui.rotate-cw"></tui-svg>
                             </ng-template>
                         </div> -->
                         </div>

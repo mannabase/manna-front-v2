@@ -78,9 +78,9 @@ export class AccountComponent implements OnInit, OnDestroy {
             return
         }
         navigator.clipboard.writeText(walletAddress).then(() => {
-            this.alertService.open("Copied!", {status: "success"}).subscribe()
+            this.alertService.open("Copied!", {appearance: "success"}).subscribe()
         }).catch(err => {
-            this.alertService.open("Not Copied!", {status: "error"}).subscribe()
+            this.alertService.open("Not Copied!", {appearance: "error"}).subscribe()
         })
     }
 }

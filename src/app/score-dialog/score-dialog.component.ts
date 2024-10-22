@@ -1,10 +1,10 @@
+import { TuiLet } from "@taiga-ui/cdk";
 import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { VerifyService } from '../verify.service';
 import { CommonModule } from '@angular/common';
-import { TuiLetModule } from "@taiga-ui/cdk";
-import { TuiAlertService, TuiDialogContext, TuiLoaderModule } from "@taiga-ui/core";
+import { TuiAlertService, TuiDialogContext, TuiLoader } from "@taiga-ui/core";
 import { MetamaskService } from "../metamask.service";
-import { POLYMORPHEUS_CONTEXT } from "@tinkoff/ng-polymorpheus";
+import { POLYMORPHEUS_CONTEXT } from "@taiga-ui/polymorpheus";
 import { LoadingService } from 'src/app/loading.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { LoadingService } from 'src/app/loading.service';
     templateUrl: './score-dialog.component.html',
     styleUrls: ['./score-dialog.component.scss'],
     standalone: true,
-    imports: [CommonModule, TuiLetModule, TuiLoaderModule],
+    imports: [CommonModule, TuiLet, TuiLoader],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreDialogComponent implements OnInit, OnDestroy {
@@ -39,11 +39,11 @@ export class ScoreDialogComponent implements OnInit, OnDestroy {
         this.verifyService.sendScoreToContract(this.metamaskService.account$.value).subscribe({
             next: () => {
                 this.context.completeWith(0);
-                this.alertService.open('Score submitted successfully.', { status: 'success', label: 'Success' }).subscribe();
+                this.alertService.open('Score submitted successfully.', { appearance: 'success', label: 'Success' }).subscribe();
                 this.verifyService.triggerAccountRefresh();
             },
             error: (error) => {
-                this.alertService.open('Failed to submit score.', { status: 'error', label: 'Error' }).subscribe();
+                this.alertService.open('Failed to submit score.', { appearance: 'error', label: 'Error' }).subscribe();
                 this.isLoading = false;
             }
         })

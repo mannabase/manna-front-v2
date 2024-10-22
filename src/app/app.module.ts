@@ -1,14 +1,8 @@
-import {NgDompurifySanitizer} from "@tinkoff/ng-dompurify"
-import {
-    TUI_SANITIZER,
-    TuiAlertModule,
-    TuiButtonModule,
-    TuiDialogModule,
-    TuiLinkModule,
-    TuiLoaderModule,
-    TuiRootModule,
-    TuiSvgModule,
-} from "@taiga-ui/core"
+import { TuiCardLarge } from "@taiga-ui/layout";
+import { TUI_SANITIZER } from "@taiga-ui/legacy";
+import { NG_EVENT_PLUGINS } from "@taiga-ui/event-plugins";
+import {NgDompurifySanitizer} from "@taiga-ui/dompurify"
+import { TuiRoot, TuiAlert, TuiLoader, TuiIcon, TuiSurface, TuiLink, TuiDialog, TuiButton } from "@taiga-ui/core"
 import {NgModule,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core'
 import {BrowserModule} from '@angular/platform-browser'
 import { CommonModule } from '@angular/common';
@@ -36,15 +30,14 @@ import { ClaimService } from "./claim.service"
 import { LoadingService } from "./loading.service"
 import { ContractService } from "./contract.service"
 import {VerificationDialogComponent} from './verification-dialog/verification-dialog.component'
-import {TuiMobileDialogModule, TuiSidebarModule} from '@taiga-ui/addon-mobile'
-import {TuiActiveZoneModule, TuiLetModule} from '@taiga-ui/cdk'
+import { TuiSidebar, TuiMobileDialog } from '@taiga-ui/addon-mobile'
+import { TuiActiveZone, TuiLet } from '@taiga-ui/cdk'
 import {ClaimDialogComponent} from './claim-dialog/claim-dialog.component'
-import {TuiActionModule, TuiStepperModule} from "@taiga-ui/kit"
+import { TuiAccordion, TuiStepper, TuiButtonLoading } from "@taiga-ui/kit"
 import {MetamaskConnectionComponent} from './claim-dialog/metamask-connection/metamask-connection.component'
 import {ClaimMannaComponent} from './claim-dialog/claim-manna/claim-manna.component'
 import {FooterComponent} from './footer/footer.component'
 import {DailyRewardDialogComponent} from './account/wallet/daily-reward-dialog/daily-reward-dialog.component'
-import {TuiAccordionModule} from '@taiga-ui/kit';
 import {WriteBlogComponent} from './blog/write-blog/write-blog.component';
 import {httpInterceptor} from "./http.interceptor";
 
@@ -58,26 +51,26 @@ import {httpInterceptor} from "./http.interceptor";
         AngularSvgIconModule,
         FormsModule,
         ReactiveFormsModule,
-        TuiRootModule,
-        TuiDialogModule,
-        TuiMobileDialogModule,
-        TuiAlertModule,
-        TuiSidebarModule,
-        TuiActiveZoneModule,
-        TuiButtonModule,
-        TuiLinkModule,
-        TuiStepperModule,
-        TuiSvgModule,
-        TuiLoaderModule,
-        TuiAccordionModule,
+        TuiRoot,
+        TuiDialog,
+        TuiMobileDialog,
+        TuiAlert,
+        ...TuiSidebar,
+        TuiActiveZone,
+        TuiButton,
+        TuiLink,
+        ...TuiStepper,
+        TuiIcon,
+        TuiLoader,
+        ...TuiAccordion,
         CommonModule,
-        TuiLetModule,
-        TuiActionModule], providers: [MetamaskService, MannaService, VerifyService, ClaimService, ContractService, LoadingService,
+        TuiLet,
+        TuiCardLarge, TuiSurface, TuiButtonLoading], providers: [MetamaskService, MannaService, VerifyService, ClaimService, ContractService, LoadingService,
         provideHttpClient(withInterceptors([httpInterceptor])),
         {
             provide: TUI_SANITIZER,
             useClass: NgDompurifySanitizer
-        }, provideHttpClient(withInterceptorsFromDi()),] })
+        }, provideHttpClient(withInterceptorsFromDi()), NG_EVENT_PLUGINS] })
 export class AppModule {
 }
 

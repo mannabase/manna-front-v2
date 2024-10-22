@@ -64,12 +64,12 @@ import {
       const walletAddress = this.metamaskService.account$.value;
       this.claimService.claimDailyReward(walletAddress!).subscribe(
         () => {
-          this.alertService.open('Daily reward claimed successfully.', { status: 'success' }).subscribe();
+          this.alertService.open('Daily reward claimed successfully.', { appearance: 'success' }).subscribe();
           this.mannaService.triggerWalletRefresh();
           this.ngOnInit()
         },
         (error) => {
-          this.alertService.open(error, { status: 'error' }).subscribe();
+          this.alertService.open(error, { appearance: 'error' }).subscribe();
           console.error('Failed to claim daily reward:', error);
         }
       ).add(() => {
