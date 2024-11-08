@@ -93,6 +93,8 @@
             padding: 20px;
             font-size: 30px;
             cursor: pointer;
+            text-decoration: none;
+            color: aliceblue;
             &:hover{
               color: $links-color-main;
             }

@@ -1,88 +1,111 @@
 <div class="about">
-  <div class="about--intro">
-      <div class="about--intro--text">
-          <h2>
-              ABOUT
-          </h2>
-          <span class="about--intro--text--description">
-              Manna is a digital currency distributed 1-per-day to all participating, verified humans. 
-              The distribution model is based on the principles of universal basic income.
-
-
-
-
-          </span>
-          <span class="about--intro--text--description">
-            The value is equal to each human living one day. 
-            The purpose of Manna is to create the most accesible, widely distributed currency on earth.
-          </span>
-          <span class="about--intro--text--description">
-            Unlike currencies like the U.S. dollar, the Euro, bitcoin, and gold, new value creation is distributed directly to the user base. 
-            This stems from the understanding that users in an economy generate the value of its currency through their shared belief and use.
-          </span>
-          <button class="about--intro--text--learn">
-              <a class="about--intro--text--learn--inner" tuiLink 
-                 [href]="mediumUrl"
-                 target="_blank" rel="noopener noreferrer">
-                      Learn More
-              </a>
-          </button>
-      </div>
-      <img src="../../assets/images/about-mannaLogo.webp" 
-          alt="Manna-logo" class="about--intro--logo">
-  </div>
+    <div class="about--intro">
+        <div class="about--intro--text">
+            <h2>ABOUT</h2>
+            <span class="about--intro--text--description">
+                Manna is a digital currency distributed 1-per-day to all
+                participating, verified humans. The distribution model is based
+                on the principles of universal basic income.
+            </span>
+            <span class="about--intro--text--description">
+                The value is equal to each human living one day. The purpose of
+                Manna is to create the most accesible, widely distributed
+                currency on earth.
+            </span>
+            <span class="about--intro--text--description">
+                Unlike currencies like the U.S. dollar, the Euro, bitcoin, and
+                gold, new value creation is distributed directly to the user
+                base. This stems from the understanding that users in an economy
+                generate the value of its currency through their shared belief
+                and use.
+            </span>
+            <button class="about--intro--text--learn">
+                <a
+                    class="about--intro--text--learn--inner"
+                    tuiLink
+                    [href]="mediumUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Learn More
+                </a>
+            </button>
+        </div>
+        <img
+            src="../../assets/images/about-mannaLogo.webp"
+            alt="Manna-logo"
+            class="about--intro--logo"
+        />
+    </div>
 </div>
 <div class="container">
-  <img src="../../assets/images/about-sideImage-left.webp" alt="manna" class="image">
-  <div class="content">
-    <h2>
-      FAQ
-  </h2>
-    <div class="accordion">
-      <div class="accordion-item-wrapper" *ngFor="let item of items">
-        <div class="accordion-item">
-          <h4 class="accordion-title" (click)="toggleAccordion(item)">
-            {{ item.title }}
-            <span class="accordion-icon">{{ isExpanded(item) ? '-' : '+' }}</span>
-          </h4>
-          <p class="accordion-content" *ngIf="isExpanded(item)" [@slideToggle] [innerHTML]="item.content">
-          </p>
+    <img
+        src="../../assets/images/about-sideImage-left.webp"
+        alt="manna"
+        class="image"
+    />
+    <div class="content">
+        <h2>FAQ</h2>
+        <div class="accordion">
+            <div class="accordion-item-wrapper" *ngFor="let item of items">
+                <div class="accordion-item">
+                    <h4 class="accordion-title" (click)="toggleAccordion(item)">
+                        {{ item.title }}
+                        <span class="accordion-icon">{{
+                            isExpanded(item) ? "-" : "+"
+                        }}</span>
+                    </h4>
+                    <p
+                        class="accordion-content"
+                        *ngIf="isExpanded(item)"
+                        [@slideToggle]
+                        [innerHTML]="item.content"
+                    ></p>
+                </div>
+            </div>
         </div>
-      </div>
+        <h3 class="socials-header">SOCIALS</h3>
+        <div class="socials">
+            <div class="socials--item">
+                <a
+                    class="fa-brands fa-x-twitter socials--item--icon"
+                    [href]="twitterUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                </a>
+            </div>
+            <div class="socials--item">
+                <a
+                    class="fa-brands fa-discord socials--item--icon"
+                    [href]="twitterUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                </a>
+            </div>
+            <div class="socials--item">
+                <a
+                    class="fa-brands fa-medium socials--item--icon"
+                    [href]="twitterUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                </a>
+            </div>
+            <a
+                class="fa-brands fa-x-twitter"
+                tuiLink
+                [href]="twitterUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+            </a>
+        </div>
     </div>
-    <h3 class="socials-header">
-      SOCIALS
-    </h3>
-    <div class="socials">
-      <div class="socials--item">
-        <tui-icon class="fa-brands fa-x-twitter socials--item--icon"
-              
-              [href]="twitterUrl"
-              target="_blank" rel="noopener noreferrer"
-          />
-      </div>
-      <div class="socials--item">
-        <tui-icon class="fa-brands fa-discord socials--item--icon"
-              
-              [href]="discordUrl"
-              target="_blank" rel="noopener noreferrer"
-          />
-      </div>
-      <div class="socials--item">
-          <tui-icon class="fa-brands fa-medium socials--item--icon"
-              
-              [href]="mediumUrl"
-              target="_blank" rel="noopener noreferrer"
-          />
-      </div>
-
-      <a class="fa-brands fa-x-twitter"
-      tuiLink
-      [href]="twitterUrl"
-      target="_blank" rel="noopener noreferrer">
-  </a>
-    </div>
-  </div>
-  <img src="../../assets/images/about-sideImage-right.webp" alt="manna" class="image">
+    <img
+        src="../../assets/images/about-sideImage-right.webp"
+        alt="manna"
+        class="image"
+    />
 </div>
-  
