@@ -1,4 +1,7 @@
-<div class="account-container"  *tuiLet="verifyService.verificationState$ | async as verificationState" >
+<div
+    class="account-container"
+    *tuiLet="verifyService.verificationState$ | async as verificationState"
+>
     <div class="account--info">
         <div class="account--info--account">Account</div>
         <div class="account--info--text">overview</div>
@@ -194,18 +197,18 @@
                             Switch Chain
                         </button>
                         <button
-                        tuiButton
-                        [loading]="loadingService.loading()"
-                        *ngIf="
-                            (contractScore ?? 0) == 0 &&
-                            metamaskState == 'READY' &&
-                            (localScore$ | async) == null
-                        "
-                        (click)="refreshUserScore()"
-                    >
-                        Check Score
-                    </button>
-                    
+                            tuiButton
+                            [loading]="loadingService.loading()"
+                            *ngIf="
+                                (contractScore ?? 0) == 0 &&
+                                metamaskState == 'READY' &&
+                                (localScore$ | async) == null
+                            "
+                            (click)="refreshUserScore()"
+                        >
+                            Check Score
+                        </button>
+
                         <div
                             class="account--humanity--passport--passport"
                             (click)="openLinkInNewTab()"
@@ -372,7 +375,7 @@
                             *ngIf="
                                 (contractScore ?? 0) == 0 &&
                                 metamaskState == 'READY' &&
-                                localScore == null
+                                (localScore$ | async) == null
                             "
                             (click)="refreshUserScore()"
                         >
