@@ -5,7 +5,7 @@ import { ScoreDialogComponent } from '../../score-dialog/score-dialog.component'
 import { LocalScoreData, VerifyService, VerifyState } from 'src/app/verify.service';
 import { MetamaskService, MetamaskState } from "../../metamask.service";
 import { LoadingService } from 'src/app/loading.service';
-import { Subscription } from 'rxjs';
+import { Subscription,BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'app-user-account',
@@ -18,6 +18,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     walletAddress: string | null = null;
     loader: boolean = false;
     localScore?: number;
+    localScore$ = new BehaviorSubject<number | undefined>(undefined);
     protected readonly VerifyState = VerifyState;
     protected readonly MetamaskState = MetamaskState;
     private accountStateSubscription: Subscription | undefined;
@@ -64,7 +65,9 @@ export class UserAccountComponent implements OnInit, OnDestroy {
         const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
         const isLocalScoreValid = scoreData && currentTime - scoreData.timestamp < sevenDaysInMs;
         this.localScore = (isLocalScoreValid ? scoreData.score / 1000000 : undefined);
-        this.cdr.detectChanges(); 
+        // this.cdr.detectChanges(); 
+        this.localScore$.next(isLocalScoreValid ? scoreData.score / 1000000 : undefined);
+
     }
 
     openLinkInNewTab() {

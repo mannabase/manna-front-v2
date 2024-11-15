@@ -194,17 +194,18 @@
                             Switch Chain
                         </button>
                         <button
-                            tuiButton
-                            [loading]="loadingService.loading()"
-                            *ngIf="
-                                (contractScore ?? 0) == 0 &&
-                                metamaskState == 'READY' &&
-                                localScore == null
-                            "
-                            (click)="refreshUserScore()"
-                        >
-                            Check Score
-                        </button>
+                        tuiButton
+                        [loading]="loadingService.loading()"
+                        *ngIf="
+                            (contractScore ?? 0) == 0 &&
+                            metamaskState == 'READY' &&
+                            (localScore$ | async) == null
+                        "
+                        (click)="refreshUserScore()"
+                    >
+                        Check Score
+                    </button>
+                    
                         <div
                             class="account--humanity--passport--passport"
                             (click)="openLinkInNewTab()"

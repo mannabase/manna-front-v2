@@ -19,11 +19,11 @@
                     <h4 class="intro--title--market mt-0">One Day.</h4>
                 </div>
                 <div
-                class="intro--buttun"
-                *ngIf="metamaskState === MetamaskState.NOT_CONNECTED"
-                (click)="connectWallet()"
+                    class="intro--buttun"
+                    *ngIf="metamaskState === MetamaskState.NOT_CONNECTED"
+                    (click)="connectWallet()"
                 >
-                <img
+                    <img
                         src="../../../assets/images/account-wallet-buttun-icon.svg"
                         alt="wallet"
                         class="intro--buttun--icon"
@@ -151,20 +151,21 @@
                         <button
                             class="panel--dashboard--withdraw"
                             [class.unverified]="
-                                verificationState !== VerifyState.VERIFIED || this.mannabaseBalance == 0
+                                verificationState !== VerifyState.VERIFIED ||
+                                this.mannabaseBalance == 0
                             "
-                            
                             (click)="claimWithSignatures()"
-                            [disabled]="verificationState !== VerifyState.VERIFIED || this.mannabaseBalance == 0"
+                            [disabled]="
+                                verificationState !== VerifyState.VERIFIED ||
+                                this.mannabaseBalance == 0
+                            "
                             [attr.title]="
                                 verificationState !== VerifyState.VERIFIED
                                     ? 'You must be verified for withdrawal of manna'
                                     : null
                             "
                         >
-                            <span *ngIf="!claimWithSigsLoader">
-                                Withdraw
-                            </span>
+                            <span *ngIf="!claimWithSigsLoader"> Withdraw </span>
                             <span *ngIf="claimWithSigsLoader">
                                 loading...
                             </span>
@@ -175,15 +176,16 @@
                         <button
                             class="panel--dashboard--buttons--withdraw-mobile"
                             (click)="claimWithSignatures()"
-                            *ngIf="verificationState == VerifyState.VERIFIED && this.mannabaseBalance !== 0"
+                            *ngIf="
+                                verificationState == VerifyState.VERIFIED &&
+                                this.mannabaseBalance !== 0
+                            "
                         >
-                        <span *ngIf="!claimWithSigsLoader">
-                            Withdraw
-                        </span>
-                        <span *ngIf="claimWithSigsLoader">
-                            loading...
-                        </span>
-                    </button>
+                            <span *ngIf="!claimWithSigsLoader"> Withdraw </span>
+                            <span *ngIf="claimWithSigsLoader">
+                                loading...
+                            </span>
+                        </button>
                         <div
                             class="panel--dashboard--buttons--daily"
                             (click)="openRewardDialog()"
@@ -227,11 +229,13 @@
                     </div>
                     <div class="panel--dashboard--daily--claim">
                         <div class="panel--dashboard--daily--claim--text mb-3">
-                            This transaction will claim all daily manna accrued up to the last 7 days.
+                            This transaction will claim all daily manna accrued
+                            up to the last 7 days.
                         </div>
                         <!-- TODO: (Taiga UI migration) tuiAction has been removed in favour of tuiCardLarge + tuiSurface. Change the template according to this example https://taiga-ui.dev/layout/card-large -->
-<button
-                            tuiCardLarge tuiSurface="elevated"
+                        <button
+                            tuiCardLarge
+                            tuiSurface="elevated"
                             class="panel--dashboard--daily--claim--button"
                             (click)="claimDailyReward()"
                             [disabled]="
