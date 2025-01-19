@@ -1,27 +1,25 @@
-# Stage 1: Build the Angular application
-FROM node:20-alpine AS build
-WORKDIR /app
+# -------------------------
+# Stage 1: Build Angular
+# -------------------------
+    FROM node:20-alpine AS builder
 
-# Install pnpm globally
-RUN npm install -g pnpm
-
-# Copy package.json and pnpm-lock.yaml
-COPY package.json pnpm-lock.yaml ./
-
-# Install dependencies with pnpm
-RUN pnpm install --frozen-lockfile
-
-# Copy the rest of the application files
-COPY . .
-
-# Build the application using the production configuration
-RUN pnpm run build --configuration production
-
-# Stage 2: Serve the application with Nginx
-FROM nginx:alpine
-# Remove the default Nginx static assets
-RUN rm -rf /usr/share/nginx/html/*
-# Copy the built Angular app from Stage 1
-COPY --from=build /app/dist/manna-front-v2 /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+    WORKDIR /app
+    
+    # Copy package files
+    COPY package*.json ./
+    RUN npm install
+    
+    # Copy everything and build
+    COPY . .
+    RUN npm run build # or npm run build -- --prod 
+    
+    # -------------------------
+    # Stage 2: Serve with NGINX
+    # -------------------------
+    FROM nginx:alpine
+    
+    # Notice we reference the 'browser' subfolder
+    COPY --from=builder /app/dist/manna-front-v2/browser/ /usr/share/nginx/html/
+    
+    EXPOSE 80
+    
