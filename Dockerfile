@@ -8,20 +8,30 @@ RUN npm install -g pnpm
 # Copy package.json and pnpm-lock.yaml
 COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies with pnpm
-RUN pnpm install --frozen-lockfile
+# Use a local cache for pnpm
+RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
+    pnpm install --frozen-lockfile --store-dir=/root/.pnpm-store
 
 # Copy the rest of the application files
 COPY . .
 
-# Build the application using the production configuration
+# Build the application
 RUN pnpm run build --configuration production
+
+# Debug: List the contents of the build output directory
+RUN ls -la /app/dist/manna-front-v2
 
 # Stage 2: Serve the application with Nginx
 FROM nginx:alpine
-# Remove the default Nginx static assets
-RUN rm -rf /usr/share/nginx/html/*
-# Copy the built Angular app from Stage 1
-COPY --from=build /app/dist/manna-front-v2 /usr/share/nginx/html
+
+# Copy the build output to the Nginx HTML directory
+COPY --from=build /app/dist/manna-front-v2/browser /usr/share/nginx/html
+
+# Debug: List the contents of the Nginx HTML directory
+RUN ls -la /usr/share/nginx/html
+
+# Expose port 80
 EXPOSE 80
+
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
