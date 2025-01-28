@@ -1,0 +1,25 @@
+version: '1'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: manna-backend
+    ports:
+      - "7231:7231"
+    environment:
+      - MONGODB_URL=mongodb://172.17.0.1:27017/
+    networks:
+      - manna-network
+
+  frontend:
+    image: manna-front
+    ports:
+      - "8080:80"
+    environment:
+      - SERVER_URL=http://backend:7231
+    networks:
+      - manna-network
+
+networks:
+  manna-network:
