@@ -819,6 +819,7 @@ export let claimMannaContractABI = [
     },
 ];
 
+// export let serverUrl = 'https://mannatest.hedgeforhumanity.org/backend';
 export let serverUrl = 'https://mannatest.hedgeforhumanity.org/backend';
 // export let serverUrl = 'http://backend:7231';
 
