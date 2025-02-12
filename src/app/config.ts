@@ -1,17 +1,32 @@
-export let mannaChainId: bigint = 137n;
-export let mannaChainName: string = 'Polygon Mainnet';
+// export let mannaChainId: bigint = 137n;
+// export let mannaChainName: string = 'Polygon Mainnet';
+// 
+// export let chainConfig = {
+    // chainId: '0x89',
+    // chainName: 'Polygon Mainnet',
+    // nativeCurrency: {
+        // name: 'MATIC',
+        // symbol: 'MATIC',
+        // decimals: 18,
+    // },
+    // rpcUrls: ['https://polygon-rpc.com/'],
+    // blockExplorerUrls: ['https://polygon-rpc.com/'],
+// };
+export let mannaChainId: bigint = 8453n;
+export let mannaChainName: string = 'Base Mainnet';
 
 export let chainConfig = {
-    chainId: '0x89',
-    chainName: 'Polygon Mainnet',
+    chainId: '0x2105', // 8453 in hexadecimal
+    chainName: 'Base Mainnet',
     nativeCurrency: {
-        name: 'MATIC',
-        symbol: 'MATIC',
+        name: 'Ethereum',
+        symbol: 'ETH',
         decimals: 18,
     },
-    rpcUrls: ['https://polygon-rpc.com/'],
-    blockExplorerUrls: ['https://polygon-rpc.com/'],
+    rpcUrls: ['https://mainnet.base.org'],
+    blockExplorerUrls: ['https://base.blockscout.com/'],
 };
+
 // export let chainConfig = {
 //     method: 'wallet_addEthereumChain',
 //     params: [
@@ -29,9 +44,9 @@ export let chainConfig = {
 //     ],
 // }
 
-export let mannaContractAddress = '0xb9786046fa7D3367ec088f796a22a43c1c30900f';
-export let claimMannaContractAddress =
-    '0x0FB02E6485bb7807b17CE7Ea39fE4Cc188bDf40d';
+export let mannaContractAddress = '0x5ce459cB8D3280cf23E24Bf8657bFEF2EEC79f57';
+export let claimMannaContractAddress = '0x7Eea810aE668e709589dc7Bd66c89dc3e9b1c1e2';
+
 
 export let mannaContractABI = [
     { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
