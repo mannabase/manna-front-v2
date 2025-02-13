@@ -117,7 +117,7 @@ export class ContractService {
             catchError((error) => {
                 console.error('Error fetching score threshold:', error);
                 // alert(`Error fetching score threshold: ${error.message}`);
-                return of(7);
+                return of(20);
             })
         );
 

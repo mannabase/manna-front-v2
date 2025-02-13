@@ -16,7 +16,7 @@ export let mannaChainId: bigint = 8453n;
 export let mannaChainName: string = 'Base Mainnet';
 
 export let chainConfig = {
-    chainId: '0x2105', // 8453 in hexadecimal
+    chainId: '8453', // 8453 in hexadecimal
     chainName: 'Base Mainnet',
     nativeCurrency: {
         name: 'Ethereum',

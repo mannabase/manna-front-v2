@@ -10,18 +10,18 @@ import { ethers } from 'ethers';
 const projectId = '83f8bb3871bd791900a7248b8abdcb21';
 
 const mainnet = {
-    chainId: 137,
-    name: 'MATIC',
-    currency: 'MATIC',
-    explorerUrl: 'https://polygon-rpc.com/',
-    rpcUrl: 'https://polygon-rpc.com/',
+    chainId: 8453,
+    name: 'Base Mainnet',
+    currency: 'Ethereum',
+    explorerUrl: 'https://mainnet.base.org',
+    rpcUrl: 'https://base.blockscout.com/',
 };
 
 const metadata = {
     name: 'My Website',
     description: 'My Website description',
     url: 'https://mywebsite.com',
-    icons: ['https://avatars.mywebsite.com/'],
+    icons: ['https://base.blockscout.com/'],
     enableExplorer: false
 };
 
