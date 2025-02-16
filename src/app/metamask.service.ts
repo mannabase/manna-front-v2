@@ -14,14 +14,14 @@ const mainnet = {
     name: 'Base Mainnet',
     currency: 'Ethereum',
     explorerUrl: 'https://mainnet.base.org',
-    rpcUrl: 'https://base.blockscout.com/',
+    rpcUrl: 'https://base.llamarpc.com',
 };
 
 const metadata = {
     name: 'My Website',
     description: 'My Website description',
     url: 'https://mywebsite.com',
-    icons: ['https://base.blockscout.com/'],
+    icons: ['https://base.llamarpc.com'],
     enableExplorer: false
 };
 

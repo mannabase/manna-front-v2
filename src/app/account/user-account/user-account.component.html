@@ -200,9 +200,8 @@
                             tuiButton
                             [loading]="loadingService.loading()"
                             *ngIf="
-                                (contractScore ?? 0) == 0 &&
-                                metamaskState == 'READY' &&
-                                (localScore$ | async) == null
+                                (localScore ?? 0) < (threshold ?? 0) &&
+                                metamaskState == 'READY' 
                             "
                             (click)="refreshUserScore()"
                         >

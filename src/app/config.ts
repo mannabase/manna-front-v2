@@ -24,7 +24,7 @@ export let chainConfig = {
         decimals: 18,
     },
     rpcUrls: ['https://mainnet.base.org'],
-    blockExplorerUrls: ['https://base.blockscout.com/'],
+    blockExplorerUrls: ['https://base.llamarpc.com'],
 };
 
 // export let chainConfig = {
