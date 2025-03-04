@@ -48,8 +48,8 @@ export class AboutComponent {
       expanded: false 
     },
     { 
-      title: 'Why is Manna built on Optimism?', 
-      content: 'Optimism is a highly trusted Ethereum layer 2 protocol that provides access to the Ethereum ecosystem while also offering extremely low gas fees. This enables users to access the broader crypto ecosystem while also enabling cheap and affordable transactions. ', 
+      title: 'Why is Manna built on Base?', 
+      content: 'Base is a highly trusted Ethereum layer 2 protocol that provides access to the Ethereum ecosystem while also offering extremely low gas fees. This enables users to access the broader crypto ecosystem while also enabling cheap and affordable transactions. ', 
       expanded: false 
     },
     { 
