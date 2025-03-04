@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <p class="boxes--item--discription">{{ box.description }}</p>
-                <a tuiLink iconEnd="@tui.arrow-right" class="boxes--item--link">
+                <a tuiLink iconEnd="@tui.arrow-right" routerLink="account" class="boxes--item--link">
                     {{ box.link }}
                 </a>
             </div>
@@ -161,6 +161,7 @@
                     <div>
                         <a
                             tuiLink
+                            routerLink="about"
                             iconEnd="@tui.arrow-right"
                             class="community--boxes--box--title"
                         >
@@ -178,8 +179,9 @@
                         class="community--boxes--box--image"
                     />
                     <div>
-                        <a
+                        <a 
                             tuiLink
+                            routerLink="account" 
                             iconEnd="@tui.arrow-right"
                             class="community--boxes--box--title"
                         >
@@ -200,13 +202,15 @@
                     <div>
                         <a
                             tuiLink
+                            href="https://www.base.org/" 
+                            target="_blank" rel="noopener noreferrer"
                             iconEnd="@tui.arrow-right"
                             class="community--boxes--box--title"
                         >
-                            Built On Optimism
+                            Built On Base
                         </a>
                         <p class="text">
-                            Manna is built on Optimism allowing low cost
+                            Manna is built on Base allowing low cost
                             transactions and access to the Ethereum ecosystem.
                         </p>
                         <p class="text"></p>
