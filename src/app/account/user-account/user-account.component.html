@@ -147,9 +147,8 @@
                                 </div>
                             </div>
                             <tui-loader
-                                ngIf="
-                            localScore != null &&
-                            (contractScore ?? 0) <= (threshold ?? 0) &&
+                            *ngIf="
+                            (contractScore ?? 0) < (threshold ?? 0) &&
                             (localScore ?? 0) >= (threshold ?? 0)
                         "
                                 [showLoader]="loadingService.loading()"
