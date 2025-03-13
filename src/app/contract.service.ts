@@ -16,6 +16,7 @@ export class ContractService {
     private initializing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     constructor(private metamaskService: MetamaskService) {
+        // Initialize the contracts once we have a connected signer
         this.metamaskService.account$.pipe(
             takeUntilDestroyed(),
             switchMap(walletAddress => {
@@ -31,10 +32,11 @@ export class ContractService {
                 if (signer == null) return;
                 this.mannaContract = new Contract(mannaContractAddress, mannaContractABI, signer);
                 this.claimMannaContract = new Contract(claimMannaContractAddress, claimMannaContractABI, signer);
+                console.log('[ContractService] Contracts initialized.');
                 this.initializing.next(false);
             },
             error: (error) => {
-                console.error('Error initializing contracts:', error);
+                console.error('[ContractService] Error initializing contracts:', error);
                 this.initializing.next(false);
             }
         });
@@ -42,38 +44,34 @@ export class ContractService {
 
     balanceOf(): Observable<number> {
         if (!this.mannaContract) {
+            // Wait until initialization is complete
             return this.initializing.pipe(
                 filter(initializing => !initializing),
                 switchMap(() => from(this.mannaContract!['balanceOf'](this.metamaskService.account$.value))),
                 tap(balance => {
-                    console.log(`Raw balance received from contract: ${balance}`);
-                    // alert(`Raw balance received from contract: ${balance}`);
+                    console.log('[ContractService] Raw balance from contract:', balance);
                 }),
                 map((balance: any) => parseInt(balance.toString()) / 1e18),
                 tap(parsedBalance => {
-                    console.log(`Parsed balance: ${parsedBalance} Manna`);
-                    // alert(`Parsed balance: ${parsedBalance} Manna`);
+                    console.log(`[ContractService] Parsed balance: ${parsedBalance} Manna`);
                 }),
                 catchError((error) => {
-                    console.error('Error fetching balance:', error);
-                    // alert(`Error fetching balance: ${error.message}`);
+                    console.error('[ContractService] Error fetching balance:', error);
                     return of(0);
                 })
             );
         } else {
+            // Already initialized
             return from(this.mannaContract['balanceOf'](this.metamaskService.account$.value)).pipe(
                 tap(balance => {
-                    console.log(`Raw balance received from contract: ${balance}`);
-                    // alert(`Raw balance received from contract: ${balance}`);
+                    console.log('[ContractService] Raw balance from contract:', balance);
                 }),
                 map((balance: any) => parseInt(balance.toString()) / 1e18),
                 tap(parsedBalance => {
-                    console.log(`Parsed balance: ${parsedBalance} Manna`);
-                    // alert(`Parsed balance: ${parsedBalance} Manna`);
+                    console.log(`[ContractService] Parsed balance: ${parsedBalance} Manna`);
                 }),
                 catchError((error) => {
-                    console.error('Error fetching balance:', error);
-                    // alert(`Error fetching balance: ${error.message}`);
+                    console.error('[ContractService] Error fetching balance:', error);
                     return of(0);
                 })
             );
@@ -81,82 +79,72 @@ export class ContractService {
     }
 
     getUserScore(userAddress: string): Observable<UserScore | undefined> {
+        console.log('[ContractService] getUserScore() called with address:', userAddress);
         return from(this.claimMannaContract!['userScores'](userAddress)).pipe(
             tap(response => {
-                console.log(`Raw user score response: ${response}`);
-                // alert(`Raw user score response: ${response}`);
+                console.log('[ContractService] Raw user score response:', response);
             }),
             map(response => {
                 const timestamp = parseInt(response[0].toString());
-                if (timestamp == 0) return undefined;
+                if (timestamp === 0) return undefined;
                 const score = parseInt(response[1].toString());
                 const userScore = { timestamp, score };
-                console.log(`Parsed user score: ${JSON.stringify(userScore)}`);
-                // alert(`Parsed user score: ${JSON.stringify(userScore)}`);
+                console.log('[ContractService] Parsed user score:', userScore);
                 return userScore;
             }),
             catchError((error) => {
-                console.error('Error fetching user score:', error);
-                // alert(`Error fetching user score: ${error.message}`);
+                console.error('[ContractService] Error fetching user score:', error);
                 return of(undefined);
             })
         );
     }
 
+    // For testing, return a fixed threshold
     getScoreThreshold(): Observable<number> {
-        const fetchThreshold = () => from(this.claimMannaContract!['scoreThreshold']()).pipe(
-            tap(threshold => {
-                console.log(`Raw score threshold received from contract: ${threshold}`);
-                // alert(`Raw score threshold received from contract: ${threshold}`);
-            }),
-            map((threshold: any) => parseInt(threshold.toString()) / 1e6),
-            tap(parsedThreshold => {
-                console.log(`Parsed score threshold: ${parsedThreshold}`);
-                // alert(`Parsed score threshold: ${parsedThreshold}`);
-            }),
-            catchError((error) => {
-                console.error('Error fetching score threshold:', error);
-                // alert(`Error fetching score threshold: ${error.message}`);
-                return of(20);
-            })
-        );
-
-        if (!this.initializing.value) {
-            return fetchThreshold();
-        } else {
-            return this.initializing.pipe(
-                filter((value: boolean) => !value),
-                switchMap(fetchThreshold),
-            );
-        }
+        console.log('[ContractService] getScoreThreshold() returning mock 0.5');
+        return of(0.5);
     }
 
     submitUserScore(address: string, scoreData: any): Observable<void> {
-        return from(this.claimMannaContract!['submitScore'](
-            scoreData.score,
-            [
-                scoreData.timestamp,
-                scoreData.signature.v,
-                scoreData.signature.r,
-                scoreData.signature.s,
-            ],
-        )).pipe(
+        console.log('[ContractService] submitUserScore() called with:', { address, scoreData });
+        return from(
+            this.claimMannaContract!['submitScore'](
+                scoreData.score,
+                [
+                    scoreData.timestamp,
+                    scoreData.signature.v,
+                    scoreData.signature.r,
+                    scoreData.signature.s,
+                ],
+            )
+        ).pipe(
+            tap(tx => {
+                console.log('[ContractService] submitScore transaction sent. Waiting for receipt...', tx);
+            }),
             switchMap(tx => from(tx.wait()) as Observable<void>),
+            tap(receipt => {
+                console.log('[ContractService] submitScore transaction confirmed, receipt:', receipt);
+            }),
             catchError((error) => {
-                console.error('Error submitting user score:', error);
-                // alert(`Error submitting user score: ${error.message}`);
-                return throwError(error);
+                console.error('[ContractService] Error submitting user score:', error);
+                return throwError(() => error);
             })
         );
     }
 
     claimWithSigsContract(signatures: Signature[]): Observable<void> {
+        console.log('[ContractService] claimWithSigsContract() called with signatures:', signatures);
         return from(this.claimMannaContract!['claimWithSigs'](signatures)).pipe(
+            tap(tx => {
+                console.log('[ContractService] claimWithSigs transaction sent. Waiting for receipt...', tx);
+            }),
             switchMap(tx => from(tx.wait()) as Observable<void>),
+            tap(receipt => {
+                console.log('[ContractService] claimWithSigs transaction confirmed, receipt:', receipt);
+            }),
             catchError((error) => {
-                console.error('Error claiming with signatures:', error);
-                // alert(`Error claiming with signatures: ${error.message}`);
-                return throwError(error);
+                console.error('[ContractService] Error claiming with signatures:', error);
+                return throwError(() => error);
             })
         );
     }
