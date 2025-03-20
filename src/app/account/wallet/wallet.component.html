@@ -156,8 +156,6 @@
                             "
                             (click)="claimWithSignatures()"
                             [disabled]="
-                                verificationState !== VerifyState.VERIFIED ||
-                                this.mannabaseBalance == 0
                             "
                             [attr.title]="
                                 verificationState !== VerifyState.VERIFIED
