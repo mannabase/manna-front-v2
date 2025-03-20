@@ -150,13 +150,7 @@
                         <div class="spacer"></div>
                         <button
                             class="panel--dashboard--withdraw"
-                            [class.unverified]="
-                                verificationState !== VerifyState.VERIFIED ||
-                                this.mannabaseBalance == 0
-                            "
                             (click)="claimWithSignatures()"
-                            [disabled]="
-                            "
                             [attr.title]="
                                 verificationState !== VerifyState.VERIFIED
                                     ? 'You must be verified for withdrawal of manna'
@@ -175,8 +169,6 @@
                             class="panel--dashboard--buttons--withdraw-mobile"
                             (click)="claimWithSignatures()"
                             *ngIf="
-                                verificationState == VerifyState.VERIFIED &&
-                                this.mannabaseBalance !== 0
                             "
                         >
                             <span *ngIf="!claimWithSigsLoader"> Withdraw </span>
